@@ -7,10 +7,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED 17)
 
 add_executable(pong main.cpp)
 
+add_subdirectory(glfw-3.3.8)
 add_subdirectory(glad)
 
 include_directories(glfw-3.3.8/include)
 
-target_link_libraries(pong ${PROJECT_SOURCE_DIR}/glfw3.lib)
+target_link_libraries(pong glfw)
 target_link_libraries(pong opengl32)
 target_link_libraries(pong glad)
