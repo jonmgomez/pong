@@ -5,7 +5,7 @@ project(pong)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED 17)
 
-add_executable(pong main.cpp)
+add_executable(pong main.cpp shader.cpp vbo.cpp vao.cpp ebo.cpp)
 
 add_subdirectory(glfw-3.3.8)
 add_subdirectory(glad)
