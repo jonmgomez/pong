@@ -5,16 +5,16 @@ project(pong)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED 17)
 
-add_executable(pong main.cpp shader.cpp vbo.cpp vao.cpp ebo.cpp)
+add_executable(pong main.cpp)
 
 add_subdirectory(glfw-3.3.8)
-add_subdirectory(glad)
+add_subdirectory(glew-2.1.0)
 
 include_directories(glfw-3.3.8/include)
 
 target_link_libraries(pong glfw)
 target_link_libraries(pong opengl32)
-target_link_libraries(pong glad)
+target_link_libraries(pong glew)
 
 # I would use /Wall here but unfortunately the msvc headers trigger some pedantic warnings,
 # and I would like to keep /WX as well. Since I don't have an easy way to ignore the warnings
