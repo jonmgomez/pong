@@ -126,6 +126,9 @@ int main()
 
     glfwMakeContextCurrent(window);
 
+    // Uncomment this if you would like to blow up the GPU :D
+    // glfwSwapInterval(0);
+
     if (glewInit() != GLEW_OK)
     {
         std::cout << "glewInit() failure" << std::endl;
@@ -163,16 +166,42 @@ int main()
     unsigned int shader = CreateShader(source.vertexSource, source.fragmentSource);
     glUseProgram(shader);
 
+    int location = glGetUniformLocation(shader, "u_Color");
+    ASSERT(location != -1);
+    glUniform4f(location, 0.0f, 0.0f, 1.0f, 1.0f);
+
+    // mark time
+    double lastTime = glfwGetTime();
+    int frameCount = 0;
+
+    float r = 0.0f;
+    float increment = 0.05f;
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
 
+        glUniform4f(location, r, 0.0f, 1.0f, 1.0f);
         GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+
+        if (r > 1.0f)
+            increment = -0.05f;
+        else if (r < 0.0f)
+            increment = 0.05f;
+
+        r += increment;
+        frameCount++;
 
         glfwSwapBuffers(window);
 
         glfwPollEvents();
     }
+
+    double currentTime = glfwGetTime();
+    double elapsedTime = currentTime - lastTime;
+
+    std::cout << "Elapsed time: " << elapsedTime << std::endl;
+    std::cout << "Total frames: " << frameCount << std::endl;
+    std::cout << "Avg framerate: " << frameCount / elapsedTime << std::endl;
 
     glDeleteProgram(shader);
 
