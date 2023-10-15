@@ -6,7 +6,13 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#define ASSERT(x) if (!(x)) __debugbreak();
+#ifdef DEBUG
+    #define ASSERT(x) if (!(x)) __debugbreak();
+#else
+    #define ASSERT(cond) \
+        do { (void)sizeof(cond); } while(0)
+#endif
+
 #define GLCall(x) GLClearError();\
     x;\
     ASSERT(GLLogCall(#x, __FILE__, __LINE__));
