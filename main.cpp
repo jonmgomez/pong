@@ -13,9 +13,13 @@
         do { (void)sizeof(cond); } while(0)
 #endif
 
-#define GLCall(x) GLClearError();\
-    x;\
-    ASSERT(GLLogCall(#x, __FILE__, __LINE__));
+#ifdef DEBUG
+    #define GLCall(x) GLClearError();\
+        x;\
+        ASSERT(GLLogCall(#x, __FILE__, __LINE__));
+#else
+    #define GLCall(x) x
+#endif
 
 static void GLClearError()
 {

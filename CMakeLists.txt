@@ -20,3 +20,9 @@ target_link_libraries(pong glew)
 # and I would like to keep /WX as well. Since I don't have an easy way to ignore the warnings
 # for the system libraries, just use /W4. Seems like /Wall has some weird extra warnings anyways.
 target_compile_options(pong PRIVATE /W4 /WX)
+
+target_compile_definitions(pong PRIVATE
+    $<$<CONFIG:Debug>:
+        DEBUG=1
+    >
+)
