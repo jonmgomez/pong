@@ -9,6 +9,7 @@ set(SOURCES
     main.cpp
     indexbuffer.cpp
     renderer.cpp
+    shader.cpp
     vertexarray.cpp
     vertexbuffer.cpp
     vertexbufferlayout.cpp
