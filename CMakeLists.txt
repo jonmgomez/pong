@@ -5,7 +5,16 @@ project(pong)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED 17)
 
-add_executable(pong main.cpp)
+set(SOURCES
+    main.cpp
+    indexbuffer.cpp
+    renderer.cpp
+    vertexarray.cpp
+    vertexbuffer.cpp
+    vertexbufferlayout.cpp
+)
+
+add_executable(pong ${SOURCES})
 
 add_subdirectory(glfw-3.3.8)
 add_subdirectory(glew-2.1.0)
