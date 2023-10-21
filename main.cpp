@@ -5,6 +5,9 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include "imgui_impl_opengl3.h"
 
 #include "indexbuffer.h"
 #include "renderer.h"
@@ -51,10 +54,10 @@ int main()
     std::cout << "Using OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 
     float positions[] = {
-        -0.5f, -0.5f, 0.0f, 0.0f,
-         0.5f, -0.5f, 1.0f, 0.0f,
-         0.5f,  0.5f, 1.0f, 1.0f,
-        -0.5f,  0.5f, 0.0f, 1.0f
+        100.0f, 100.0f, 0.0f, 0.0f,
+        200.0f, 100.0f, 1.0f, 0.0f,
+        200.0f, 200.0f, 1.0f, 1.0f,
+        100.0f, 200.0f, 0.0f, 1.0f
     };
 
     unsigned int indicies[] = {
@@ -65,6 +68,7 @@ int main()
     GLCall(glEnable(GL_BLEND));
     GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
+    { // Extra scope to destruct things in opengl before glfwTerminate()
     VertexArray va;
 
     VertexBuffer vb(positions, 4 * 4 * sizeof(float));
@@ -75,12 +79,12 @@ int main()
 
     IndexBuffer ib(indicies, 6);
 
-    glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+    glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
+    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
 
     Shader shader = Shader("D:\\code\\pong\\basic.shader");
     shader.Bind();
     shader.SetUniform4f("u_Color", 0.0f, 0.0f, 1.0f, 1.0f);
-    shader.SetUniformMat4f("u_MVP", proj);
 
     Texture texture("D:\\code\\pong\\mc.png");
     texture.Bind(0);
@@ -93,6 +97,17 @@ int main()
 
     Renderer renderer;
 
+    ImGui::CreateContext();
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 130");
+
+    bool show_demo_window = true;
+    bool show_another_window = false;
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+    glm::vec3 tranlsation = glm::vec3(200, 200, 0);
+
     // mark time
     double lastTime = glfwGetTime();
     int frameCount = 0;
@@ -103,8 +118,16 @@ int main()
     {
         renderer.Clear();
 
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), tranlsation);
+        glm::mat4 mvp = proj * view * model;
+
         shader.Bind();
         shader.SetUniform4f("u_Color", r, 0.0f, 1.0f, 1.0f);
+        shader.SetUniformMat4f("u_MVP", mvp);
 
         renderer.Draw(va, ib, shader);
 
@@ -116,6 +139,47 @@ int main()
         r += increment;
         frameCount++;
 
+        {
+            ImGui::SliderFloat3("Translation", &tranlsation.x, 0.0f, 960.0f);
+        }
+
+        if (show_demo_window)
+            ImGui::ShowDemoWindow(&show_demo_window);
+
+        {
+            static float f = 0.0f;
+            static int counter = 0;
+
+            ImGui::Begin("Hello, world!");
+
+            ImGui::Text("Hello, world!");                           // Display some text (you can use a format string too)
+            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+
+            ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our windows open/close state
+            ImGui::Checkbox("Another Window", &show_another_window);
+
+            if (ImGui::Button("Button"))                                // Buttons return true when clicked (NB: most widgets return true when edited/activated)
+                counter++;
+            ImGui::SameLine();
+            ImGui::Text("counter = %d", counter);
+
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+            ImGui::End();
+        }
+
+        if (show_another_window)
+        {
+            ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+            ImGui::Text("Hello from another window!");
+            if (ImGui::Button("Close Me"))
+                show_another_window = false;
+            ImGui::End();
+        }
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         glfwSwapBuffers(window);
 
         glfwPollEvents();
@@ -124,9 +188,14 @@ int main()
     double currentTime = glfwGetTime();
     double elapsedTime = currentTime - lastTime;
 
-    std::cout << "Elapsed time: " << elapsedTime << std::endl;
-    std::cout << "Total frames: " << frameCount << std::endl;
+    std::cout << "Elapsed time:  " << elapsedTime << std::endl;
+    std::cout << "Total frames:  " << frameCount << std::endl;
     std::cout << "Avg framerate: " << frameCount / elapsedTime << std::endl;
+    }
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
     glfwDestroyWindow(window);
     glfwTerminate();
