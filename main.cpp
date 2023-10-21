@@ -3,6 +3,8 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "indexbuffer.h"
 #include "renderer.h"
@@ -49,7 +51,7 @@ int main()
     std::cout << "Using OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 
     float positions[] = {
-        -0.5f, -0.5f, 0.0f, 0.0f,
+        -2.0f, -0.5f, 0.0f, 0.0f,
          0.5f, -0.5f, 1.0f, 0.0f,
          0.5f,  0.5f, 1.0f, 1.0f,
         -0.5f,  0.5f, 0.0f, 1.0f
@@ -73,9 +75,12 @@ int main()
 
     IndexBuffer ib(indicies, 6);
 
+    glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+
     Shader shader = Shader("D:\\code\\pong\\basic.shader");
     shader.Bind();
     shader.SetUniform4f("u_Color", 0.0f, 0.0f, 1.0f, 1.0f);
+    shader.SetUniformMat4f("u_MVP", proj);
 
     Texture texture("D:\\code\\pong\\mc.png");
     texture.Bind(0);
