@@ -51,7 +51,7 @@ int main()
     std::cout << "Using OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 
     float positions[] = {
-        -2.0f, -0.5f, 0.0f, 0.0f,
+        -0.5f, -0.5f, 0.0f, 0.0f,
          0.5f, -0.5f, 1.0f, 0.0f,
          0.5f,  0.5f, 1.0f, 1.0f,
         -0.5f,  0.5f, 0.0f, 1.0f
