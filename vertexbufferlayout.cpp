@@ -1,10 +1,8 @@
-#pragma once
-
 #include "vertexbufferlayout.h"
 
 #include <vector>
 
-#include "renderer.h"
+#include "renderutils.h"
 
 VertexBufferLayout::VertexBufferLayout() :
     mStride(0)

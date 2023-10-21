@@ -7,7 +7,7 @@
 #include <string>
 #include <sstream>
 
-#include "renderer.h"
+#include "renderutils.h"
 
 Shader::Shader(const std::string& filepath)
     : mFilePath(), mRendererID(0)
@@ -115,6 +115,21 @@ void Shader::Bind() const
 void Shader::Unbind() const
 {
     GLCall(glUseProgram(0));
+}
+
+void Shader::SetUniform1i(const std::string& name, int value)
+{
+    GLCall(glUniform1i(GetUniformLocation(name), value));
+}
+
+void Shader::SetUniform1f(const std::string& name, int value)
+{
+    GLCall(glUniform1f(GetUniformLocation(name), static_cast<GLfloat>(value)));
+}
+
+void Shader::SetUniform1f(const std::string& name, float value)
+{
+    GLCall(glUniform1f(GetUniformLocation(name), value));
 }
 
 void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)

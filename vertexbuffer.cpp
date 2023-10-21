@@ -1,8 +1,6 @@
-#pragma once
-
 #include "vertexbuffer.h"
 
-#include "renderer.h"
+#include "renderutils.h"
 
 VertexBuffer::VertexBuffer(const void* data, unsigned int size) :
     mRendererID(0)

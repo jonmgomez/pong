@@ -1,10 +1,8 @@
-#pragma once
-
 #include "vertexarray.h"
 
 #include <vector>
 
-#include "renderer.h"
+#include "renderutils.h"
 
 VertexArray::VertexArray() :
     mRendererID(0)
@@ -23,7 +21,7 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
     vb.Bind();
 
     const std::vector<VertexBufferElement>& elements = layout.GetElements();
-    int offset = 0;
+    unsigned int offset = 0;
     for (int i = 0; i < elements.size(); i++)
     {
         const VertexBufferElement element = elements[i];
@@ -31,7 +29,7 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
         GLCall(glEnableVertexAttribArray(i));
 
 // Ugly warning suppression.
-// C4312: 'type cast': conversion from 'int' to 'const void *' of greater size
+// C4312: 'type cast': conversion from 'unsigned int' to 'const void *' of greater size
 // unfortunately, this is the only way to do it. (afaik)
 #pragma warning(suppress: 4312)
         GLCall(glVertexAttribPointer(i,

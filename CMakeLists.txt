@@ -9,7 +9,9 @@ set(SOURCES
     main.cpp
     indexbuffer.cpp
     renderer.cpp
+    renderutils.cpp
     shader.cpp
+    texture.cpp
     vertexarray.cpp
     vertexbuffer.cpp
     vertexbufferlayout.cpp
@@ -21,6 +23,7 @@ add_subdirectory(glfw-3.3.8)
 add_subdirectory(glew-2.1.0)
 
 include_directories(glfw-3.3.8/include)
+include_directories(stb)
 
 target_link_libraries(pong glfw)
 target_link_libraries(pong opengl32)
