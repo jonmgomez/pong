@@ -50,14 +50,14 @@ int main()
 
     std::cout << "Using OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 
-    float positions[] = {
+    const float positions[] = {
         -0.5f, -0.5f, 0.0f, 0.0f,
          0.5f, -0.5f, 1.0f, 0.0f,
          0.5f,  0.5f, 1.0f, 1.0f,
         -0.5f,  0.5f, 0.0f, 1.0f
     };
 
-    unsigned int indicies[] = {
+    const unsigned int indicies[] = {
         0, 1, 2,
         2, 3, 0
     };
@@ -67,7 +67,13 @@ int main()
 
     VertexArray va;
 
-    VertexBuffer vb(positions, 4 * 4 * sizeof(float));
+    // Allocated and filled buffer on creation
+    // VertexBuffer vb(positions, 4 * 4 * sizeof(float));
+
+    // Allocated buffer, filled later
+    VertexBuffer vb(4 * 4 * sizeof(float));
+    vb.SetBufferData(positions);
+
     VertexBufferLayout layout;
     layout.Push<float>(2);
     layout.Push<float>(2);
