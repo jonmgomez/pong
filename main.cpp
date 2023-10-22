@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "indexbuffer.h"
+#include "rectangle.h"
 #include "renderer.h"
 #include "renderutils.h"
 #include "shader.h"
@@ -51,10 +52,10 @@ int main()
     std::cout << "Using OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 
     const float positions[] = {
-        0.0f,   0.0f,   0.0f, 0.0f,
-        400.0f, 0.0f,   1.0f, 0.0f,
-        400.0f, 367.0f, 1.0f, 1.0f,
-        0.0f,   367.0f, 0.0f, 1.0f
+        -200.0f, -183.5f, 0.0f, 0.0f,
+         200.0f, -183.5f, 1.0f, 0.0f,
+         200.0f,  183.5f, 1.0f, 1.0f,
+        -200.0f,  183.5f, 0.0f, 1.0f
     };
 
     const unsigned int indicies[] = {
@@ -81,7 +82,7 @@ int main()
 
     IndexBuffer ib(indicies, 6);
 
-    glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
+    glm::mat4 proj = glm::ortho(-640.0f, 640.0f, -480.0f, 480.0f, -1.0f, 1.0f);
     glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f));
     glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
 
@@ -92,9 +93,11 @@ int main()
     shader.SetUniform4f("u_Color", 0.0f, 0.0f, 1.0f, 1.0f);
     shader.SetUniformMat4f("u_MVP", mvp);
 
-    Texture texture("D:\\code\\pong\\mc.png");
-    texture.Bind(0);
-    shader.SetUniform1i("u_Texture", 0);
+    //Texture texture("D:\\code\\pong\\mc.png");
+    // Texture texture("D:\\code\\pong\\white.png");
+    //SolidColorTexture texture(255, 255, 255, 255);
+    //texture.Bind(0);
+    //shader.SetUniform1i("u_Texture", 0);
 
     va.Unbind();
     vb.Unbind();
@@ -102,6 +105,8 @@ int main()
     shader.Unbind();
 
     Renderer renderer;
+
+    Rectangle rectangle(100.0f, 100.0f);
 
     // mark time
     double lastTime = glfwGetTime();
@@ -116,7 +121,9 @@ int main()
         shader.Bind();
         shader.SetUniform4f("u_Color", r, 0.0f, 1.0f, 1.0f);
 
-        renderer.Draw(va, ib, shader);
+        //renderer.Draw(va, ib, shader);
+
+        rectangle.Draw(renderer, shader);
 
         if (r > 1.0f)
             increment = -0.05f;

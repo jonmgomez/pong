@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED 17)
 set(SOURCES
     main.cpp
     indexbuffer.cpp
+    rectangle.cpp
     renderer.cpp
     renderutils.cpp
     shader.cpp

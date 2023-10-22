@@ -5,10 +5,11 @@
 class Texture
 {
 private:
-    unsigned int mRendererID;
     std::string mFilePath;
     unsigned char* mLocalBuffer;
     int mWidth, mHeight, mBPP;
+protected:
+    unsigned int mRendererID;
 public:
     Texture(const std::string& filePath);
     ~Texture();
@@ -18,4 +19,11 @@ public:
 
     int GetWidth() const;
     int GetHeight() const;
+};
+
+class SolidColorTexture : public Texture
+{
+public:
+    SolidColorTexture(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+    ~SolidColorTexture();
 };
