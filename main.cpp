@@ -54,10 +54,10 @@ int main()
     std::cout << "Using OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 
     float positions[] = {
-        100.0f, 100.0f, 0.0f, 0.0f,
-        200.0f, 100.0f, 1.0f, 0.0f,
-        200.0f, 200.0f, 1.0f, 1.0f,
-        100.0f, 200.0f, 0.0f, 1.0f
+        -50.0f, -50.0f, 0.0f, 0.0f,
+         50.0f, -50.0f, 1.0f, 0.0f,
+         50.0f,  50.0f, 1.0f, 1.0f,
+        -50.0f,  50.0f, 0.0f, 1.0f
     };
 
     unsigned int indicies[] = {
@@ -80,7 +80,7 @@ int main()
     IndexBuffer ib(indicies, 6);
 
     glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
-    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
+    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
 
     Shader shader = Shader("D:\\code\\pong\\basic.shader");
     shader.Bind();
@@ -106,7 +106,8 @@ int main()
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    glm::vec3 tranlsation = glm::vec3(200, 200, 0);
+    glm::vec3 tranlsationA = glm::vec3(200, 200, 0);
+    glm::vec3 tranlsationB = glm::vec3(200, 200, 0);
 
     // mark time
     double lastTime = glfwGetTime();
@@ -122,11 +123,17 @@ int main()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        glm::mat4 model = glm::translate(glm::mat4(1.0f), tranlsation);
-        glm::mat4 mvp = proj * view * model;
-
         shader.Bind();
         shader.SetUniform4f("u_Color", r, 0.0f, 1.0f, 1.0f);
+
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), tranlsationA);
+        glm::mat4 mvp = proj * view * model;
+        shader.SetUniformMat4f("u_MVP", mvp);
+
+        renderer.Draw(va, ib, shader);
+
+        model = glm::translate(glm::mat4(1.0f), tranlsationB);
+        mvp = proj * view * model;
         shader.SetUniformMat4f("u_MVP", mvp);
 
         renderer.Draw(va, ib, shader);
@@ -140,7 +147,8 @@ int main()
         frameCount++;
 
         {
-            ImGui::SliderFloat3("Translation", &tranlsation.x, 0.0f, 960.0f);
+            ImGui::SliderFloat3("Translation A", &tranlsationA.x, 0.0f, 960.0f);
+            ImGui::SliderFloat3("Translation B", &tranlsationB.x, 0.0f, 960.0f);
         }
 
         if (show_demo_window)
