@@ -31,5 +31,8 @@
 *.out
 *.app
 
+glfw-3.3.8/build
+glew-2.1.0/build
+
 build*
 .vscode
