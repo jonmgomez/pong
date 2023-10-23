@@ -12,13 +12,13 @@
 class Rectangle
 {
 private:
-    glm::vec3 mPosition;
     float mWidth;
     float mHeight;
     VertexBuffer mVB;
     VertexArray mVA;
     IndexBuffer mIB;
     Texture *mTexture;
+
 public:
     Rectangle(const glm::vec3& position, float width, float height);
     Rectangle(float width, float height);
@@ -26,4 +26,6 @@ public:
 
     void SetPosition(const glm::vec3& position);
     void Draw(const Renderer& renderer, Shader& shader) const;
+
+    glm::vec3 mPosition;
 };
