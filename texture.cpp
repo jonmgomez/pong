@@ -26,13 +26,6 @@ Texture::Texture(const std::string& filePath)
     GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, mLocalBuffer));
     GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 
-    // for (int i = 0; i < mWidth * mHeight; i+=4)
-    // {
-    //     std::cout << "(" << (int)mLocalBuffer[i] << "," << (int)mLocalBuffer[i + 1] << "," << (int)mLocalBuffer[i + 2] << "," << (int)mLocalBuffer[i + 3] << ")" << "\n";
-    // }
-
-    // std::cout << "size: " << mWidth * mHeight << std::endl;
-
     if (mLocalBuffer)
     {
         stbi_image_free(mLocalBuffer);
