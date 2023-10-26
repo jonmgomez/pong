@@ -66,7 +66,6 @@ int Texture::GetWidth() const
 
 SolidColorTexture::SolidColorTexture(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
-    std::cout << "Height is defaulted to: " << mHeight << std::endl;
     unsigned char data[] = { r, g, b, a };
     GLCall(glGenTextures(1, &mRendererID));
     GLCall(glBindTexture(GL_TEXTURE_2D, mRendererID));
