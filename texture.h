@@ -6,11 +6,14 @@ class Texture
 {
 private:
     std::string mFilePath;
-    unsigned char* mLocalBuffer;
-    int mWidth, mHeight, mBPP;
+    unsigned char* mLocalBuffer { nullptr };
 protected:
-    unsigned int mRendererID;
+    int mWidth {0};
+    int mHeight {0};
+    int mBPP {0};
+    unsigned int mRendererID {0};
 public:
+    Texture();
     Texture(const std::string& filePath);
     ~Texture();
 

@@ -9,8 +9,12 @@
 
 #include "renderutils.h"
 
+Texture::Texture()
+{
+}
+
 Texture::Texture(const std::string& filePath)
-    : mRendererID(0), mFilePath(filePath), mLocalBuffer(nullptr), mWidth(0), mHeight(0), mBPP(0)
+    : mFilePath(filePath)
 {
     stbi_set_flip_vertically_on_load(1);
     mLocalBuffer = stbi_load(filePath.c_str(), &mWidth, &mHeight, &mBPP, 4);
@@ -61,8 +65,8 @@ int Texture::GetWidth() const
 
 
 SolidColorTexture::SolidColorTexture(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
-    : Texture("")
 {
+    std::cout << "Height is defaulted to: " << mHeight << std::endl;
     unsigned char data[] = { r, g, b, a };
     GLCall(glGenTextures(1, &mRendererID));
     GLCall(glBindTexture(GL_TEXTURE_2D, mRendererID));

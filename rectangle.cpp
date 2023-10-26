@@ -10,25 +10,16 @@
 #include "vertexarray.h"
 #include "vertexbuffer.h"
 
-static const unsigned int kIndicies[] = {
-    0, 1, 2,
-    2, 3, 0
-};
-
 Rectangle::Rectangle(const glm::vec3& position, float width, float height) :
-    mPosition(position),
-    mWidth(width),
-    mHeight(height),
-    mVB(4 * 4 * sizeof(float)),
-    mVA(),
-    mIB(kIndicies, 6),
-    mTexture(nullptr)
+    mPosition {position},
+    mWidth {width},
+    mHeight {height}
 {
     float positions[] = {
-        -width / 2, -height / 2, 0.0f, 0.0f,
-         width / 2, -height / 2, 1.0f, 0.0f,
-         width / 2,  height / 2, 1.0f, 1.0f,
-        -width / 2,  height / 2, 0.0f, 1.0f
+        -mWidth / 2, -mHeight / 2, 0.0f, 0.0f,
+         mWidth / 2, -mHeight / 2, 1.0f, 0.0f,
+         mWidth / 2,  mHeight / 2, 1.0f, 1.0f,
+        -mWidth / 2,  mHeight / 2, 0.0f, 1.0f
     };
 
     mVB.SetBufferData(positions);
