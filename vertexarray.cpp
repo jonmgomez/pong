@@ -1,8 +1,8 @@
 #include "vertexarray.h"
 
-#include <vector>
-
 #include "renderutils.h"
+
+#include <vector>
 
 VertexArray::VertexArray() :
     mRendererID(0)

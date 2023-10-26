@@ -1,5 +1,8 @@
 #include "texture.h"
 
+#include "renderutils.h"
+
+// Ignore numerous warnings from stb_image.h
 #pragma warning(push, 0)
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -7,7 +10,6 @@
 
 #include <iostream>
 
-#include "renderutils.h"
 
 Texture::Texture()
 {

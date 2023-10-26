@@ -1,14 +1,5 @@
 #include "main.h"
 
-#include <iostream>
-#include <memory>
-#include <string>
-
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
 #include "indexbuffer.h"
 #include "rectangle.h"
 #include "renderer.h"
@@ -18,6 +9,14 @@
 #include "vertexarray.h"
 #include "vertexbuffer.h"
 #include "vertexbufferlayout.h"
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include <iostream>
+#include <string>
 
 std::unique_ptr<Rectangle>player = nullptr;
 bool upHeld = false;

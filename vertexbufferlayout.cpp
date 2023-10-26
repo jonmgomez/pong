@@ -1,8 +1,8 @@
 #include "vertexbufferlayout.h"
 
-#include <vector>
-
 #include "renderutils.h"
+
+#include <vector>
 
 template<typename T>
 void VertexBufferLayout::Push(unsigned int count)

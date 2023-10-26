@@ -1,15 +1,13 @@
-#pragma once
-
 #include "shader.h"
+
+#include "renderutils.h"
+
+#include <glm/glm.hpp>
 
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <sstream>
-
-#include <glm/glm.hpp>
-
-#include "renderutils.h"
 
 Shader::Shader(const std::string& filepath)
 {

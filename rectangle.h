@@ -1,13 +1,13 @@
 #pragma once
 
-#include <glm/glm.hpp>
-
 #include "indexbuffer.h"
 #include "renderer.h"
 #include "shader.h"
 #include "texture.h"
 #include "vertexarray.h"
 #include "vertexbuffer.h"
+
+#include <glm/glm.hpp>
 
 #include <memory>
 
