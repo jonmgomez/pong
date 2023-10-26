@@ -28,13 +28,9 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 
         GLCall(glEnableVertexAttribArray(i));
 
-// Ugly warning suppression.
-// C4312: 'type cast': conversion from 'unsigned int' to 'const void *' of greater size
-// unfortunately, this is the only way to do it. (afaik)
-#pragma warning(suppress: 4312)
         GLCall(glVertexAttribPointer(i,
             element.mCount, element.mType, element.mNormalized,
-            layout.GetStride(), (const void *)(offset)));
+            layout.GetStride(), reinterpret_cast<const void *>(static_cast<uintptr_t>(offset))));
 
         offset += element.mCount * VertexBufferElement::GetSizeOfType(element.mType);
     }
