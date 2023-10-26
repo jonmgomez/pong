@@ -4,15 +4,6 @@
 
 #include "renderutils.h"
 
-VertexBufferLayout::VertexBufferLayout() :
-    mStride(0)
-{
-}
-
-VertexBufferLayout::~VertexBufferLayout()
-{
-}
-
 template<typename T>
 void VertexBufferLayout::Push(unsigned int count)
 {

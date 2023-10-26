@@ -12,7 +12,6 @@
 #include "renderutils.h"
 
 Shader::Shader(const std::string& filepath)
-    : mFilePath(), mRendererID(0)
 {
     ShaderProgramSource source = ParseShader(filepath);
     mRendererID = CreateShader(source.vertexSource, source.fragmentSource);
