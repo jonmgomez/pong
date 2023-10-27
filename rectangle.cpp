@@ -10,6 +10,8 @@
 #include "vertexarray.h"
 #include "vertexbuffer.h"
 
+#include <memory>
+
 Rectangle::Rectangle(const glm::vec3& position, float width, float height) :
     mPosition {position},
     mWidth {width},
@@ -29,17 +31,13 @@ Rectangle::Rectangle(const glm::vec3& position, float width, float height) :
     layout.Push<float>(2);
     mVA.AddBuffer(mVB, layout);
 
-    mTexture = new SolidColorTexture(255, 255, 255, 255);
+    const unsigned char kColorValue = 255;
+    mTexture = std::make_unique<SolidColorTexture>(kColorValue, kColorValue, kColorValue, kColorValue);
 }
 
 Rectangle::Rectangle(float width, float height) :
     Rectangle(glm::vec3(0.0f), width, height)
 {
-}
-
-Rectangle::~Rectangle()
-{
-    delete mTexture;
 }
 
 void Rectangle::SetPosition(const glm::vec3& position)

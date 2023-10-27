@@ -79,6 +79,11 @@ SolidColorTexture::SolidColorTexture(unsigned char r, unsigned char g, unsigned 
     GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 }
 
+SolidColorTexture::SolidColorTexture()
+{
+}
+
+
 SolidColorTexture::~SolidColorTexture()
 {
     GLCall(glDeleteTextures(1, &mRendererID));

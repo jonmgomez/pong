@@ -28,5 +28,6 @@ class SolidColorTexture : public Texture
 {
 public:
     SolidColorTexture(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+    SolidColorTexture();
     ~SolidColorTexture();
 };

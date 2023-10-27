@@ -1,6 +1,7 @@
 #include "main.h"
 
 #include <iostream>
+#include <memory>
 #include <string>
 
 #include <GL/glew.h>
@@ -18,7 +19,7 @@
 #include "vertexbuffer.h"
 #include "vertexbufferlayout.h"
 
-Rectangle* player = nullptr;
+std::unique_ptr<Rectangle>player = nullptr;
 bool upHeld = false;
 bool downHeld = false;
 
@@ -68,7 +69,7 @@ int main()
     Shader shader = Shader("D:\\code\\pong\\basic.shader");
     Renderer renderer;
 
-    player = new Rectangle(25.0f, 225.0f);
+    player = std::make_unique<Rectangle>(25.0f, 225.0f);
     player->mPosition = glm::vec3(-550.0f, 0.0f, 0.0f);
     const float playerSpeed = 2.5f;
 
@@ -100,8 +101,6 @@ int main()
     std::cout << "Elapsed time: " << elapsedTime << std::endl;
     std::cout << "Total frames: " << frameCount << std::endl;
     std::cout << "Avg framerate: " << frameCount / elapsedTime << std::endl;
-
-    delete player;
 
     glfwDestroyWindow(window);
     glfwTerminate();

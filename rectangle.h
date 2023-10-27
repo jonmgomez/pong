@@ -9,6 +9,8 @@
 #include "vertexarray.h"
 #include "vertexbuffer.h"
 
+#include <memory>
+
 static const unsigned int kIndicies[] = {
     0, 1, 2,
     2, 3, 0
@@ -22,12 +24,11 @@ private:
     VertexBuffer mVB { 4 * 4 * sizeof(float) };
     VertexArray mVA {};
     IndexBuffer mIB { kIndicies, 6 };
-    Texture *mTexture { nullptr };
+    std::unique_ptr<Texture>mTexture { nullptr };
 
 public:
     Rectangle(const glm::vec3& position, float width, float height);
     Rectangle(float width, float height);
-    ~Rectangle();
 
     void SetPosition(const glm::vec3& position);
     void Draw(const Renderer& renderer, Shader& shader) const;
