@@ -26,6 +26,10 @@ private:
 public:
     Shader(const std::string& filePath);
     ~Shader();
+    Shader(const Shader&) = delete;
+    Shader(Shader&&) = delete;
+    Shader& operator=(const Shader&) = delete;
+    Shader& operator=(Shader&&) = delete;
 
     void Bind() const;
     void Unbind() const;

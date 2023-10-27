@@ -11,6 +11,10 @@ private:
 public:
     VertexArray();
     ~VertexArray();
+    VertexArray(const VertexArray&) = delete;
+    VertexArray(VertexArray&&) = delete;
+    VertexArray& operator=(const VertexArray&) = delete;
+    VertexArray& operator=(VertexArray&&) = delete;
 
     void AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout);
     void Bind() const;
