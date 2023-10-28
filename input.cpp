@@ -17,6 +17,11 @@ void Input::KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
     (void)window;
     (void)scancode;
     (void)mods;
+    std::cout << "KeyCallback() key: " << key << ", action: " << action << std::endl;
+
+    // Ignore unrecognized keys
+    if (key < 0)
+        return;
 
     if (action == GLFW_PRESS)
         mKeys[key] = true;
