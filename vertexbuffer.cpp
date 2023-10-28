@@ -2,8 +2,7 @@
 
 #include "renderutils.h"
 
-VertexBuffer::VertexBuffer(const void* data, unsigned int size) :
-    mRendererID(0)
+VertexBuffer::VertexBuffer(const void* data, unsigned int size)
 {
     GLCall(glGenBuffers(1, &mRendererID));
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, mRendererID));
@@ -11,8 +10,7 @@ VertexBuffer::VertexBuffer(const void* data, unsigned int size) :
     mSize = size;
 }
 
-VertexBuffer::VertexBuffer(unsigned int size) :
-    mRendererID(0)
+VertexBuffer::VertexBuffer(unsigned int size)
 {
     GLCall(glGenBuffers(1, &mRendererID));
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, mRendererID));

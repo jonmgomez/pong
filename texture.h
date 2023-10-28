@@ -5,7 +5,7 @@
 class Texture
 {
 private:
-    std::string mFilePath;
+    std::string mFilePath {""};
     unsigned char* mLocalBuffer { nullptr };
 protected:
     int mWidth {0};
@@ -13,8 +13,8 @@ protected:
     int mBPP {0};
     unsigned int mRendererID {0};
 public:
-    Texture();
-    Texture(const std::string& filePath);
+    Texture() = default;
+    explicit Texture(const std::string& filePath);
     ~Texture();
     Texture(const Texture&) = delete;
     Texture(Texture&&) = delete;
@@ -32,6 +32,5 @@ class SolidColorTexture : public Texture
 {
 public:
     SolidColorTexture(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-    SolidColorTexture();
     ~SolidColorTexture();
 };

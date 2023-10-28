@@ -14,9 +14,9 @@ struct ShaderProgramSource
 class Shader
 {
 private:
-    std::string mFilePath;
+    std::string mFilePath {""};
     unsigned int mRendererID {0};
-    std::unordered_map<std::string, int> mUniformLocationCache;
+    std::unordered_map<std::string, int> mUniformLocationCache {};
 
     ShaderProgramSource ParseShader(const std::string& filePath);
     unsigned int CompileShader(unsigned int type, const std::string& source);
@@ -24,7 +24,7 @@ private:
     unsigned int GetUniformLocation(const std::string& name);
 
 public:
-    Shader(const std::string& filePath);
+    explicit Shader(const std::string& filePath);
     ~Shader();
     Shader(const Shader&) = delete;
     Shader(Shader&&) = delete;
