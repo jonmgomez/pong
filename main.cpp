@@ -85,7 +85,7 @@ int main()
         if (downHeld)
             player->mPosition.y -= playerSpeed;
 
-        player->Draw();
+        player->DrawObject();
 
         frameCount++;
 
