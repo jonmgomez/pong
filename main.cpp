@@ -1,6 +1,7 @@
 #include "main.h"
 
 #include "indexbuffer.h"
+#include "player.h"
 #include "rectangle.h"
 #include "renderer.h"
 #include "renderutils.h"
@@ -18,7 +19,7 @@
 #include <iostream>
 #include <string>
 
-std::unique_ptr<Rectangle>player = nullptr;
+//std::unique_ptr<Rectangle>player = nullptr;
 bool upHeld = false;
 bool downHeld = false;
 
@@ -67,9 +68,9 @@ int main()
 
     Renderer::SetShader("D:\\code\\pong\\basic.shader");
 
-    player = std::make_unique<Rectangle>(25.0f, 225.0f);
-    player->mPosition = glm::vec3(-550.0f, 0.0f, 0.0f);
-    const float playerSpeed = 2.5f;
+    Player player;
+    player.OnStart();
+    //const float playerSpeed = 2.5f;
 
     // mark time
     double lastTime = glfwGetTime();
@@ -79,13 +80,16 @@ int main()
     {
         Renderer::Clear();
 
-        if (upHeld)
-            player->mPosition.y += playerSpeed;
+        player.OnUpdate();
+        player.Render();
 
-        if (downHeld)
-            player->mPosition.y -= playerSpeed;
+        // if (upHeld)
+        //     player->mPosition.y += playerSpeed;
 
-        player->DrawObject();
+        // if (downHeld)
+        //     player->mPosition.y -= playerSpeed;
+
+        // player->DrawObject();
 
         frameCount++;
 

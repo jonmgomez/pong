@@ -7,8 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED 17)
 
 set(SOURCES
     main.cpp
+    gameobject.cpp
     indexbuffer.cpp
     mesh.cpp
+    player.cpp
     rectangle.cpp
     renderer.cpp
     renderutils.cpp
