@@ -11,6 +11,7 @@ set(SOURCES
     indexbuffer.cpp
     input.cpp
     mesh.cpp
+    opponent.cpp
     player.cpp
     pong.cpp
     rectangle.cpp

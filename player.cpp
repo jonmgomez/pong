@@ -15,10 +15,8 @@ void Player::OnStart()
 
 void Player::OnUpdate()
 {
-    std::cout << "Player::OnUpdate()" << std::endl;
     if (Input::IsKeyPressed(GLFW_KEY_W))
     {
-        std::cout << "W is pressed" << std::endl;
         mPosition.y += mSpeed;
     }
     else if (Input::IsKeyPressed(GLFW_KEY_S))
