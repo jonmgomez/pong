@@ -12,6 +12,7 @@ set(SOURCES
     input.cpp
     mesh.cpp
     player.cpp
+    pong.cpp
     rectangle.cpp
     renderer.cpp
     renderutils.cpp

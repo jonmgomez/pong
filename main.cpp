@@ -3,6 +3,7 @@
 #include "indexbuffer.h"
 #include "input.h"
 #include "player.h"
+#include "pong.h"
 #include "rectangle.h"
 #include "renderer.h"
 #include "renderutils.h"
@@ -65,20 +66,18 @@ int main()
 
     Renderer::SetShader("D:\\code\\pong\\basic.shader");
 
-    Player player;
-    player.OnStart();
-    //const float playerSpeed = 2.5f;
-
     // mark time
     double lastTime = glfwGetTime();
     int frameCount = 0;
+
+    Pong pong;
+    pong.PongInit();
 
     while (!glfwWindowShouldClose(window))
     {
         Renderer::Clear();
 
-        player.OnUpdate();
-        player.Render();
+        pong.PongGameLoop();
 
         frameCount++;
 
