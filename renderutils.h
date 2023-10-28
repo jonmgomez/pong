@@ -7,7 +7,7 @@
 #ifdef DEBUG
     #define ASSERT(x) if (!(x)) \
     { \
-        std::cout << "Assertion failed: " << #x << std::endl; \
+        std::cout << "Assertion failed: (" << #x << "), File: " __FILE__  ", Line: " << __LINE__ << std::endl; \
         __debugbreak(); \
     }
 #else
