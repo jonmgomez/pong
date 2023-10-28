@@ -40,25 +40,7 @@ Rectangle::Rectangle(float width, float height) :
 {
 }
 
-void Rectangle::SetPosition(const glm::vec3& position)
+void Rectangle::Draw() const
 {
-    mPosition = position;
-}
-
-void Rectangle::Draw(const Renderer& renderer, Shader& shader) const
-{
-    shader.Bind();
-
-    glm::mat4 proj = glm::ortho(-640.0f, 640.0f, -480.0f, 480.0f, -1.0f, 1.0f);
-    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f));
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), mPosition);
-
-    glm::mat4 mvp = proj * view * model;
-
-    mTexture->Bind(0);
-    shader.SetUniform1i("u_Texture", 0);
-    shader.SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
-    shader.SetUniformMat4f("u_MVP", mvp);
-
-    renderer.Draw(mVA, mIB, shader);
+    Renderer::Draw(mVA, mIB, mPosition, *mTexture);
 }

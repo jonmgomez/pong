@@ -31,8 +31,7 @@ public:
     Rectangle(const glm::vec3& position, float width, float height);
     Rectangle(float width, float height);
 
-    void SetPosition(const glm::vec3& position);
-    void Draw(const Renderer& renderer, Shader& shader) const;
+    void Draw() const;
 
     glm::vec3 mPosition { glm::vec3(0.0f) };
 };

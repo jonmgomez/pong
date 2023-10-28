@@ -65,8 +65,7 @@ int main()
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &numTextureSlots);
     std::cout << "Texture Slots Available: " << numTextureSlots << std::endl;
 
-    Shader shader = Shader("D:\\code\\pong\\basic.shader");
-    Renderer renderer;
+    Renderer::SetShader("D:\\code\\pong\\basic.shader");
 
     player = std::make_unique<Rectangle>(25.0f, 225.0f);
     player->mPosition = glm::vec3(-550.0f, 0.0f, 0.0f);
@@ -78,7 +77,7 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
-        renderer.Clear();
+        Renderer::Clear();
 
         if (upHeld)
             player->mPosition.y += playerSpeed;
@@ -86,7 +85,7 @@ int main()
         if (downHeld)
             player->mPosition.y -= playerSpeed;
 
-        player->Draw(renderer, shader);
+        player->Draw();
 
         frameCount++;
 

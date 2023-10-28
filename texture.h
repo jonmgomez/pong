@@ -1,17 +1,19 @@
 #pragma once
 
-#include "renderer.h"
+#include <string>
 
 class Texture
 {
 private:
     std::string mFilePath {""};
     unsigned char* mLocalBuffer { nullptr };
+
 protected:
     int mWidth {0};
     int mHeight {0};
     int mBPP {0};
     unsigned int mRendererID {0};
+
 public:
     Texture() = default;
     explicit Texture(const std::string& filePath);
