@@ -9,9 +9,10 @@
 
 #include <glm/glm.hpp>
 
+#include <array>
 #include <memory>
 
-static const unsigned int kIndicies[] = {
+static const std::array<unsigned int, 6> kIndicies[] = {
     0, 1, 2,
     2, 3, 0
 };
@@ -23,7 +24,7 @@ private:
     float mHeight { 0.0f };
     VertexBuffer mVB { 4 * 4 * sizeof(float) };
     VertexArray mVA {};
-    IndexBuffer mIB { kIndicies, 6 };
+    IndexBuffer mIB { kIndicies->data(), static_cast<unsigned int>(kIndicies->size()) };
     std::unique_ptr<Texture>mTexture { nullptr };
 
 public:
