@@ -2,8 +2,14 @@
 
 #include <GL/glew.h>
 
+#include <iostream>
+
 #ifdef DEBUG
-    #define ASSERT(x) if (!(x)) __debugbreak();
+    #define ASSERT(x) if (!(x)) \
+    { \
+        std::cout << "Assertion failed: " << #x << std::endl; \
+        __debugbreak(); \
+    }
 #else
     #define ASSERT(cond) \
         do { (void)sizeof(cond); } while(0)
