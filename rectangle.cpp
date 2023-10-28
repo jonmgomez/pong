@@ -17,8 +17,7 @@ static const std::array<unsigned int, 6> kIndicies[] = {
     2, 3, 0
 };
 
-Rectangle::Rectangle(const glm::vec3& position, float width, float height) :
-    mPosition {position},
+Rectangle::Rectangle(float width, float height) :
     mWidth {width},
     mHeight {height}
 {
@@ -39,15 +38,4 @@ Rectangle::Rectangle(const glm::vec3& position, float width, float height) :
 
     const unsigned char kColorValue = 255;
     mTexture = std::make_unique<SolidColorTexture>(kColorValue, kColorValue, kColorValue, kColorValue);
-}
-
-Rectangle::Rectangle(float width, float height) :
-    Rectangle(glm::vec3(0.0f), width, height)
-{
-}
-
-// Temporary function to draw the rectangle using position to Mesh::Draw()
-void Rectangle::DrawObject() const
-{
-    Draw(mPosition);
 }

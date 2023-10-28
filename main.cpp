@@ -1,6 +1,7 @@
 #include "main.h"
 
 #include "indexbuffer.h"
+#include "input.h"
 #include "player.h"
 #include "rectangle.h"
 #include "renderer.h"
@@ -18,10 +19,6 @@
 
 #include <iostream>
 #include <string>
-
-//std::unique_ptr<Rectangle>player = nullptr;
-bool upHeld = false;
-bool downHeld = false;
 
 int main()
 {
@@ -46,7 +43,7 @@ int main()
     }
 
     glfwMakeContextCurrent(window);
-    glfwSetKeyCallback(window, KeyCallback);
+    glfwSetKeyCallback(window, Input::KeyCallback);
 
     // Uncomment this if you would like to blow up the GPU :D
     // glfwSwapInterval(0);
@@ -83,14 +80,6 @@ int main()
         player.OnUpdate();
         player.Render();
 
-        // if (upHeld)
-        //     player->mPosition.y += playerSpeed;
-
-        // if (downHeld)
-        //     player->mPosition.y -= playerSpeed;
-
-        // player->DrawObject();
-
         frameCount++;
 
         glfwSwapBuffers(window);
@@ -108,39 +97,4 @@ int main()
     glfwTerminate();
 
     return 0;
-}
-
-void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    std::cout << "Key: " << key << ", Scancode: " << scancode << ", Action: " << action << ", Mods: " << mods << std::endl;
-    if (key == GLFW_KEY_ESCAPE)
-    {
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-    }
-
-    if (key == GLFW_KEY_W)
-    {
-        if (action == GLFW_PRESS)
-        {
-            upHeld = true;
-            std::cout << "W pressed" << std::endl;
-        }
-        else if (action == GLFW_RELEASE)
-        {
-            upHeld = false;
-        }
-    }
-
-    if (key == GLFW_KEY_S)
-    {
-        if (action == GLFW_PRESS)
-        {
-            downHeld = true;
-            std::cout << "S pressed" << std::endl;
-        }
-        else if (action == GLFW_RELEASE)
-        {
-            downHeld = false;
-        }
-    }
 }

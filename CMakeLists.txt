@@ -9,6 +9,7 @@ set(SOURCES
     main.cpp
     gameobject.cpp
     indexbuffer.cpp
+    input.cpp
     mesh.cpp
     player.cpp
     rectangle.cpp

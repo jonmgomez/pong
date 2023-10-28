@@ -15,10 +15,5 @@ private:
     float mHeight { 0.0f };
 
 public:
-    Rectangle(const glm::vec3& position, float width, float height);
     Rectangle(float width, float height);
-
-    void DrawObject() const;
-
-    glm::vec3 mPosition { glm::vec3(0.0f) };
 };
