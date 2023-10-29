@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED 17)
 
 set(SOURCES
     main.cpp
+    ball.cpp
     circle.cpp
     gameobject.cpp
     indexbuffer.cpp

@@ -15,8 +15,8 @@ public:
     GameObject() = default;
     virtual ~GameObject() = default;
 
-    virtual void OnStart() = 0;
-    virtual void OnUpdate() = 0;
+    virtual void OnStart();
+    virtual void OnUpdate();
     void Render();
 
     glm::vec3 mPosition { glm::vec3(0.0f) };
