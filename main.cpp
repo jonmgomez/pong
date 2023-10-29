@@ -1,22 +1,13 @@
 #include "main.h"
 
-#include "indexbuffer.h"
 #include "input.h"
-#include "player.h"
 #include "pong.h"
-#include "rectangle.h"
 #include "renderer.h"
 #include "renderutils.h"
-#include "shader.h"
-#include "texture.h"
-#include "vertexarray.h"
-#include "vertexbuffer.h"
-#include "vertexbufferlayout.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 #include <iostream>
 #include <string>

@@ -21,7 +21,6 @@ void Pong::PongInit()
 
 void Pong::PongGameLoop()
 {
-    // loop through mGameObjects and call OnUpdate() on each
     for (auto& gameObject : mGameObjects)
     {
         gameObject->OnUpdate();
