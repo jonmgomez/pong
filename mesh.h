@@ -13,8 +13,8 @@ class Mesh
 {
 protected:
     VertexArray mVA {};
-    std::unique_ptr<VertexBuffer>mVB { nullptr };
-    std::unique_ptr<IndexBuffer>mIB { nullptr };
+    VertexBuffer mVB {};
+    IndexBuffer mIB {};
     std::unique_ptr<Texture>mTexture { nullptr };
 
 public:

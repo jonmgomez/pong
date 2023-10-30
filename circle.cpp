@@ -13,9 +13,8 @@ Circle::Circle(float radius, int sides) :
     mRadius {radius},
     mSides {sides}
 {
-
     const float circumference = 2.0f * mRadius * static_cast<float>(M_PI);
-    const float arcLength = circumference / sides;
+    const float arcLength = circumference / mSides;
     const float angle = arcLength / mRadius;
 
     float currentAngle = 0.0f;
@@ -23,7 +22,7 @@ Circle::Circle(float radius, int sides) :
     float normalizedY = 0.0f;
 
     std::vector<float> positions = {};
-    positions.reserve(sides * 4);
+    positions.reserve(mSides * 4);
     for (int i = 0; i < mSides; i++)
     {
         positions.push_back(normalizedX * mRadius);
@@ -37,22 +36,22 @@ Circle::Circle(float radius, int sides) :
     }
 
     std::vector<unsigned int> indicies = {};
-    indicies.reserve(sides * 3);
+    indicies.reserve(mSides * 3);
 
-    for (int i = 0; i < sides - 2; i++)
+    for (int i = 0; i < mSides - 2; i++)
     {
         indicies.push_back(0);
         indicies.push_back(i + 1);
         indicies.push_back(i + 2);
     }
 
-    mVB = std::make_unique<VertexBuffer>(positions.data(), static_cast<unsigned int>(positions.size() * sizeof(float)));
-    mIB = std::make_unique<IndexBuffer>(indicies.data(), static_cast<unsigned int>(indicies.size()));
+    mVB = VertexBuffer(positions.data(), static_cast<unsigned int>(positions.size() * sizeof(float)));
+    mIB = IndexBuffer(indicies.data(), static_cast<unsigned int>(indicies.size()));
 
     VertexBufferLayout layout;
     layout.Push<float>(2);
     layout.Push<float>(2);
-    mVA.AddBuffer(*mVB, layout);
+    mVA.AddBuffer(mVB, layout);
 
     const unsigned char kColorValue = 255;
     mTexture = std::make_unique<SolidColorTexture>(kColorValue, kColorValue, kColorValue, kColorValue);

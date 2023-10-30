@@ -4,19 +4,16 @@
 
 #include <iostream>
 
-std::array<bool, 512> Input::mKeys{ false };
+// All keys are intalized to false, for not pressed
+std::array<bool, 512> Input::mKeys{};
 
 bool Input::IsKeyPressed(unsigned int keycode)
 {
     return mKeys[keycode];
 }
 
-void Input::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+void Input::KeyCallback(GLFWwindow* /*window*/, int key, int /*scancode*/, int action, int /*mods*/)
 {
-    // Suppress unused parameter warnings
-    (void)window;
-    (void)scancode;
-    (void)mods;
     std::cout << "KeyCallback() key: " << key << ", action: " << action << std::endl;
 
     // Ignore unrecognized keys

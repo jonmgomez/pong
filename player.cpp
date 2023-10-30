@@ -6,11 +6,16 @@
 
 #include <glm/glm.hpp>
 
+static constexpr float PLAYER_WIDTH = 25.0f;
+static constexpr float PLAYER_HEIGHT = 225.0f;
+static constexpr float PLAYER_SPEED = 2.5f;
+static constexpr glm::vec3 PLAYER_POSITION(-550.0f, 0.0f, 0.0f);
+
 void Player::OnStart()
 {
-    mMesh = std::make_unique<Rectangle>(25.0f, 225.0f);
-    mPosition = glm::vec3(-550.0f, 0.0f, 0.0f);
-    mSpeed = 2.5f;
+    mMesh = std::make_unique<Rectangle>(PLAYER_WIDTH, PLAYER_HEIGHT);
+    mPosition = PLAYER_POSITION;
+    mSpeed = PLAYER_SPEED;
 }
 
 void Player::OnUpdate()

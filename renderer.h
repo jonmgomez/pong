@@ -11,18 +11,17 @@
 class Renderer
 {
 private:
-    static std::unique_ptr<Renderer>sInstance;
+    Renderer() = default;
+    Renderer(const Renderer&) = delete;
+    Renderer& operator=(const Renderer&) = delete;
+    Renderer(Renderer&&) = delete;
+    Renderer& operator=(Renderer&&) = delete;
+    ~Renderer() = default;
 
-protected:
     std::unique_ptr<Shader>mShader { nullptr };
 
 public:
-    Renderer() = default;
-    Renderer(const Renderer&) = delete;
-    Renderer(Renderer&&) = delete;
-    Renderer& operator=(const Renderer&) = delete;
-    Renderer& operator=(Renderer&&) = delete;
-    ~Renderer() = default;
+    static Renderer& GetInstance();
 
     static void SetShader(const std::string& filePath);
     static void Draw(const VertexArray& va, const IndexBuffer& ib, const glm::vec3& position, const Texture& texture);

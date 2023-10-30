@@ -18,6 +18,42 @@ VertexBuffer::VertexBuffer(unsigned int size)
     mSize = size;
 }
 
+VertexBuffer::VertexBuffer(const VertexBuffer& other)
+{
+    mRendererID = other.mRendererID;
+    mSize = other.mSize;
+}
+
+VertexBuffer& VertexBuffer::operator=(const VertexBuffer& other)
+{
+    if (this != &other)
+    {
+        mRendererID = other.mRendererID;
+        mSize = other.mSize;
+    }
+    return *this;
+}
+
+VertexBuffer::VertexBuffer(VertexBuffer&& other)
+{
+    mRendererID = other.mRendererID;
+    mSize = other.mSize;
+    other.mRendererID = 0;
+    other.mSize = 0;
+}
+
+VertexBuffer& VertexBuffer::operator=(VertexBuffer&& other)
+{
+    if (this != &other)
+    {
+        mRendererID = other.mRendererID;
+        mSize = other.mSize;
+        other.mRendererID = 0;
+        other.mSize = 0;
+    }
+    return *this;
+}
+
 VertexBuffer::~VertexBuffer()
 {
     GLCall(glDeleteBuffers(1, &mRendererID));

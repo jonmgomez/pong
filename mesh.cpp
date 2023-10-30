@@ -10,8 +10,8 @@
 
 void Mesh::Draw(const glm::vec3& position) const
 {
-    // These objects should always be instantiated by a derived class
-    ASSERT(mVB != nullptr && mIB != nullptr && mTexture != nullptr);
+    // This object should always be instantiated by a derived class
+    ASSERT(mTexture != nullptr);
 
-    Renderer::Draw(mVA, *mIB, position, *mTexture);
+    Renderer::Draw(mVA, mIB, position, *mTexture);
 }
