@@ -4,8 +4,7 @@
 
 #include <vector>
 
-VertexArray::VertexArray() :
-    mRendererID(0)
+VertexArray::VertexArray()
 {
     GLCall(glGenVertexArrays(1, &mRendererID));
 }
@@ -28,9 +27,10 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 
         GLCall(glEnableVertexAttribArray(i));
 
-        GLCall(glVertexAttribPointer(i,
-            element.mCount, element.mType, element.mNormalized,
-            layout.GetStride(), reinterpret_cast<const void *>(static_cast<uintptr_t>(offset))));
+        // Needed conversion incantation to suppress data loss warning
+        auto offsetPointer = reinterpret_cast<const void *>(static_cast<uintptr_t>(offset));
+        GLCall(glVertexAttribPointer(i, element.mCount, element.mType,
+            element.mNormalized, layout.GetStride(), offsetPointer));
 
         offset += element.mCount * VertexBufferElement::GetSizeOfType(element.mType);
     }

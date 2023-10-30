@@ -6,12 +6,47 @@
 static_assert(sizeof(unsigned int) == sizeof(GLuint));
 
 IndexBuffer::IndexBuffer(const unsigned int* data, unsigned int count)
-    : mCount(0)
 {
     GLCall(glGenBuffers(1, &mRendererID));
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mRendererID));
     GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_STATIC_DRAW));
     mCount = count;
+}
+
+IndexBuffer::IndexBuffer(const IndexBuffer& other)
+{
+    mRendererID = other.mRendererID;
+    mCount = other.mCount;
+}
+
+IndexBuffer& IndexBuffer::operator=(const IndexBuffer& other)
+{
+    if (this != &other)
+    {
+        mRendererID = other.mRendererID;
+        mCount = other.mCount;
+    }
+    return *this;
+}
+
+IndexBuffer::IndexBuffer(IndexBuffer&& other)
+{
+    mRendererID = other.mRendererID;
+    mCount = other.mCount;
+    other.mRendererID = 0;
+    other.mCount = 0;
+}
+
+IndexBuffer& IndexBuffer::operator=(IndexBuffer&& other)
+{
+    if (this != &other)
+    {
+        mRendererID = other.mRendererID;
+        mCount = other.mCount;
+        other.mRendererID = 0;
+        other.mCount = 0;
+    }
+    return *this;
 }
 
 IndexBuffer::~IndexBuffer()

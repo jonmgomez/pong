@@ -7,7 +7,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED 17)
 
 set(SOURCES
     main.cpp
+    ball.cpp
+    circle.cpp
+    gameobject.cpp
     indexbuffer.cpp
+    input.cpp
+    mesh.cpp
+    opponent.cpp
+    player.cpp
+    pong.cpp
     rectangle.cpp
     renderer.cpp
     renderutils.cpp

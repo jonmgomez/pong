@@ -10,13 +10,7 @@
 
 #include <iostream>
 
-
-Texture::Texture()
-{
-}
-
 Texture::Texture(const std::string& filePath)
-    : mFilePath(filePath)
 {
     stbi_set_flip_vertically_on_load(1);
     mLocalBuffer = stbi_load(filePath.c_str(), &mWidth, &mHeight, &mBPP, 4);
@@ -80,11 +74,6 @@ SolidColorTexture::SolidColorTexture(unsigned char r, unsigned char g, unsigned 
     GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
     GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 }
-
-SolidColorTexture::SolidColorTexture()
-{
-}
-
 
 SolidColorTexture::~SolidColorTexture()
 {
