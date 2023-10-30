@@ -9,6 +9,9 @@
 #include <iostream>
 #include <numeric>
 
+namespace pong
+{
+
 Circle::Circle(float radius, int sides) :
     mRadius {radius},
     mSides {sides}
@@ -56,3 +59,5 @@ Circle::Circle(float radius, int sides) :
     const unsigned char kColorValue = 255;
     mTexture = std::make_unique<SolidColorTexture>(kColorValue, kColorValue, kColorValue, kColorValue);
 }
+
+} // namespace pong

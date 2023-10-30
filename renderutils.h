@@ -4,6 +4,9 @@
 
 #include <iostream>
 
+namespace pong
+{
+
 #ifdef DEBUG
     #define ASSERT(x) if (!(x)) \
     { \
@@ -25,3 +28,5 @@
 
 void GLClearError();
 bool GLLogCall(const char *function, const char *file, int line);
+
+} // namespace pong

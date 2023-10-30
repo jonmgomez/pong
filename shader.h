@@ -5,6 +5,9 @@
 #include <string>
 #include <unordered_map>
 
+namespace pong
+{
+
 struct ShaderProgramSource
 {
     std::string vertexSource;
@@ -41,3 +44,5 @@ public:
 
     void SetUniformMat4f(const std::string& name, const glm::mat4& matrix);
 };
+
+} // namespace pong

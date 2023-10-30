@@ -10,6 +10,9 @@
 
 #include <iostream>
 
+namespace pong
+{
+
 Texture::Texture(const std::string& filePath)
 {
     stbi_set_flip_vertically_on_load(1);
@@ -79,3 +82,5 @@ SolidColorTexture::~SolidColorTexture()
 {
     GLCall(glDeleteTextures(1, &mRendererID));
 }
+
+} // namespace pong

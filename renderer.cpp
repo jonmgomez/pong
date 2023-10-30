@@ -10,6 +10,9 @@
 
 #include <iostream>
 
+namespace pong
+{
+
 Renderer& Renderer::GetInstance()
 {
     static Renderer sInstance;
@@ -45,3 +48,5 @@ void Renderer::Clear()
 {
     GLCall(glClear(GL_COLOR_BUFFER_BIT));
 }
+
+} // namespace pong

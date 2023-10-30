@@ -2,6 +2,9 @@
 
 #include "gameobject.h"
 
+namespace pong
+{
+
 class Player : public GameObject
 {
 private:
@@ -11,3 +14,5 @@ public:
     void OnStart() override;
     void OnUpdate() override;
 };
+
+} // namespace pong

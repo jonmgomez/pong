@@ -4,6 +4,9 @@
 
 #include <vector>
 
+namespace pong
+{
+
 struct VertexBufferElement
 {
     unsigned int mType {0};
@@ -34,3 +37,5 @@ public:
     const std::vector<VertexBufferElement>& GetElements() const;
     unsigned int GetStride() const;
 };
+
+} // namespace pong

@@ -2,6 +2,9 @@
 
 #include <string>
 
+namespace pong
+{
+
 class Texture
 {
 private:
@@ -36,3 +39,5 @@ public:
     SolidColorTexture(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
     ~SolidColorTexture();
 };
+
+} // namespace pong

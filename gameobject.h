@@ -6,6 +6,9 @@
 
 #include <memory>
 
+namespace pong
+{
+
 class GameObject
 {
 protected:
@@ -21,3 +24,5 @@ public:
 
     glm::vec3 mPosition { glm::vec3(0.0f) };
 };
+
+} // namespace pong

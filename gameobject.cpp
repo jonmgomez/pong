@@ -2,6 +2,9 @@
 
 #include "renderutils.h"
 
+namespace pong
+{
+
 void GameObject::Render()
 {
     ASSERT(mMesh != nullptr);
@@ -15,3 +18,5 @@ void GameObject::OnStart()
 void GameObject::OnUpdate()
 {
 }
+
+} // namespace pong

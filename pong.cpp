@@ -4,6 +4,9 @@
 #include "opponent.h"
 #include "player.h"
 
+namespace pong
+{
+
 void Pong::PongInit()
 {
     auto player = std::make_unique<Player>();
@@ -27,3 +30,5 @@ void Pong::PongGameLoop()
         gameObject->Render();
     }
 }
+
+} // namespace pong

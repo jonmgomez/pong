@@ -2,6 +2,9 @@
 
 #include "rectangle.h"
 
+namespace pong
+{
+
 static constexpr float BALL_WIDTH = 25.0f;
 static constexpr float BALL_SPEED = 3.5f;
 
@@ -16,3 +19,5 @@ void Ball::OnUpdate()
     mPosition.x += mSpeed;
     mPosition.y += mSpeed;
 }
+
+} // namespace pong

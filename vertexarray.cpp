@@ -4,6 +4,9 @@
 
 #include <vector>
 
+namespace pong
+{
+
 VertexArray::VertexArray()
 {
     GLCall(glGenVertexArrays(1, &mRendererID));
@@ -45,3 +48,5 @@ void VertexArray::Unbind() const
 {
     GLCall(glBindVertexArray(0));
 }
+
+} // namespace pong

@@ -4,6 +4,9 @@
 #include "vertexbuffer.h"
 #include "vertexbufferlayout.h"
 
+namespace pong
+{
+
 class VertexArray
 {
 private:
@@ -20,3 +23,5 @@ public:
     void Bind() const;
     void Unbind() const;
 };
+
+} // namespace pong

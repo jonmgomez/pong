@@ -12,6 +12,8 @@
 #include <iostream>
 #include <string>
 
+using namespace pong;
+
 GLFWwindow* SetupGLFW()
 {
     if (!glfwInit())
