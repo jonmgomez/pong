@@ -19,6 +19,12 @@ Renderer& Renderer::GetInstance()
     return sInstance;
 }
 
+void Renderer::Cleanup()
+{
+    GetInstance().mShader.reset();
+    GetInstance().mShader = nullptr;
+}
+
 void Renderer::SetShader(const std::string& filePath)
 {
     GetInstance().mShader = std::make_unique<Shader>(filePath);

@@ -58,6 +58,36 @@ GLFWwindow* SetupGLFW()
     return window;
 }
 
+void PlayPong(GLFWwindow* window)
+{
+    Pong pong;
+    pong.PongInit();
+
+    double lastTime = glfwGetTime();
+    int frameCount = 0;
+
+    while (!glfwWindowShouldClose(window))
+    {
+        Renderer::Clear();
+
+        pong.PongGameLoop();
+
+        frameCount++;
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    double currentTime = glfwGetTime();
+    double elapsedTime = currentTime - lastTime;
+
+    std::cout << "Elapsed time: " << elapsedTime << std::endl;
+    std::cout << "Total frames: " << frameCount << std::endl;
+    std::cout << "Avg framerate: " << frameCount / elapsedTime << std::endl;
+
+    Renderer::Cleanup();
+}
+
 int main()
 {
     std::cout << "Hello World!" << std::endl;
@@ -91,31 +121,7 @@ int main()
 
     Renderer::SetShader("D:\\code\\pong\\basic.shader");
 
-    // mark time
-    double lastTime = glfwGetTime();
-    int frameCount = 0;
-
-    Pong pong;
-    pong.PongInit();
-
-    while (!glfwWindowShouldClose(window))
-    {
-        Renderer::Clear();
-
-        pong.PongGameLoop();
-
-        frameCount++;
-
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-
-    double currentTime = glfwGetTime();
-    double elapsedTime = currentTime - lastTime;
-
-    std::cout << "Elapsed time: " << elapsedTime << std::endl;
-    std::cout << "Total frames: " << frameCount << std::endl;
-    std::cout << "Avg framerate: " << frameCount / elapsedTime << std::endl;
+    PlayPong(window);
 
     glfwDestroyWindow(window);
     glfwTerminate();
