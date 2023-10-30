@@ -8,13 +8,51 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <nlohmann/json.hpp>
 
+#include <fstream>
 #include <iostream>
 #include <string>
 
-int main()
+nlohmann::json OpenJsonFile(const std::string& filePath)
+{
+    std::ifstream jsonFile(filePath);
+    if (!jsonFile.is_open())
+    {
+        std::cerr << "Failed to open JSON file: " << filePath << std::endl;
+        return nullptr;
+    }
+
+    nlohmann::json jsonData;
+
+    try
+    {
+        jsonFile >> jsonData;
+    }
+    catch (const nlohmann::json::parse_error& e)
+    {
+        std::cerr << "JSON parsing error: " << e.what() << std::endl;
+        return nullptr;
+    }
+
+    return jsonData;
+}
+
+int main(int argc, char* argv[])
 {
     std::cout << "Hello World!" << std::endl;
+
+    if (argc != 2)
+    {
+        std::cerr << "Usage: " << argv[0] << " <json_file_path>" << std::endl;
+        return -1;
+    }
+
+    nlohmann::json jsonData = OpenJsonFile(argv[1]);
+    if (jsonData == nullptr)
+    {
+        return -1;
+    }
 
     if (!glfwInit())
     {
@@ -55,7 +93,21 @@ int main()
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &numTextureSlots);
     std::cout << "Texture Slots Available: " << numTextureSlots << std::endl;
 
-    Renderer::SetShader("D:\\code\\pong\\basic.shader");
+    if (jsonData.find("shader") == jsonData.end())
+    {
+        std::cerr << "Config file does not contain \"shader\" key." << std::endl;
+        return -1;
+    }
+
+    std::string shaderPath = jsonData["shader"];
+    std::ifstream shaderFile(shaderPath);
+    if (shaderFile.fail())
+    {
+        std::cerr << "Failed to open shader file: " << shaderPath << std::endl;
+        return -1;
+    }
+
+    Renderer::SetShader(shaderPath);
 
     // mark time
     double lastTime = glfwGetTime();
