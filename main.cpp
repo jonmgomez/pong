@@ -14,6 +14,8 @@
 #include <iostream>
 #include <string>
 
+using namespace pong;
+
 nlohmann::json OpenJsonFile(const std::string& filePath)
 {
     std::ifstream jsonFile(filePath);

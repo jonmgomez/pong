@@ -8,6 +8,9 @@
 
 #include <memory>
 
+namespace pong
+{
+
 class Renderer
 {
 private:
@@ -27,3 +30,5 @@ public:
     static void Draw(const VertexArray& va, const IndexBuffer& ib, const glm::vec3& position, const Texture& texture);
     static void Clear();
 };
+
+} // namespace pong

@@ -4,6 +4,9 @@
 
 #include <glm/glm.hpp>
 
+namespace pong
+{
+
 static constexpr float OPPONENT_WIDTH = 25.0f;
 static constexpr float OPPONENT_HEIGHT = 225.0f;
 static constexpr float OPPONENT_SPEED = 2.5f;
@@ -41,3 +44,5 @@ void Opponent::OnUpdate()
         movingUp = true;
     }
 }
+
+} // namespace pong

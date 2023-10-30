@@ -8,6 +8,9 @@
 
 #include <glm/glm.hpp>
 
+namespace pong
+{
+
 void Mesh::Draw(const glm::vec3& position) const
 {
     // This object should always be instantiated by a derived class
@@ -15,3 +18,5 @@ void Mesh::Draw(const glm::vec3& position) const
 
     Renderer::Draw(mVA, mIB, position, *mTexture);
 }
+
+} // namespace pong

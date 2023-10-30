@@ -4,6 +4,9 @@
 
 #include <vector>
 
+namespace pong
+{
+
 class Pong
 {
 private:
@@ -13,3 +16,5 @@ public:
     void PongInit();
     void PongGameLoop();
 };
+
+} // namespace pong

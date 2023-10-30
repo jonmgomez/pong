@@ -2,6 +2,9 @@
 
 #include "renderutils.h"
 
+namespace pong
+{
+
 // Ensure unsigned int is the same as a GLuint
 static_assert(sizeof(unsigned int) == sizeof(GLuint));
 
@@ -68,3 +71,5 @@ unsigned int IndexBuffer::GetCount() const
 {
     return mCount;
 }
+
+} // namespace pong

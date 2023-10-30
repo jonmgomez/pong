@@ -12,6 +12,9 @@
 
 #include <memory>
 
+namespace pong
+{
+
 static const std::array<unsigned int, 6> kIndicies = {
     0, 1, 2,
     2, 3, 0
@@ -39,3 +42,5 @@ Rectangle::Rectangle(float width, float height) :
     const unsigned char kColorValue = 255;
     mTexture = std::make_unique<SolidColorTexture>(kColorValue, kColorValue, kColorValue, kColorValue);
 }
+
+} // namespace pong

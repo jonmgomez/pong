@@ -1,5 +1,8 @@
 #pragma once
 
+namespace pong
+{
+
 class IndexBuffer
 {
 private:
@@ -19,3 +22,5 @@ public:
     void Unbind() const;
     unsigned int GetCount() const;
 };
+
+} // namespace pong
