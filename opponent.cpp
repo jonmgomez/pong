@@ -18,7 +18,7 @@ static constexpr float OPPONENT_MOVEMENT_LOWER_BOUND = -225.0f;
 void Opponent::OnStart()
 {
     mMesh = std::make_unique<Rectangle>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
-    mPosition = OPPONENT_POSITION;
+    SetPosition(OPPONENT_POSITION);
     mSpeed = OPPONENT_SPEED;
 }
 
@@ -28,18 +28,18 @@ void Opponent::OnUpdate()
 {
     if (movingUp)
     {
-        mPosition.y += mSpeed;
+        SetPosition(GetPosition() + glm::vec3(0.0f, mSpeed, 0.0f));
     }
     else
     {
-        mPosition.y -= mSpeed;
+        SetPosition(GetPosition() + glm::vec3(0.0f, -mSpeed, 0.0f));
     }
 
-    if (mPosition.y >= OPPONENT_MOVEMENT_UPPER_BOUND)
+    if (GetPosition().y >= OPPONENT_MOVEMENT_UPPER_BOUND)
     {
         movingUp = false;
     }
-    else if (mPosition.y <= OPPONENT_MOVEMENT_LOWER_BOUND)
+    else if (GetPosition().y <= OPPONENT_MOVEMENT_LOWER_BOUND)
     {
         movingUp = true;
     }
