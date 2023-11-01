@@ -41,7 +41,7 @@ target_link_libraries(pong nlohmann_json)
 # I would use /Wall here but unfortunately the msvc headers trigger some pedantic warnings,
 # and I would like to keep /WX as well. Since I don't have an easy way to ignore the warnings
 # for the system libraries, just use /W4. Seems like /Wall has some weird extra warnings anyways.
-target_compile_options(pong PRIVATE /W4 /WX)
+target_compile_options(pong PRIVATE /W4 /WX /MP)
 
 target_compile_definitions(pong PRIVATE
     $<$<CONFIG:Debug>:
