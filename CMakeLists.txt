@@ -32,12 +32,15 @@ add_subdirectory(glfw-3.3.8)
 add_subdirectory(glew-2.1.0)
 add_subdirectory(glm-0.9.9.8)
 
+add_subdirectory(tps)
+
 include_directories(glfw-3.3.8/include)
 
 target_link_libraries(pong glfw)
 target_link_libraries(pong opengl32)
 target_link_libraries(pong glew)
 target_link_libraries(pong glm)
+target_link_libraries(pong nlohmann_json)
 
 # I would use /Wall here but unfortunately the msvc headers trigger some pedantic warnings,
 # and I would like to keep /WX as well. Since I don't have an easy way to ignore the warnings

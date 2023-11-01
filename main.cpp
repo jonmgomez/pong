@@ -8,11 +8,37 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <nlohmann/json.hpp>
 
+#include <fstream>
 #include <iostream>
 #include <string>
 
 using namespace pong;
+
+nlohmann::json OpenJsonFile(const std::string& filePath)
+{
+    std::ifstream jsonFile(filePath);
+    if (!jsonFile.is_open())
+    {
+        std::cerr << "Failed to open JSON file: " << filePath << std::endl;
+        return nullptr;
+    }
+
+    nlohmann::json jsonData;
+
+    try
+    {
+        jsonFile >> jsonData;
+    }
+    catch (const nlohmann::json::parse_error& e)
+    {
+        std::cerr << "JSON parsing error: " << e.what() << std::endl;
+        return nullptr;
+    }
+
+    return jsonData;
+}
 
 GLFWwindow* SetupGLFW()
 {
@@ -88,9 +114,21 @@ void PlayPong(GLFWwindow* window)
     Renderer::Cleanup();
 }
 
-int main()
+int main(int argc, char* argv[])
 {
     std::cout << "Hello World!" << std::endl;
+
+    if (argc != 2)
+    {
+        std::cerr << "Usage: " << argv[0] << " <json_file_path>" << std::endl;
+        return -1;
+    }
+
+    nlohmann::json jsonData = OpenJsonFile(argv[1]);
+    if (jsonData == nullptr)
+    {
+        return -1;
+    }
 
     GLFWwindow* window = SetupGLFW();
     if (window == nullptr)
@@ -98,28 +136,21 @@ int main()
         return -1;
     }
 
-    glfwMakeContextCurrent(window);
-    glfwSetKeyCallback(window, Input::KeyCallback);
-
-    // Uncomment this if you would like to blow up the GPU :D
-    // glfwSwapInterval(0);
-
-    if (glewInit() != GLEW_OK)
+    if (jsonData.find("shader") == jsonData.end())
     {
-        std::cout << "glewInit() failure" << std::endl;
+        std::cerr << "Config file does not contain \"shader\" key." << std::endl;
         return -1;
     }
 
-    GLCall(glEnable(GL_BLEND));
-    GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+    std::string shaderPath = jsonData["shader"];
+    std::ifstream shaderFile(shaderPath);
+    if (shaderFile.fail())
+    {
+        std::cerr << "Failed to open shader file: " << shaderPath << std::endl;
+        return -1;
+    }
 
-    std::cout << "Using OpenGL version: " << glGetString(GL_VERSION) << std::endl;
-
-    int numTextureSlots;
-    glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &numTextureSlots);
-    std::cout << "Texture Slots Available: " << numTextureSlots << std::endl;
-
-    Renderer::SetShader("D:\\code\\pong\\basic.shader");
+    Renderer::SetShader(shaderPath);
 
     PlayPong(window);
 
