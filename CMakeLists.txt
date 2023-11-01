@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
+include(FetchContent)
 
 project(pong)
 
@@ -31,7 +32,11 @@ add_executable(pong ${SOURCES})
 add_subdirectory(glfw-3.3.8)
 add_subdirectory(glew-2.1.0)
 add_subdirectory(glm-0.9.9.8)
-add_subdirectory(json-3.11.2/json-3.11.2)
+
+FetchContent_Declare(nlohmann_json
+    URL ${CMAKE_SOURCE_DIR}/json-3.11.2.zip
+)
+FetchContent_MakeAvailable(nlohmann_json)
 
 include_directories(glfw-3.3.8/include)
 
