@@ -18,6 +18,8 @@ private:
 protected:
     std::unique_ptr<Mesh>mMesh { nullptr };
     std::unique_ptr<ColliderBox>mColliderBox { nullptr };
+    std::string mTag {""};
+    std::string mName {""};
 
 public:
     GameObject() = default;
@@ -29,6 +31,8 @@ public:
 
     glm::vec3 GetPosition() const;
     void SetPosition(const glm::vec3& position);
+    std::string GetTag() const { return mTag; }
+    std::string GetName() const { return mName; }
     void UpdateColliderBoxPosition() const;
     bool CheckForCollision(GameObject& other);
 

@@ -20,6 +20,8 @@ void Player::OnStart()
     mColliderBox = std::make_unique<ColliderBox>(PLAYER_WIDTH, PLAYER_HEIGHT);
     SetPosition(PLAYER_POSITION);
     mSpeed = PLAYER_SPEED;
+    mTag = "paddle";
+    mName = "Player";
 }
 
 void Player::OnUpdate()

@@ -25,6 +25,7 @@ set(SOURCES
     vertexarray.cpp
     vertexbuffer.cpp
     vertexbufferlayout.cpp
+    wall.cpp
 )
 
 add_executable(pong ${SOURCES})

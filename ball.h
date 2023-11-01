@@ -8,7 +8,8 @@ namespace pong
 class Ball : public GameObject
 {
 private:
-    float mSpeed { 0.0f };
+    float mXSpeed { 0.0f };
+    float mYSpeed { 0.0f };
 
 public:
     void OnStart() override;

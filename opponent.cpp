@@ -18,8 +18,11 @@ static constexpr float OPPONENT_MOVEMENT_LOWER_BOUND = -225.0f;
 void Opponent::OnStart()
 {
     mMesh = std::make_unique<Rectangle>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
+    mColliderBox = std::make_unique<ColliderBox>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
     SetPosition(OPPONENT_POSITION);
     mSpeed = OPPONENT_SPEED;
+    mTag = "paddle";
+    mName = "Opponent";
 }
 
 bool movingUp = true;

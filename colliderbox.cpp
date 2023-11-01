@@ -34,16 +34,22 @@ void ColliderBox::UpdatePositionBounds(const glm::vec3& position)
     mPositionBounds[1] = mBounds[1] + position;
     mPositionBounds[2] = mBounds[2] + position;
     mPositionBounds[3] = mBounds[3] + position;
-
-    std::cout << "LL: " << GetVec3String(mPositionBounds[0]) << "\n";
-    std::cout << "LR: " << GetVec3String(mPositionBounds[1]) << "\n";
-    std::cout << "UR: " << GetVec3String(mPositionBounds[2]) << "\n";
-    std::cout << "UL: " << GetVec3String(mPositionBounds[3]) << "\n";
 }
 
 bool ColliderBox::CheckForCollision(const ColliderBox& other) const
 {
+    // std::cout << "LL: " << GetVec3String(mPositionBounds[0]);
+    // std::cout << "LR: " << GetVec3String(mPositionBounds[1]);
+    // std::cout << "UR: " << GetVec3String(mPositionBounds[2]);
+    // std::cout << "UL: " << GetVec3String(mPositionBounds[3]) << "\n";
+
     const std::array<glm::vec3, 4>otherBounds = other.mPositionBounds;
+    // std::cout << "Other: ";
+    // std::cout << "LL: " << GetVec3String(otherBounds[0]);
+    // std::cout << "LR: " << GetVec3String(otherBounds[1]);
+    // std::cout << "UR: " << GetVec3String(otherBounds[2]);
+    // std::cout << "UL: " << GetVec3String(otherBounds[3]) << "\n";
+
     for (const auto& position : otherBounds)
     {
         if (CheckPointInBounds(position))
