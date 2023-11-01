@@ -5,6 +5,9 @@
 
 #include <array>
 
+namespace pong
+{
+
 class Input
 {
 private:
@@ -13,3 +16,5 @@ public:
     static bool IsKeyPressed(unsigned int keycode);
     static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 };
+
+} // namespace pong

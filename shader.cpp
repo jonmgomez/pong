@@ -9,6 +9,9 @@
 #include <string>
 #include <sstream>
 
+namespace pong
+{
+
 Shader::Shader(const std::string& filepath)
 {
     ShaderProgramSource source = ParseShader(filepath);
@@ -140,3 +143,5 @@ void Shader::SetUniformMat4f(const std::string& name, const glm::mat4& matrix)
 {
     GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
 }
+
+} // namespace pong

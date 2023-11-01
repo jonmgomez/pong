@@ -2,6 +2,9 @@
 
 #include "renderutils.h"
 
+namespace pong
+{
+
 VertexBuffer::VertexBuffer(const void* data, unsigned int size)
 {
     GLCall(glGenBuffers(1, &mRendererID));
@@ -76,3 +79,5 @@ void VertexBuffer::Unbind() const
 {
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 }
+
+} // namespace pong

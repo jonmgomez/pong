@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+namespace pong
+{
+
 void GLClearError()
 {
     while (glGetError() != GL_NO_ERROR);
@@ -17,3 +20,5 @@ bool GLLogCall(const char *function, const char *file, int line)
     }
     return true;
 }
+
+} // namespace pong

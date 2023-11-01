@@ -6,6 +6,9 @@
 
 #include <glm/glm.hpp>
 
+namespace pong
+{
+
 static constexpr float PLAYER_WIDTH = 25.0f;
 static constexpr float PLAYER_HEIGHT = 225.0f;
 static constexpr float PLAYER_SPEED = 2.5f;
@@ -31,3 +34,5 @@ void Player::OnUpdate()
 
     std::cout << "Position x: " << mPosition.x << ", y: " << mPosition.y << std::endl;
 }
+
+} // namespace pong

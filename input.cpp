@@ -4,6 +4,9 @@
 
 #include <iostream>
 
+namespace pong
+{
+
 // All keys are intalized to false, for not pressed
 std::array<bool, 512> Input::mKeys{};
 
@@ -25,3 +28,5 @@ void Input::KeyCallback(GLFWwindow* /*window*/, int key, int /*scancode*/, int a
     else if (action == GLFW_RELEASE)
         mKeys[key] = false;
 }
+
+} // namespace pong

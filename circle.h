@@ -2,6 +2,10 @@
 
 #include "mesh.h"
 
+namespace pong
+{
+
+
 class Circle : public Mesh
 {
 private:
@@ -10,3 +14,5 @@ private:
 public:
     Circle(float radius, int sides);
 };
+
+} // namespace pong

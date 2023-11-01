@@ -8,6 +8,9 @@
 
 #include <memory>
 
+namespace pong
+{
+
 class Renderer
 {
 private:
@@ -23,7 +26,10 @@ private:
 public:
     static Renderer& GetInstance();
 
+    static void Cleanup();
     static void SetShader(const std::string& filePath);
     static void Draw(const VertexArray& va, const IndexBuffer& ib, const glm::vec3& position, const Texture& texture);
     static void Clear();
 };
+
+} // namespace pong

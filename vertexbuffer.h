@@ -1,5 +1,8 @@
 #pragma once
 
+namespace pong
+{
+
 class VertexBuffer
 {
 private:
@@ -20,3 +23,5 @@ public:
     void Bind() const;
     void Unbind() const;
 };
+
+} // namespace pong

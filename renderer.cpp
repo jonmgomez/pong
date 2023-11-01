@@ -10,10 +10,19 @@
 
 #include <iostream>
 
+namespace pong
+{
+
 Renderer& Renderer::GetInstance()
 {
     static Renderer sInstance;
     return sInstance;
+}
+
+void Renderer::Cleanup()
+{
+    GetInstance().mShader.reset();
+    GetInstance().mShader = nullptr;
 }
 
 void Renderer::SetShader(const std::string& filePath)
@@ -45,3 +54,5 @@ void Renderer::Clear()
 {
     GLCall(glClear(GL_COLOR_BUFFER_BIT));
 }
+
+} // namespace pong

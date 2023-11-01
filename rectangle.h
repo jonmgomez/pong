@@ -8,6 +8,9 @@
 #include <array>
 #include <memory>
 
+namespace pong
+{
+
 class Rectangle : public Mesh
 {
 private:
@@ -17,3 +20,5 @@ private:
 public:
     Rectangle(float width, float height);
 };
+
+} // namespace pong

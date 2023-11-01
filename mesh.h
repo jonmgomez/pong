@@ -9,6 +9,9 @@
 
 #include <memory>
 
+namespace pong
+{
+
 class Mesh
 {
 protected:
@@ -20,3 +23,5 @@ protected:
 public:
     void Draw(const glm::vec3& position) const;
 };
+
+} // namespace pong

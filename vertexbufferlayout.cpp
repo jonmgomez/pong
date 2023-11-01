@@ -4,6 +4,9 @@
 
 #include <vector>
 
+namespace pong
+{
+
 template<typename T>
 void VertexBufferLayout::Push(unsigned int count)
 {
@@ -40,3 +43,5 @@ unsigned int VertexBufferLayout::GetStride() const
 {
     return mStride;
 }
+
+} // namespace pong
