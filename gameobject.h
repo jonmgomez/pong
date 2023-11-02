@@ -13,6 +13,8 @@ namespace pong
 class GameObject
 {
 private:
+    static int sId;
+    int mId { sId++ };
     glm::vec3 mPosition { glm::vec3(0.0f) };
 
 protected:
@@ -31,6 +33,7 @@ public:
     virtual void OnCollisionStay(GameObject& other);
     virtual void OnCollisionEnd(GameObject& other);
 
+    int GetId() const { return mId; }
     glm::vec3 GetPosition() const;
     void SetPosition(const glm::vec3& position);
     std::string GetTag() const { return mTag; }

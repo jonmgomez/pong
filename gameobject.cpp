@@ -5,6 +5,8 @@
 namespace pong
 {
 
+int GameObject::sId = 0;
+
 void GameObject::OnStart()
 {
 }

@@ -10,8 +10,8 @@ namespace pong
 
 struct CollisionPair
 {
-    GameObject* mFirstGameObject;
-    GameObject* mSecondGameObject;
+    int mFirstGameObjectId;
+    int mSecondGameObjectId;
 };
 
 
@@ -24,14 +24,14 @@ private:
     std::vector<CollisionPair>mCurrentCollisions {};
     std::vector<CollisionPair>mCheckedCollisionsNew {};
 
-    bool IsCheckedCollision(GameObject* firstGameObject, GameObject* secondGameObject) const;
-    bool IsCurrentlyColliding(GameObject* firstGameObject, GameObject* secondGameObject) const;
+    bool IsCheckedCollision(int firstGameObjectId, int secondGameObjectId) const;
+    bool IsCurrentlyColliding(int firstGameObjectId, int secondGameObjectId) const;
 
 public:
     void PongInit();
     void PongGameLoop();
     void CheckForCollisions();
-    void RemoveGameObjectCollisionPair(GameObject* firstGameObject, GameObject* secondGameObject);
+    void RemoveGameObjectCollisionPair(int firstGameObjectId, int secondGameObjectId);
 };
 
 } // namespace pong

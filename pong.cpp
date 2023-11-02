@@ -55,12 +55,12 @@ void Pong::PongGameLoop()
     }
 }
 
-bool Pong::IsCheckedCollision(GameObject* firstGameObject, GameObject* secondGameObject) const
+bool Pong::IsCheckedCollision(int firstGameObjectId, int secondGameObjectId) const
 {
     for (auto& collisionPair : mCheckedCollisionsNew)
     {
-        if (collisionPair.mFirstGameObject == firstGameObject && collisionPair.mSecondGameObject == secondGameObject
-         || collisionPair.mFirstGameObject == secondGameObject && collisionPair.mSecondGameObject == firstGameObject)
+        if (collisionPair.mFirstGameObjectId == firstGameObjectId && collisionPair.mSecondGameObjectId == secondGameObjectId
+         || collisionPair.mFirstGameObjectId == secondGameObjectId && collisionPair.mSecondGameObjectId == firstGameObjectId)
         {
             return true;
         }
@@ -68,12 +68,12 @@ bool Pong::IsCheckedCollision(GameObject* firstGameObject, GameObject* secondGam
     return false;
 }
 
-bool Pong::IsCurrentlyColliding(GameObject* firstGameObject, GameObject* secondGameObject) const
+bool Pong::IsCurrentlyColliding(int firstGameObjectId, int secondGameObjectId) const
 {
     for (auto& collisionPair : mCurrentCollisions)
     {
-        if (collisionPair.mFirstGameObject == firstGameObject && collisionPair.mSecondGameObject == secondGameObject
-         || collisionPair.mFirstGameObject == secondGameObject && collisionPair.mSecondGameObject == firstGameObject)
+        if (collisionPair.mFirstGameObjectId == firstGameObjectId && collisionPair.mSecondGameObjectId == secondGameObjectId
+         || collisionPair.mFirstGameObjectId == secondGameObjectId && collisionPair.mSecondGameObjectId == firstGameObjectId)
         {
             return true;
         }
@@ -92,17 +92,19 @@ void Pong::CheckForCollisions()
                 continue;
             }
 
-            if (!IsCheckedCollision(gameObject.get(), otherGameObject.get()))
+            // std::cout << "Checking Collision for " << gameObject->GetName() << " id " << gameObject->GetId() << " and " << otherGameObject->GetName() << " id " << otherGameObject->GetId() << std::endl;
+
+            if (!IsCheckedCollision(gameObject->GetId(), otherGameObject->GetId()))
             {
                 const bool collision = gameObject->CheckForCollision(*otherGameObject);
-                const bool wereColliding = IsCurrentlyColliding(gameObject.get(), otherGameObject.get());
+                const bool wereColliding = IsCurrentlyColliding(gameObject->GetId(), otherGameObject->GetId());
 
                 if (collision && !wereColliding)
                 {
                     std::cout << "Collision Start!" << std::endl;
                     gameObject->OnCollisionStart(*otherGameObject);
                     otherGameObject->OnCollisionStart(*gameObject);
-                    mCurrentCollisions.push_back({ gameObject.get(), otherGameObject.get() });
+                    mCurrentCollisions.push_back({ gameObject->GetId(), otherGameObject->GetId() });
                 }
                 else if (collision)
                 {
@@ -115,25 +117,24 @@ void Pong::CheckForCollisions()
                     std::cout << "Collision End!" << std::endl;
                     gameObject->OnCollisionEnd(*otherGameObject);
                     otherGameObject->OnCollisionEnd(*gameObject);
-                    RemoveGameObjectCollisionPair(gameObject.get(), otherGameObject.get());
+                    RemoveGameObjectCollisionPair(gameObject->GetId(), otherGameObject->GetId());
                 }
 
-                mCheckedCollisionsNew.push_back({ gameObject.get(), otherGameObject.get() });
+                mCheckedCollisionsNew.push_back({ gameObject->GetId(), otherGameObject->GetId() });
             }
         }
     }
 
     mCheckedCollisionsNew.clear();
-    mCurrentCollisions.clear();
 }
 
-void Pong::RemoveGameObjectCollisionPair(GameObject* firstGameObject, GameObject* secondGameObject)
+void Pong::RemoveGameObjectCollisionPair(int firstGameObjectId, int secondGameObjectId)
 {
     std::cout << "Current Collisions: " << mCurrentCollisions.size() << std::endl;
     mCurrentCollisions.erase(std::remove_if(mCurrentCollisions.begin(), mCurrentCollisions.end(),
-        [firstGameObject, secondGameObject](const CollisionPair& collisionPair)
+        [firstGameObjectId, secondGameObjectId](const CollisionPair& collisionPair)
         {
-            return collisionPair.mFirstGameObject == firstGameObject && collisionPair.mSecondGameObject == secondGameObject;
+            return collisionPair.mFirstGameObjectId == firstGameObjectId && collisionPair.mSecondGameObjectId == secondGameObjectId;
         }), mCurrentCollisions.end());
     std::cout << "Current Collisions after: " << mCurrentCollisions.size() << std::endl;
 }
