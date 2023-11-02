@@ -92,14 +92,12 @@ void Pong::CheckForCollisions()
                 continue;
             }
 
-            // std::cout << "Checking " << gameObject->GetName() << " and " << otherGameObject->GetName() << std::endl;
-
             if (!IsCheckedCollision(gameObject.get(), otherGameObject.get()))
             {
                 const bool collision = gameObject->CheckForCollision(*otherGameObject);
-                const bool firstCollision = !IsCurrentlyColliding(gameObject.get(), otherGameObject.get());
+                const bool wereColliding = IsCurrentlyColliding(gameObject.get(), otherGameObject.get());
 
-                if (collision && firstCollision)
+                if (collision && !wereColliding)
                 {
                     std::cout << "Collision Start!" << std::endl;
                     gameObject->OnCollisionStart(*otherGameObject);
@@ -112,7 +110,7 @@ void Pong::CheckForCollisions()
                     gameObject->OnCollisionStay(*otherGameObject);
                     otherGameObject->OnCollisionStay(*gameObject);
                 }
-                else if (firstCollision)
+                else if (wereColliding)
                 {
                     std::cout << "Collision End!" << std::endl;
                     gameObject->OnCollisionEnd(*otherGameObject);
