@@ -11,8 +11,14 @@ namespace pong
 
 class GameObject
 {
+private:
+    static int sId;
+
+    int mId { sId++ };
+
 protected:
     std::unique_ptr<Mesh>mMesh { nullptr };
+    std::string mName { "" };
 
 public:
     GameObject() = default;
@@ -20,6 +26,10 @@ public:
 
     virtual void OnStart();
     virtual void OnUpdate();
+
+    int GetId() const;
+    void SetName(const std::string& name);
+    const std::string& GetName() const;
     void Render();
 
     glm::vec3 mPosition { glm::vec3(0.0f) };

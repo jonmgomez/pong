@@ -20,6 +20,7 @@ void Opponent::OnStart()
     mMesh = std::make_unique<Rectangle>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
     mPosition = OPPONENT_POSITION;
     mSpeed = OPPONENT_SPEED;
+    mName = "Opponent";
 }
 
 bool movingUp = true;

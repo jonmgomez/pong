@@ -19,6 +19,7 @@ void Player::OnStart()
     mMesh = std::make_unique<Rectangle>(PLAYER_WIDTH, PLAYER_HEIGHT);
     mPosition = PLAYER_POSITION;
     mSpeed = PLAYER_SPEED;
+    mName = "Player";
 }
 
 void Player::OnUpdate()

@@ -12,6 +12,7 @@ void Ball::OnStart()
 {
     mMesh = std::make_unique<Rectangle>(BALL_WIDTH, BALL_WIDTH);
     mSpeed = BALL_SPEED;
+    mName = "Ball";
 }
 
 void Ball::OnUpdate()
