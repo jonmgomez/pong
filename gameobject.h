@@ -27,7 +27,9 @@ public:
 
     virtual void OnStart();
     virtual void OnUpdate();
-    virtual void OnCollision(GameObject& other);
+    virtual void OnCollisionStart(GameObject& other);
+    virtual void OnCollisionStay(GameObject& other);
+    virtual void OnCollisionEnd(GameObject& other);
 
     glm::vec3 GetPosition() const;
     void SetPosition(const glm::vec3& position);

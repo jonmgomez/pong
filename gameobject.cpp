@@ -13,7 +13,15 @@ void GameObject::OnUpdate()
 {
 }
 
-void GameObject::OnCollision(GameObject& /*other*/)
+void GameObject::OnCollisionStart(GameObject& /*other*/)
+{
+}
+
+void GameObject::OnCollisionStay(GameObject& /*other*/)
+{
+}
+
+void GameObject::OnCollisionEnd(GameObject& /*other*/)
 {
 }
 
@@ -36,6 +44,7 @@ bool GameObject::CheckForCollision(GameObject& other)
 {
     if (mColliderBox != nullptr && other.mColliderBox != nullptr)
     {
+        std::cout << "Checking Collision for " << GetName() << " and " << other.GetName() << std::endl;
         return mColliderBox->CheckForCollision(*other.mColliderBox);
     }
     return false;

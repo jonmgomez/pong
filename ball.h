@@ -14,7 +14,7 @@ private:
 public:
     void OnStart() override;
     void OnUpdate() override;
-    void OnCollision(GameObject& other) override;
+    void OnCollisionStart(GameObject& other) override;
 };
 
 } // namespace pong

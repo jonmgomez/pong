@@ -31,100 +31,18 @@ void Pong::PongInit()
     bottomWall->SetPosition(glm::vec3(0.0f, -400.0f, 0.0f));
     mGameObjects.push_back(std::move(bottomWall));
 
-    for (int i = 0; i < mGameObjects.size(); i++)
-    {
-        mCheckedCollisions.push_back(std::vector<GameObject*>());
-        mCheckedCollisions[i].reserve(mGameObjects.size());
-
-        mCurrentlyColliding.push_back(std::vector<GameObject*>());
-        mCurrentlyColliding[i].reserve(mGameObjects.size());
-    }
+    mCurrentCollisions.reserve(mGameObjects.size());
+    mCheckedCollisionsNew.reserve(mGameObjects.size());
 }
 
 void Pong::PongGameLoop()
 {
-    std::cout << "PongGameLoop" << std::endl;
     for (auto& gameObject : mGameObjects)
     {
         gameObject->OnUpdate();
     }
 
-    for (int i = 0; i < mGameObjects.size(); i++)
-    {
-        auto& gameObject = mGameObjects[i];
-        for (int otherI = 0; otherI < mGameObjects.size(); otherI++)
-        {
-            std::cout << "Checking " << gameObject->GetName() << " and " << mGameObjects[otherI]->GetName() << std::endl;
-            auto& other = mGameObjects[otherI];
-            if (gameObject.get() != other.get())
-            {
-                bool alreadyChecked = false;
-                for (GameObject* alreadyCollided : mCheckedCollisions[i])
-                {
-                    if (alreadyCollided == other.get())
-                    {
-                        alreadyChecked = true;
-                        break;
-                    }
-                }
-
-                if (!alreadyChecked)
-                {
-                    if (gameObject->CheckForCollision(*other))
-                    {
-                        std::cout << "Collision!" << std::endl;
-                        bool alreadyCollided = false;
-                        for (GameObject* currentCollider : mCurrentlyColliding[i])
-                        {
-                            if (currentCollider == other.get())
-                            {
-                                std::cout << "Already collided would call Stay()" << std::endl;
-                                alreadyCollided = true;
-                                // gameobject->OnCollisionStay();
-                                // other->OnCollisionStay();
-                                break;
-                            }
-                        }
-
-                        if (!alreadyCollided)
-                        {
-                            gameObject->OnCollision(*other);
-                            other->OnCollision(*gameObject);
-                            mCurrentlyColliding[i].push_back(other.get());
-                            mCurrentlyColliding[otherI].push_back(gameObject.get());
-                        }
-
-                        // Only add this object as checked because the other object can be
-                        // encompassed in this object's collider box. If the encompassed collider
-                        // checks the other's positions it would appear as not colliding.
-                        mCheckedCollisions[otherI].push_back(gameObject.get());
-                    }
-                    else
-                    {
-                        GameObject* previouslyCollided = nullptr;
-                        for (GameObject* currentCollider : mCurrentlyColliding[i])
-                        {
-                            if (currentCollider == other.get())
-                            {
-                                previouslyCollided = currentCollider;
-                                break;
-                            }
-                        }
-
-                        if (previouslyCollided != nullptr)
-                        {
-                            mCurrentlyColliding[i].erase(
-                                std::remove(mCurrentlyColliding[i].begin(),
-                                            mCurrentlyColliding[i].end(),
-                                            previouslyCollided),
-                                mCurrentlyColliding[i].end());
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
+    CheckForCollisions();
 
     for (auto& collisionVector : mCheckedCollisions)
     {
@@ -135,6 +53,91 @@ void Pong::PongGameLoop()
     {
         gameObject->Render();
     }
+}
+
+bool Pong::IsCheckedCollision(GameObject* firstGameObject, GameObject* secondGameObject) const
+{
+    for (auto& collisionPair : mCheckedCollisionsNew)
+    {
+        if (collisionPair.mFirstGameObject == firstGameObject && collisionPair.mSecondGameObject == secondGameObject
+         || collisionPair.mFirstGameObject == secondGameObject && collisionPair.mSecondGameObject == firstGameObject)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Pong::IsCurrentlyColliding(GameObject* firstGameObject, GameObject* secondGameObject) const
+{
+    for (auto& collisionPair : mCurrentCollisions)
+    {
+        if (collisionPair.mFirstGameObject == firstGameObject && collisionPair.mSecondGameObject == secondGameObject
+         || collisionPair.mFirstGameObject == secondGameObject && collisionPair.mSecondGameObject == firstGameObject)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Pong::CheckForCollisions()
+{
+    for (auto& gameObject : mGameObjects)
+    {
+        for (auto& otherGameObject : mGameObjects)
+        {
+            if (gameObject == otherGameObject)
+            {
+                continue;
+            }
+
+            // std::cout << "Checking " << gameObject->GetName() << " and " << otherGameObject->GetName() << std::endl;
+
+            if (!IsCheckedCollision(gameObject.get(), otherGameObject.get()))
+            {
+                const bool collision = gameObject->CheckForCollision(*otherGameObject);
+                const bool firstCollision = !IsCurrentlyColliding(gameObject.get(), otherGameObject.get());
+
+                if (collision && firstCollision)
+                {
+                    std::cout << "Collision Start!" << std::endl;
+                    gameObject->OnCollisionStart(*otherGameObject);
+                    otherGameObject->OnCollisionStart(*gameObject);
+                    mCurrentCollisions.push_back({ gameObject.get(), otherGameObject.get() });
+                }
+                else if (collision)
+                {
+                    std::cout << "Collision Stay!" << std::endl;
+                    gameObject->OnCollisionStay(*otherGameObject);
+                    otherGameObject->OnCollisionStay(*gameObject);
+                }
+                else if (firstCollision)
+                {
+                    std::cout << "Collision End!" << std::endl;
+                    gameObject->OnCollisionEnd(*otherGameObject);
+                    otherGameObject->OnCollisionEnd(*gameObject);
+                    RemoveGameObjectCollisionPair(gameObject.get(), otherGameObject.get());
+                }
+
+                mCheckedCollisionsNew.push_back({ gameObject.get(), otherGameObject.get() });
+            }
+        }
+    }
+
+    mCheckedCollisionsNew.clear();
+    mCurrentCollisions.clear();
+}
+
+void Pong::RemoveGameObjectCollisionPair(GameObject* firstGameObject, GameObject* secondGameObject)
+{
+    std::cout << "Current Collisions: " << mCurrentCollisions.size() << std::endl;
+    mCurrentCollisions.erase(std::remove_if(mCurrentCollisions.begin(), mCurrentCollisions.end(),
+        [firstGameObject, secondGameObject](const CollisionPair& collisionPair)
+        {
+            return collisionPair.mFirstGameObject == firstGameObject && collisionPair.mSecondGameObject == secondGameObject;
+        }), mCurrentCollisions.end());
+    std::cout << "Current Collisions after: " << mCurrentCollisions.size() << std::endl;
 }
 
 } // namespace pong

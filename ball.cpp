@@ -25,7 +25,7 @@ void Ball::OnUpdate()
     std::cout << "Position: " << "(" << GetPosition().x << ", " << GetPosition().y << ")" << std::endl;
 }
 
-void Ball::OnCollision(GameObject& other)
+void Ball::OnCollisionStart(GameObject& other)
 {
     std::cout << "Ball collided with something" << std::endl;
 

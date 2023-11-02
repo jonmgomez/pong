@@ -50,6 +50,7 @@ bool ColliderBox::CheckForCollision(const ColliderBox& other) const
     // std::cout << "UR: " << GetVec3String(otherBounds[2]);
     // std::cout << "UL: " << GetVec3String(otherBounds[3]) << "\n";
 
+    // Check within own bounds
     for (const auto& position : otherBounds)
     {
         if (CheckPointInBounds(position))
@@ -57,9 +58,21 @@ bool ColliderBox::CheckForCollision(const ColliderBox& other) const
             return true;
         }
     }
-    return false;
 
-} // namespace pong
+    // Check within other collider's bounds. This is due to the
+    // possibility of the other collider ecompassing this collider
+    // If that occurs, the other colliders positions do not not appear
+    // inside the bounds and would not register as collision
+    for (const auto& position : mPositionBounds)
+    {
+        if (other.CheckPointInBounds(position))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
 
 bool ColliderBox::CheckPointInBounds(const glm::vec3& position) const
 {
