@@ -46,7 +46,6 @@ bool GameObject::CheckForCollision(GameObject& other)
 {
     if (mColliderBox != nullptr && other.mColliderBox != nullptr)
     {
-        std::cout << "Checking Collision for " << GetName() << " and " << other.GetName() << std::endl;
         return mColliderBox->CheckForCollision(*other.mColliderBox);
     }
     return false;

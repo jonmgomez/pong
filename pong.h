@@ -19,19 +19,16 @@ class Pong
 {
 private:
     std::vector<std::unique_ptr<GameObject>>mGameObjects {};
-    std::vector<std::vector<GameObject*>>mCheckedCollisions {};
-    std::vector<std::vector<GameObject*>>mCurrentlyColliding {};
     std::vector<CollisionPair>mCurrentCollisions {};
-    std::vector<CollisionPair>mCheckedCollisionsNew {};
 
-    bool IsCheckedCollision(int firstGameObjectId, int secondGameObjectId) const;
     bool IsCurrentlyColliding(int firstGameObjectId, int secondGameObjectId) const;
+    bool IsCollisionPairValid(const CollisionPair& pair, int firstGameObjectId, int secondGameObjectId) const;
+    void RemoveGameObjectCollisionPair(int firstGameObjectId, int secondGameObjectId);
 
 public:
     void PongInit();
     void PongGameLoop();
     void CheckForCollisions();
-    void RemoveGameObjectCollisionPair(int firstGameObjectId, int secondGameObjectId);
 };
 
 } // namespace pong
