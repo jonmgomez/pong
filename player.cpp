@@ -17,7 +17,8 @@ static constexpr glm::vec3 PLAYER_POSITION(-550.0f, 0.0f, 0.0f);
 void Player::OnStart()
 {
     mMesh = std::make_unique<Rectangle>(PLAYER_WIDTH, PLAYER_HEIGHT);
-    mPosition = PLAYER_POSITION;
+    mColliderBox = std::make_unique<ColliderBox>(PLAYER_WIDTH, PLAYER_HEIGHT);
+    SetPosition(PLAYER_POSITION);
     mSpeed = PLAYER_SPEED;
     mName = "Player";
 }
@@ -26,14 +27,12 @@ void Player::OnUpdate()
 {
     if (Input::IsKeyPressed(GLFW_KEY_W))
     {
-        mPosition.y += mSpeed;
+        SetPosition(GetPosition() + glm::vec3(0.0f, mSpeed, 0.0f));
     }
     else if (Input::IsKeyPressed(GLFW_KEY_S))
     {
-        mPosition.y -= mSpeed;
+        SetPosition(GetPosition() + glm::vec3(0.0f, -mSpeed, 0.0f));
     }
-
-    std::cout << "Position x: " << mPosition.x << ", y: " << mPosition.y << std::endl;
 }
 
 } // namespace pong

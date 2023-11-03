@@ -9,6 +9,7 @@ set(SOURCES
     main.cpp
     ball.cpp
     circle.cpp
+    colliderbox.cpp
     gameobject.cpp
     indexbuffer.cpp
     input.cpp
