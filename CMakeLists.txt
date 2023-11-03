@@ -10,6 +10,7 @@ set(SOURCES
     ball.cpp
     circle.cpp
     colliderbox.cpp
+    collisionmanager.cpp
     gameobject.cpp
     indexbuffer.cpp
     input.cpp

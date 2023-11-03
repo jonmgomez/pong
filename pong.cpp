@@ -51,8 +51,6 @@ void Pong::PongInit()
     rightWall->SetPosition(glm::vec3(verticalWallX, 0.0f, 0.0f));
     rightWall->SetName("WallV");
     mGameObjects.push_back(std::move(rightWall));
-
-    mCurrentCollisions.reserve(mGameObjects.size());
 }
 
 void Pong::PongGameLoop()
@@ -62,70 +60,12 @@ void Pong::PongGameLoop()
         gameObject->OnUpdate();
     }
 
-    CheckForCollisions();
+    mCollisionManager.ProcessCollisions(mGameObjects);
 
     for (auto& gameObject : mGameObjects)
     {
         gameObject->Render();
     }
-}
-
-void Pong::CheckForCollisions()
-{
-    for (int index = 0; index < mGameObjects.size(); index++)
-    {
-        auto& gameObject = mGameObjects[index];
-        for (int otherIndex = index + 1; otherIndex < mGameObjects.size(); otherIndex++)
-        {
-            auto& otherGameObject = mGameObjects[otherIndex];
-
-            const bool collision = gameObject->CheckForCollision(*otherGameObject);
-            const bool wereColliding = IsCurrentlyColliding(gameObject->GetId(), otherGameObject->GetId());
-
-            if (collision && !wereColliding)
-            {
-                gameObject->OnCollisionStart(*otherGameObject);
-                otherGameObject->OnCollisionStart(*gameObject);
-                mCurrentCollisions.push_back({ gameObject->GetId(), otherGameObject->GetId() });
-            }
-            else if (collision)
-            {
-                gameObject->OnCollisionStay(*otherGameObject);
-                otherGameObject->OnCollisionStay(*gameObject);
-            }
-            else if (wereColliding)
-            {
-                gameObject->OnCollisionStop(*otherGameObject);
-                otherGameObject->OnCollisionStop(*gameObject);
-                RemoveGameObjectCollisionPair(gameObject->GetId(), otherGameObject->GetId());
-            }
-        }
-    }
-}
-
-bool Pong::IsCurrentlyColliding(int firstGameObjectId, int secondGameObjectId) const
-{
-    for (auto& collisionPair : mCurrentCollisions)
-    {
-        if (IsCollisionPairValid(collisionPair, firstGameObjectId, secondGameObjectId))
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-bool Pong::IsCollisionPairValid(const CollisionPair& pair, int firstGameObjectId, int secondGameObjectId) const
-{
-    return pair.mFirstGameObjectId == firstGameObjectId && pair.mSecondGameObjectId == secondGameObjectId
-        || pair.mFirstGameObjectId == secondGameObjectId && pair.mSecondGameObjectId == firstGameObjectId;
-}
-
-void Pong::RemoveGameObjectCollisionPair(int firstGameObjectId, int secondGameObjectId)
-{
-    mCurrentCollisions.erase(std::remove_if(mCurrentCollisions.begin(), mCurrentCollisions.end(),
-        [&](const CollisionPair& collisionPair){ return IsCollisionPairValid(collisionPair, firstGameObjectId, secondGameObjectId); }),
-        mCurrentCollisions.end());
 }
 
 } // namespace pong
