@@ -13,9 +13,9 @@ void Ball::OnStart()
 {
     mMesh = std::make_unique<Rectangle>(BALL_WIDTH, BALL_WIDTH);
     mColliderBox = std::make_unique<ColliderBox>(BALL_WIDTH, BALL_WIDTH);
+    SetInstanceName("Ball");
     mXSpeed = BALL_SPEED;
     mYSpeed = BALL_SPEED;
-    mName = "Ball";
 }
 
 void Ball::OnUpdate()
@@ -26,8 +26,8 @@ void Ball::OnUpdate()
 
 void Ball::OnCollisionStart(GameObject& other)
 {
-    if (other.GetName() == "Player" || other.GetName() == "Opponent"
-     || other.GetName() == "WallV")
+    if (other.GetInstanceName() == "Player" || other.GetInstanceName() == "Opponent"
+     || other.GetInstanceName() == "WallV")
     {
         mXSpeed = -mXSpeed;
     }

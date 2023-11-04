@@ -20,28 +20,30 @@ void Opponent::OnStart()
     mMesh = std::make_unique<Rectangle>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
     mColliderBox = std::make_unique<ColliderBox>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
     SetPosition(OPPONENT_POSITION);
+    SetInstanceName("Opponent");
     mSpeed = OPPONENT_SPEED;
-    mName = "Opponent";
 }
 
 bool movingUp = true;
 
 void Opponent::OnUpdate()
 {
+    glm::vec3 position = GetPosition();
+
     if (movingUp)
     {
-        SetPosition(GetPosition() + glm::vec3(0.0f, mSpeed, 0.0f));
+        SetPosition(position + glm::vec3(0.0f, mSpeed, 0.0f));
     }
     else
     {
-        SetPosition(GetPosition() + glm::vec3(0.0f, -mSpeed, 0.0f));
+        SetPosition(position + glm::vec3(0.0f, -mSpeed, 0.0f));
     }
 
-    if (GetPosition().y >= OPPONENT_MOVEMENT_UPPER_BOUND)
+    if (position.y >= OPPONENT_MOVEMENT_UPPER_BOUND)
     {
         movingUp = false;
     }
-    else if (GetPosition().y <= OPPONENT_MOVEMENT_LOWER_BOUND)
+    else if (position.y <= OPPONENT_MOVEMENT_LOWER_BOUND)
     {
         movingUp = true;
     }

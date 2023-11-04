@@ -48,18 +48,18 @@ void GameObject::SetPosition(const glm::vec3& position)
 
     if (mColliderBox != nullptr)
     {
-        mColliderBox->UpdatePositionBounds(mPosition);
+        mColliderBox->OnPositionUpdate(mPosition);
     }
 }
 
-const std::string& GameObject::GetName() const
+std::string GameObject::GetInstanceName() const
 {
-    return mName;
+    return mInstanceName;
 }
 
-void GameObject::SetName(const std::string& name)
+void GameObject::SetInstanceName(const std::string& name)
 {
-    mName = name;
+    mInstanceName = name;
 }
 
 bool GameObject::CheckForCollision(GameObject& other)

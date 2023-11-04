@@ -2,6 +2,7 @@
 
 #include "gameobject.h"
 
+#include <algorithm>
 #include <memory>
 #include <vector>
 
@@ -43,12 +44,10 @@ void CollisionManager::ProcessCollisions(const std::vector<std::unique_ptr<GameO
 
 bool CollisionManager::IsCurrentlyColliding(int firstGameObjectId, int secondGameObjectId) const
 {
-    for (auto& collisionPair : mCurrentCollisions)
+    if (std::any_of(std::begin(mCurrentCollisions), std::end(mCurrentCollisions),
+        [&](const CollisionPair& collisionPair) { return IsCollisionPairValid(collisionPair, firstGameObjectId, secondGameObjectId); }))
     {
-        if (IsCollisionPairValid(collisionPair, firstGameObjectId, secondGameObjectId))
-        {
-            return true;
-        }
+        return true;
     }
     return false;
 }

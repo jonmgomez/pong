@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 
+#include <algorithm>
 #include <iostream>
 #include <sstream>
 
@@ -20,7 +21,7 @@ ColliderBox::ColliderBox(float width, float height)
     mPositionBounds = mBounds;
 }
 
-void ColliderBox::UpdatePositionBounds(const glm::vec3& position)
+void ColliderBox::OnPositionUpdate(const glm::vec3& position)
 {
     mPositionBounds[0] = mBounds[0] + position;
     mPositionBounds[1] = mBounds[1] + position;
@@ -33,24 +34,21 @@ bool ColliderBox::CheckForCollision(const ColliderBox& other) const
     const std::array<glm::vec3, 4>otherBounds = other.mPositionBounds;
 
     // Check within own bounds
-    for (const auto& position : otherBounds)
+
+    if (std::any_of(std::begin(otherBounds), std::end(otherBounds),
+        [&](const auto& position) { return CheckPointInBounds(position); }))
     {
-        if (CheckPointInBounds(position))
-        {
-            return true;
-        }
+        return true;
     }
 
     // Check within other collider's bounds. This is due to the
     // possibility of the other collider ecompassing this collider
     // If that occurs, the other colliders positions do not not appear
     // inside the bounds and would not register as collision
-    for (const auto& position : mPositionBounds)
+    if (std::any_of(std::begin(mPositionBounds), std::end(mPositionBounds),
+        [&other](const auto& position) { return other.CheckPointInBounds(position); }))
     {
-        if (other.CheckPointInBounds(position))
-        {
-            return true;
-        }
+        return true;
     }
 
     return false;

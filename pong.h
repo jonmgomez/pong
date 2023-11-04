@@ -3,6 +3,7 @@
 #include "collisionmanager.h"
 #include "gameobject.h"
 
+#include <memory>
 #include <vector>
 
 namespace pong

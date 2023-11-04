@@ -16,7 +16,7 @@ private:
 public:
     ColliderBox(float width, float height);
 
-    void UpdatePositionBounds(const glm::vec3& position);
+    void OnPositionUpdate(const glm::vec3& position);
     bool CheckForCollision(const ColliderBox& other) const;
     bool CheckPointInBounds(const glm::vec3& position) const;
 };
