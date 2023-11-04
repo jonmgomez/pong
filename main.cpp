@@ -63,7 +63,7 @@ GLFWwindow* SetupGLFW()
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, Input::KeyCallback);
 
-    // Uncomment this if you would like to blow up the GPU :D
+    //Uncomment this if you would like to blow up the GPU :D
     // glfwSwapInterval(0);
 
     if (glewInit() != GLEW_OK)

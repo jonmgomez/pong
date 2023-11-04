@@ -9,6 +9,8 @@ set(SOURCES
     main.cpp
     ball.cpp
     circle.cpp
+    colliderbox.cpp
+    collisionmanager.cpp
     gameobject.cpp
     indexbuffer.cpp
     input.cpp
@@ -24,6 +26,7 @@ set(SOURCES
     vertexarray.cpp
     vertexbuffer.cpp
     vertexbufferlayout.cpp
+    wall.cpp
 )
 
 add_executable(pong ${SOURCES})
