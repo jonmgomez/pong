@@ -17,8 +17,6 @@ bool Input::IsKeyPressed(unsigned int keycode)
 
 void Input::KeyCallback(GLFWwindow* /*window*/, int key, int /*scancode*/, int action, int /*mods*/)
 {
-    std::cout << "KeyCallback() key: " << key << ", action: " << action << std::endl;
-
     // Ignore unrecognized keys
     if (key < 0)
         return;

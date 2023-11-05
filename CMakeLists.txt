@@ -21,6 +21,8 @@ set(SOURCES
     rectangle.cpp
     renderer.cpp
     renderutils.cpp
+    scorearea.cpp
+    scorecontroller.cpp
     shader.cpp
     texture.cpp
     vertexarray.cpp

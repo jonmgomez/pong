@@ -86,8 +86,7 @@ GLFWwindow* SetupGLFW()
 
 void PlayPong(GLFWwindow* window)
 {
-    Pong pong;
-    pong.PongInit();
+    Pong::PongInit();
 
     double lastTime = glfwGetTime();
     int frameCount = 0;
@@ -96,7 +95,7 @@ void PlayPong(GLFWwindow* window)
     {
         Renderer::Clear();
 
-        pong.PongGameLoop();
+        Pong::PongGameLoop();
 
         frameCount++;
 
@@ -111,6 +110,7 @@ void PlayPong(GLFWwindow* window)
     std::cout << "Total frames: " << frameCount << std::endl;
     std::cout << "Avg framerate: " << frameCount / elapsedTime << std::endl;
 
+    Pong::PongCleanup();
     Renderer::Cleanup();
 }
 
