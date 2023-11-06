@@ -3,6 +3,7 @@
 #include "collisionmanager.h"
 #include "gameobject.h"
 
+#include <algorithm>
 #include <memory>
 #include <vector>
 
@@ -42,6 +43,13 @@ public:
         }
 
         return nullptr;
+    }
+
+    template<typename T>
+    static bool GameObjectExists(const T& gameObject)
+    {
+        return std::any_of(std::begin(GetInstance().mGameObjects), std::end(GetInstance().mGameObjects),
+            [&](const std::unique_ptr<GameObject>& currentGameObject) { return currentGameObject.get() == &gameObject; });
     }
 };
 

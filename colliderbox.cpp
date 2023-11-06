@@ -60,4 +60,9 @@ bool ColliderBox::CheckPointInBounds(const glm::vec3& position) const
         && position.y >= mPositionBounds[0].y && position.y <= mPositionBounds[2].y;
 }
 
+float ColliderBox::GetHeight() const
+{
+    return mBounds[2].y - mBounds[0].y;
+}
+
 } // namespace pong

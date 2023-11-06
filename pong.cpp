@@ -50,12 +50,12 @@ void Pong::PongInit()
 
     auto playerScoreArea = std::make_unique<ScoreArea>(verticalWallWidth, verticalWallHeight, true);
     playerScoreArea->OnStart();
-    playerScoreArea->SetPosition(glm::vec3(-verticalWallX, 0.0f, 0.0f));
+    playerScoreArea->SetPosition(glm::vec3(verticalWallX, 0.0f, 0.0f));
     GetInstance().mGameObjects.push_back(std::move(playerScoreArea));
 
     auto opponentScoreArea = std::make_unique<ScoreArea>(verticalWallWidth, verticalWallHeight, false);
     opponentScoreArea->OnStart();
-    opponentScoreArea->SetPosition(glm::vec3(verticalWallX, 0.0f, 0.0f));
+    opponentScoreArea->SetPosition(glm::vec3(-verticalWallX, 0.0f, 0.0f));
     GetInstance().mGameObjects.push_back(std::move(opponentScoreArea));
 
     auto scoreController = std::make_unique<ScoreController>();

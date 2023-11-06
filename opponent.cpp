@@ -8,12 +8,12 @@ namespace pong
 {
 
 static constexpr float OPPONENT_WIDTH = 25.0f;
-static constexpr float OPPONENT_HEIGHT = 225.0f;
-static constexpr float OPPONENT_SPEED = 2.5f;
+static constexpr float OPPONENT_HEIGHT = 500.0f;
+static constexpr float OPPONENT_SPEED = 6.5f;
 static constexpr glm::vec3 OPPONENT_POSITION(550.0f, 0.0f, 0.0f);
 
-static constexpr float OPPONENT_MOVEMENT_UPPER_BOUND = 225.0f;
-static constexpr float OPPONENT_MOVEMENT_LOWER_BOUND = -225.0f;
+static constexpr float OPPONENT_MOVEMENT_UPPER_BOUND = 275.0f;
+static constexpr float OPPONENT_MOVEMENT_LOWER_BOUND = -275.0f;
 
 void Opponent::OnStart()
 {

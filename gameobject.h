@@ -10,8 +10,9 @@
 namespace pong
 {
 
-class GameObject
+class GameObject : public std::enable_shared_from_this<GameObject>
 {
+
 private:
     static int sId;
 
@@ -43,6 +44,11 @@ public:
     bool CheckForCollision(GameObject& other);
 
     void Render() const;
+    template <typename T>
+    T* GetObject()
+    {
+        return dynamic_cast<T*>(this);
+    }
 };
 
 } // namespace pong

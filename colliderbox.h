@@ -19,6 +19,8 @@ public:
     void OnPositionUpdate(const glm::vec3& position);
     bool CheckForCollision(const ColliderBox& other) const;
     bool CheckPointInBounds(const glm::vec3& position) const;
+
+    float GetHeight() const;
 };
 
 } // namespace pong
