@@ -24,7 +24,7 @@ private:
     std::vector<CollisionPair>mCurrentCollisions {};
 
 public:
-    void ProcessCollisions(const std::vector<std::unique_ptr<GameObject>>& gameObjects);
+    void ProcessCollisions(const std::vector<std::shared_ptr<GameObject>>& gameObjects);
 };
 
 } // namespace pong

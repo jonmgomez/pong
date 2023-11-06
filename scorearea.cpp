@@ -20,7 +20,7 @@ void ScoreArea::OnCollisionStart(GameObject& other)
 {
     if (other.GetInstanceName() == "Ball")
     {
-        ScoreController* scoreController = Pong::FindGameObject<ScoreController>();
+        auto scoreController = Pong::FindGameObject<ScoreController>();
 
         if (scoreController == nullptr)
         {
