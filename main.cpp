@@ -126,6 +126,8 @@ int main(int argc, char* argv[])
 {
     std::cout << "Hello World!" << std::endl;
 
+    srand(static_cast<unsigned int>(time(nullptr)));
+
     if (argc != 2)
     {
         std::cerr << "Usage: " << argv[0] << " <json_file_path>" << std::endl;
