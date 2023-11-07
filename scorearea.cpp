@@ -5,6 +5,8 @@
 #include "rectangle.h"
 #include "scorecontroller.h"
 
+#include <spdlog/spdlog.h>
+
 namespace pong
 {
 
@@ -24,24 +26,22 @@ void ScoreArea::OnCollisionStart(GameObject& other)
 
         if (scoreController == nullptr)
         {
-            std::cout << "ScoreController not found!" << std::endl;
+            spdlog::error("ScoreController not found!");
             return;
         }
 
         if (mIsPlayerScoreArea)
         {
-            std::cout << "Player scored!" << std::endl;
+            spdlog::info("Player scored!");
             scoreController->PlayerScored();
         }
         else
         {
-            std::cout << "Opponent scored!" << std::endl;
+            spdlog::info("Opponent scored!");
             scoreController->OpponentScored();
         }
 
-        std::cout << "---- New Score ----\n";
-        std::cout << "Player: " << scoreController->GetPlayerScore() << "\n";
-        std::cout << "Opponent: " << scoreController->GetOpponentScore() << std::endl;
+        spdlog::info("New Score: P {} - O {}", scoreController->GetPlayerScore(), scoreController->GetOpponentScore());
     }
 }
 
