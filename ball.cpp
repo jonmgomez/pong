@@ -9,6 +9,7 @@ namespace pong
 
 static constexpr float BALL_WIDTH = 25.0f;
 static constexpr float BALL_SPEED_BOUNCE_INCREMENT = 0.25f;
+static constexpr float Y_STARTING_POSITION_BOUNDS = 275.0f;
 
 void Ball::OnStart()
 {
@@ -27,7 +28,14 @@ void Ball::OnCollisionStart(GameObject& other)
 {
     if (other.GetInstanceName() == "ScoreArea")
     {
-        SetPosition(glm::vec3(0.0f));
+        mSpeed = BALL_START_SPEED;
+
+        const float yStartingPos = rand() % (static_cast<int>(Y_STARTING_POSITION_BOUNDS) * 2) - Y_STARTING_POSITION_BOUNDS;
+        SetPosition(glm::vec3(0.0f, yStartingPos, 0.0f));
+
+        const float xDir = (rand() % 2 == 0) ? 1.0f : -1.0f;
+        const float yDir = (rand() % 2 == 0) ? 1.0f : -1.0f;
+        mVelocity = glm::normalize(glm::vec3(xDir, yDir, 0.0f)) * mSpeed;
     }
     else if (other.GetInstanceName() == "Player" || other.GetInstanceName() == "Opponent")
     {
