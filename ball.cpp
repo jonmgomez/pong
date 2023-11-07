@@ -16,6 +16,7 @@ void Ball::OnStart()
     mMesh = std::make_unique<Rectangle>(BALL_WIDTH, BALL_WIDTH);
     mColliderBox = std::make_unique<ColliderBox>(BALL_WIDTH, BALL_WIDTH);
     SetInstanceName("Ball");
+    ResetBall();
 }
 
 void Ball::OnUpdate()
@@ -28,14 +29,7 @@ void Ball::OnCollisionStart(GameObject& other)
 {
     if (other.GetInstanceName() == "ScoreArea")
     {
-        mSpeed = BALL_START_SPEED;
-
-        const float yStartingPos = rand() % (static_cast<int>(Y_STARTING_POSITION_BOUNDS) * 2) - Y_STARTING_POSITION_BOUNDS;
-        SetPosition(glm::vec3(0.0f, yStartingPos, 0.0f));
-
-        const float xDir = (rand() % 2 == 0) ? 1.0f : -1.0f;
-        const float yDir = (rand() % 2 == 0) ? 1.0f : -1.0f;
-        mVelocity = glm::normalize(glm::vec3(xDir, yDir, 0.0f)) * mSpeed;
+        ResetBall();
     }
     else if (other.GetInstanceName() == "Player" || other.GetInstanceName() == "Opponent")
     {
@@ -69,6 +63,18 @@ void Ball::OnCollisionStart(GameObject& other)
         mSpeed += BALL_SPEED_BOUNCE_INCREMENT;
         mVelocity = glm::normalize(glm::vec3(mVelocity.x, -mVelocity.y, 0.0f)) * mSpeed;
     }
+}
+
+void Ball::ResetBall()
+{
+    mSpeed = BALL_START_SPEED;
+
+    const float yStartingPos = rand() % (static_cast<int>(Y_STARTING_POSITION_BOUNDS) * 2) - Y_STARTING_POSITION_BOUNDS;
+    SetPosition(glm::vec3(0.0f, yStartingPos, 0.0f));
+
+    const float xDir = (rand() % 2 == 0) ? 1.0f : -1.0f;
+    const float yDir = (rand() % 2 == 0) ? 1.0f : -1.0f;
+    mVelocity = glm::normalize(glm::vec3(xDir, yDir, 0.0f)) * mSpeed;
 }
 
 } // namespace pong

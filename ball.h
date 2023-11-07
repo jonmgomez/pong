@@ -13,6 +13,8 @@ private:
     glm::vec3 mVelocity { BALL_START_SPEED, BALL_START_SPEED, 0.0f };
     float mSpeed { BALL_START_SPEED };
 
+    void ResetBall();
+
 public:
     void OnStart() override;
     void OnUpdate() override;
