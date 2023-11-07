@@ -9,6 +9,7 @@
 namespace pong
 {
 
+static constexpr float PLAYER_SPEED = 2.5f;
 static constexpr glm::vec3 PLAYER_POSITION(-550.0f, 0.0f, 0.0f);
 
 void Player::OnStart()
@@ -21,16 +22,32 @@ void Player::OnStart()
 
 void Player::OnUpdate()
 {
+    mVelocity = glm::vec3(0.0f);
+
     if (Input::IsKeyPressed(GLFW_KEY_W))
     {
-        SetPosition(GetPosition() + glm::vec3(0.0f, mSpeed, 0.0f));
+        mVelocity = glm::vec3(0.0f, PLAYER_SPEED, 0.0f);
     }
     else if (Input::IsKeyPressed(GLFW_KEY_S))
     {
-        SetPosition(GetPosition() + glm::vec3(0.0f, -mSpeed, 0.0f));
+        mVelocity = glm::vec3(0.0f, -PLAYER_SPEED, 0.0f);
+    }
+
+    SetPosition(GetPosition() + mVelocity);
+}
+
+void Player::OnCollisionStart(GameObject& other)
+{
+    if (other.GetInstanceName() == "Wall")
+    {
+        // Undo movement to stop from going through wall
+        SetPosition(GetPosition() - mVelocity);
     }
 }
 
-
+void Player::OnCollisionStay(GameObject& other)
+{
+    OnCollisionStart(other);
+}
 
 } // namespace pong

@@ -62,7 +62,6 @@ void Pong::Init()
     opponentScoreArea->OnStart();
     opponentScoreArea->SetPosition(glm::vec3(-verticalWallX, 0.0f, 0.0f));
     scoreController->OnStart();
-
 }
 
 void Pong::GameLoop()

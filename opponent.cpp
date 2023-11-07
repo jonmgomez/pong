@@ -13,16 +13,12 @@ static constexpr float OPPONENT_HEIGHT = 225.0f;
 static constexpr float OPPONENT_SPEED = 4.5f;
 static constexpr glm::vec3 OPPONENT_POSITION(550.0f, 0.0f, 0.0f);
 
-static constexpr float OPPONENT_MOVEMENT_UPPER_BOUND = 275.0f;
-static constexpr float OPPONENT_MOVEMENT_LOWER_BOUND = -275.0f;
-
 void Opponent::OnStart()
 {
     mMesh = std::make_unique<Rectangle>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
     mColliderBox = std::make_unique<ColliderBox>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
     SetPosition(OPPONENT_POSITION);
     SetInstanceName("Opponent");
-    mSpeed = OPPONENT_SPEED;
     mBall = Pong::FindGameObject<Ball>();
 }
 
@@ -32,16 +28,33 @@ void Opponent::OnUpdate()
 
     if (mBall != nullptr)
     {
+        mVelocity = glm::vec3(0.0f);
+
         if (mBall->GetPosition().y > position.y)
         {
-            position.y += mSpeed;
+            mVelocity = glm::vec3(0.0f, OPPONENT_SPEED, 0.0f);
         }
         else if (mBall->GetPosition().y < position.y)
         {
-            position.y -= mSpeed;
+            mVelocity = glm::vec3(0.0f, -OPPONENT_SPEED, 0.0f);
         }
-        SetPosition(position);
+
+        SetPosition(position + mVelocity);
     }
+}
+
+void Opponent::OnCollisionStart(GameObject& other)
+{
+    if (other.GetInstanceName() == "Wall")
+    {
+        // Undo movement to stop from going through wall
+        SetPosition(GetPosition() - mVelocity);
+    }
+}
+
+void Opponent::OnCollisionStay(GameObject& other)
+{
+    OnCollisionStart(other);
 }
 
 } // namespace pong
