@@ -8,8 +8,10 @@ namespace pong
 class Ball : public GameObject
 {
 private:
-    float mXSpeed { 0.0f };
-    float mYSpeed { 0.0f };
+    static constexpr float BALL_START_SPEED = 4.0f;
+
+    glm::vec3 mVelocity { BALL_START_SPEED, BALL_START_SPEED, 0.0f };
+    float mSpeed { BALL_START_SPEED };
 
 public:
     void OnStart() override;
