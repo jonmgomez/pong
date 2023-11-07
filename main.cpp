@@ -40,7 +40,7 @@ nlohmann::json OpenJsonFile(const std::string& filePath)
     return jsonData;
 }
 
-GLFWwindow* SetupGLFW()
+GLFWwindow* SetupGLFW(const nlohmann::json& jsonData)
 {
     if (!glfwInit())
     {
@@ -63,8 +63,16 @@ GLFWwindow* SetupGLFW()
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, Input::KeyCallback);
 
-    //Uncomment this if you would like to blow up the GPU :D
-    // glfwSwapInterval(0);
+    bool fpsCapped = true;
+    if (jsonData.find("fps_capped") != jsonData.end())
+    {
+        fpsCapped = jsonData["fps_capped"];
+    }
+
+    if (!fpsCapped)
+    {
+        glfwSwapInterval(0);
+    }
 
     if (glewInit() != GLEW_OK)
     {
@@ -130,7 +138,7 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    GLFWwindow* window = SetupGLFW();
+    GLFWwindow* window = SetupGLFW(jsonData);
     if (window == nullptr)
     {
         return -1;
