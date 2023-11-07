@@ -94,7 +94,7 @@ GLFWwindow* SetupGLFW(const nlohmann::json& jsonData)
 
 void PlayPong(GLFWwindow* window)
 {
-    Pong::PongInit();
+    Pong::Init();
 
     double lastTime = glfwGetTime();
     int frameCount = 0;
@@ -103,7 +103,7 @@ void PlayPong(GLFWwindow* window)
     {
         Renderer::Clear();
 
-        Pong::PongGameLoop();
+        Pong::GameLoop();
 
         frameCount++;
 
@@ -118,7 +118,7 @@ void PlayPong(GLFWwindow* window)
     std::cout << "Total frames: " << frameCount << std::endl;
     std::cout << "Avg framerate: " << frameCount / elapsedTime << std::endl;
 
-    Pong::PongCleanup();
+    Pong::Cleanup();
     Renderer::Cleanup();
 }
 

@@ -17,7 +17,7 @@ Pong& Pong::GetInstance()
     return instance;
 }
 
-void Pong::PongInit()
+void Pong::Init()
 {
     auto player = std::make_shared<Player>();
     GetInstance().mGameObjects.push_back(player);
@@ -65,7 +65,7 @@ void Pong::PongInit()
 
 }
 
-void Pong::PongGameLoop()
+void Pong::GameLoop()
 {
     for (auto& gameObject : GetInstance().mGameObjects)
     {
@@ -80,7 +80,7 @@ void Pong::PongGameLoop()
     }
 }
 
-void Pong::PongCleanup()
+void Pong::Cleanup()
 {
     GetInstance().mGameObjects.clear();
 }

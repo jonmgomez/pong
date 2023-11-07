@@ -26,9 +26,9 @@ private:
 public:
     static Pong& GetInstance();
 
-    static void PongInit();
-    static void PongGameLoop();
-    static void PongCleanup();
+    static void Init();
+    static void GameLoop();
+    static void Cleanup();
 
     template<typename T>
     static std::shared_ptr<T> FindGameObject()
