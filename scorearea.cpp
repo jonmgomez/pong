@@ -18,30 +18,33 @@ ScoreArea::ScoreArea(float width, float height, bool playerSide)
     SetInstanceName("ScoreArea");
 }
 
+void ScoreArea::OnStart()
+{
+    mScoreController = Pong::FindGameObject<ScoreController>();
+    if (mScoreController == nullptr)
+    {
+        spdlog::error("ScoreController instance not found!");
+    }
+}
+
 void ScoreArea::OnCollisionStart(GameObject& other)
 {
     if (other.GetInstanceName() == "Ball")
     {
-        auto scoreController = Pong::FindGameObject<ScoreController>();
-
-        if (scoreController == nullptr)
-        {
-            spdlog::error("ScoreController not found!");
-            return;
-        }
+        ASSERT(mScoreController != nullptr);
 
         if (mIsPlayerScoreArea)
         {
             spdlog::info("Player scored!");
-            scoreController->PlayerScored();
+            mScoreController->PlayerScored();
         }
         else
         {
             spdlog::info("Opponent scored!");
-            scoreController->OpponentScored();
+            mScoreController->OpponentScored();
         }
 
-        spdlog::info("New Score: P {} - O {}", scoreController->GetPlayerScore(), scoreController->GetOpponentScore());
+        spdlog::info("New Score: P {} - O {}", mScoreController->GetPlayerScore(), mScoreController->GetOpponentScore());
     }
 }
 

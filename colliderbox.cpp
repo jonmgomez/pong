@@ -10,12 +10,14 @@ namespace pong
 {
 
 ColliderBox::ColliderBox(float width, float height)
+    : mWidth(width),
+      mHeight(height)
 {
     mBounds = {
-        glm::vec3(-width / 2.0f, -height / 2.0f, 0.0f),
-        glm::vec3( width / 2.0f,  height / 2.0f, 0.0f),
-        glm::vec3(-width / 2.0f,  height / 2.0f, 0.0f),
-        glm::vec3( width / 2.0f, -height / 2.0f, 0.0f)
+        glm::vec3(-mWidth / 2.0f, -mHeight / 2.0f, 0.0f),
+        glm::vec3( mWidth / 2.0f,  mHeight / 2.0f, 0.0f),
+        glm::vec3(-mWidth / 2.0f,  mHeight / 2.0f, 0.0f),
+        glm::vec3( mWidth / 2.0f, -mHeight / 2.0f, 0.0f)
     };
 
     mPositionBounds = mBounds;
@@ -60,9 +62,14 @@ bool ColliderBox::CheckPointInBounds(const glm::vec3& position) const
         && position.y >= mPositionBounds[0].y && position.y <= mPositionBounds[2].y;
 }
 
+float ColliderBox::GetWidth() const
+{
+    return mWidth;
+}
+
 float ColliderBox::GetHeight() const
 {
-    return mBounds[2].y - mBounds[0].y;
+    return mHeight;
 }
 
 } // namespace pong
