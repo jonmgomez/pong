@@ -19,14 +19,14 @@ Pong& Pong::GetInstance()
 
 void Pong::Init()
 {
-    auto player = std::make_shared<Player>();
-    GetInstance().mGameObjects.push_back(player);
+    auto player = std::make_unique<Player>();
+    GetInstance().mGameObjects.push_back(std::move(player));
 
-    auto opponent = std::make_shared<Opponent>();
-    GetInstance().mGameObjects.push_back(opponent);
+    auto opponent = std::make_unique<Opponent>();
+    GetInstance().mGameObjects.push_back(std::move(opponent));
 
-    auto ball = std::make_shared<Ball>();
-    GetInstance().mGameObjects.push_back(ball);
+    auto ball = std::make_unique<Ball>();
+    GetInstance().mGameObjects.push_back(std::move(ball));
 
     constexpr float horizontalWallWidth = 640 * 2;
     constexpr float horizontalWallHeight = 25;
@@ -35,33 +35,29 @@ void Pong::Init()
     constexpr float verticalWallHeight = 480 * 2;
     constexpr float verticalWallX = 640;
 
-    auto topWall = std::make_shared<Wall>(horizontalWallWidth, horizontalWallHeight);
-    GetInstance().mGameObjects.push_back(topWall);
-
-    auto bottomWall = std::make_shared<Wall>(horizontalWallWidth, horizontalWallHeight);
-    GetInstance().mGameObjects.push_back(bottomWall);
-
-    auto playerScoreArea = std::make_shared<ScoreArea>(verticalWallWidth, verticalWallHeight, true);
-    GetInstance().mGameObjects.push_back(playerScoreArea);
-
-    auto opponentScoreArea = std::make_shared<ScoreArea>(verticalWallWidth, verticalWallHeight, false);
-    GetInstance().mGameObjects.push_back(opponentScoreArea);
-
-    auto scoreController = std::make_shared<ScoreController>();
-    GetInstance().mGameObjects.push_back(scoreController);
-
-    player->OnStart();
-    opponent->OnStart();
-    ball->OnStart();
-    topWall->OnStart();
+    auto topWall = std::make_unique<Wall>(horizontalWallWidth, horizontalWallHeight);
     topWall->SetPosition(glm::vec3(0.0f, horizontalWallY, 0.0f));
-    bottomWall->OnStart();
+    GetInstance().mGameObjects.push_back(std::move(topWall));
+
+    auto bottomWall = std::make_unique<Wall>(horizontalWallWidth, horizontalWallHeight);
     bottomWall->SetPosition(glm::vec3(0.0f, -horizontalWallY, 0.0f));
-    playerScoreArea->OnStart();
+    GetInstance().mGameObjects.push_back(std::move(bottomWall));
+
+    auto playerScoreArea = std::make_unique<ScoreArea>(verticalWallWidth, verticalWallHeight, true);
     playerScoreArea->SetPosition(glm::vec3(verticalWallX, 0.0f, 0.0f));
-    opponentScoreArea->OnStart();
+    GetInstance().mGameObjects.push_back(std::move(playerScoreArea));
+
+    auto opponentScoreArea = std::make_unique<ScoreArea>(verticalWallWidth, verticalWallHeight, false);
     opponentScoreArea->SetPosition(glm::vec3(-verticalWallX, 0.0f, 0.0f));
-    scoreController->OnStart();
+    GetInstance().mGameObjects.push_back(std::move(opponentScoreArea));
+
+    auto scoreController = std::make_unique<ScoreController>();
+    GetInstance().mGameObjects.push_back(std::move(scoreController));
+
+    for (auto& gameObject : GetInstance().mGameObjects)
+    {
+        gameObject->OnStart();
+    }
 }
 
 void Pong::GameLoop()

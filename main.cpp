@@ -84,7 +84,7 @@ GLFWwindow* SetupGLFW(const nlohmann::json& jsonData)
     GLCall(glEnable(GL_BLEND));
     GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-    std::string glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+    const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
     spdlog::info("Using OpenGL version: {}", glVersion);
 
     int numTextureSlots;
@@ -133,8 +133,6 @@ int main(int argc, char* argv[])
 #else
     spdlog::set_level(spdlog::level::info);
 #endif
-
-    srand(static_cast<unsigned int>(time(nullptr)));
 
     if (argc != 2)
     {

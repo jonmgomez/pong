@@ -9,7 +9,7 @@
 namespace pong
 {
 
-void CollisionManager::ProcessCollisions(const std::vector<std::shared_ptr<GameObject>>& gameObjects)
+void CollisionManager::ProcessCollisions(const std::vector<std::unique_ptr<GameObject>>& gameObjects)
 {
     for (int index = 0; index < gameObjects.size(); index++)
     {

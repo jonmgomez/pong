@@ -19,7 +19,7 @@ private:
     Pong& operator=(Pong&&) = delete;
     ~Pong() = default;
 
-    std::vector<std::shared_ptr<GameObject>>mGameObjects {};
+    std::vector<std::unique_ptr<GameObject>>mGameObjects {};
     CollisionManager mCollisionManager {};
 
 public:
@@ -30,11 +30,11 @@ public:
     static void Cleanup();
 
     template<typename T>
-    static std::shared_ptr<T> FindGameObject()
+    static T* FindGameObject()
     {
         for (auto& gameObject : GetInstance().mGameObjects)
         {
-            auto castedGameObject = std::dynamic_pointer_cast<T>(gameObject);
+            auto castedGameObject = dynamic_cast<T*>(gameObject.get());
             if (castedGameObject != nullptr)
             {
                 return castedGameObject;

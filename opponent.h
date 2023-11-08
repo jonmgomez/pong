@@ -10,7 +10,7 @@ class Opponent : public GameObject
 {
 private:
     glm::vec3 mVelocity { 0.0f };
-    std::shared_ptr<Ball> mBall { nullptr };
+    Ball* mBall { nullptr };
 
 public:
     void OnStart() override;
