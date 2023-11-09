@@ -38,3 +38,4 @@ build*
 .vscode
 *.swp
 pong_config.json
+config.json
