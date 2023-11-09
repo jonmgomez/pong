@@ -12,7 +12,6 @@ namespace pong
 
 ScoreArea::ScoreArea(float width, float height, bool playerSide)
 {
-    mMesh = std::make_unique<Rectangle>(width, height);
     mColliderBox = std::make_unique<ColliderBox>(width, height);
     mIsPlayerScoreArea = playerSide;
     SetInstanceName("ScoreArea");

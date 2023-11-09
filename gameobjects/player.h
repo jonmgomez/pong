@@ -10,8 +10,8 @@ namespace pong
 class Player : public GameObject
 {
 private:
-    static constexpr float PLAYER_WIDTH = 25.0f;
-    static constexpr float PLAYER_HEIGHT = 225.0f;
+    static constexpr float PLAYER_WIDTH = 15.0f;
+    static constexpr float PLAYER_HEIGHT = 125.0f;
 
     glm::vec3 mVelocity { 0.0f };
     float mHeight { PLAYER_HEIGHT };

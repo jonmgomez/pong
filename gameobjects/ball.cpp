@@ -9,9 +9,9 @@
 namespace pong
 {
 
-static constexpr float BALL_WIDTH = 25.0f;
-static constexpr float BALL_SPEED_BOUNCE_INCREMENT = 0.25f;
-static constexpr float Y_STARTING_POSITION_BOUNDS = 275.0f;
+static constexpr float BALL_WIDTH = 20.0f;
+static constexpr float BALL_SPEED_BOUNCE_INCREMENT = 0.5f;
+static constexpr float Y_STARTING_POSITION_BOUNDS = 500.0f;
 
 std::random_device rd;
 std::mt19937 generator(rd());

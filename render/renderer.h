@@ -11,6 +11,9 @@
 namespace pong
 {
 
+static constexpr int SCREEN_WIDTH = 1280;
+static constexpr int SCREEN_HEIGHT = 960;
+
 class Renderer
 {
 private:

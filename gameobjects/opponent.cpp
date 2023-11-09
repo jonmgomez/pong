@@ -8,10 +8,10 @@
 namespace pong
 {
 
-static constexpr float OPPONENT_WIDTH = 25.0f;
-static constexpr float OPPONENT_HEIGHT = 225.0f;
-static constexpr float OPPONENT_SPEED = 4.5f;
-static constexpr glm::vec3 OPPONENT_POSITION(550.0f, 0.0f, 0.0f);
+static constexpr float OPPONENT_WIDTH = 15.0f;
+static constexpr float OPPONENT_HEIGHT = 125.0f;
+static constexpr float OPPONENT_SPEED = 6.0f;
+static constexpr glm::vec3 OPPONENT_POSITION(1125.0f, 0.0f, 0.0f);
 
 void Opponent::OnStart()
 {

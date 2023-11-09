@@ -28,12 +28,12 @@ void Pong::Init()
     auto ball = std::make_unique<Ball>();
     GetInstance().mGameObjects.push_back(std::move(ball));
 
-    constexpr float horizontalWallWidth = 640 * 2;
+    constexpr float horizontalWallWidth = 1280 * 2;
     constexpr float horizontalWallHeight = 25;
-    constexpr float horizontalWallY = 480;
+    constexpr float horizontalWallY = 960;
     constexpr float verticalWallWidth = 25;
-    constexpr float verticalWallHeight = 480 * 2;
-    constexpr float verticalWallX = 640;
+    constexpr float verticalWallHeight = 960 * 2;
+    constexpr float verticalWallX = 1280;
 
     auto topWall = std::make_unique<Wall>(horizontalWallWidth, horizontalWallHeight);
     topWall->SetPosition(glm::vec3(0.0f, horizontalWallY, 0.0f));

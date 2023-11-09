@@ -53,7 +53,7 @@ GLFWwindow* SetupGLFW(const nlohmann::json& jsonData)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(640, 480, "Hello World", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hello World", nullptr, nullptr);
     if (window == nullptr)
     {
         spdlog::error("glfwCreateWindow() failure");

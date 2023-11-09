@@ -13,6 +13,9 @@
 namespace pong
 {
 
+static constexpr float SCREEN_X_COORDS = SCREEN_WIDTH;
+static constexpr float SCREEN_Y_COORDS = SCREEN_HEIGHT;
+
 Renderer& Renderer::GetInstance()
 {
     static Renderer sInstance;
@@ -36,7 +39,7 @@ void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const glm::vec
     ib.Bind();
 
     GetInstance().mShader->Bind();
-    const glm::mat4 proj = glm::ortho(-640.0f, 640.0f, -480.0f, 480.0f, -1.0f, 1.0f);
+    const glm::mat4 proj = glm::ortho(-SCREEN_X_COORDS, SCREEN_X_COORDS, -SCREEN_Y_COORDS, SCREEN_Y_COORDS, -1.0f, 1.0f);
     const glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f));
     const glm::mat4 model = glm::translate(glm::mat4(1.0f), position);
 

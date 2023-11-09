@@ -9,8 +9,8 @@
 namespace pong
 {
 
-static constexpr float PLAYER_SPEED = 2.5f;
-static constexpr glm::vec3 PLAYER_POSITION(-550.0f, 0.0f, 0.0f);
+static constexpr float PLAYER_SPEED = 6.0f;
+static constexpr glm::vec3 PLAYER_POSITION(-1125.0f, 0.0f, 0.0f);
 
 void Player::OnStart()
 {
