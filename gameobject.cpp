@@ -73,8 +73,10 @@ bool GameObject::CheckForCollision(GameObject& other)
 
 void GameObject::Render() const
 {
-    ASSERT(mMesh != nullptr);
-    mMesh->Draw(mPosition);
+    if (mMesh != nullptr)
+    {
+        mMesh->Draw(mPosition);
+    }
 }
 
 } // namespace pong

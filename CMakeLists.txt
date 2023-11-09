@@ -21,6 +21,8 @@ set(SOURCES
     rectangle.cpp
     renderer.cpp
     renderutils.cpp
+    scorearea.cpp
+    scorecontroller.cpp
     shader.cpp
     texture.cpp
     vertexarray.cpp
@@ -40,6 +42,7 @@ target_link_libraries(pong opengl32)
 target_link_libraries(pong glew)
 target_link_libraries(pong glm)
 target_link_libraries(pong nlohmann_json)
+target_link_libraries(pong spdlog)
 
 # I would use /Wall here but unfortunately the msvc headers trigger some pedantic warnings,
 # and I would like to keep /WX as well. Since I don't have an easy way to ignore the warnings

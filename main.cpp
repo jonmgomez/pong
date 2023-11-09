@@ -9,6 +9,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <nlohmann/json.hpp>
+#include <spdlog/spdlog.h>
 
 #include <fstream>
 #include <iostream>
@@ -21,7 +22,7 @@ nlohmann::json OpenJsonFile(const std::string& filePath)
     std::ifstream jsonFile(filePath);
     if (!jsonFile.is_open())
     {
-        std::cerr << "Failed to open JSON file: " << filePath << std::endl;
+        spdlog::error("Failed to open JSON file: {}", filePath);
         return nullptr;
     }
 
@@ -33,18 +34,18 @@ nlohmann::json OpenJsonFile(const std::string& filePath)
     }
     catch (const nlohmann::json::parse_error& e)
     {
-        std::cerr << "JSON parsing error: " << e.what() << std::endl;
+        spdlog::error("JSON parsing error: {}", e.what());
         return nullptr;
     }
 
     return jsonData;
 }
 
-GLFWwindow* SetupGLFW()
+GLFWwindow* SetupGLFW(const nlohmann::json& jsonData)
 {
     if (!glfwInit())
     {
-        std::cerr << "glfwInit() failure" << std::endl;
+        spdlog::error("glfwInit() failure");
         return nullptr;
     }
 
@@ -55,7 +56,7 @@ GLFWwindow* SetupGLFW()
     GLFWwindow* window = glfwCreateWindow(640, 480, "Hello World", nullptr, nullptr);
     if (window == nullptr)
     {
-        std::cerr << "glfwCreateWindow() failure" << std::endl;
+        spdlog::error("glfwCreateWindow() failure");
         glfwTerminate();
         return nullptr;
     }
@@ -63,31 +64,39 @@ GLFWwindow* SetupGLFW()
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, Input::KeyCallback);
 
-    //Uncomment this if you would like to blow up the GPU :D
-    // glfwSwapInterval(0);
+    bool fpsCapped = true;
+    if (jsonData.find("fps_capped") != jsonData.end())
+    {
+        fpsCapped = jsonData["fps_capped"];
+    }
+
+    if (!fpsCapped)
+    {
+        glfwSwapInterval(0);
+    }
 
     if (glewInit() != GLEW_OK)
     {
-        std::cerr << "glewInit() failure" << std::endl;
+        spdlog::error("glewInit() failure");
         return nullptr;
     }
 
     GLCall(glEnable(GL_BLEND));
     GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-    std::cout << "Using OpenGL version: " << glGetString(GL_VERSION) << std::endl;
+    const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+    spdlog::info("Using OpenGL version: {}", glVersion);
 
     int numTextureSlots;
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &numTextureSlots);
-    std::cout << "Texture Slots Available: " << numTextureSlots << std::endl;
+    spdlog::info("Texture Slots Available: {}", numTextureSlots);
 
     return window;
 }
 
 void PlayPong(GLFWwindow* window)
 {
-    Pong pong;
-    pong.PongInit();
+    Pong::Init();
 
     double lastTime = glfwGetTime();
     int frameCount = 0;
@@ -96,7 +105,7 @@ void PlayPong(GLFWwindow* window)
     {
         Renderer::Clear();
 
-        pong.PongGameLoop();
+        Pong::GameLoop();
 
         frameCount++;
 
@@ -107,10 +116,11 @@ void PlayPong(GLFWwindow* window)
     double currentTime = glfwGetTime();
     double elapsedTime = currentTime - lastTime;
 
-    std::cout << "Elapsed time: " << elapsedTime << std::endl;
-    std::cout << "Total frames: " << frameCount << std::endl;
-    std::cout << "Avg framerate: " << frameCount / elapsedTime << std::endl;
+    spdlog::info("Elapsed time: {}", elapsedTime);
+    spdlog::info("Total frames: {}", frameCount);
+    spdlog::info("Avg framerate: {}", frameCount / elapsedTime);
 
+    Pong::Cleanup();
     Renderer::Cleanup();
 }
 
@@ -118,9 +128,15 @@ int main(int argc, char* argv[])
 {
     std::cout << "Hello World!" << std::endl;
 
+#ifdef DEBUG
+    spdlog::set_level(spdlog::level::debug);
+#else
+    spdlog::set_level(spdlog::level::info);
+#endif
+
     if (argc != 2)
     {
-        std::cerr << "Usage: " << argv[0] << " <json_file_path>" << std::endl;
+        spdlog::error("Usage: {} <json_file_path>", argv[0]);
         return -1;
     }
 
@@ -130,7 +146,7 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    GLFWwindow* window = SetupGLFW();
+    GLFWwindow* window = SetupGLFW(jsonData);
     if (window == nullptr)
     {
         return -1;
@@ -138,7 +154,7 @@ int main(int argc, char* argv[])
 
     if (jsonData.find("shader") == jsonData.end())
     {
-        std::cerr << "Config file does not contain \"shader\" key." << std::endl;
+        spdlog::error("Config file does not contain \"shader\" key.");
         return -1;
     }
 
@@ -146,7 +162,7 @@ int main(int argc, char* argv[])
     std::ifstream shaderFile(shaderPath);
     if (shaderFile.fail())
     {
-        std::cerr << "Failed to open shader file: " << shaderPath << std::endl;
+        spdlog::error("Failed to open shader file: {}", shaderPath);
         return -1;
     }
 
