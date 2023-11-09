@@ -2,6 +2,7 @@ set(SOURCES
     circle.cpp
     colliderbox.cpp
     collisionmanager.cpp
+    config.cpp
     input.cpp
     logger.cpp
     mesh.cpp
