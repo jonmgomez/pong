@@ -7,50 +7,32 @@ set(CMAKE_CXX_STANDARD_REQUIRED 17)
 
 set(SOURCES
     main.cpp
-    ball.cpp
-    circle.cpp
-    colliderbox.cpp
-    collisionmanager.cpp
-    gameobject.cpp
-    indexbuffer.cpp
-    input.cpp
-    mesh.cpp
-    opponent.cpp
-    player.cpp
-    pong.cpp
-    rectangle.cpp
-    renderer.cpp
-    renderutils.cpp
-    scorearea.cpp
-    scorecontroller.cpp
-    shader.cpp
-    texture.cpp
-    vertexarray.cpp
-    vertexbuffer.cpp
-    vertexbufferlayout.cpp
-    wall.cpp
 )
 
-add_executable(pong ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES})
 
-add_subdirectory(tps)
-
-include_directories(glfw-3.3.8/include)
-
-target_link_libraries(pong glfw)
-target_link_libraries(pong opengl32)
-target_link_libraries(pong glew)
-target_link_libraries(pong glm)
-target_link_libraries(pong nlohmann_json)
-target_link_libraries(pong spdlog)
+add_library(compile_flags INTERFACE)
 
 # I would use /Wall here but unfortunately the msvc headers trigger some pedantic warnings,
 # and I would like to keep /WX as well. Since I don't have an easy way to ignore the warnings
 # for the system libraries, just use /W4. Seems like /Wall has some weird extra warnings anyways.
-target_compile_options(pong PRIVATE /W4 /WX /MP)
+target_compile_options(compile_flags INTERFACE /W4 /WX /MP)
 
-target_compile_definitions(pong PRIVATE
+target_compile_definitions(compile_flags INTERFACE
     $<$<CONFIG:Debug>:
         DEBUG=1
     >
+)
+
+add_subdirectory(tps)
+
+add_subdirectory(render)
+add_subdirectory(engine)
+add_subdirectory(gameobjects)
+
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+        render
+        engine
+        compile_flags
 )

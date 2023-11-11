@@ -1,0 +1,24 @@
+set(SOURCES
+    ball.cpp
+    gameobject.cpp
+    opponent.cpp
+    player.cpp
+    scorearea.cpp
+    scorecontroller.cpp
+    wall.cpp
+)
+
+add_library(gameobjects ${SOURCES})
+
+target_link_libraries(gameobjects
+    PRIVATE
+        render
+        engine
+)
+
+target_include_directories(gameobjects
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+

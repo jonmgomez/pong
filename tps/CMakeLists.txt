@@ -1,5 +1,9 @@
 include(FetchContent)
 
+if(POLICY CMP0135)
+    cmake_policy(SET CMP0135 NEW)
+endif()
+
 FetchContent_Declare(glfw
     URL ${CMAKE_SOURCE_DIR}/tps/glfw-3.3.8.zip
 )
