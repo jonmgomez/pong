@@ -2,6 +2,7 @@
 
 #include "pong.h"
 #include "rectangle.h"
+#include "timer.h"
 
 #include <glm/glm.hpp>
 
@@ -10,7 +11,7 @@ namespace pong
 
 static constexpr float OPPONENT_WIDTH = 15.0f;
 static constexpr float OPPONENT_HEIGHT = 125.0f;
-static constexpr float OPPONENT_SPEED = 6.0f;
+static constexpr float OPPONENT_SPEED = 850.0f;
 static constexpr glm::vec3 OPPONENT_POSITION(1125.0f, 0.0f, 0.0f);
 
 void Opponent::OnStart()
@@ -39,7 +40,7 @@ void Opponent::OnUpdate()
             mVelocity = glm::vec3(0.0f, -OPPONENT_SPEED, 0.0f);
         }
 
-        SetPosition(position + mVelocity);
+        SetPosition(position + mVelocity * Timer::frameTime);
     }
 }
 
@@ -48,7 +49,7 @@ void Opponent::OnCollisionStart(GameObject& other)
     if (other.GetInstanceName() == "Wall")
     {
         // Undo movement to stop from going through wall
-        SetPosition(GetPosition() - mVelocity);
+        SetPosition(GetPosition() - mVelocity * Timer::frameTime);
     }
 }
 

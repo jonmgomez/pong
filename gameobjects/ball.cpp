@@ -4,6 +4,7 @@
 #include "player.h"
 #include "pong.h"
 #include "rectangle.h"
+#include "timer.h"
 
 #include <spdlog/spdlog.h>
 
@@ -13,7 +14,7 @@ namespace pong
 {
 
 static constexpr float BALL_WIDTH = 20.0f;
-static constexpr float BALL_SPEED_BOUNCE_INCREMENT = 0.5f;
+static constexpr float BALL_SPEED_BOUNCE_INCREMENT = 75.0f;
 static constexpr float Y_STARTING_POSITION_BOUNDS = 500.0f;
 
 std::random_device rd;
@@ -31,7 +32,7 @@ void Ball::OnStart()
 
 void Ball::OnUpdate()
 {
-    const glm::vec3 newPosition = GetPosition() + mVelocity;
+    const glm::vec3 newPosition = GetPosition() + mVelocity * Timer::frameTime;
     SetPosition(newPosition);
 }
 

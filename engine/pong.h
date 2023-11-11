@@ -25,6 +25,7 @@ private:
     std::vector<std::unique_ptr<GameObject>>mGameObjects {};
     CollisionManager mCollisionManager {};
     Timer mTimer {};
+    bool mFirstFrame { true };
 
 public:
     static Pong& GetInstance();

@@ -2,17 +2,23 @@
 
 #include <algorithm>
 #include <chrono>
+#include <iostream>
 #include <memory>
 
 namespace pong
 {
 
 static constexpr int MS_TO_US = 1000;
+static constexpr int S_TO_US = 1000000;
+
+float Timer::frameTime = 1.0f;
 
 void Timer::HandleTimerCallbacks()
 {
     const auto timeWaited = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - mLastTime);
     mLastTime = std::chrono::system_clock::now();
+
+    Timer::frameTime = static_cast<float>(timeWaited.count()) / static_cast<float>(S_TO_US);
 
     const int timeWaitedUs = static_cast<int>(timeWaited.count());
     for (auto& timerRequest : mActiveTimers)

@@ -62,8 +62,8 @@ void Pong::Init()
 
 void Pong::GameLoop()
 {
-    GetInstance().mCollisionManager.ProcessCollisions(GetInstance().mGameObjects);
     GetInstance().mTimer.HandleTimerCallbacks();
+    GetInstance().mCollisionManager.ProcessCollisions(GetInstance().mGameObjects);
 
     for (auto& gameObject : GetInstance().mGameObjects)
     {
