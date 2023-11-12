@@ -2,7 +2,10 @@
 
 #include "opponent.h"
 #include "player.h"
+#include "pong.h"
 #include "rectangle.h"
+
+#include <spdlog/spdlog.h>
 
 #include <random>
 
@@ -36,7 +39,7 @@ void Ball::OnCollisionStart(GameObject& other)
 {
     if (other.GetInstanceName() == "ScoreArea")
     {
-        ResetBall();
+        Pong::SetTimeout(GetId(), 3000, std::bind(&Ball::ResetBall, this));
     }
     else if (other.GetInstanceName() == "Player" || other.GetInstanceName() == "Opponent")
     {

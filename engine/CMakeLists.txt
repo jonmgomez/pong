@@ -6,6 +6,7 @@ set(SOURCES
     mesh.cpp
     pong.cpp
     rectangle.cpp
+    timer.cpp
 )
 
 add_library(engine ${SOURCES})

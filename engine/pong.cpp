@@ -62,12 +62,13 @@ void Pong::Init()
 
 void Pong::GameLoop()
 {
+    GetInstance().mCollisionManager.ProcessCollisions(GetInstance().mGameObjects);
+    GetInstance().mTimer.HandleTimerCallbacks();
+
     for (auto& gameObject : GetInstance().mGameObjects)
     {
         gameObject->OnUpdate();
     }
-
-    GetInstance().mCollisionManager.ProcessCollisions(GetInstance().mGameObjects);
 
     for (auto& gameObject : GetInstance().mGameObjects)
     {
@@ -78,6 +79,11 @@ void Pong::GameLoop()
 void Pong::Cleanup()
 {
     GetInstance().mGameObjects.clear();
+}
+
+void Pong::SetTimeout(int gameObjectId, int timeoutMs, std::function<void()> callback)
+{
+    GetInstance().mTimer.AddTimer(gameObjectId, timeoutMs, callback);
 }
 
 } // namespace pong

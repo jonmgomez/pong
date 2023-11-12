@@ -2,10 +2,12 @@
 
 #include "collisionmanager.h"
 #include "gameobject.h"
+#include "timer.h"
 #include "utils.h"
 
 #include <memory>
 #include <vector>
+#include <functional>
 
 namespace pong
 {
@@ -22,6 +24,7 @@ private:
 
     std::vector<std::unique_ptr<GameObject>>mGameObjects {};
     CollisionManager mCollisionManager {};
+    Timer mTimer {};
 
 public:
     static Pong& GetInstance();
@@ -43,6 +46,8 @@ public:
         }
         return nullptr;
     }
+
+    static void SetTimeout(int gameObjectId, int timeoutMs, std::function<void()> callback);
 };
 
 } // namespace pong
