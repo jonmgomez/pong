@@ -20,6 +20,8 @@ target_link_libraries(render
         spdlog
         nlohmann_json
         compile_flags
+    PRIVATE
+        engine
 )
 
 target_include_directories(render

@@ -1,6 +1,8 @@
 #include "renderutils.h"
 
-#include <iostream>
+#include <GL/glew.h>
+
+#include <spdlog/spdlog.h>
 
 namespace pong
 {
@@ -14,8 +16,7 @@ bool GLLogCall(const char *function, const char *file, int line)
 {
     while (GLenum error = glGetError())
     {
-        std::cout << "[OpenGL Error] (" << error << ")" <<
-            " " << function << " " << file << ":" << line << std::endl;
+        spdlog::error("[OpenGL Error] ({}) {} {}:{}", error, function, file, line);
         return false;
     }
     return true;

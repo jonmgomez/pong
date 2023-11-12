@@ -2,6 +2,7 @@
 
 #include "collisionmanager.h"
 #include "gameobject.h"
+#include "utils.h"
 
 #include <memory>
 #include <vector>
