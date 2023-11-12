@@ -1,5 +1,7 @@
 #include "timer.h"
 
+#include <spdlog/spdlog.h>
+
 #include <algorithm>
 #include <chrono>
 #include <iostream>

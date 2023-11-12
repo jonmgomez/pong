@@ -2,7 +2,6 @@
 
 #include "opponent.h"
 #include "player.h"
-#include "pong.h"
 #include "rectangle.h"
 #include "timer.h"
 
@@ -16,6 +15,8 @@ namespace pong
 static constexpr float BALL_WIDTH = 20.0f;
 static constexpr float BALL_SPEED_BOUNCE_INCREMENT = 75.0f;
 static constexpr float Y_STARTING_POSITION_BOUNDS = 500.0f;
+
+static constexpr int BALL_RESET_WAIT_MS = 3000;
 
 std::random_device rd;
 std::mt19937 generator(rd());
@@ -40,7 +41,7 @@ void Ball::OnCollisionStart(GameObject& other)
 {
     if (other.GetInstanceName() == "ScoreArea")
     {
-        Pong::SetTimeout(GetId(), 3000, std::bind(&Ball::ResetBall, this));
+        SetTimeout(BALL_RESET_WAIT_MS, std::bind(&Ball::ResetBall, this));
     }
     else if (other.GetInstanceName() == "Player" || other.GetInstanceName() == "Opponent")
     {
