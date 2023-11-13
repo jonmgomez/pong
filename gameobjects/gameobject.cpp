@@ -72,9 +72,9 @@ bool GameObject::CheckForCollision(GameObject& other)
     return false;
 }
 
-void GameObject::SetTimeout(int timeoutMs, std::function<void()> callback)
+void GameObject::SetTimeout(std::chrono::duration<double> timeout, std::function<void()> callback)
 {
-    Pong::SetTimeout(GetId(), timeoutMs, callback);
+    Pong::SetTimeout(GetId(), timeout, callback);
 }
 
 void GameObject::Render() const

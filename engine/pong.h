@@ -5,6 +5,7 @@
 #include "timer.h"
 #include "utils.h"
 
+#include <chrono>
 #include <memory>
 #include <vector>
 #include <functional>
@@ -51,7 +52,7 @@ public:
         return nullptr;
     }
 
-    static void SetTimeout(int gameObjectId, int timeoutMs, std::function<void()> callback);
+    static void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
 };
 
 } // namespace pong

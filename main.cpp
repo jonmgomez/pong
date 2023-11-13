@@ -4,8 +4,8 @@
 #include "pong.h"
 #include "renderer.h"
 #include "renderutils.h"
-#include "logger.h"
 #include "timer.h"
+#include "logger.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

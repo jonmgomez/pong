@@ -91,9 +91,9 @@ void Pong::Cleanup()
     GetInstance().mGameObjects.clear();
 }
 
-void Pong::SetTimeout(int gameObjectId, int timeoutMs, std::function<void()> callback)
+void Pong::SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback)
 {
-    GetInstance().mTimer.AddTimer(gameObjectId, timeoutMs, callback);
+    GetInstance().mTimer.AddTimer(gameObjectId, timeout, callback);
 }
 
 } // namespace pong
