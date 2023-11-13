@@ -41,7 +41,10 @@ void Ball::OnCollisionStart(GameObject& other)
 {
     if (other.GetInstanceName() == "ScoreArea")
     {
-        SetTimeout(BALL_RESET_WAIT_MS, std::bind(&Ball::ResetBall, this));
+        SetTimeout(BALL_RESET_WAIT_MS, [this] ()
+        {
+            this->ResetBall();
+        });
     }
     else if (other.GetInstanceName() == "Player" || other.GetInstanceName() == "Opponent")
     {

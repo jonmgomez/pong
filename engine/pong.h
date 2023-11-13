@@ -22,6 +22,9 @@ private:
     Pong& operator=(Pong&&) = delete;
     ~Pong() = default;
 
+    CollisionManager& GetCollisionManager();
+    Timer& GetTimer();
+
     std::vector<std::unique_ptr<GameObject>>mGameObjects {};
     CollisionManager mCollisionManager {};
     Timer mTimer {};

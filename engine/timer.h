@@ -9,10 +9,12 @@
 namespace pong
 {
 
+static constexpr int kInvalid = -1;
+
 struct TimerRequest
 {
-    int mGameObjectId { -1 };
-    int mTimeoutUs { -1 };
+    int mGameObjectId { kInvalid };
+    int mTimeoutUs { kInvalid };
     std::function<void()> mCallback {};
 
     TimerRequest(int gameObjectId, int timeoutUs, std::function<void()> callback)
@@ -26,7 +28,7 @@ struct TimerRequest
 class Timer
 {
 private:
-    std::vector<std::shared_ptr<TimerRequest>> mActiveTimers {};
+    std::vector<TimerRequest> mActiveTimers {};
     std::chrono::system_clock::time_point mLastTime { std::chrono::system_clock::now() };
 
 public:
