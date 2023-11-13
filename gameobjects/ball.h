@@ -8,7 +8,7 @@ namespace pong
 class Ball : public GameObject
 {
 private:
-    static constexpr float BALL_START_SPEED = 7.5f;
+    static constexpr float BALL_START_SPEED = 1000.0f;
 
     glm::vec3 mVelocity { BALL_START_SPEED, BALL_START_SPEED, 0.0f };
     float mSpeed { BALL_START_SPEED };

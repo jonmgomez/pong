@@ -6,6 +6,8 @@
 
 #include <glm/glm.hpp>
 
+#include <chrono>
+#include <functional>
 #include <memory>
 
 namespace pong
@@ -42,6 +44,7 @@ public:
     void SetInstanceName(const std::string& name);
 
     bool CheckForCollision(GameObject& other);
+    void SetTimeout(std::chrono::duration<double> timeout, std::function<void()> callback);
 
     void Render() const;
     template <typename T>

@@ -1,6 +1,7 @@
 #include "gameobject.h"
 
 #include "renderutils.h"
+#include "pong.h"
 
 namespace pong
 {
@@ -69,6 +70,11 @@ bool GameObject::CheckForCollision(GameObject& other)
         return mColliderBox->CheckForCollision(*other.mColliderBox);
     }
     return false;
+}
+
+void GameObject::SetTimeout(std::chrono::duration<double> timeout, std::function<void()> callback)
+{
+    Pong::SetTimeout(GetId(), timeout, callback);
 }
 
 void GameObject::Render() const
