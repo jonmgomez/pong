@@ -5,6 +5,7 @@ set(SOURCES
     input.cpp
     mesh.cpp
     pong.cpp
+    realtimelogger.cpp
     rectangle.cpp
 )
 
