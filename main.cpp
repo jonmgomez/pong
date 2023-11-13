@@ -5,6 +5,7 @@
 #include "renderer.h"
 #include "renderutils.h"
 #include "logger.h"
+#include "timer.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -132,9 +133,9 @@ int main(int argc, char* argv[])
     gLogger = std::make_unique<Logger>();
     gRTLogger = std::make_unique<RealTimeLogger>();
 
-    Log(spdlog::level::info, "Hello World! {}", 1000);
-    RealTimeLog(spdlog::level::info, "Hello World! {}", 1);
-    RealTimeLog(spdlog::level::warn, "Testing RT Logger {} {}", 1.1f, 5.5);
+    LogInfo("Hello World! {}", 1000);
+    RealTimeLogInfo("Hello World! {}", 1);
+    RealTimeLogWarning("Testing RT Logger {} {}", 1.1f, 5.5);
 
 #ifdef DEBUG
     spdlog::set_level(spdlog::level::debug);

@@ -7,6 +7,7 @@ set(SOURCES
     pong.cpp
     realtimelogger.cpp
     rectangle.cpp
+    timer.cpp
 )
 
 add_library(engine ${SOURCES})

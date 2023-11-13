@@ -17,6 +17,16 @@ Pong& Pong::GetInstance()
     return instance;
 }
 
+CollisionManager& Pong::GetCollisionManager()
+{
+    return mCollisionManager;
+}
+
+Timer& Pong::GetTimer()
+{
+    return mTimer;
+}
+
 void Pong::Init()
 {
     auto player = std::make_unique<Player>();
@@ -62,12 +72,13 @@ void Pong::Init()
 
 void Pong::GameLoop()
 {
+    Pong::GetInstance().GetTimer().HandleTimerCallbacks();
+    Pong::GetInstance().GetCollisionManager().ProcessCollisions(GetInstance().mGameObjects);
+
     for (auto& gameObject : GetInstance().mGameObjects)
     {
         gameObject->OnUpdate();
     }
-
-    GetInstance().mCollisionManager.ProcessCollisions(GetInstance().mGameObjects);
 
     for (auto& gameObject : GetInstance().mGameObjects)
     {
@@ -78,6 +89,11 @@ void Pong::GameLoop()
 void Pong::Cleanup()
 {
     GetInstance().mGameObjects.clear();
+}
+
+void Pong::SetTimeout(int gameObjectId, int timeoutMs, std::function<void()> callback)
+{
+    GetInstance().mTimer.AddTimer(gameObjectId, timeoutMs, callback);
 }
 
 } // namespace pong

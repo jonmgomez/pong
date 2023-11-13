@@ -1,8 +1,12 @@
 #include "ball.h"
 
+#include "logger.h"
 #include "opponent.h"
 #include "player.h"
 #include "rectangle.h"
+#include "timer.h"
+
+#include <spdlog/spdlog.h>
 
 #include <random>
 
@@ -10,8 +14,10 @@ namespace pong
 {
 
 static constexpr float BALL_WIDTH = 20.0f;
-static constexpr float BALL_SPEED_BOUNCE_INCREMENT = 0.5f;
+static constexpr float BALL_SPEED_BOUNCE_INCREMENT = 75.0f;
 static constexpr float Y_STARTING_POSITION_BOUNDS = 500.0f;
+
+static constexpr int BALL_RESET_WAIT_MS = 3000;
 
 std::random_device rd;
 std::mt19937 generator(rd());
@@ -28,15 +34,74 @@ void Ball::OnStart()
 
 void Ball::OnUpdate()
 {
-    const glm::vec3 newPosition = GetPosition() + mVelocity;
+    const glm::vec3 newPosition = GetPosition() + mVelocity * Timer::frameTime;
     SetPosition(newPosition);
+
+    // printf("Position: %f, %f\n", newPosition.x, newPosition.y);
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
+    // LogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
+    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
 }
 
 void Ball::OnCollisionStart(GameObject& other)
 {
     if (other.GetInstanceName() == "ScoreArea")
     {
-        ResetBall();
+        SetTimeout(BALL_RESET_WAIT_MS, [this] ()
+        {
+            this->ResetBall();
+        });
     }
     else if (other.GetInstanceName() == "Player" || other.GetInstanceName() == "Opponent")
     {

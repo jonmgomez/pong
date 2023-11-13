@@ -58,20 +58,92 @@ inline std::unique_ptr<Logger> gLogger { nullptr };
 inline std::unique_ptr<RealTimeLogger> gRTLogger { nullptr };
 
 template<typename... Args>
-void Log(int level, const char* format, Args... args)
+void LogDebug(const char* format, Args... args)
 {
     if (gLogger != nullptr)
     {
-        gLogger->Log(level, format, args...);
+        gLogger->Log(spdlog::level::debug, format, args...);
     }
-};
+}
 
 template<typename... Args>
-void RealTimeLog(int level, const char* format, Args... args)
+void LogInfo(const char* format, Args... args)
+{
+    if (gLogger != nullptr)
+    {
+        gLogger->Log(spdlog::level::info, format, args...);
+    }
+}
+
+template<typename... Args>
+void LogWarning(const char* format, Args... args)
+{
+    if (gLogger != nullptr)
+    {
+        gLogger->Log(spdlog::level::warn, format, args...);
+    }
+}
+
+template<typename... Args>
+void LogCritical(const char* format, Args... args)
+{
+    if (gLogger != nullptr)
+    {
+        gLogger->Log(spdlog::level::critical, format, args...);
+    }
+}
+
+template<typename... Args>
+void LogError(const char* format, Args... args)
+{
+    if (gLogger != nullptr)
+    {
+        gLogger->Log(spdlog::level::err, format, args...);
+    }
+}
+
+template<typename... Args>
+void RealTimeLogDebug(const char* format, Args... args)
 {
     if (gRTLogger != nullptr)
     {
-        gRTLogger->Log(level, format, args...);
+        gRTLogger->Log(spdlog::level::debug, format, args...);
+    }
+}
+
+template<typename... Args>
+void RealTimeLogInfo(const char* format, Args... args)
+{
+    if (gRTLogger != nullptr)
+    {
+        gRTLogger->Log(spdlog::level::info, format, args...);
+    }
+}
+
+template<typename... Args>
+void RealTimeLogWarning(const char* format, Args... args)
+{
+    if (gRTLogger != nullptr)
+    {
+        gRTLogger->Log(spdlog::level::warn, format, args...);
+    }
+}
+
+template<typename... Args>
+void RealTimeLogCritical(const char* format, Args... args)
+{
+    if (gRTLogger != nullptr)
+    {
+        gRTLogger->Log(spdlog::level::critical, format, args...);
+    }
+}
+
+template<typename... Args>
+void RealTimeLogError(const char* format, Args... args)
+{
+    if (gRTLogger != nullptr)
+    {
+        gRTLogger->Log(spdlog::level::err, format, args...);
     }
 }
 

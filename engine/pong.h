@@ -2,10 +2,12 @@
 
 #include "collisionmanager.h"
 #include "gameobject.h"
+#include "timer.h"
 #include "utils.h"
 
 #include <memory>
 #include <vector>
+#include <functional>
 
 namespace pong
 {
@@ -20,8 +22,13 @@ private:
     Pong& operator=(Pong&&) = delete;
     ~Pong() = default;
 
+    CollisionManager& GetCollisionManager();
+    Timer& GetTimer();
+
     std::vector<std::unique_ptr<GameObject>>mGameObjects {};
     CollisionManager mCollisionManager {};
+    Timer mTimer {};
+    bool mFirstFrame { true };
 
 public:
     static Pong& GetInstance();
@@ -43,6 +50,8 @@ public:
         }
         return nullptr;
     }
+
+    static void SetTimeout(int gameObjectId, int timeoutMs, std::function<void()> callback);
 };
 
 } // namespace pong

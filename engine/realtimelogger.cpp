@@ -12,13 +12,13 @@
 namespace pong
 {
 
-static constexpr std::chrono::milliseconds LOG_PRINT_INTERVAL { 1000 };
+static constexpr std::chrono::milliseconds LOG_PRINT_INTERVAL_MS { 1 };
 
 void RealTimeLogger::Run()
 {
     while (mAlive)
     {
-        std::this_thread::sleep_for(LOG_PRINT_INTERVAL);
+        std::this_thread::sleep_for(LOG_PRINT_INTERVAL_MS);
 
         PrintLogs();
     }
