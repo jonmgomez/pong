@@ -36,62 +36,6 @@ void Ball::OnUpdate()
 {
     const glm::vec3 newPosition = GetPosition() + mVelocity * Timer::frameTime;
     SetPosition(newPosition);
-
-    // printf("Position: %f, %f\n", newPosition.x, newPosition.y);
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // std::cout << "Position: " << newPosition.x << ", " << newPosition.y << "\n";
-    // LogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
-    RealTimeLogInfo("Position: {}, {}", newPosition.x, newPosition.y);
 }
 
 void Ball::OnCollisionStart(GameObject& other)

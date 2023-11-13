@@ -35,17 +35,16 @@ void ScoreArea::OnCollisionStart(GameObject& other)
 
         if (mIsPlayerScoreArea)
         {
-            LogInfo("Player scored!");
+            RealTimeLogInfo("Player scored!");
             mScoreController->PlayerScored();
         }
         else
         {
-            LogInfo("Opponent scored!");
+            RealTimeLogInfo("Opponent scored!");
             mScoreController->OpponentScored();
         }
 
-        LogInfo("New Score: P {} - O {}", mScoreController->GetPlayerScore(), mScoreController->GetOpponentScore());
-        RealTimeLogWarning("Testing {}", mScoreController->GetPlayerScore());
+        RealTimeLogInfo("New Score: P {} - O {}", mScoreController->GetPlayerScore(), mScoreController->GetOpponentScore());
     }
 }
 
