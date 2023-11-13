@@ -1,6 +1,9 @@
+// spdlog must be included before fmt. Since spdlog uses fmt, it will cause errors otherwise
+#include <spdlog/spdlog.h>
+
 #include "realtimelogger.h"
 
-#include <spdlog/spdlog.h>
+#include <fmt/core.h>
 
 #include <iostream>
 
@@ -10,19 +13,6 @@ namespace pong
 {
 
 static constexpr std::chrono::milliseconds LOG_PRINT_INTERVAL { 1000 };
-
-int RealTimeLogger::sLogNumber = 0;
-
-void RealTimeLogger::Start()
-{
-    mThread = std::thread(&RealTimeLogger::Run, this);
-}
-
-void RealTimeLogger::Join()
-{
-    mAlive = false;
-    mThread.join();
-}
 
 void RealTimeLogger::Run()
 {
@@ -37,27 +27,30 @@ void RealTimeLogger::Run()
 void RealTimeLogger::PrintLogs()
 {
     LogData logData;
+
+    const char* format = "[{}] {}";
+
     while (mLogQueue.try_dequeue(logData))
     {
         switch (logData.mLevel)
         {
         case spdlog::level::trace:
-            spdlog::trace(logData.mFormat, UNWRAP(logData.mArgs));
+            spdlog::trace(format, logData.mSequenceNum, logData.mMessage);
             break;
         case spdlog::level::debug:
-            spdlog::debug(logData.mFormat, UNWRAP(logData.mArgs));
+            spdlog::debug(format, logData.mSequenceNum, logData.mMessage);
             break;
         case spdlog::level::info:
-            spdlog::info(logData.mFormat, UNWRAP(logData.mArgs));
+            spdlog::info(format, logData.mSequenceNum, logData.mMessage);
             break;
         case spdlog::level::warn:
-            spdlog::warn(logData.mFormat, UNWRAP(logData.mArgs));
+            spdlog::warn(format, logData.mSequenceNum, logData.mMessage);
             break;
         case spdlog::level::err:
-            spdlog::error(logData.mFormat, UNWRAP(logData.mArgs));
+            spdlog::error(format, logData.mSequenceNum, logData.mMessage);
             break;
         case spdlog::level::critical:
-            spdlog::critical(logData.mFormat, UNWRAP(logData.mArgs));
+            spdlog::critical(format, logData.mSequenceNum, logData.mMessage);
             break;
         default:
             break;

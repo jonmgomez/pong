@@ -1,21 +1,8 @@
 #pragma once
 
 #include <concurrentqueue.h>
-#include <spdlog/spdlog.h>
 
-#ifndef STB_SPRINTF_IMPLEMENTATION
-#define STB_SPRINTF_IMPLEMENTATION
-#endif
-
-#ifndef STB_SPRINTF_STATIC
-#define STB_SPRINTF_STATIC
-#endif
-
-#pragma warning(push, 0)
-#include <stb_sprintf.h>
-#pragma warning(pop)
-
-#include <array>
+#include <fmt/core.h>
 #include <thread>
 
 namespace pong
@@ -23,17 +10,15 @@ namespace pong
 
 struct LogData
 {
-    int mLevel { -1 };
-    char mFormat[512] {};
-    std::array<std::string, 10> mArgs {};
+    int mLevel { 0 };
+    int mSequenceNum { 0 };
+    char mMessage[512] {};
 };
 
 class RealTimeLogger
 {
 private:
     static constexpr int MAX_LOGS = 100;
-
-    static int sLogNumber;
 
     std::thread mThread {};
     moodycamel::ConcurrentQueue<LogData> mLogQueue { MAX_LOGS };
@@ -42,26 +27,26 @@ private:
     void Run();
 
 public:
-    void Start();
-    void Join();
+    RealTimeLogger()
+    {
+        mThread = std::thread(&RealTimeLogger::Run, this);
+    }
+
+    ~RealTimeLogger()
+    {
+        mAlive = false;
+        mThread.join();
+    }
 
     template<typename... Args>
     void Log(int level, const char *format, Args... args)
     {
-        std::string temp = format;
-        temp = "[{}] " + temp;
-        format = temp.c_str();
-
         LogData logData;
         logData.mLevel = level;
+        logData.mSequenceNum = Logger::GetNextLogNumber();
+        fmt::format_to_n(logData.mMessage, 512, format, args...);
 
-        stbsp_snprintf(logData.mFormat, sizeof(logData.mFormat), format, args...);
-
-        logData.mArgs[0] = std::to_string(sLogNumber++);
-        int i = 1;
-        ((logData.mArgs[i++] = std::to_string(args)), ...);
-
-        mLogQueue.try_enqueue(logData);
+        ASSERT(mLogQueue.try_enqueue(logData));
     };
 
     void PrintLogs();

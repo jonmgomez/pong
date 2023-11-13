@@ -15,6 +15,7 @@ target_link_libraries(engine
     PUBLIC
         render
         gameobjects
+        fmt
 )
 
 target_include_directories(engine

@@ -4,8 +4,7 @@
 #include "pong.h"
 #include "renderer.h"
 #include "renderutils.h"
-
-#include "realtimelogger.h"
+#include "logger.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -130,11 +129,12 @@ int main(int argc, char* argv[])
 {
     std::cout << "Hello World!" << std::endl;
 
-    RealTimeLogger logger;
-    logger.Start();
+    gLogger = std::make_unique<Logger>();
+    gRTLogger = std::make_unique<RealTimeLogger>();
 
-    logger.Log(spdlog::level::info, "Hello World! {}", 1);
-    logger.Log(spdlog::level::warn, "Testing RT Logger {} {}", 1.1f, 5.5);
+    Log(spdlog::level::info, "Hello World! {}", 1000);
+    RealTimeLog(spdlog::level::info, "Hello World! {}", 1);
+    RealTimeLog(spdlog::level::warn, "Testing RT Logger {} {}", 1.1f, 5.5);
 
 #ifdef DEBUG
     spdlog::set_level(spdlog::level::debug);
@@ -177,8 +177,6 @@ int main(int argc, char* argv[])
     Renderer::SetShader(shaderPath);
 
     PlayPong(window);
-
-    logger.Join();
 
     glfwDestroyWindow(window);
     glfwTerminate();
