@@ -14,10 +14,10 @@ static constexpr int kInvalid = -1;
 struct TimerRequest
 {
     int mGameObjectId { kInvalid };
-    int mTimeoutUs { kInvalid };
+    std::chrono::microseconds mTimeoutUs { kInvalid };
     std::function<void()> mCallback {};
 
-    TimerRequest(int gameObjectId, int timeoutUs, std::function<void()> callback)
+    TimerRequest(int gameObjectId, std::chrono::microseconds timeoutUs, std::function<void()> callback)
         : mGameObjectId(gameObjectId),
           mTimeoutUs(timeoutUs),
           mCallback(callback)
@@ -34,7 +34,7 @@ private:
 public:
     static float frameTime;
 
-    void AddTimer(int gameObjectId, int timeoutMs, std::function<void()> callback);
+    void AddTimer(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
     void HandleTimerCallbacks();
 };
 

@@ -16,7 +16,7 @@ static constexpr float BALL_WIDTH = 20.0f;
 static constexpr float BALL_SPEED_BOUNCE_INCREMENT = 75.0f;
 static constexpr float Y_STARTING_POSITION_BOUNDS = 500.0f;
 
-static constexpr int BALL_RESET_WAIT_MS = 3000;
+static constexpr std::chrono::seconds BALL_RESET_WAIT_S { 3 };
 
 std::random_device rd;
 std::mt19937 generator(rd());
@@ -41,7 +41,7 @@ void Ball::OnCollisionStart(GameObject& other)
 {
     if (other.GetInstanceName() == "ScoreArea")
     {
-        SetTimeout(BALL_RESET_WAIT_MS, [this] ()
+        SetTimeout(BALL_RESET_WAIT_S, [this] ()
         {
             this->ResetBall();
         });
