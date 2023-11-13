@@ -8,11 +8,13 @@
 namespace pong
 {
 
+static constexpr int MAX_LOG_MESSAGE_SIZE = 512;
+
 struct LogData
 {
     int mLevel { 0 };
     int mSequenceNum { 0 };
-    char mMessage[512] {};
+    char mMessage[MAX_LOG_MESSAGE_SIZE] {};
 };
 
 class RealTimeLogger
@@ -27,16 +29,8 @@ private:
     void Run();
 
 public:
-    RealTimeLogger()
-    {
-        mThread = std::thread(&RealTimeLogger::Run, this);
-    }
-
-    ~RealTimeLogger()
-    {
-        mAlive = false;
-        mThread.join();
-    }
+    RealTimeLogger();
+    ~RealTimeLogger();
 
     template<typename... Args>
     void Log(int level, const char *format, Args... args)
@@ -44,7 +38,7 @@ public:
         LogData logData;
         logData.mLevel = level;
         logData.mSequenceNum = Logger::GetNextLogNumber();
-        fmt::format_to_n(logData.mMessage, 512, format, args...);
+        fmt::format_to_n(logData.mMessage, MAX_LOG_MESSAGE_SIZE, format, args...);
 
         ASSERT(mLogQueue.try_enqueue(logData));
     };

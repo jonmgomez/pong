@@ -118,9 +118,9 @@ void PlayPong(GLFWwindow* window)
     double currentTime = glfwGetTime();
     double elapsedTime = currentTime - lastTime;
 
-    spdlog::info("Elapsed time: {}", elapsedTime);
-    spdlog::info("Total frames: {}", frameCount);
-    spdlog::info("Avg framerate: {}", frameCount / elapsedTime);
+    LogInfo("Elapsed time: {}", elapsedTime);
+    LogInfo("Total frames: {}", frameCount);
+    LogInfo("Avg framerate: {}", frameCount / elapsedTime);
 
     Pong::Cleanup();
     Renderer::Cleanup();

@@ -3,16 +3,21 @@
 
 #include "realtimelogger.h"
 
-#include <fmt/core.h>
-
-#include <iostream>
-
-#define UNWRAP(x) x[0] , x[1] , x[2] , x[3] , x[4] , x[5] , x[6] , x[7] , x[8] , x[9]
-
 namespace pong
 {
 
-static constexpr std::chrono::milliseconds LOG_PRINT_INTERVAL_MS { 1 };
+static constexpr std::chrono::milliseconds LOG_PRINT_INTERVAL_MS { 1000 };
+
+RealTimeLogger::RealTimeLogger()
+{
+    mThread = std::thread(&RealTimeLogger::Run, this);
+}
+
+RealTimeLogger::~RealTimeLogger()
+{
+    mAlive = false;
+    mThread.join();
+}
 
 void RealTimeLogger::Run()
 {
