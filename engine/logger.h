@@ -12,8 +12,8 @@ namespace pong
 class Logger
 {
 public:
-    static Logger& Logger::GetInstance();
-    static int Logger::GetNextLogNumber();
+    static Logger& GetInstance();
+    static int GetNextLogNumber();
 
     template<typename... Args>
     void Log(int level, const char* format, Args... args)
@@ -58,7 +58,7 @@ private:
     Logger(Logger&&) = delete;
     Logger& operator=(Logger&&) = delete;
 
-    static std::atomic<int> Logger::sLogNumber;
+    static std::atomic<int> sLogNumber;
 };
 
 template<typename... Args>
