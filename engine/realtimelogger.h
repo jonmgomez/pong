@@ -1,5 +1,8 @@
 #pragma once
 
+#include "logger.h"
+#include "utils.h"
+
 #include <fmt/format.h>
 #include <concurrentqueue.h>
 
@@ -20,6 +23,23 @@ struct LogData
 
 class RealTimeLogger
 {
+public:
+    static RealTimeLogger& GetInstance();
+
+    template<typename... Args>
+    void Log(int level, const char *format, Args... args)
+    {
+        LogData logData;
+        logData.mLevel = level;
+        logData.mSequenceNum = Logger::GetNextLogNumber();
+        const auto result = fmt::format_to_n(logData.mMessage.data(), MAX_LOG_MESSAGE_SIZE,
+                                             format, std::forward<Args>(args)...);
+
+        ASSERT(result.size < MAX_LOG_MESSAGE_SIZE);
+
+        ASSERT(GetInstance().mLogQueue.try_enqueue(logData));
+    };
+
 private:
     RealTimeLogger();
     ~RealTimeLogger();
@@ -36,21 +56,6 @@ private:
 
     void Run();
     void PrintLogs();
-
-public:
-
-    static RealTimeLogger& GetInstance();
-
-    template<typename... Args>
-    static void Log(int level, const char *format, Args... args)
-    {
-        LogData logData;
-        logData.mLevel = level;
-        logData.mSequenceNum = Logger::GetNextLogNumber();
-        fmt::format_to_n(logData.mMessage.data(), MAX_LOG_MESSAGE_SIZE, format, args...);
-
-        ASSERT(GetInstance().mLogQueue.try_enqueue(logData));
-    };
 };
 
 } // namespace pong

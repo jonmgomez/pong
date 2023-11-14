@@ -27,22 +27,22 @@ public:
         switch (level)
         {
         case spdlog::level::trace:
-            spdlog::trace(format, logNum, args...);
+            spdlog::trace(format, logNum, std::forward<Args>(args)...);
             break;
         case spdlog::level::debug:
-            spdlog::debug(format, logNum, args...);
+            spdlog::debug(format, logNum, std::forward<Args>(args)...);
             break;
         case spdlog::level::info:
-            spdlog::info(format, logNum, args...);
+            spdlog::info(format, logNum, std::forward<Args>(args)...);
             break;
         case spdlog::level::warn:
-            spdlog::warn(format, logNum, args...);
+            spdlog::warn(format, logNum, std::forward<Args>(args)...);
             break;
         case spdlog::level::err:
-            spdlog::error(format, logNum, args...);
+            spdlog::error(format, logNum, std::forward<Args>(args)...);
             break;
         case spdlog::level::critical:
-            spdlog::critical(format, logNum, args...);
+            spdlog::critical(format, logNum, std::forward<Args>(args)...);
             break;
         default:
             ASSERT(false);
@@ -64,61 +64,61 @@ private:
 template<typename... Args>
 void LogDebug(const char* format, Args... args)
 {
-    Logger::GetInstance().Log(spdlog::level::debug, format, args...);
+    Logger::GetInstance().Log(spdlog::level::debug, format, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 void LogInfo(const char* format, Args... args)
 {
-    Logger::GetInstance().Log(spdlog::level::info, format, args...);
+    Logger::GetInstance().Log(spdlog::level::info, format, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 void LogWarning(const char* format, Args... args)
 {
-    Logger::GetInstance().Log(spdlog:level::warn, format, args...);
+    Logger::GetInstance().Log(spdlog:level::warn, format, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 void LogCritical(const char* format, Args... args)
 {
-    Logger::GetInstance().Log(spdlog::level::critical, format, args...);
+    Logger::GetInstance().Log(spdlog::level::critical, format, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 void LogError(const char* format, Args... args)
 {
-    Logger::GetInstance().Log(spdlog::level::err, format, args...);
+    Logger::GetInstance().Log(spdlog::level::err, format, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 void RealTimeLogDebug(const char* format, Args... args)
 {
-    RealTimeLogger::GetInstance().Log(spdlog::level::debug, format, args...);
+    RealTimeLogger::GetInstance().Log(spdlog::level::debug, format, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 void RealTimeLogInfo(const char* format, Args... args)
 {
-    RealTimeLogger::GetInstance().Log(spdlog::level::info, format, args...);
+    RealTimeLogger::GetInstance().Log(spdlog::level::info, format, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 void RealTimeLogWarning(const char* format, Args... args)
 {
-    RealTimeLogger::GetInstance().Log(spdlog::level::warn, format, args...);
+    RealTimeLogger::GetInstance().Log(spdlog::level::warn, format, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 void RealTimeLogCritical(const char* format, Args... args)
 {
-    RealTimeLogger::GetInstance().Log(spdlog::level::critical, format, args...);
+    RealTimeLogger::GetInstance().Log(spdlog::level::critical, format, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 void RealTimeLogError(const char* format, Args... args)
 {
-    RealTimeLogger::GetInstance().Log(spdlog::level::err, format, args...);
+    RealTimeLogger::GetInstance().Log(spdlog::level::err, format, std::forward<Args>(args)...);
 }
 
 } // namespace pong
