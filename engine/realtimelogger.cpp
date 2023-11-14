@@ -3,6 +3,8 @@
 
 #include "realtimelogger.h"
 
+#include "utils.h"
+
 namespace pong
 {
 
@@ -19,6 +21,12 @@ RealTimeLogger::~RealTimeLogger()
     mThread.join();
 }
 
+RealTimeLogger& RealTimeLogger::GetInstance()
+{
+    static RealTimeLogger instance;
+    return instance;
+}
+
 void RealTimeLogger::Run()
 {
     while (mAlive)
@@ -31,33 +39,34 @@ void RealTimeLogger::Run()
 
 void RealTimeLogger::PrintLogs()
 {
-    LogData logData;
-
+    // Prepend the sequence number to the log message
     const char* format = "[{}] {}";
 
+    LogData logData;
     while (mLogQueue.try_dequeue(logData))
     {
         switch (logData.mLevel)
         {
         case spdlog::level::trace:
-            spdlog::trace(format, logData.mSequenceNum, logData.mMessage);
+            spdlog::trace(format, logData.mSequenceNum, logData.mMessage.data());
             break;
         case spdlog::level::debug:
-            spdlog::debug(format, logData.mSequenceNum, logData.mMessage);
+            spdlog::debug(format, logData.mSequenceNum, logData.mMessage.data());
             break;
         case spdlog::level::info:
-            spdlog::info(format, logData.mSequenceNum, logData.mMessage);
+            spdlog::info(format, logData.mSequenceNum, logData.mMessage.data());
             break;
         case spdlog::level::warn:
-            spdlog::warn(format, logData.mSequenceNum, logData.mMessage);
+            spdlog::warn(format, logData.mSequenceNum, logData.mMessage.data());
             break;
         case spdlog::level::err:
-            spdlog::error(format, logData.mSequenceNum, logData.mMessage);
+            spdlog::error(format, logData.mSequenceNum, logData.mMessage.data());
             break;
         case spdlog::level::critical:
-            spdlog::critical(format, logData.mSequenceNum, logData.mMessage);
+            spdlog::critical(format, logData.mSequenceNum, logData.mMessage.data());
             break;
         default:
+            ASSERT(false);
             break;
         }
     }
