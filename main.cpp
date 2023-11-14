@@ -91,7 +91,7 @@ GLFWwindow* SetupGLFW(const nlohmann::json& jsonData)
 
     int numTextureSlots;
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &numTextureSlots);
-    LogInfo("Texture Slots Available: {}", numTextureSlots);
+    LogDebug("Texture Slots Available: {}", numTextureSlots);
 
     return window;
 }
