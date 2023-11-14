@@ -27,15 +27,15 @@ struct VertexBufferElement
 
 class VertexBufferLayout
 {
-private:
-    std::vector<VertexBufferElement> mElements {};
-    unsigned int mStride {0};
-
 public:
     template<typename T>
     void Push(unsigned int count);
     const std::vector<VertexBufferElement>& GetElements() const;
     unsigned int GetStride() const;
+
+private:
+    std::vector<VertexBufferElement> mElements {};
+    unsigned int mStride {0};
 };
 
 } // namespace pong

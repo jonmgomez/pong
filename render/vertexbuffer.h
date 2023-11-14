@@ -5,10 +5,6 @@ namespace pong
 
 class VertexBuffer
 {
-private:
-    unsigned mRendererID {0};
-    unsigned int mSize {0};
-
 public:
     VertexBuffer() = default;
     VertexBuffer(const void* data, unsigned int size);
@@ -22,6 +18,10 @@ public:
     void SetBufferData(const void* data) const;
     void Bind() const;
     void Unbind() const;
+
+private:
+    unsigned mRendererID {0};
+    unsigned int mSize {0};
 };
 
 } // namespace pong

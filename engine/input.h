@@ -10,11 +10,12 @@ namespace pong
 
 class Input
 {
-private:
-    static std::array<bool, 512>mKeys;
 public:
     static bool IsKeyPressed(unsigned int keycode);
     static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
+private:
+    static std::array<bool, 512>mKeys;
 };
 
 } // namespace pong

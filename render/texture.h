@@ -7,16 +7,6 @@ namespace pong
 
 class Texture
 {
-private:
-    std::string mFilePath {""};
-    unsigned char* mLocalBuffer { nullptr };
-
-protected:
-    int mWidth {0};
-    int mHeight {0};
-    int mBPP {0};
-    unsigned int mRendererID {0};
-
 public:
     Texture() = default;
     explicit Texture(const std::string& filePath);
@@ -31,6 +21,16 @@ public:
 
     int GetWidth() const;
     int GetHeight() const;
+
+protected:
+    int mWidth {0};
+    int mHeight {0};
+    int mBPP {0};
+    unsigned int mRendererID {0};
+
+private:
+    std::string mFilePath {""};
+    unsigned char* mLocalBuffer { nullptr };
 };
 
 class SolidColorTexture : public Texture

@@ -15,17 +15,6 @@ namespace pong
 
 class GameObject
 {
-private:
-    static int sId;
-
-    int mId { sId++ };
-    glm::vec3 mPosition { glm::vec3(0.0f) };
-    std::string mInstanceName { "" };
-
-protected:
-    std::unique_ptr<Mesh>mMesh { nullptr };
-    std::unique_ptr<ColliderBox>mColliderBox { nullptr };
-
 public:
     GameObject() = default;
     virtual ~GameObject() = default;
@@ -52,6 +41,17 @@ public:
     {
         return dynamic_cast<T*>(this);
     }
+
+protected:
+    std::unique_ptr<Mesh>mMesh { nullptr };
+    std::unique_ptr<ColliderBox>mColliderBox { nullptr };
+
+private:
+    static int sId;
+
+    int mId { sId++ };
+    glm::vec3 mPosition { glm::vec3(0.0f) };
+    std::string mInstanceName { "" };
 };
 
 } // namespace pong

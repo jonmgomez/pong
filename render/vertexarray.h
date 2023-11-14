@@ -9,8 +9,6 @@ namespace pong
 
 class VertexArray
 {
-private:
-    unsigned int mRendererID {0};
 public:
     VertexArray();
     ~VertexArray();
@@ -22,6 +20,9 @@ public:
     void AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout);
     void Bind() const;
     void Unbind() const;
+
+private:
+    unsigned int mRendererID {0};
 };
 
 } // namespace pong

@@ -27,15 +27,15 @@ struct TimerRequest
 
 class Timer
 {
-private:
-    std::vector<TimerRequest> mActiveTimers {};
-    std::chrono::system_clock::time_point mLastTime { std::chrono::system_clock::now() };
-
 public:
     static float frameTime;
 
     void AddTimer(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
     void HandleTimerCallbacks();
+
+private:
+    std::vector<TimerRequest> mActiveTimers {};
+    std::chrono::system_clock::time_point mLastTime { std::chrono::system_clock::now() };
 };
 
 } // namespace pong

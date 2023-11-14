@@ -5,10 +5,6 @@ namespace pong
 
 class IndexBuffer
 {
-private:
-    unsigned int mRendererID {0};
-    unsigned int mCount {0};
-
 public:
     IndexBuffer() = default;
     IndexBuffer(const unsigned int* data, unsigned int count);
@@ -21,6 +17,10 @@ public:
     void Bind() const;
     void Unbind() const;
     unsigned int GetCount() const;
+
+private:
+    unsigned int mRendererID {0};
+    unsigned int mCount {0};
 };
 
 } // namespace pong

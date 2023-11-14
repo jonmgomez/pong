@@ -15,22 +15,6 @@ namespace pong
 
 class Pong
 {
-private:
-    Pong() = default;
-    Pong(const Pong&) = delete;
-    Pong& operator=(const Pong&) = delete;
-    Pong(Pong&&) = delete;
-    Pong& operator=(Pong&&) = delete;
-    ~Pong() = default;
-
-    CollisionManager& GetCollisionManager();
-    Timer& GetTimer();
-
-    std::vector<std::unique_ptr<GameObject>>mGameObjects {};
-    CollisionManager mCollisionManager {};
-    Timer mTimer {};
-    bool mFirstFrame { true };
-
 public:
     static Pong& GetInstance();
 
@@ -53,6 +37,22 @@ public:
     }
 
     static void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
+
+private:
+    Pong() = default;
+    Pong(const Pong&) = delete;
+    Pong& operator=(const Pong&) = delete;
+    Pong(Pong&&) = delete;
+    Pong& operator=(Pong&&) = delete;
+    ~Pong() = default;
+
+    CollisionManager& GetCollisionManager();
+    Timer& GetTimer();
+
+    std::vector<std::unique_ptr<GameObject>>mGameObjects {};
+    CollisionManager mCollisionManager {};
+    Timer mTimer {};
+    bool mFirstFrame { true };
 };
 
 } // namespace pong

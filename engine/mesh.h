@@ -14,14 +14,14 @@ namespace pong
 
 class Mesh
 {
+public:
+    void Draw(const glm::vec3& position) const;
+
 protected:
     VertexArray mVA {};
     VertexBuffer mVB {};
     IndexBuffer mIB {};
     std::unique_ptr<Texture>mTexture { nullptr };
-
-public:
-    void Draw(const glm::vec3& position) const;
 };
 
 } // namespace pong
