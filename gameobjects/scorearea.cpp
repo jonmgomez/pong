@@ -4,6 +4,7 @@
 #include "pong.h"
 #include "rectangle.h"
 #include "scorecontroller.h"
+#include "logger.h"
 
 #include <spdlog/spdlog.h>
 
@@ -34,16 +35,16 @@ void ScoreArea::OnCollisionStart(GameObject& other)
 
         if (mIsPlayerScoreArea)
         {
-            spdlog::info("Player scored!");
+            RealTimeLogInfo("Player scored!");
             mScoreController->PlayerScored();
         }
         else
         {
-            spdlog::info("Opponent scored!");
+            RealTimeLogInfo("Opponent scored!");
             mScoreController->OpponentScored();
         }
 
-        spdlog::info("New Score: P {} - O {}", mScoreController->GetPlayerScore(), mScoreController->GetOpponentScore());
+        RealTimeLogInfo("New Score: P {} - O {}", mScoreController->GetPlayerScore(), mScoreController->GetOpponentScore());
     }
 }
 

@@ -28,3 +28,13 @@ FetchContent_Declare(spdlog
     URL ${CMAKE_SOURCE_DIR}/tps/spdlog-1.12.0.zip
 )
 FetchContent_MakeAvailable(spdlog)
+
+FetchContent_Declare(fmt
+    URL ${CMAKE_SOURCE_DIR}/tps/fmt-10.1.1.zip
+)
+FetchContent_MakeAvailable(fmt)
+
+FetchContent_Declare(concurrentqueue
+    URL ${CMAKE_SOURCE_DIR}/tps/concurrentqueue-1.0.4.zip
+)
+FetchContent_MakeAvailable(concurrentqueue)

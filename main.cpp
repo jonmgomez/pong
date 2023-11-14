@@ -5,6 +5,7 @@
 #include "renderer.h"
 #include "renderutils.h"
 #include "timer.h"
+#include "logger.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -46,7 +47,7 @@ GLFWwindow* SetupGLFW(const nlohmann::json& jsonData)
 {
     if (!glfwInit())
     {
-        spdlog::error("glfwInit() failure");
+        LogError("glfwInit() failure");
         return nullptr;
     }
 
@@ -57,7 +58,7 @@ GLFWwindow* SetupGLFW(const nlohmann::json& jsonData)
     GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hello World", nullptr, nullptr);
     if (window == nullptr)
     {
-        spdlog::error("glfwCreateWindow() failure");
+        LogError("glfwCreateWindow() failure");
         glfwTerminate();
         return nullptr;
     }
@@ -78,7 +79,7 @@ GLFWwindow* SetupGLFW(const nlohmann::json& jsonData)
 
     if (glewInit() != GLEW_OK)
     {
-        spdlog::error("glewInit() failure");
+        LogError("glewInit() failure");
         return nullptr;
     }
 
@@ -86,11 +87,11 @@ GLFWwindow* SetupGLFW(const nlohmann::json& jsonData)
     GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
     const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-    spdlog::info("Using OpenGL version: {}", glVersion);
+    LogInfo("Using OpenGL version: {}", glVersion);
 
     int numTextureSlots;
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &numTextureSlots);
-    spdlog::info("Texture Slots Available: {}", numTextureSlots);
+    LogDebug("Texture Slots Available: {}", numTextureSlots);
 
     return window;
 }
@@ -117,9 +118,9 @@ void PlayPong(GLFWwindow* window)
     double currentTime = glfwGetTime();
     double elapsedTime = currentTime - lastTime;
 
-    spdlog::info("Elapsed time: {}", elapsedTime);
-    spdlog::info("Total frames: {}", frameCount);
-    spdlog::info("Avg framerate: {}", frameCount / elapsedTime);
+    LogInfo("Elapsed time: {}", elapsedTime);
+    LogInfo("Total frames: {}", frameCount);
+    LogInfo("Avg framerate: {}", frameCount / elapsedTime);
 
     Pong::Cleanup();
     Renderer::Cleanup();
@@ -137,7 +138,7 @@ int main(int argc, char* argv[])
 
     if (argc != 2)
     {
-        spdlog::error("Usage: {} <json_file_path>", argv[0]);
+        LogError("Usage: {} <json_file_path>", argv[0]);
         return -1;
     }
 
@@ -155,7 +156,7 @@ int main(int argc, char* argv[])
 
     if (jsonData.find("shader") == jsonData.end())
     {
-        spdlog::error("Config file does not contain \"shader\" key.");
+        LogError("Config file does not contain \"shader\" key.");
         return -1;
     }
 
@@ -163,7 +164,7 @@ int main(int argc, char* argv[])
     std::ifstream shaderFile(shaderPath);
     if (shaderFile.fail())
     {
-        spdlog::error("Failed to open shader file: {}", shaderPath);
+        LogError("Failed to open shader file: {}", shaderPath);
         return -1;
     }
 

@@ -1,5 +1,6 @@
 #include "ball.h"
 
+#include "logger.h"
 #include "opponent.h"
 #include "player.h"
 #include "rectangle.h"
