@@ -8,7 +8,7 @@
 namespace pong
 {
 
-static constexpr std::chrono::milliseconds LOG_PRINT_INTERVAL_MS { 50 };
+static constexpr std::chrono::milliseconds LOG_PRINT_INTERVAL_MS { 1000 };
 
 RealTimeLogger::RealTimeLogger()
 {

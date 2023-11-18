@@ -1,8 +1,6 @@
 #include "config.h"
 
-#include "renderutils.h"
-
-#include <spdlog/spdlog.h>
+#include "logger.h"
 
 #include <fstream>
 
@@ -20,7 +18,7 @@ bool Config::LoadConfig(const std::string& filePath)
     std::ifstream jsonFile(filePath);
     if (!jsonFile.is_open())
     {
-        spdlog::error("Failed to open JSON config file: {}", filePath);
+        LogError("Failed to open JSON config file: {}", filePath);
         return false;
     }
 
@@ -32,7 +30,7 @@ bool Config::LoadConfig(const std::string& filePath)
     }
     catch (const nlohmann::json::parse_error& e)
     {
-        spdlog::error("JSON config parsing error: {}", e.what());
+        LogError("JSON config parsing error: {}", e.what());
         return false;
     }
 

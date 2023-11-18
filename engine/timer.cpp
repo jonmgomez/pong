@@ -10,7 +10,7 @@
 namespace pong
 {
 
-float Timer::frameTime = 0.001f;
+float Timer::frameTime = 1.0f;
 
 void Timer::Init()
 {

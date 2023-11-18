@@ -95,6 +95,18 @@ void Pong::Cleanup()
     GetInstance().mGameObjects.clear();
 }
 
+GameObject* Pong::FindGameObjectByName(const std::string& name)
+{
+    for (auto& gameObject : GetInstance().mGameObjects)
+    {
+        if (gameObject->GetInstanceName() == name)
+        {
+            return gameObject.get();
+        }
+    }
+    return nullptr;
+}
+
 void Pong::SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback)
 {
     GetInstance().mTimer.AddTimer(gameObjectId, timeout, callback);
