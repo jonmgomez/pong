@@ -1,6 +1,7 @@
 #include "main.h"
 
 #include "config.h"
+#include "difficulty.h"
 #include "input.h"
 #include "pong.h"
 #include "renderer.h"

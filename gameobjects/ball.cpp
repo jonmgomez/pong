@@ -3,12 +3,12 @@
 #include "logger.h"
 #include "opponent.h"
 #include "player.h"
+#include "pong.h"
+#include "random.h"
 #include "rectangle.h"
 #include "timer.h"
 
 #include <spdlog/spdlog.h>
-
-#include <random>
 
 namespace pong
 {
@@ -19,16 +19,13 @@ static constexpr float Y_STARTING_POSITION_BOUNDS = 500.0f;
 
 static constexpr std::chrono::seconds BALL_RESET_WAIT_S { 3 };
 
-std::random_device rd;
-std::mt19937 generator(rd());
-std::uniform_int_distribution<int> distStartDir(0, 1);
-std::uniform_real_distribution<float> distYPos(-Y_STARTING_POSITION_BOUNDS, Y_STARTING_POSITION_BOUNDS);
-
 void Ball::OnStart()
 {
     mMesh = std::make_unique<Rectangle>(BALL_WIDTH, BALL_WIDTH);
     mColliderBox = std::make_unique<ColliderBox>(BALL_WIDTH, BALL_WIDTH);
+    mOpponent = Pong::FindGameObject<Opponent>();
     SetInstanceName("Ball");
+
     ResetBall();
 }
 
@@ -56,7 +53,7 @@ void Ball::OnCollisionStart(GameObject& other)
         const float pointInHeight = paddleHeight / 2.0f - fabs(yPosDiff);
 
         float percent = fabs(pointInHeight / (paddleHeight / 2.0f));
-        percent = std::max(0.35f, percent);
+        percent = std::max(0.5f, percent);
         percent = std::min(1.0f, percent);
 
         float xDir = percent;
@@ -73,6 +70,7 @@ void Ball::OnCollisionStart(GameObject& other)
         }
 
         mVelocity = glm::normalize(glm::vec3(xDir, yDir, 0.0f)) * mSpeed;
+        mOpponent->OnBallVelocityChange(mVelocity);
     }
     else
     {
@@ -85,12 +83,19 @@ void Ball::ResetBall()
 {
     mSpeed = BALL_START_SPEED;
 
-    const float yStartingPos = distYPos(generator);
+    const float yStartingPos = Random::Range(-Y_STARTING_POSITION_BOUNDS, Y_STARTING_POSITION_BOUNDS);
     SetPosition(glm::vec3(0.0f, yStartingPos, 0.0f));
 
-    const float xDir = distStartDir(generator) ? 1.0f : -1.0f;
-    const float yDir = distStartDir(generator) ? 1.0f : -1.0f;
+    const float xDir = Random::Bool() ? 1.0f : -1.0f;
+    const float yDir = Random::Bool() ? 1.0f : -1.0f;
     mVelocity = glm::normalize(glm::vec3(xDir, yDir, 0.0f)) * mSpeed;
+
+    mOpponent->OnBallVelocityChange(mVelocity);
+}
+
+glm::vec3 Ball::GetVelocity() const
+{
+    return mVelocity;
 }
 
 } // namespace pong

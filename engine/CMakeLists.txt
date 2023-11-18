@@ -3,10 +3,12 @@ set(SOURCES
     colliderbox.cpp
     collisionmanager.cpp
     config.cpp
+    difficulty.cpp
     input.cpp
     logger.cpp
     mesh.cpp
     pong.cpp
+    random.cpp
     realtimelogger.cpp
     rectangle.cpp
     timer.cpp

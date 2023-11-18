@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glm/glm.hpp>
 #include <spdlog/spdlog.h>
 
 #include <iostream>
@@ -19,4 +20,3 @@ namespace pong
 #endif
 
 }
-
