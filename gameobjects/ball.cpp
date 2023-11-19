@@ -83,7 +83,7 @@ void Ball::ResetBall()
 {
     mSpeed = BALL_START_SPEED;
 
-    const float yStartingPos = Random::Range(-Y_STARTING_POSITION_BOUNDS, Y_STARTING_POSITION_BOUNDS);
+    const float yStartingPos = Random::ValueInRange(-Y_STARTING_POSITION_BOUNDS, Y_STARTING_POSITION_BOUNDS);
     SetPosition(glm::vec3(0.0f, yStartingPos, 0.0f));
 
     const float xDir = Random::Bool() ? 1.0f : -1.0f;

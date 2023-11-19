@@ -18,6 +18,7 @@ public:
 
     static Level GetLevel();
     static void SetLevel(Level level);
+    static std::string to_string(Difficulty::Level level);
 
 private:
     Difficulty() = delete;
@@ -29,7 +30,5 @@ private:
 
     static Level sLevel;
 };
-
-std::string DifficultyString(Difficulty::Level level);
 
 } // namespace pong

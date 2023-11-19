@@ -97,13 +97,16 @@ void Pong::Cleanup()
 
 GameObject* Pong::FindGameObjectByName(const std::string& name)
 {
-    for (auto& gameObject : GetInstance().mGameObjects)
+    auto it = std::find_if(GetInstance().mGameObjects.begin(), GetInstance().mGameObjects.end(), [&name] (const auto& gameObject)
     {
-        if (gameObject->GetInstanceName() == name)
-        {
-            return gameObject.get();
-        }
+        return gameObject->GetInstanceName() == name;
+    });
+
+    if (it != GetInstance().mGameObjects.end())
+    {
+        return it->get();
     }
+
     return nullptr;
 }
 

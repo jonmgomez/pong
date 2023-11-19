@@ -157,7 +157,7 @@ int main(int argc, char* argv[])
     {
         LogError("Invalid difficulty: {}", difficulty);
     }
-    LogInfo("Set Difficulty: {}", DifficultyString(Difficulty::GetLevel()));
+    LogInfo("Set Difficulty: {}", Difficulty::to_string(Difficulty::GetLevel()));
 
     PlayPong(window);
 

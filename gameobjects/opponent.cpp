@@ -22,7 +22,6 @@ static constexpr glm::vec3 OPPONENT_POSITION(1125.0f, 0.0f, 0.0f);
 static int decisionTimeLowerBoundMs = 50;
 static int decisionTimeUpperBoundMs = 250;
 static float baseMissChance = 0.1f;
-static float baseRampUpChance = 0.5f;
 
 void Opponent::OnStart()
 {
@@ -70,29 +69,25 @@ void Opponent::SetDifficultySettings()
         case Difficulty::Level::Easy:
             decisionTimeLowerBoundMs = 200;
             decisionTimeUpperBoundMs = 500;
-            baseMissChance = 0.3f;
-            baseRampUpChance = 0.5f;
+            baseMissChance = 0.f;
             break;
 
         case Difficulty::Level::Normal:
-            decisionTimeLowerBoundMs = 50;
-            decisionTimeUpperBoundMs = 250;
-            baseMissChance = 0.15f;
-            baseRampUpChance = 0.35f;
+            decisionTimeLowerBoundMs = 100;
+            decisionTimeUpperBoundMs = 350;
+            baseMissChance = 0.2f;
             break;
 
         case Difficulty::Level::Hard:
-            decisionTimeLowerBoundMs = 0;
+            decisionTimeLowerBoundMs = 50;
             decisionTimeUpperBoundMs = 100;
             baseMissChance = 0.05f;
-            baseRampUpChance = 0.2f;
             break;
 
         case Difficulty::Level::Insane:
             decisionTimeLowerBoundMs = 0;
             decisionTimeUpperBoundMs = 0;
             baseMissChance = 0.0f;
-            baseRampUpChance = 0.0f;
             break;
 
         default:
@@ -131,7 +126,7 @@ void Opponent::PredictBallPostion()
         }
     }
 
-    const bool miss = Random::Percent(baseMissChance);
+    const bool miss = Random::RollPercentChance(baseMissChance);
     if (miss)
     {
         const float minMissDistance = 150.0f;
@@ -147,7 +142,7 @@ void Opponent::PredictBallPostion()
             overShootUp = true;
         }
 
-        const float error = Random::Range(minMissDistance, maxMissDistance);
+        const float error = Random::ValueInRange(minMissDistance, maxMissDistance);
         if (overShootUp)
         {
             finalBallPosition.y += error;
@@ -162,7 +157,7 @@ void Opponent::PredictBallPostion()
         // Add some error to the final ball position
         // So the paddle does not always hit the ball perfectly
         const float errorBound = GetColliderBox()->GetHeight() / 4.0f;
-        finalBallPosition.y += Random::Range(-errorBound, errorBound);
+        finalBallPosition.y += Random::ValueInRange(-errorBound, errorBound);
     }
 
     mTargetPosition = glm::vec3(currentPosition.x, finalBallPosition.y, 0.0f);
@@ -174,7 +169,7 @@ void Opponent::OnBallVelocityChange(const glm::vec3& velocity)
 
     if (mChasingBall)
     {
-        SetTimeout(std::chrono::milliseconds(Random::Range(decisionTimeLowerBoundMs, decisionTimeUpperBoundMs)), [this] ()
+        SetTimeout(std::chrono::milliseconds(Random::ValueInRange(decisionTimeLowerBoundMs, decisionTimeUpperBoundMs)), [this] ()
         {
             this->PredictBallPostion();
         });

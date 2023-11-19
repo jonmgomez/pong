@@ -15,7 +15,7 @@ void Difficulty::SetLevel(Level level)
     sLevel = level;
 }
 
-std::string DifficultyString(Difficulty::Level level)
+std::string Difficulty::to_string(Difficulty::Level level)
 {
     switch (level)
     {
