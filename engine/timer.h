@@ -30,6 +30,7 @@ class Timer
 public:
     static float frameTime;
 
+    void Init();
     void AddTimer(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
     void HandleTimerCallbacks();
 

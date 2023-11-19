@@ -12,6 +12,7 @@
 namespace pong
 {
 
+static constexpr int MAX_LOGS = 1000;
 static constexpr int MAX_LOG_MESSAGE_SIZE = 512;
 
 struct LogData
@@ -47,8 +48,6 @@ private:
     RealTimeLogger& operator=(const RealTimeLogger&) = delete;
     RealTimeLogger(RealTimeLogger&&) = delete;
     RealTimeLogger& operator=(RealTimeLogger&&) = delete;
-
-    static constexpr int MAX_LOGS = 100;
 
     std::thread mThread {};
     moodycamel::ConcurrentQueue<LogData> mLogQueue { MAX_LOGS };

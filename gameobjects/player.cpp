@@ -39,7 +39,7 @@ void Player::OnUpdate()
 
 void Player::OnCollisionStart(GameObject& other)
 {
-    if (other.GetInstanceName() == "Wall")
+    if (other.GetInstanceName().find("Wall") != std::string::npos)
     {
         // Undo movement to stop from going through wall
         SetPosition(GetPosition() - mVelocity * Timer::frameTime);

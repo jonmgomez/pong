@@ -12,6 +12,12 @@ namespace pong
 
 float Timer::frameTime = 1.0f;
 
+void Timer::Init()
+{
+    const auto currentTime = std::chrono::system_clock::now();
+    Timer::frameTime = (std::chrono::duration_cast<std::chrono::duration<float>>(currentTime - mLastTime)).count();
+}
+
 void Timer::HandleTimerCallbacks()
 {
     const auto timeWaitedUs = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - mLastTime);

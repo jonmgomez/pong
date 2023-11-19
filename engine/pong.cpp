@@ -47,10 +47,12 @@ void Pong::Init()
 
     auto topWall = std::make_unique<Wall>(horizontalWallWidth, horizontalWallHeight);
     topWall->SetPosition(glm::vec3(0.0f, horizontalWallY, 0.0f));
+    topWall->SetInstanceName("TopWall");
     GetInstance().mGameObjects.push_back(std::move(topWall));
 
     auto bottomWall = std::make_unique<Wall>(horizontalWallWidth, horizontalWallHeight);
     bottomWall->SetPosition(glm::vec3(0.0f, -horizontalWallY, 0.0f));
+    bottomWall->SetInstanceName("BottomWall");
     GetInstance().mGameObjects.push_back(std::move(bottomWall));
 
     auto playerScoreArea = std::make_unique<ScoreArea>(verticalWallWidth, verticalWallHeight, true);
@@ -63,6 +65,8 @@ void Pong::Init()
 
     auto scoreController = std::make_unique<ScoreController>();
     GetInstance().mGameObjects.push_back(std::move(scoreController));
+
+    Pong::GetInstance().GetTimer().Init();
 
     for (auto& gameObject : GetInstance().mGameObjects)
     {
@@ -89,6 +93,21 @@ void Pong::GameLoop()
 void Pong::Cleanup()
 {
     GetInstance().mGameObjects.clear();
+}
+
+GameObject* Pong::FindGameObjectByName(const std::string& name)
+{
+    auto it = std::find_if(GetInstance().mGameObjects.begin(), GetInstance().mGameObjects.end(), [&name] (const auto& gameObject)
+    {
+        return gameObject->GetInstanceName() == name;
+    });
+
+    if (it != GetInstance().mGameObjects.end())
+    {
+        return it->get();
+    }
+
+    return nullptr;
 }
 
 void Pong::SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback)

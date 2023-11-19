@@ -1,5 +1,7 @@
 #include "main.h"
 
+#include "config.h"
+#include "difficulty.h"
 #include "input.h"
 #include "pong.h"
 #include "renderer.h"
@@ -19,31 +21,7 @@
 
 using namespace pong;
 
-nlohmann::json OpenJsonFile(const std::string& filePath)
-{
-    std::ifstream jsonFile(filePath);
-    if (!jsonFile.is_open())
-    {
-        spdlog::error("Failed to open JSON file: {}", filePath);
-        return nullptr;
-    }
-
-    nlohmann::json jsonData;
-
-    try
-    {
-        jsonFile >> jsonData;
-    }
-    catch (const nlohmann::json::parse_error& e)
-    {
-        spdlog::error("JSON parsing error: {}", e.what());
-        return nullptr;
-    }
-
-    return jsonData;
-}
-
-GLFWwindow* SetupGLFW(const nlohmann::json& jsonData)
+GLFWwindow* SetupGLFW()
 {
     if (!glfwInit())
     {
@@ -66,12 +44,7 @@ GLFWwindow* SetupGLFW(const nlohmann::json& jsonData)
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, Input::KeyCallback);
 
-    bool fpsCapped = true;
-    if (jsonData.find("fps_capped") != jsonData.end())
-    {
-        fpsCapped = jsonData["fps_capped"];
-    }
-
+    const bool fpsCapped = Config::GetValue("fps_capped", true);
     if (!fpsCapped)
     {
         glfwSwapInterval(0);
@@ -142,25 +115,18 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    nlohmann::json jsonData = OpenJsonFile(argv[1]);
-    if (jsonData == nullptr)
+    if (!Config::LoadConfig(argv[1]))
     {
         return -1;
     }
 
-    GLFWwindow* window = SetupGLFW(jsonData);
+    GLFWwindow* window = SetupGLFW();
     if (window == nullptr)
     {
         return -1;
     }
 
-    if (jsonData.find("shader") == jsonData.end())
-    {
-        LogError("Config file does not contain \"shader\" key.");
-        return -1;
-    }
-
-    std::string shaderPath = jsonData["shader"];
+    std::string shaderPath = Config::GetValue<std::string>("shader");
     std::ifstream shaderFile(shaderPath);
     if (shaderFile.fail())
     {
@@ -169,6 +135,29 @@ int main(int argc, char* argv[])
     }
 
     Renderer::SetShader(shaderPath);
+
+    std::string difficulty = Config::GetValue<std::string>("difficulty", "normal");
+    if (difficulty == "easy")
+    {
+        Difficulty::SetLevel(Difficulty::Level::Easy);
+    }
+    else if (difficulty == "normal")
+    {
+        Difficulty::SetLevel(Difficulty::Level::Normal);
+    }
+    else if (difficulty == "hard")
+    {
+        Difficulty::SetLevel(Difficulty::Level::Hard);
+    }
+    else if (difficulty == "insane")
+    {
+        Difficulty::SetLevel(Difficulty::Level::Insane);
+    }
+    else
+    {
+        LogError("Invalid difficulty: {}", difficulty);
+    }
+    LogInfo("Set Difficulty: {}", Difficulty::to_string(Difficulty::GetLevel()));
 
     PlayPong(window);
 
