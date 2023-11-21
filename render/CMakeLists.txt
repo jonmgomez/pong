@@ -20,6 +20,7 @@ target_link_libraries(render
         spdlog
         nlohmann_json
         compile_flags
+        stb
     PRIVATE
         engine
 )

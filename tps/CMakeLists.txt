@@ -38,3 +38,12 @@ FetchContent_Declare(concurrentqueue
     URL ${CMAKE_SOURCE_DIR}/tps/concurrentqueue-1.0.4.zip
 )
 FetchContent_MakeAvailable(concurrentqueue)
+
+FetchContent_Declare(stb
+    URL ${CMAKE_SOURCE_DIR}/tps/stb-master.zip
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+)
+FetchContent_MakeAvailable(stb)
+add_library(stb INTERFACE)
+target_include_directories(stb INTERFACE ${stb_SOURCE_DIR})
