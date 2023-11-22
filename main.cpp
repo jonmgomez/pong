@@ -78,24 +78,26 @@ void PlayPong(GLFWwindow *window)
     double lastTime = glfwGetTime();
     int frameCount = 0;
 
-    LogInfo("Starting Text Render Test");
-    Text text = Text("Hello World!", "D:/code/pong/my_girls_retro.ttf", 32);
-    LogInfo("Finished Text Render Test");
+    // LogInfo("Starting Text Render Test");
 
-    (void)text;
-    (void)window;
+    // std::string fontFile = Config::GetValue<std::string>("font");
+    // Text text = Text("Hello World!", fontFile, 32.0f);
+    // LogInfo("Finished Text Render Test");
 
-    // while (!glfwWindowShouldClose(window))
-    // {
-    //     Renderer::Clear();
+    // (void)text;
+    // (void)window;
 
-    //     Pong::GameLoop();
+    while (!glfwWindowShouldClose(window))
+    {
+        Renderer::Clear();
 
-    //     frameCount++;
+        Pong::GameLoop();
 
-    //     glfwSwapBuffers(window);
-    //     glfwPollEvents();
-    // }
+        frameCount++;
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
 
     double currentTime = glfwGetTime();
     double elapsedTime = currentTime - lastTime;

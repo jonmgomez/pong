@@ -11,13 +11,17 @@ namespace pong
 class Text
 {
 public:
-    Text(const std::string&, const std::string& path, int size);
+    Text(const std::string&, const std::string& path, float size);
 
     void PrintSingleCharacter(const std::string& path, char c);
     void PrintString(const std::string& path, const std::string& str);
 
+    void Render();
+
+    glm::vec3 mPosition { 0.0f };
+
 private:
-    std::vector<TextCharacter> mCharacters {};
+    std::vector<std::unique_ptr<TextCharacter>> mCharacters {};
 };
 
 } // namespace pong

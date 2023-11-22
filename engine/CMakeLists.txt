@@ -11,12 +11,16 @@ set(SOURCES
     random.cpp
     realtimelogger.cpp
     rectangle.cpp
+    text.cpp
+    textcharacter.cpp
     timer.cpp
 )
 
 add_library(engine ${SOURCES})
 
 target_link_libraries(engine
+    PRIVATE
+        stb
     PUBLIC
         render
         gameobjects

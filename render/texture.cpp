@@ -79,6 +79,22 @@ int Texture::GetWidth() const
     return mWidth;
 }
 
+/* Converts a grayscale image to RGBA format */
+std::vector<unsigned char> Texture::ConvertAlphaImageToRGBA(const std::vector<unsigned char>& imageData)
+{
+    std::vector<unsigned char> convertedImage {};
+    convertedImage.reserve(imageData.size() * 4);
+
+    for (auto& alpha : imageData)
+    {
+        convertedImage.push_back(255);
+        convertedImage.push_back(255);
+        convertedImage.push_back(255);
+        convertedImage.push_back(alpha);
+    }
+
+    return std::move(convertedImage);
+}
 
 
 SolidColorTexture::SolidColorTexture(unsigned char r, unsigned char g, unsigned char b, unsigned char a)

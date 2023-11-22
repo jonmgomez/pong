@@ -15,7 +15,7 @@ namespace pong
 class Mesh
 {
 public:
-    void Draw(const glm::vec3& position) const;
+    virtual void Draw(const glm::vec3& position) const;
 
 protected:
     VertexArray mVA {};

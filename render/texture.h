@@ -24,6 +24,8 @@ public:
     int GetWidth() const;
     int GetHeight() const;
 
+    static std::vector<unsigned char> ConvertAlphaImageToRGBA(const std::vector<unsigned char>& imageData);
+
 protected:
     int mWidth {0};
     int mHeight {0};

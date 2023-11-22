@@ -15,7 +15,7 @@
 namespace pong
 {
 
-Text::Text(const std::string& text, const std::string& path, int size)
+Text::Text(const std::string& text, const std::string& path, float size)
 {
     (void)text;
     (void)size;
@@ -30,87 +30,105 @@ Text::Text(const std::string& text, const std::string& path, int size)
     // const float BASE_SCREEN_WIDTH = 1024.0f;
     // const float BASE_SCREEN_HEIGHT = 768.0f;
 
-    // std::vector<unsigned char> fontData((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
+    unsigned char* ttf_buffer = new unsigned char[1000000];
+    #pragma warning(suppress: 4996)
+    fread(ttf_buffer, 1, 1000000, fopen(path.c_str(), "rb"));
 
-    // stbtt_fontinfo font;
-    // stbtt_InitFont(&font, fontData.data(), 0);
+    stbtt_fontinfo font;
+    stbtt_InitFont(&font, ttf_buffer, 0);
 
-    // const int lineHeight = 64; // In pixels
-    // const float scale = stbtt_ScaleForPixelHeight(&font, lineHeight);
+    const int lineHeight = 64; // In pixels
+    const float scale = stbtt_ScaleForPixelHeight(&font, lineHeight);
 
-    // float currentX = 0;
-    // float currentY = 0;
-    // int unscaledAscent, unscaledDescent, lineGap;
-    // stbtt_GetFontVMetrics(&font, &unscaledAscent, &unscaledDescent, &lineGap);
+    float currentX = 0;
+    float currentY = 0;
+    int unscaledAscent, unscaledDescent, lineGap;
+    stbtt_GetFontVMetrics(&font, &unscaledAscent, &unscaledDescent, &lineGap);
 
-    // const float ascent = unscaledAscent * scale;
-    // const float descent = unscaledDescent * scale;
+    const float ascent = unscaledAscent * scale;
+    const float descent = unscaledDescent * scale;
 
-    // for (int i = 0; i < text.length(); ++i)
-    // {
-    //     // b_w IS EQUIVALENT TO SCREEN WIDTH
-    //     const char character = text[i];
+    for (int i = 0; i < text.length(); ++i)
+    {
+        // b_w IS EQUIVALENT TO SCREEN WIDTH
+        const char character = text[i];
 
-    //     int glpyhWidth = 0;
-	//     int leftSideBearing = 0;
-    //     stbtt_GetCodepointHMetrics(&font, character, &glpyhWidth, &leftSideBearing);
+        int glpyhWidth = 0;
+	    int leftSideBearing = 0;
+        stbtt_GetCodepointHMetrics(&font, character, &glpyhWidth, &leftSideBearing);
 
-    //     int xCoord1, yCoord1, xCoord2, yCoord2;
-    //     stbtt_GetCodepointBitmapBox(&font, character, scale, scale, &xCoord1, &yCoord1, &xCoord2, &yCoord2);
+        int xCoord1, yCoord1, xCoord2, yCoord2;
+        stbtt_GetCodepointBitmapBox(&font, character, scale, scale, &xCoord1, &yCoord1, &xCoord2, &yCoord2);
 
-    //     const int charWidth = xCoord2 - xCoord1;
-    //     const int charHeight = yCoord2 - yCoord1;
+        const int charWidth = xCoord2 - xCoord1;
+        const int charHeight = yCoord2 - yCoord1;
 
-    //     auto texture = std::make_unique<unsigned char[]>(charWidth * charHeight);
+        auto alphaTexture = std::vector<unsigned char>();
+        alphaTexture.resize(charWidth * charHeight);
 
-    //     if (character == '\n')
-    //     {
-    //         // SAVE
-    //         currentY += (ascent - descent + lineGap) * scale;
-    //         std::cout << "New Y: " << currentY << std::endl;
-    //     }
-    //     else
-    //     {
-    //         // Save this to some variable for the character
-    //         // Or just use it in positioning
-    //         const float spaceAboveChar = ascent + yCoord1;
-    //         // SAVE
-    //         const float characterYOffset = spaceAboveChar + currentY;
-    //         // convert to screen units
-    //         std::cout << character << " - Y offset: " << characterYOffset << std::endl;
+        // float totalWidth = 0.0f;
+        float totalHeight = 0.0f;
 
-    //         //const int byteOffset = currentX + static_cast<int>(roundf(leftSideBearing * scale));
+        if (character == '\n')
+        {
+            // SAVE
+            currentY += (ascent - descent + lineGap) * size;
+            std::cout << "New Y: " << currentY << std::endl;
+            totalHeight += currentY;
+        }
+        else
+        {
+            // Save this to some variable for the character
+            // Or just use it in positioning
+            const float spaceAboveChar = ascent + yCoord1;
+            // SAVE
+            const float characterYOffset = spaceAboveChar + currentY;
+            // convert to screen units
+            std::cout << character << " - X offset: " << currentX << std::endl;
+            std::cout << character << " - Y offset: " << characterYOffset << std::endl;
 
-    //         // Since this uses a single character for each texture, stride is just the width of the character
-    //         const int stride = charWidth;
-    //         stbtt_MakeCodepointBitmap(&font, texture.get(), charWidth, charHeight, stride, scale, scale, character);
+            //const int byteOffset = currentX + static_cast<int>(roundf(leftSideBearing * scale));
 
-    //         currentX += roundf(glpyhWidth * scale);
-    //         std::cout << "currentX: " << currentX << std::endl;
-    //     }
+            const float quadScreenWidth = charWidth * size;
+            const float quadScreenHeight = charHeight * size;
 
-    //     const int kern = stbtt_GetCodepointKernAdvance(&font, character, text[i + 1]);
-    //     currentX += roundf(kern * scale);
-    //     std::cout << "currentX + glpyhWidth + kern: " << currentX << std::endl;
-    // }
+            // Since this uses a single character for each texture, stride is just the width of the character
+            const int kStride = charWidth;
+            stbtt_MakeCodepointBitmap(&font, alphaTexture.data(), charWidth, charHeight, kStride, scale, scale, character);
 
-    PrintString(path, "Test");
+
+            auto finalTexture = Texture::ConvertAlphaImageToRGBA(alphaTexture);
+
+            auto textCharacter = std::make_unique<TextCharacter>(finalTexture, quadScreenWidth, quadScreenHeight,
+                                                                 glm::vec3(currentX, characterYOffset, 0.0f),
+                                                                 charWidth, charHeight);
+            mCharacters.emplace_back(std::move(textCharacter));
+
+            currentX += roundf(glpyhWidth * size);
+            std::cout << "currentX: " << currentX << std::endl;
+        }
+
+        const int kern = stbtt_GetCodepointKernAdvance(&font, character, text[i + 1]);
+        currentX += roundf(kern * size);
+        std::cout << "currentX + glpyhWidth + kern: " << currentX << std::endl;
+
+        std::string fileName = "char_" + std::to_string(i) + ".png";
+        stbi_write_png(fileName.c_str(), charWidth, charHeight, 1, alphaTexture.data(), charWidth);
+    }
+
+    //PrintString(path, "ABCDEF");
 }
 
 void Text::PrintString(const std::string& path, const std::string& str)
 {
     (void)str;
 
-     std::ifstream stream(path);
-    std::vector<unsigned char> fontData((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
-
-
-    // unsigned char* ttf_buffer = new unsigned char[1000000];
-    // #pragma warning(suppress: 4996)
-    // fread(ttf_buffer, 1, 1000000, fopen(path.c_str(), "rb"));
+    unsigned char* ttf_buffer = new unsigned char[1000000];
+    #pragma warning(suppress: 4996)
+    fread(ttf_buffer, 1, 1000000, fopen(path.c_str(), "rb"));
 
     stbtt_fontinfo font;
-    stbtt_InitFont(&font, fontData.data(), 0);
+    stbtt_InitFont(&font, ttf_buffer, 0);
 
     std::cout << "Space ascii value: " << static_cast<int>(' ') << std::endl;
 
@@ -130,6 +148,8 @@ void Text::PrintString(const std::string& path, const std::string& str)
     int ascent, descent, lineGap;
     stbtt_GetFontVMetrics(&font, &ascent, &descent, &lineGap);
 
+    int initalLsbOffset = 0;
+
     ascent = static_cast<int>(roundf(ascent * scale));
     descent = static_cast<int>(roundf(descent * scale));
     std::cout << "ascent: " << ascent << ", descent: " << descent << ", lineGap: " << lineGap << std::endl;
@@ -143,7 +163,16 @@ void Text::PrintString(const std::string& path, const std::string& str)
         stbtt_GetCodepointHMetrics(&font, str[i], &ax, &lsb);
         /* (Note that each Codepoint call has an alternative Glyph version which caches the work required to lookup the character str[i].) */
         std::cout << "ax: " << ax << ", lsb: " << lsb << std::endl;
-        lsb = lsb;
+        if (i == 0 && lsb < 0)
+        {
+            // Negative lsbs will cause the first character to be rendered too far to the left
+            initalLsbOffset = lsb;
+            lsb = 0;
+        }
+        else
+        {
+            lsb -= initalLsbOffset;
+        }
 
         /* get bounding box for character (may be offset to account for chars that dip above or below the line) */
         int c_x1, c_y1, c_x2, c_y2;
@@ -241,6 +270,14 @@ void Text::PrintSingleCharacter(const std::string& path, char c)
     stbtt_MakeCodepointBitmap(&font, mPixels, width, height, stride, scale, scale, character);
 
     stbi_write_png("image.png", width, height, 1, mPixels, stride);
+}
+
+void Text::Render()
+{
+    for (const auto& character : mCharacters)
+    {
+        character->Draw(mPosition);
+    }
 }
 
 } // namespace pong

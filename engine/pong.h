@@ -2,6 +2,7 @@
 
 #include "collisionmanager.h"
 #include "gameobject.h"
+#include "text.h"
 #include "timer.h"
 #include "utils.h"
 
@@ -51,7 +52,8 @@ private:
     CollisionManager& GetCollisionManager();
     Timer& GetTimer();
 
-    std::vector<std::unique_ptr<GameObject>>mGameObjects {};
+    std::vector<std::unique_ptr<GameObject>> mGameObjects {};
+    std::vector<std::unique_ptr<Text>> mTexts {};
     CollisionManager mCollisionManager {};
     Timer mTimer {};
     bool mFirstFrame { true };

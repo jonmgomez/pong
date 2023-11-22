@@ -2,6 +2,8 @@
 
 #include "ball.h"
 #include "colliderbox.h"
+#include "config.h"
+#include "logger.h"
 #include "opponent.h"
 #include "player.h"
 #include "scorearea.h"
@@ -72,6 +74,12 @@ void Pong::Init()
     {
         gameObject->OnStart();
     }
+
+    LogInfo("Creating text object");
+    std::string fontFile = Config::GetValue<std::string>("font");
+    auto text = std::make_unique<Text>("H", fontFile, 16.0f);
+    GetInstance().mTexts.push_back(std::move(text));
+    LogInfo("Finished creating text object");
 }
 
 void Pong::GameLoop()
@@ -87,6 +95,11 @@ void Pong::GameLoop()
     for (auto& gameObject : GetInstance().mGameObjects)
     {
         gameObject->Render();
+    }
+
+    for (auto& text : GetInstance().mTexts)
+    {
+        text->Render();
     }
 }
 
