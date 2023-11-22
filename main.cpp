@@ -79,7 +79,7 @@ void PlayPong(GLFWwindow *window)
     int frameCount = 0;
 
     LogInfo("Starting Text Render Test");
-    Text text = Text("Hello World!", "D:/code/pong/font_public_pixel.ttf", 32);
+    Text text = Text("Hello World!", "D:/code/pong/my_girls_retro.ttf", 32);
     LogInfo("Finished Text Render Test");
 
     (void)text;

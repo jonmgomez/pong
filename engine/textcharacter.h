@@ -1,11 +1,14 @@
 #pragma once
 
+#include "mesh.h"
+
 namespace pong
 {
 
-class TextCharacter
+class TextCharacter : public Mesh
 {
-TextCharacter(char character, int size);
+public:
+    TextCharacter(const std::vector<unsigned char>& data);
 };
 
 } // namespace pong

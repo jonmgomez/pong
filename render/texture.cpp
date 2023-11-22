@@ -16,7 +16,9 @@ namespace pong
 Texture::Texture(const std::string& filePath)
 {
     stbi_set_flip_vertically_on_load(1);
-    mLocalBuffer = stbi_load(filePath.c_str(), &mWidth, &mHeight, &mBPP, 4);
+
+    int bpp = 0;
+    unsigned char* buffer = stbi_load(filePath.c_str(), &mWidth, &mHeight, &bpp, 4);
 
     GLCall(glGenTextures(1, &mRendererID));
     GLCall(glBindTexture(GL_TEXTURE_2D, mRendererID));
@@ -26,13 +28,29 @@ Texture::Texture(const std::string& filePath)
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 
-    GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, mLocalBuffer));
+    GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer));
     GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 
-    if (mLocalBuffer)
+    if (buffer)
     {
-        stbi_image_free(mLocalBuffer);
+        stbi_image_free(buffer);
     }
+}
+
+Texture::Texture(const std::vector<unsigned char>& imageData, int width, int height) :
+    mWidth(width),
+    mHeight(height)
+{
+    GLCall(glGenTextures(1, &mRendererID));
+    GLCall(glBindTexture(GL_TEXTURE_2D, mRendererID));
+
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+
+    GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData.data()));
+    GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 }
 
 Texture::~Texture()

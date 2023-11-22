@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 namespace pong
 {
@@ -10,6 +11,7 @@ class Texture
 public:
     Texture() = default;
     explicit Texture(const std::string& filePath);
+    explicit Texture(const std::vector<unsigned char>& imageData, int width, int height);
     ~Texture();
     Texture(const Texture&) = delete;
     Texture(Texture&&) = delete;
@@ -25,12 +27,10 @@ public:
 protected:
     int mWidth {0};
     int mHeight {0};
-    int mBPP {0};
     unsigned int mRendererID {0};
 
 private:
     std::string mFilePath {""};
-    unsigned char* mLocalBuffer { nullptr };
 };
 
 class SolidColorTexture : public Texture

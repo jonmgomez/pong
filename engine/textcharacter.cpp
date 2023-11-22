@@ -1,13 +1,12 @@
 #include "textcharacter.h"
 
-#define STB_TRUETYPE_IMPLEMENTATION
-#include "stb_truetype.h"
-
 namespace pong
 {
 
-TextCharacter::TextCharacter(char character, int size)
+TextCharacter::TextCharacter(const std::vector<unsigned char>& data)
 {
+
+    mTexture = std::make_unique<Texture>(data);
 }
 
 } // namespace pong
