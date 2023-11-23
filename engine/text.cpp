@@ -69,12 +69,14 @@ void Text::CreateText()
 
         const float glpyhWidth = unscaledGlpyhWidth * scale;
         const float leftSideBearing = unscaledLeftSideBearing * scale;
+        std::cout << character << ": glpyhWidth: " << glpyhWidth << ", leftSideBearing: " << leftSideBearing << std::endl;
 
         int xCoord1 = 0;
         int yCoord1 = 0;
         int xCoord2 = 0;
         int yCoord2 = 0;
         stbtt_GetCodepointBitmapBox(&font, character, scale, scale, &xCoord1, &yCoord1, &xCoord2, &yCoord2);
+        std::cout << character << ": x1: " << xCoord1 << ", y1: " << yCoord1 << ", x2: " << xCoord2 << ", y2: " << yCoord2 << std::endl;
 
         const int charWidth  = xCoord2 - xCoord1;
         const int charHeight = yCoord2 - yCoord1;
@@ -103,6 +105,8 @@ void Text::CreateText()
             const float quadScreenWidth  = charWidth * mSize;
             const float quadScreenHeight = charHeight * mSize;
 
+            std::cout << character << ": " << quadScreenWidth << ", " << quadScreenHeight << std::endl;
+
             const float lineHeight = fabs(characterYOffset - quadScreenHeight);
             if (lineHeight > currentLineHeight)
             {
@@ -116,7 +120,7 @@ void Text::CreateText()
 
             if (i > 0)
             {
-                currentX -= leftSideBearing;
+                currentX += leftSideBearing;
             }
 
             // Since the current offset is the top left, offset it to center of quad
