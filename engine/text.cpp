@@ -21,7 +21,7 @@ Text::Text(const std::string& text, const std::string& path, float size, int pix
     std::ifstream file(path, std::ios::binary);
     if (!file)
     {
-        std::cout << "Failed to open file: " << path << std::endl;
+        std::cout << "Failed to open ttf file: " << path << std::endl;
         return;
     }
 

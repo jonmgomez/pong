@@ -11,7 +11,7 @@ namespace pong
 class Text
 {
 public:
-    Text(const std::string&, const std::string& path, float size, int pixelLineHeight = 128);
+    Text(const std::string& text, const std::string& path, float size, int pixelLineHeight = 128);
 
     void PrintSingleCharacter(const std::string& path, char c);
     void PrintString(const std::string& path, const std::string& str);
