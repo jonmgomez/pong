@@ -57,8 +57,6 @@ Texture::Texture(const unsigned char& imageData, int width, int height, GLenum f
     GLCall(glGenTextures(1, &mRendererID));
     GLCall(glBindTexture(GL_TEXTURE_2D, mRendererID));
 
-    std::cout << "Texture id: " << mRendererID << std::endl;
-
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
@@ -73,7 +71,6 @@ Texture::Texture(Texture&& other) :
     mHeight(other.mHeight),
     mRendererID(other.mRendererID)
 {
-    std::cout << "Texture move constructor called" << std::endl;
     other.mRendererID = 0;
     other.mWidth = 0;
     other.mHeight = 0;
@@ -81,7 +78,6 @@ Texture::Texture(Texture&& other) :
 
 Texture& Texture::operator=(Texture&& other)
 {
-    std::cout << "Texture move assignment operator called " << other.mRendererID << std::endl;
     if (this != &other)
     {
         mWidth = other.mWidth;
@@ -97,7 +93,6 @@ Texture& Texture::operator=(Texture&& other)
 
 Texture::~Texture()
 {
-    std::cout << "Destroying texture " << mRendererID << std::endl;
     GLCall(glDeleteTextures(1, &mRendererID));
 }
 

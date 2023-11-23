@@ -76,11 +76,11 @@ void Pong::Init()
     }
 
     std::string fontFile = Config::GetValue<std::string>("font");
-    auto text = std::make_unique<Text>("Helo\nabcdef", fontFile, 2.0f);
+    auto text = std::make_unique<Text>("Hello World!\nabcdefgh", fontFile, Config::GetValue("font_scale", 1.0f));
     GetInstance().mTexts.push_back(std::move(text));
 
-    auto playerScore = std::make_unique<Text>("0", fontFile, 2.0f);
-    playerScore->mPosition = glm::vec3(-1000.0f, 500.0f, 0.0f);
+    auto playerScore = std::make_unique<Text>("A", fontFile, 2.0f);
+    playerScore->SetPosition(glm::vec3(0.0f, 500.0f, 0.0f));
     GetInstance().mTexts.push_back(std::move(playerScore));
 }
 
@@ -124,6 +124,11 @@ GameObject* Pong::FindGameObjectByName(const std::string& name)
     }
 
     return nullptr;
+}
+
+void Pong::AddGameObject(std::unique_ptr<GameObject> gameObject)
+{
+    GetInstance().mGameObjects.push_back(std::move(gameObject));
 }
 
 void Pong::SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback)

@@ -13,15 +13,21 @@ class Text
 public:
     Text(const std::string&, const std::string& path, float size, int pixelLineHeight = 128);
 
-    void PrintSingleCharacter(const std::string& path, char c);
-    void PrintString(const std::string& path, const std::string& str);
+    void CreateText();
+
+    glm::vec3 GetPosition() const;
+    void SetPosition(const glm::vec3& position);
+    void SetText(const std::string& text);
 
     void Render();
 
-    glm::vec3 mPosition { 0.0f };
-
 private:
+    glm::vec3 mPosition { 0.0f };
     std::vector<TextCharacter> mCharacters {};
+    std::string mText { "" };
+    std::string mFontPath { "" };
+    float mSize { 0.0f };
+    int mPixelLineHeight { 0 };
 };
 
 } // namespace pong

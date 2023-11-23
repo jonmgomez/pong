@@ -39,6 +39,8 @@ public:
 
     static GameObject* FindGameObjectByName(const std::string& name);
 
+    static void AddGameObject(std::unique_ptr<GameObject> gameObject);
+
     static void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
 
 private:
