@@ -59,7 +59,7 @@ GLFWwindow* SetupGLFW()
     GLCall(glEnable(GL_BLEND));
     GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-    const char* glVersion = reinterpret_cast<const char *>(glGetString(GL_VERSION));
+    const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
     LogInfo("Using OpenGL version: {}", glVersion);
 
     int numTextureSlots;
