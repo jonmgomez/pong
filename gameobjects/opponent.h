@@ -21,6 +21,9 @@ public:
 private:
     static constexpr float OPPONENT_MAX_SPEED = 1200.0f;
 
+    void SetDifficultySettings();
+    void PredictBallPostion();
+
     glm::vec3 mTargetPosition { 0.0f };
     glm::vec3 mVelocity { 0.0f };
     float mSpeed { OPPONENT_MAX_SPEED };
@@ -30,9 +33,6 @@ private:
 
     float mTopWallBound { 0.0f };
     float mBottomWallBound { 0.0f };
-
-    void SetDifficultySettings();
-    void PredictBallPostion();
 };
 
 } // namespace pong

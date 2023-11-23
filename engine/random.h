@@ -22,8 +22,8 @@ private:
     Random(Random&&) = delete;
     Random& operator=(Random&&) = delete;
 
-    std::random_device rd;
-    std::mt19937 generator;
+    std::random_device rd {};
+    std::mt19937 generator {};
 };
 
 } // namespace pong
