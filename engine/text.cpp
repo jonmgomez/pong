@@ -1,20 +1,11 @@
 #include "text.h"
 
-#include "pong.h"
-#include "wall.h"
+#include "logger.h"
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>
 
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#pragma warning(push, 0)
-#include <stb_image_write.h>
-#pragma warning(pop)
-
 #include <fstream>
-#include <iostream>
-#include <sstream>
-
 
 namespace pong
 {
@@ -33,7 +24,7 @@ void Text::CreateText()
     std::ifstream file(mFontPath, std::ios::binary);
     if (!file)
     {
-        std::cout << "Failed to open file: " << mFontPath << std::endl;
+        RealTimeLogError("Failed to open true type font file: {}", mFontPath);
         return;
     }
 

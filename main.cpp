@@ -9,8 +9,6 @@
 #include "timer.h"
 #include "logger.h"
 
-#include "text.h"
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -35,7 +33,7 @@ GLFWwindow* SetupGLFW()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hello World", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hello World", nullptr, nullptr);
     if (window == nullptr)
     {
         LogError("glfwCreateWindow() failure");
@@ -61,7 +59,7 @@ GLFWwindow* SetupGLFW()
     GLCall(glEnable(GL_BLEND));
     GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-    const char *glVersion = reinterpret_cast<const char *>(glGetString(GL_VERSION));
+    const char* glVersion = reinterpret_cast<const char *>(glGetString(GL_VERSION));
     LogInfo("Using OpenGL version: {}", glVersion);
 
     int numTextureSlots;
@@ -71,21 +69,12 @@ GLFWwindow* SetupGLFW()
     return window;
 }
 
-void PlayPong(GLFWwindow *window)
+void PlayPong(GLFWwindow* window)
 {
     Pong::Init();
 
     double lastTime = glfwGetTime();
     int frameCount = 0;
-
-    // LogInfo("Starting Text Render Test");
-
-    // std::string fontFile = Config::GetValue<std::string>("font");
-    // Text text = Text("Hello World!", fontFile, 32.0f);
-    // LogInfo("Finished Text Render Test");
-
-    // (void)text;
-    // (void)window;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -110,7 +99,7 @@ void PlayPong(GLFWwindow *window)
     Renderer::Cleanup();
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     std::cout << "Hello World!" << std::endl;
 

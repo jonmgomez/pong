@@ -19,8 +19,6 @@ set(SOURCES
 add_library(engine ${SOURCES})
 
 target_link_libraries(engine
-    PRIVATE
-        stb
     PUBLIC
         render
         gameobjects

@@ -123,12 +123,13 @@ std::vector<unsigned char> Texture::ConvertAlphaImageToRGBA(const std::vector<un
     std::vector<unsigned char> convertedImage {};
     convertedImage.reserve(imageData.size() * 4);
 
+    const unsigned char kFullColor = 255;
     for (auto& alpha : imageData)
     {
-        convertedImage.push_back(255);
-        convertedImage.push_back(255);
-        convertedImage.push_back(255);
-        convertedImage.push_back(alpha);
+        convertedImage.emplace_back(kFullColor);
+        convertedImage.emplace_back(kFullColor);
+        convertedImage.emplace_back(kFullColor);
+        convertedImage.emplace_back(alpha);
     }
 
     return std::move(convertedImage);
@@ -145,9 +146,9 @@ void Texture::FlipImageVertically(const std::vector<unsigned char>& imageData, i
         {
             // For each pixel, copy all the components
             const int index = (rowIndex * width * comp) + (colIndex * comp);
-            for (int formatIndex = 0; formatIndex < comp; formatIndex++)
+            for (int componentIndex = 0; componentIndex < comp; componentIndex++)
             {
-                outFlippedImageData.emplace_back(imageData[index + formatIndex]);
+                outFlippedImageData.emplace_back(imageData[index + componentIndex]);
             }
         }
     }
