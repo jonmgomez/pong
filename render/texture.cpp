@@ -13,31 +13,47 @@
 namespace pong
 {
 
-Texture::Texture(const std::string& filePath)
+Texture Texture::CreateFromFile(const std::string& filePath)
 {
     stbi_set_flip_vertically_on_load(1);
 
-    int bpp = 0;
-    unsigned char* buffer = stbi_load(filePath.c_str(), &mWidth, &mHeight, &bpp, 4);
+    int bytesPerPixel = 0;
+    int width = 0;
+    int height = 0;
+    unsigned char* buffer = stbi_load(filePath.c_str(), &width, &height, &bytesPerPixel, 4);
 
-    GLCall(glGenTextures(1, &mRendererID));
-    GLCall(glBindTexture(GL_TEXTURE_2D, mRendererID));
-
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-
-    GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer));
-    GLCall(glBindTexture(GL_TEXTURE_2D, 0));
+    Texture texture(*buffer, width, height, GL_RGBA);
 
     if (buffer)
     {
         stbi_image_free(buffer);
     }
+
+    return std::move(texture);
 }
 
-Texture::Texture(const std::vector<unsigned char>& imageData, int width, int height) :
+Texture Texture::CreateFromRawData(const std::vector<unsigned char>& imageData, int width, int height)
+{
+    std::vector<unsigned char> flippedImageData {};
+    FlipImageVertically(imageData, width, height, 4, flippedImageData);
+
+    Texture texture(*flippedImageData.data(), width, height, GL_RGBA);
+
+    return std::move(texture);
+}
+
+Texture Texture::CreateFromSolidColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+{
+    unsigned char data[] = { r, g, b, a };
+    constexpr int kWidth = 1;
+    constexpr int kHeight = 1;
+
+    Texture texture(*data, kWidth, kHeight, GL_RGBA);
+
+    return std::move(texture);
+}
+
+Texture::Texture(const unsigned char& imageData, int width, int height, GLenum format) :
     mWidth(width),
     mHeight(height)
 {
@@ -49,8 +65,52 @@ Texture::Texture(const std::vector<unsigned char>& imageData, int width, int hei
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 
-    GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData.data()));
+    GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, mWidth, mHeight, 0, format, GL_UNSIGNED_BYTE, &imageData));
     GLCall(glBindTexture(GL_TEXTURE_2D, 0));
+}
+
+Texture::Texture(const Texture& other) :
+    mWidth(other.mWidth),
+    mHeight(other.mHeight),
+    mRendererID(other.mRendererID)
+{
+    std::cout << "Texture copy constructor called" << std::endl;
+}
+
+Texture& Texture::operator=(const Texture& other)
+{
+    std::cout << "Texture copy assignment operator called" << std::endl;
+    if (this != &other)
+    {
+        mWidth = other.mWidth;
+        mHeight = other.mHeight;
+        mRendererID = other.mRendererID;
+    }
+
+    return *this;
+}
+
+Texture::Texture(Texture&& other) :
+    mWidth(other.mWidth),
+    mHeight(other.mHeight),
+    mRendererID(other.mRendererID)
+{
+    std::cout << "Texture move constructor called" << std::endl;
+    other.mRendererID = 0;
+}
+
+Texture& Texture::operator=(Texture&& other)
+{
+    std::cout << "Texture move assignment operator called" << std::endl;
+    if (this != &other)
+    {
+        mWidth = other.mWidth;
+        mHeight = other.mHeight;
+        mRendererID = other.mRendererID;
+        other.mRendererID = 0;
+    }
+
+    return *this;
 }
 
 Texture::~Texture()
@@ -113,26 +173,6 @@ void Texture::FlipImageVertically(const std::vector<unsigned char>& imageData, i
             }
         }
     }
-}
-
-SolidColorTexture::SolidColorTexture(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
-{
-    unsigned char data[] = { r, g, b, a };
-    GLCall(glGenTextures(1, &mRendererID));
-    GLCall(glBindTexture(GL_TEXTURE_2D, mRendererID));
-
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-
-    GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
-    GLCall(glBindTexture(GL_TEXTURE_2D, 0));
-}
-
-SolidColorTexture::~SolidColorTexture()
-{
-    GLCall(glDeleteTextures(1, &mRendererID));
 }
 
 } // namespace pong

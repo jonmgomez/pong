@@ -93,10 +93,8 @@ Text::Text(const std::string& text, const std::string& path, float size, int pix
             stbtt_MakeCodepointBitmap(&font, alphaTexture.data(), charWidth, charHeight, kStride, scale, scale, character);
 
             auto rgbTexture = Texture::ConvertAlphaImageToRGBA(alphaTexture);
-            std::vector<unsigned char> finalTexture {};
-            Texture::FlipImageVertically(rgbTexture, charWidth, charHeight, 4, finalTexture);
 
-            auto textCharacter = std::make_unique<TextCharacter>(finalTexture, quadScreenWidth, quadScreenHeight,
+            auto textCharacter = std::make_unique<TextCharacter>(rgbTexture, quadScreenWidth, quadScreenHeight,
                                                                  glm::vec3(currentX + quadScreenWidth / 2.0f, characterYOffset - quadScreenHeight / 2.0f, 0.0f),
                                                                  charWidth, charHeight);
             mCharacters.emplace_back(std::move(textCharacter));

@@ -14,7 +14,7 @@ TextCharacter::TextCharacter(const std::vector<unsigned char>& data, float width
     Rectangle(width, height),
     mOffset(offset)
 {
-    mTexture = std::make_unique<Texture>(data, textureWidth, textureHeight);
+    mTexture = Texture::CreateFromRawData(data, textureWidth, textureHeight);
 }
 
 void TextCharacter::Draw(const glm::vec3& position) const

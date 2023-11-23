@@ -1,5 +1,7 @@
 #pragma once
 
+#include <GL/glew.h>
+
 #include <string>
 #include <vector>
 
@@ -9,14 +11,19 @@ namespace pong
 class Texture
 {
 public:
+
+    static Texture CreateFromFile(const std::string& filePath);
+    /* Assumes that the raw data is of RGBA format. Assumes pixels are stored from the top left corner to bottom right */
+    static Texture CreateFromRawData(const std::vector<unsigned char>& imageData, int width, int height);
+    static Texture CreateFromSolidColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+
     Texture() = default;
-    explicit Texture(const std::string& filePath);
-    explicit Texture(const std::vector<unsigned char>& imageData, int width, int height);
+    Texture(const unsigned char& imageData, int width, int height, GLenum format);
+    Texture(const Texture&);
+    Texture& operator=(const Texture&);
+    Texture(Texture&&);
+    Texture& operator=(Texture&&);
     ~Texture();
-    Texture(const Texture&) = delete;
-    Texture(Texture&&) = delete;
-    Texture& operator=(const Texture&) = delete;
-    Texture& operator=(Texture&&) = delete;
 
     void Bind(unsigned int slot = 0) const;
     void Unbind() const;
@@ -34,13 +41,6 @@ protected:
 
 private:
     std::string mFilePath {""};
-};
-
-class SolidColorTexture : public Texture
-{
-public:
-    SolidColorTexture(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-    ~SolidColorTexture();
 };
 
 } // namespace pong

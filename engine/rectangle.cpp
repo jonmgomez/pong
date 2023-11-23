@@ -27,7 +27,7 @@ Rectangle::Rectangle(float width, float height) :
     CreateQuad(width, height);
 
     const unsigned char kColorValue = 255;
-    mTexture = std::make_unique<SolidColorTexture>(kColorValue, kColorValue, kColorValue, kColorValue);
+    mTexture = Texture::CreateFromSolidColor(kColorValue, kColorValue, kColorValue, kColorValue);
 }
 
 void Rectangle::CreateQuad(float width, float height)

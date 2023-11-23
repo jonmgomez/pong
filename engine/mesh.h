@@ -21,7 +21,7 @@ protected:
     VertexArray mVA {};
     VertexBuffer mVB {};
     IndexBuffer mIB {};
-    std::unique_ptr<Texture>mTexture { nullptr };
+    Texture mTexture {};
 };
 
 } // namespace pong
