@@ -12,20 +12,6 @@ VertexArray::VertexArray()
     GLCall(glGenVertexArrays(1, &mRendererID));
 }
 
-VertexArray::VertexArray(const VertexArray& other) :
-    mRendererID(other.mRendererID)
-{
-}
-
-VertexArray& VertexArray::operator=(const VertexArray& other)
-{
-    if (this != &other)
-    {
-        mRendererID = other.mRendererID;
-    }
-    return *this;
-}
-
 VertexArray::VertexArray(VertexArray&& other) :
     mRendererID(other.mRendererID)
 {

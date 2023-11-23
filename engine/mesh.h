@@ -15,12 +15,6 @@ namespace pong
 class Mesh
 {
 public:
-    Mesh() = default;
-    Mesh(const Mesh&);
-    Mesh& operator=(const Mesh&);
-    Mesh(Mesh&&);
-    Mesh& operator=(Mesh&&);
-
     virtual void Draw(const glm::vec3& position) const;
 
 protected:

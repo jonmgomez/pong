@@ -8,8 +8,8 @@ class IndexBuffer
 public:
     IndexBuffer() = default;
     IndexBuffer(const unsigned int* data, unsigned int count);
-    IndexBuffer(const IndexBuffer&);
-    IndexBuffer& operator=(const IndexBuffer&);
+    IndexBuffer(const IndexBuffer&) = delete;
+    IndexBuffer& operator=(const IndexBuffer&) = delete;
     IndexBuffer(IndexBuffer&&);
     IndexBuffer& operator=(IndexBuffer&&);
     ~IndexBuffer();

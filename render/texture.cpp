@@ -32,10 +32,11 @@ Texture Texture::CreateFromFile(const std::string& filePath)
     return std::move(texture);
 }
 
-Texture Texture::CreateFromRawData(const std::vector<unsigned char>& imageData, int width, int height)
+Texture Texture::CreateFromFontCharacter(const std::vector<unsigned char>& imageData, int width, int height)
 {
+    auto rgbTexture = Texture::ConvertAlphaImageToRGBA(imageData);
     std::vector<unsigned char> flippedImageData {};
-    FlipImageVertically(imageData, width, height, 4, flippedImageData);
+    FlipImageVertically(rgbTexture, width, height, 4, flippedImageData);
 
     return Texture(*flippedImageData.data(), width, height, GL_RGBA);
 }
@@ -56,6 +57,8 @@ Texture::Texture(const unsigned char& imageData, int width, int height, GLenum f
     GLCall(glGenTextures(1, &mRendererID));
     GLCall(glBindTexture(GL_TEXTURE_2D, mRendererID));
 
+    std::cout << "Texture id: " << mRendererID << std::endl;
+
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
@@ -63,27 +66,6 @@ Texture::Texture(const unsigned char& imageData, int width, int height, GLenum f
 
     GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, mWidth, mHeight, 0, format, GL_UNSIGNED_BYTE, &imageData));
     GLCall(glBindTexture(GL_TEXTURE_2D, 0));
-}
-
-Texture::Texture(const Texture& other) :
-    mWidth(other.mWidth),
-    mHeight(other.mHeight),
-    mRendererID(other.mRendererID)
-{
-    std::cout << "Texture copy constructor called" << std::endl;
-}
-
-Texture& Texture::operator=(const Texture& other)
-{
-    std::cout << "Texture copy assignment operator called" << std::endl;
-    if (this != &other)
-    {
-        mWidth = other.mWidth;
-        mHeight = other.mHeight;
-        mRendererID = other.mRendererID;
-    }
-
-    return *this;
 }
 
 Texture::Texture(Texture&& other) :
@@ -99,7 +81,7 @@ Texture::Texture(Texture&& other) :
 
 Texture& Texture::operator=(Texture&& other)
 {
-    std::cout << "Texture move assignment operator called" << std::endl;
+    std::cout << "Texture move assignment operator called " << other.mRendererID << std::endl;
     if (this != &other)
     {
         mWidth = other.mWidth;
@@ -115,6 +97,7 @@ Texture& Texture::operator=(Texture&& other)
 
 Texture::~Texture()
 {
+    std::cout << "Destroying texture " << mRendererID << std::endl;
     GLCall(glDeleteTextures(1, &mRendererID));
 }
 

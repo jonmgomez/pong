@@ -9,8 +9,8 @@ public:
     VertexBuffer() = default;
     VertexBuffer(const void* data, unsigned int size);
     VertexBuffer(unsigned int size);
-    VertexBuffer(const VertexBuffer&);
-    VertexBuffer& operator=(const VertexBuffer&);
+    VertexBuffer(const VertexBuffer&) = delete;
+    VertexBuffer& operator=(const VertexBuffer&) = delete;
     VertexBuffer(VertexBuffer&&);
     VertexBuffer& operator=(VertexBuffer&&);
     ~VertexBuffer();

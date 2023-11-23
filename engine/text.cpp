@@ -52,6 +52,7 @@ Text::Text(const std::string& text, const std::string& path, float size, int pix
         int glpyhWidth = 0;
 	    int leftSideBearing = 0;
         stbtt_GetCodepointHMetrics(&font, character, &glpyhWidth, &leftSideBearing);
+        std::cout << "glpyhWidth: " << glpyhWidth << ", leftSideBearing: " << leftSideBearing << std::endl;
 
         int xCoord1, yCoord1, xCoord2, yCoord2;
         stbtt_GetCodepointBitmapBox(&font, character, scale, scale, &xCoord1, &yCoord1, &xCoord2, &yCoord2);
@@ -69,7 +70,7 @@ Text::Text(const std::string& text, const std::string& path, float size, int pix
         if (character == '\n')
         {
             // SAVE
-            currentY -= (ascent - descent + lineGap * scale) * size;
+            currentY -= (ascent - descent + lineGap) * size;
             std::cout << "New Y: " << currentY << std::endl;
             totalHeight += abs(currentY);
             currentX = 0;
@@ -92,19 +93,26 @@ Text::Text(const std::string& text, const std::string& path, float size, int pix
             const int kStride = charWidth;
             stbtt_MakeCodepointBitmap(&font, alphaTexture.data(), charWidth, charHeight, kStride, scale, scale, character);
 
-            auto rgbTexture = Texture::ConvertAlphaImageToRGBA(alphaTexture);
+            std::cout << "Creating Text Character" << std::endl;
 
-            TextCharacter tc(rgbTexture, quadScreenWidth, quadScreenHeight,
-                             glm::vec3(currentX + quadScreenWidth / 2.0f, characterYOffset - quadScreenHeight / 2.0f, 0.0f),
-                             charWidth, charHeight);
-            mCharacters.push_back(std::move(tc));
+            // auto tc = std::make_unique<TextCharacter>(alphaTexture, quadScreenWidth, quadScreenHeight,
+            //                  glm::vec3(currentX + quadScreenWidth / 2.0f, characterYOffset - quadScreenHeight / 2.0f, 0.0f),
+            //                  charWidth, charHeight);
 
-            currentX += roundf(glpyhWidth * size * scale);
+            // std::cout << "Moved Text Character" << std::endl;
+            // mCharacters.push_back(std::move(tc));
+
+            mCharacters.emplace_back(alphaTexture, quadScreenWidth, quadScreenHeight,
+                                     glm::vec3(currentX + quadScreenWidth / 2.0f, characterYOffset - quadScreenHeight / 2.0f, 0.0f),
+                                     charWidth, charHeight);
+
+            currentX += glpyhWidth * size * scale;
+            currentX -= leftSideBearing * size * scale;
             std::cout << "currentX: " << currentX << std::endl;
         }
 
         const int kern = stbtt_GetCodepointKernAdvance(&font, character, text[i + 1]);
-        currentX += roundf(kern * size);
+        currentX -= kern * size * scale;
         std::cout << "currentX + glpyhWidth + kern: " << currentX << std::endl;
 
         std::string fileName = "char_" + std::to_string(i) + ".png";
@@ -112,6 +120,14 @@ Text::Text(const std::string& text, const std::string& path, float size, int pix
     }
 
     PrintString(path, "Helo\nabcd");
+}
+
+void Text::Render()
+{
+    for (const auto& character : mCharacters)
+    {
+        character.Draw(mPosition);
+    }
 }
 
 void Text::PrintString(const std::string& path, const std::string& str)
@@ -265,14 +281,6 @@ void Text::PrintSingleCharacter(const std::string& path, char c)
     stbtt_MakeCodepointBitmap(&font, mPixels, width, height, stride, scale, scale, character);
 
     stbi_write_png("image.png", width, height, 1, mPixels, stride);
-}
-
-void Text::Render()
-{
-    for (const auto& character : mCharacters)
-    {
-        character.Draw(mPosition);
-    }
 }
 
 } // namespace pong
