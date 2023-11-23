@@ -10,23 +10,13 @@ static const std::array<unsigned int, 6> kIndicies = {
     2, 3, 0
 };
 
-TextCharacter::TextCharacter(const std::vector<unsigned char>& data, float width, float height, const glm::vec3& offset, int textureWidth, int textureHeight) :
+TextCharacter::TextCharacter(const std::vector<unsigned char>& data,
+                            float width, float height, const glm::vec3& offset,
+                            int textureWidthPixels, int textureHeightPixels) :
     Rectangle(width, height),
-    mOffset(offset),
-    mStartingWidth(width),
-    mStartingHeight(height)
+    mOffset(offset)
 {
-    mTexture = Texture::CreateFromFontCharacter(data, textureWidth, textureHeight);
-}
-
-float TextCharacter::GetStartingWidth() const
-{
-    return mStartingWidth;
-}
-
-float TextCharacter::GetStartingHeight() const
-{
-    return mStartingHeight;
+    mTexture = Texture::CreateFromFontCharacter(data, textureWidthPixels, textureHeightPixels);
 }
 
 glm::vec3 TextCharacter::GetOffset() const

@@ -24,19 +24,11 @@ Rectangle::Rectangle(float width, float height) :
     mWidth {width},
     mHeight {height}
 {
-    CreateQuad(width, height);
-
-    const unsigned char kColorValue = 255;
-    mTexture = Texture::CreateFromSolidColor(kColorValue, kColorValue, kColorValue, kColorValue);
-}
-
-void Rectangle::CreateQuad(float width, float height)
-{
     const std::array<float, 16> positions = {
-        -width / 2, -height / 2, 0.0f, 0.0f,
-         width / 2, -height / 2, 1.0f, 0.0f,
-         width / 2,  height / 2, 1.0f, 1.0f,
-        -width / 2,  height / 2, 0.0f, 1.0f
+        -mWidth / 2, -mHeight / 2, 0.0f, 0.0f,
+         mWidth / 2, -mHeight / 2, 1.0f, 0.0f,
+         mWidth / 2,  mHeight / 2, 1.0f, 1.0f,
+        -mWidth / 2,  mHeight / 2, 0.0f, 1.0f
     };
 
     mVB = VertexBuffer(positions.data(), static_cast<unsigned int>(positions.size() * sizeof(float)));
@@ -46,13 +38,9 @@ void Rectangle::CreateQuad(float width, float height)
     layout.Push<float>(2);
     layout.Push<float>(2);
     mVA.AddBuffer(mVB, layout);
-}
 
-void Rectangle::SetDimensions(float width, float height)
-{
-    CreateQuad(width, height);
-    mWidth = width;
-    mHeight = height;
+    const unsigned char kColorValue = 255;
+    mTexture = Texture::CreateFromSolidColor(kColorValue, kColorValue, kColorValue, kColorValue);
 }
 
 float Rectangle::GetWidth() const

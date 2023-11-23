@@ -74,21 +74,7 @@ void Pong::Init()
     {
         gameObject->OnStart();
     }
-
-    std::string fontFile = Config::GetValue<std::string>("font");
-    auto text = std::make_unique<Text>("PONG", fontFile, glm::vec3(Config::GetValue("font_scale", 1.0f), 0.0f, 0.0f));
-    text->SetPosition(glm::vec3(0.0f, 800.0f, 0.0f));
-    GetInstance().mTexts.push_back(std::move(text));
-
-    // auto playerScore = std::make_unique<Text>("A", fontFile, glm::vec3(2.0f));
-    // playerScore->SetPosition(glm::vec3(0.0f, 500.0f, 0.0f));
-    // GetInstance().mTexts.push_back(std::move(playerScore));
 }
-
-float scale = 1.0f;
-float scaleSpeed = 0.01f;
-const float scaleMin = 0.5f;
-const float scaleMax = 2.0f;
 
 void Pong::GameLoop()
 {
@@ -107,13 +93,6 @@ void Pong::GameLoop()
 
     for (auto& text : GetInstance().mTexts)
     {
-        text->SetScale(glm::vec3(scale, scale, 0.0f));
-        scale += scaleSpeed * Timer::frameTime;
-        std::cout << scale << std::endl;
-        if (scale > scaleMax || scale < scaleMin)
-        {
-            scaleSpeed = -scaleSpeed;
-        }
         text->Render();
     }
 }
@@ -139,9 +118,14 @@ GameObject* Pong::FindGameObjectByName(const std::string& name)
     return nullptr;
 }
 
-void Pong::AddGameObject(std::unique_ptr<GameObject> gameObject)
+Text* Pong::AddText(const std::string& text, const std::string& fontPath,
+                    float scale, int pixelLineHeight,
+                    const glm::vec3& position)
 {
-    GetInstance().mGameObjects.push_back(std::move(gameObject));
+    auto newText = std::make_unique<Text>(text, fontPath, scale, pixelLineHeight);
+    newText->SetPosition(position);
+    GetInstance().mTexts.push_back(std::move(newText));
+    return GetInstance().mTexts.back().get();
 }
 
 void Pong::SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback)

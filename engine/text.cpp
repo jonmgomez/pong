@@ -19,7 +19,7 @@
 namespace pong
 {
 
-Text::Text(const std::string& text, const std::string& path, const glm::vec3& scale, int pixelLineHeight) :
+Text::Text(const std::string& text, const std::string& path, float scale, int pixelLineHeight) :
     mText { text },
     mFontPath { path },
     mScale { scale },
@@ -42,7 +42,7 @@ void Text::CreateText()
     stbtt_fontinfo font;
     stbtt_InitFont(&font, fontData.data(), 0);
 
-    const float scale = stbtt_ScaleForPixelHeight(&font, static_cast<float>(mPixelLineHeight));
+    const float pixelScale = stbtt_ScaleForPixelHeight(&font, static_cast<float>(mPixelLineHeight));
 
     float totalTextWidth = 0.0f;
     float totalTextHeight = 0.0f;
@@ -52,11 +52,9 @@ void Text::CreateText()
     int unscaledAscent, unscaledDescent, unscaledLineGap;
     stbtt_GetFontVMetrics(&font, &unscaledAscent, &unscaledDescent, &unscaledLineGap);
 
-    const float ascent  = unscaledAscent  * scale;
-    const float descent = unscaledDescent * scale;
-    const float lineGap = unscaledLineGap * scale;
-
-    const float size = mScale.x;
+    const float ascent  = unscaledAscent  * pixelScale;
+    const float descent = unscaledDescent * pixelScale;
+    const float lineGap = unscaledLineGap * pixelScale;
 
     float currentX = 0;
     float currentY = 0;
@@ -69,14 +67,14 @@ void Text::CreateText()
 	    int unscaledLeftSideBearing = 0;
         stbtt_GetCodepointHMetrics(&font, character, &unscaledGlpyhWidth, &unscaledLeftSideBearing);
 
-        const float glpyhWidth = unscaledGlpyhWidth * scale;
-        const float leftSideBearing = unscaledLeftSideBearing * scale;
+        const float glpyhWidth = unscaledGlpyhWidth * pixelScale;
+        const float leftSideBearing = unscaledLeftSideBearing * pixelScale;
 
         int xCoord1 = 0;
         int yCoord1 = 0;
         int xCoord2 = 0;
         int yCoord2 = 0;
-        stbtt_GetCodepointBitmapBox(&font, character, scale, scale, &xCoord1, &yCoord1, &xCoord2, &yCoord2);
+        stbtt_GetCodepointBitmapBox(&font, character, pixelScale, pixelScale, &xCoord1, &yCoord1, &xCoord2, &yCoord2);
 
         const int charWidth  = xCoord2 - xCoord1;
         const int charHeight = yCoord2 - yCoord1;
@@ -86,7 +84,7 @@ void Text::CreateText()
 
         if (character == '\n')
         {
-            currentY -= (ascent - descent + lineGap) * size;
+            currentY -= (ascent - descent + lineGap) * mScale;
             currentX = 0;
 
             if (currentLineWidth > totalTextWidth)
@@ -100,10 +98,10 @@ void Text::CreateText()
         else
         {
             const float spaceAboveCharPixels = ascent + yCoord1;
-            const float characterYOffset = currentY - spaceAboveCharPixels * size;
+            const float characterYOffset = currentY - spaceAboveCharPixels * mScale;
 
-            const float quadScreenWidth  = charWidth * size;
-            const float quadScreenHeight = charHeight * size;
+            const float quadScreenWidth  = charWidth * mScale;
+            const float quadScreenHeight = charHeight * mScale;
 
             const float lineHeight = fabs(characterYOffset - quadScreenHeight);
             if (lineHeight > currentLineHeight)
@@ -114,7 +112,7 @@ void Text::CreateText()
 
             // Since this uses a single character for each texture, stride is just the pixel width of the character
             const int kStride = charWidth;
-            stbtt_MakeCodepointBitmap(&font, alphaTexture.data(), charWidth, charHeight, kStride, scale, scale, character);
+            stbtt_MakeCodepointBitmap(&font, alphaTexture.data(), charWidth, charHeight, kStride, pixelScale, pixelScale, character);
 
             if (i > 0)
             {
@@ -139,7 +137,7 @@ void Text::CreateText()
         }
 
         const int kern = stbtt_GetCodepointKernAdvance(&font, character, mText[i + 1]);
-        currentX += fabs(kern * size * scale);
+        currentX += fabs(kern * mScale * pixelScale);
         currentLineWidth = currentX;
     }
 
@@ -168,23 +166,9 @@ void Text::SetPosition(const glm::vec3& position)
     mPosition = position;
 }
 
-glm::vec3 Text::GetScale() const
+std::string Text::GetText() const
 {
-    return mScale;
-}
-
-void Text::SetScale(const glm::vec3& scale)
-{
-    mScale = scale;
-
-    for (auto& character : mCharacters)
-    {
-        float width = character.GetWidth();
-        float height = character.GetHeight();
-
-        character.SetOffset(character.GetOffset() * scale);
-        character.SetDimensions(width * scale.x, height * scale.y);
-    }
+    return mText;
 }
 
 void Text::SetText(const std::string& text)

@@ -39,7 +39,9 @@ public:
 
     static GameObject* FindGameObjectByName(const std::string& name);
 
-    static void AddGameObject(std::unique_ptr<GameObject> gameObject);
+    static Text* AddText(const std::string& text, const std::string& fontPath,
+                         float scale, int pixelLineHeight = 128,
+                         const glm::vec3& position = glm::vec3(0.0f));
 
     static void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
 

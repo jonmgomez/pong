@@ -13,10 +13,10 @@ namespace pong
 class TextCharacter : public Rectangle
 {
 public:
-    TextCharacter(const std::vector<unsigned char>& data, float width, float height, const glm::vec3& offset, int textureWidth, int textureHeight);
+    TextCharacter(const std::vector<unsigned char>& data,
+                  float width, float height, const glm::vec3& offset,
+                  int textureWidthPixels, int textureHeightPixels);
 
-    float GetStartingWidth() const;
-    float GetStartingHeight() const;
     glm::vec3 GetOffset() const;
     void SetOffset(const glm::vec3& offset);
 
@@ -24,8 +24,6 @@ public:
 
 private:
     glm::vec3 mOffset { 0.0f };
-    float mStartingWidth { 0.0f };
-    float mStartingHeight { 0.0f };
 };
 
 } // namespace pong
