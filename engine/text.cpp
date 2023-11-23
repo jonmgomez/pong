@@ -37,16 +37,20 @@ Text::Text(const std::string& text, const std::string& path, float size)
     stbtt_fontinfo font;
     stbtt_InitFont(&font, ttf_buffer, 0);
 
-    const int lineHeight = 64; // In pixels
+    const int lineHeight = 128; // In pixels
     const float scale = stbtt_ScaleForPixelHeight(&font, lineHeight);
 
     float currentX = 0;
     float currentY = 0;
-    int unscaledAscent, unscaledDescent, lineGap;
-    stbtt_GetFontVMetrics(&font, &unscaledAscent, &unscaledDescent, &lineGap);
+    int unscaledAscent, unscaledDescent, unscaledLineGap;
+    stbtt_GetFontVMetrics(&font, &unscaledAscent, &unscaledDescent, &unscaledLineGap);
+    std::cout << "unscaledAscent: " << unscaledAscent << ", unscaledDescent: " << unscaledDescent << ", unscaledLineGap: " << unscaledLineGap << std::endl;
 
     const float ascent = unscaledAscent * scale;
+    std::cout << "ascent: " << ascent << std::endl;
     const float descent = unscaledDescent * scale;
+    std::cout << "descent: " << descent << std::endl;
+    const float lineGap = unscaledLineGap * scale;
 
     for (int i = 0; i < text.length(); ++i)
     {
@@ -59,6 +63,7 @@ Text::Text(const std::string& text, const std::string& path, float size)
 
         int xCoord1, yCoord1, xCoord2, yCoord2;
         stbtt_GetCodepointBitmapBox(&font, character, scale, scale, &xCoord1, &yCoord1, &xCoord2, &yCoord2);
+        std::cout << "coords: " << xCoord1 << ", " << xCoord2 << ", " << yCoord1 << ", " << yCoord2 << std::endl;
 
         const int charWidth = xCoord2 - xCoord1;
         const int charHeight = yCoord2 - yCoord1;
@@ -72,17 +77,18 @@ Text::Text(const std::string& text, const std::string& path, float size)
         if (character == '\n')
         {
             // SAVE
-            currentY += (ascent - descent + lineGap) * size;
+            currentY -= (ascent - descent + lineGap * scale) * size;
             std::cout << "New Y: " << currentY << std::endl;
-            totalHeight += currentY;
+            totalHeight += abs(currentY);
+            currentX = 0;
         }
         else
         {
             // Save this to some variable for the character
             // Or just use it in positioning
             const float spaceAboveChar = ascent + yCoord1;
-            // SAVE
-            const float characterYOffset = spaceAboveChar + currentY;
+            const float characterYOffset = -spaceAboveChar * size + currentY;
+
             // convert to screen units
             std::cout << character << " - X offset: " << currentX << std::endl;
             std::cout << character << " - Y offset: " << characterYOffset << std::endl;
@@ -92,19 +98,21 @@ Text::Text(const std::string& text, const std::string& path, float size)
             const float quadScreenWidth = charWidth * size;
             const float quadScreenHeight = charHeight * size;
 
+
             // Since this uses a single character for each texture, stride is just the width of the character
             const int kStride = charWidth;
             stbtt_MakeCodepointBitmap(&font, alphaTexture.data(), charWidth, charHeight, kStride, scale, scale, character);
 
-
-            auto finalTexture = Texture::ConvertAlphaImageToRGBA(alphaTexture);
+            auto rgbTexture = Texture::ConvertAlphaImageToRGBA(alphaTexture);
+            std::vector<unsigned char> finalTexture {};
+            Texture::FlipImageVertically(rgbTexture, charWidth, charHeight, 4, finalTexture);
 
             auto textCharacter = std::make_unique<TextCharacter>(finalTexture, quadScreenWidth, quadScreenHeight,
-                                                                 glm::vec3(currentX, characterYOffset, 0.0f),
+                                                                 glm::vec3(currentX + quadScreenWidth / 2.0f, characterYOffset - quadScreenHeight / 2.0f, 0.0f),
                                                                  charWidth, charHeight);
             mCharacters.emplace_back(std::move(textCharacter));
 
-            currentX += roundf(glpyhWidth * size);
+            currentX += roundf(glpyhWidth * size * scale);
             std::cout << "currentX: " << currentX << std::endl;
         }
 
@@ -116,7 +124,7 @@ Text::Text(const std::string& text, const std::string& path, float size)
         stbi_write_png(fileName.c_str(), charWidth, charHeight, 1, alphaTexture.data(), charWidth);
     }
 
-    //PrintString(path, "ABCDEF");
+    PrintString(path, "Helo\nabcd");
 }
 
 void Text::PrintString(const std::string& path, const std::string& str)
@@ -132,8 +140,8 @@ void Text::PrintString(const std::string& path, const std::string& str)
 
     std::cout << "Space ascii value: " << static_cast<int>(' ') << std::endl;
 
-    constexpr int b_w = 512; /* bitmap width */
-    constexpr int b_h = 128; /* bitmap height */
+    constexpr int b_w = 1024; /* bitmap width */
+    constexpr int b_h = 512; /* bitmap height */
     constexpr int imageSize = b_w * b_h;
     constexpr int l_h = 128; /* line height */
 

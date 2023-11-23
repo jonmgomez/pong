@@ -77,8 +77,12 @@ void Pong::Init()
 
     LogInfo("Creating text object");
     std::string fontFile = Config::GetValue<std::string>("font");
-    auto text = std::make_unique<Text>("H", fontFile, 16.0f);
+    auto text = std::make_unique<Text>("Helo\nabcd", fontFile, 2.0f);
     GetInstance().mTexts.push_back(std::move(text));
+
+    auto playerScore = std::make_unique<Text>("0", fontFile, 2.0f);
+    playerScore->mPosition = glm::vec3(-1000.0f, 500.0f, 0.0f);
+    GetInstance().mTexts.push_back(std::move(playerScore));
     LogInfo("Finished creating text object");
 }
 

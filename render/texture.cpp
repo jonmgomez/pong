@@ -96,6 +96,24 @@ std::vector<unsigned char> Texture::ConvertAlphaImageToRGBA(const std::vector<un
     return std::move(convertedImage);
 }
 
+void Texture::FlipImageVertically(const std::vector<unsigned char>& imageData, int width, int height, int comp, std::vector<unsigned char>& outFlippedImageData)
+{
+    ASSERT(imageData.size() == width * height * comp);
+
+    outFlippedImageData.reserve(imageData.size());
+    for (int rowIndex = height - 1; rowIndex >= 0; rowIndex--)
+    {
+        for (int colIndex = 0; colIndex < width; colIndex++)
+        {
+            // For each pixel, copy all the components
+            const int index = (rowIndex * width * comp) + (colIndex * comp);
+            for (int formatIndex = 0; formatIndex < comp; formatIndex++)
+            {
+                outFlippedImageData.emplace_back(imageData[index + formatIndex]);
+            }
+        }
+    }
+}
 
 SolidColorTexture::SolidColorTexture(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
