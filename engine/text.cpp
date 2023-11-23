@@ -10,35 +10,27 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 
 namespace pong
 {
 
-Text::Text(const std::string& text, const std::string& path, float size)
+Text::Text(const std::string& text, const std::string& path, float size, int pixelLineHeight)
 {
-    (void)text;
-    (void)size;
-
-    std::ifstream stream(path);
-    if (!stream.is_open())
+    std::ifstream file(path, std::ios::binary);
+    if (!file)
     {
         std::cout << "Failed to open file: " << path << std::endl;
         return;
     }
 
-    // const float BASE_SCREEN_WIDTH = 1024.0f;
-    // const float BASE_SCREEN_HEIGHT = 768.0f;
-
-    unsigned char* ttf_buffer = new unsigned char[1000000];
-    #pragma warning(suppress: 4996)
-    fread(ttf_buffer, 1, 1000000, fopen(path.c_str(), "rb"));
+    std::vector<unsigned char> fontData((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 
     stbtt_fontinfo font;
-    stbtt_InitFont(&font, ttf_buffer, 0);
+    stbtt_InitFont(&font, fontData.data(), 0);
 
-    const int lineHeight = 128; // In pixels
-    const float scale = stbtt_ScaleForPixelHeight(&font, lineHeight);
+    const float scale = stbtt_ScaleForPixelHeight(&font, static_cast<float>(pixelLineHeight));
 
     float currentX = 0;
     float currentY = 0;
@@ -93,11 +85,8 @@ Text::Text(const std::string& text, const std::string& path, float size)
             std::cout << character << " - X offset: " << currentX << std::endl;
             std::cout << character << " - Y offset: " << characterYOffset << std::endl;
 
-            //const int byteOffset = currentX + static_cast<int>(roundf(leftSideBearing * scale));
-
             const float quadScreenWidth = charWidth * size;
             const float quadScreenHeight = charHeight * size;
-
 
             // Since this uses a single character for each texture, stride is just the width of the character
             const int kStride = charWidth;

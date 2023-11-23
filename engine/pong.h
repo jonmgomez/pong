@@ -54,6 +54,7 @@ private:
 
     std::vector<std::unique_ptr<GameObject>> mGameObjects {};
     std::vector<std::unique_ptr<Text>> mTexts {};
+
     CollisionManager mCollisionManager {};
     Timer mTimer {};
     bool mFirstFrame { true };

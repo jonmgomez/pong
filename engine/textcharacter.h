@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mesh.h"
+#include "rectangle.h"
 
 #include <glm/glm.hpp>
 
@@ -9,7 +10,7 @@
 namespace pong
 {
 
-class TextCharacter : public Mesh
+class TextCharacter : public Rectangle
 {
 public:
     TextCharacter(const std::vector<unsigned char>& data, float width, float height, const glm::vec3& offset, int textureWidth, int textureHeight);

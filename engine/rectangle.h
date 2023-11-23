@@ -16,6 +16,8 @@ class Rectangle : public Mesh
 public:
     Rectangle(float width, float height);
 
+    void CreateQuad(float width, float height);
+
 private:
     float mWidth { 0.0f };
     float mHeight { 0.0f };
