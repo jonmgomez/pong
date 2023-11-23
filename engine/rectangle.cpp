@@ -48,4 +48,21 @@ void Rectangle::CreateQuad(float width, float height)
     mVA.AddBuffer(mVB, layout);
 }
 
+void Rectangle::SetDimensions(float width, float height)
+{
+    CreateQuad(width, height);
+    mWidth = width;
+    mHeight = height;
+}
+
+float Rectangle::GetWidth() const
+{
+    return mWidth;
+}
+
+float Rectangle::GetHeight() const
+{
+    return mHeight;
+}
+
 } // namespace pong

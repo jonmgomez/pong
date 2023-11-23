@@ -76,13 +76,19 @@ void Pong::Init()
     }
 
     std::string fontFile = Config::GetValue<std::string>("font");
-    auto text = std::make_unique<Text>("Hello, World!\nabcdefg\nABCDEFG", fontFile, Config::GetValue("font_scale", 1.0f));
+    auto text = std::make_unique<Text>("PONG", fontFile, glm::vec3(Config::GetValue("font_scale", 1.0f), 0.0f, 0.0f));
+    text->SetPosition(glm::vec3(0.0f, 800.0f, 0.0f));
     GetInstance().mTexts.push_back(std::move(text));
 
-    auto playerScore = std::make_unique<Text>("A", fontFile, 2.0f);
-    playerScore->SetPosition(glm::vec3(0.0f, 500.0f, 0.0f));
-    GetInstance().mTexts.push_back(std::move(playerScore));
+    // auto playerScore = std::make_unique<Text>("A", fontFile, glm::vec3(2.0f));
+    // playerScore->SetPosition(glm::vec3(0.0f, 500.0f, 0.0f));
+    // GetInstance().mTexts.push_back(std::move(playerScore));
 }
+
+float scale = 1.0f;
+float scaleSpeed = 0.01f;
+const float scaleMin = 0.5f;
+const float scaleMax = 2.0f;
 
 void Pong::GameLoop()
 {
@@ -101,6 +107,13 @@ void Pong::GameLoop()
 
     for (auto& text : GetInstance().mTexts)
     {
+        text->SetScale(glm::vec3(scale, scale, 0.0f));
+        scale += scaleSpeed * Timer::frameTime;
+        std::cout << scale << std::endl;
+        if (scale > scaleMax || scale < scaleMin)
+        {
+            scaleSpeed = -scaleSpeed;
+        }
         text->Render();
     }
 }

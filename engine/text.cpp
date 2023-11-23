@@ -19,10 +19,10 @@
 namespace pong
 {
 
-Text::Text(const std::string& text, const std::string& path, float size, int pixelLineHeight) :
+Text::Text(const std::string& text, const std::string& path, const glm::vec3& scale, int pixelLineHeight) :
     mText { text },
     mFontPath { path },
-    mSize { size },
+    mScale { scale },
     mPixelLineHeight { pixelLineHeight }
 {
     CreateText();
@@ -56,6 +56,8 @@ void Text::CreateText()
     const float descent = unscaledDescent * scale;
     const float lineGap = unscaledLineGap * scale;
 
+    const float size = mScale.x;
+
     float currentX = 0;
     float currentY = 0;
 
@@ -69,14 +71,12 @@ void Text::CreateText()
 
         const float glpyhWidth = unscaledGlpyhWidth * scale;
         const float leftSideBearing = unscaledLeftSideBearing * scale;
-        std::cout << character << ": glpyhWidth: " << glpyhWidth << ", leftSideBearing: " << leftSideBearing << std::endl;
 
         int xCoord1 = 0;
         int yCoord1 = 0;
         int xCoord2 = 0;
         int yCoord2 = 0;
         stbtt_GetCodepointBitmapBox(&font, character, scale, scale, &xCoord1, &yCoord1, &xCoord2, &yCoord2);
-        std::cout << character << ": x1: " << xCoord1 << ", y1: " << yCoord1 << ", x2: " << xCoord2 << ", y2: " << yCoord2 << std::endl;
 
         const int charWidth  = xCoord2 - xCoord1;
         const int charHeight = yCoord2 - yCoord1;
@@ -86,7 +86,7 @@ void Text::CreateText()
 
         if (character == '\n')
         {
-            currentY -= (ascent - descent + lineGap) * mSize;
+            currentY -= (ascent - descent + lineGap) * size;
             currentX = 0;
 
             if (currentLineWidth > totalTextWidth)
@@ -100,12 +100,10 @@ void Text::CreateText()
         else
         {
             const float spaceAboveCharPixels = ascent + yCoord1;
-            const float characterYOffset = currentY - spaceAboveCharPixels * mSize;
+            const float characterYOffset = currentY - spaceAboveCharPixels * size;
 
-            const float quadScreenWidth  = charWidth * mSize;
-            const float quadScreenHeight = charHeight * mSize;
-
-            std::cout << character << ": " << quadScreenWidth << ", " << quadScreenHeight << std::endl;
+            const float quadScreenWidth  = charWidth * size;
+            const float quadScreenHeight = charHeight * size;
 
             const float lineHeight = fabs(characterYOffset - quadScreenHeight);
             if (lineHeight > currentLineHeight)
@@ -133,7 +131,7 @@ void Text::CreateText()
 
             currentX += glpyhWidth;
 
-            // Needs to also be checked after a \n character
+            // TODO: Needs to also be checked after a \n character
             if (i == mText.length() - 1)
             {
                 currentX -= glpyhWidth - quadScreenWidth;
@@ -141,7 +139,7 @@ void Text::CreateText()
         }
 
         const int kern = stbtt_GetCodepointKernAdvance(&font, character, mText[i + 1]);
-        currentX += fabs(kern * mSize * scale);
+        currentX += fabs(kern * size * scale);
         currentLineWidth = currentX;
     }
 
@@ -151,12 +149,8 @@ void Text::CreateText()
     }
     totalTextHeight += currentLineHeight;
 
-    std::cout << "Total width: " << totalTextWidth << ", Total height: " << totalTextHeight << std::endl;
-
     // Characters have been created with their top left corner at the origin, so offset them to the center
     const glm::vec3 center = glm::vec3(totalTextWidth / 2.0f, -totalTextHeight / 2.0f, 0.0f);
-
-
     for (auto& character : mCharacters)
     {
         const glm::vec3 currentOffset = character.GetOffset();
@@ -172,6 +166,25 @@ glm::vec3 Text::GetPosition() const
 void Text::SetPosition(const glm::vec3& position)
 {
     mPosition = position;
+}
+
+glm::vec3 Text::GetScale() const
+{
+    return mScale;
+}
+
+void Text::SetScale(const glm::vec3& scale)
+{
+    mScale = scale;
+
+    for (auto& character : mCharacters)
+    {
+        float width = character.GetWidth();
+        float height = character.GetHeight();
+
+        character.SetOffset(character.GetOffset() * scale);
+        character.SetDimensions(width * scale.x, height * scale.y);
+    }
 }
 
 void Text::SetText(const std::string& text)
