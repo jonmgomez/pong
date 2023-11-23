@@ -76,7 +76,7 @@ void Pong::Init()
     }
 
     std::string fontFile = Config::GetValue<std::string>("font");
-    auto text = std::make_unique<Text>("Helo\nabcd", fontFile, 2.0f);
+    auto text = std::make_unique<Text>("Helo\nabcdef", fontFile, 2.0f);
     GetInstance().mTexts.push_back(std::move(text));
 
     auto playerScore = std::make_unique<Text>("0", fontFile, 2.0f);

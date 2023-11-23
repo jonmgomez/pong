@@ -32,94 +32,77 @@ Text::Text(const std::string& text, const std::string& path, float size, int pix
 
     const float scale = stbtt_ScaleForPixelHeight(&font, static_cast<float>(pixelLineHeight));
 
-    float currentX = 0;
-    float currentY = 0;
+    float totalTextWidth = 0.0f;
+    float totalTextHeight = 0.0f;
+
     int unscaledAscent, unscaledDescent, unscaledLineGap;
     stbtt_GetFontVMetrics(&font, &unscaledAscent, &unscaledDescent, &unscaledLineGap);
-    std::cout << "unscaledAscent: " << unscaledAscent << ", unscaledDescent: " << unscaledDescent << ", unscaledLineGap: " << unscaledLineGap << std::endl;
 
-    const float ascent = unscaledAscent * scale;
-    std::cout << "ascent: " << ascent << std::endl;
+    const float ascent  = unscaledAscent  * scale;
     const float descent = unscaledDescent * scale;
-    std::cout << "descent: " << descent << std::endl;
     const float lineGap = unscaledLineGap * scale;
 
-    for (int i = 0; i < text.length(); ++i)
+    float currentX = 0;
+    float currentY = 0;
+
+    for (int i = 0; i < text.length(); i++)
     {
-        // b_w IS EQUIVALENT TO SCREEN WIDTH
         const char character = text[i];
 
         int glpyhWidth = 0;
 	    int leftSideBearing = 0;
         stbtt_GetCodepointHMetrics(&font, character, &glpyhWidth, &leftSideBearing);
-        std::cout << "glpyhWidth: " << glpyhWidth << ", leftSideBearing: " << leftSideBearing << std::endl;
 
-        int xCoord1, yCoord1, xCoord2, yCoord2;
+        int xCoord1 = 0;
+        int yCoord1 = 0;
+        int xCoord2 = 0;
+        int yCoord2 = 0;
         stbtt_GetCodepointBitmapBox(&font, character, scale, scale, &xCoord1, &yCoord1, &xCoord2, &yCoord2);
-        std::cout << "coords: " << xCoord1 << ", " << xCoord2 << ", " << yCoord1 << ", " << yCoord2 << std::endl;
 
-        const int charWidth = xCoord2 - xCoord1;
+        const int charWidth  = xCoord2 - xCoord1;
         const int charHeight = yCoord2 - yCoord1;
 
         auto alphaTexture = std::vector<unsigned char>();
         alphaTexture.resize(charWidth * charHeight);
 
-        // float totalWidth = 0.0f;
-        float totalHeight = 0.0f;
-
         if (character == '\n')
         {
-            // SAVE
             currentY -= (ascent - descent + lineGap) * size;
-            std::cout << "New Y: " << currentY << std::endl;
-            totalHeight += abs(currentY);
+
+            if (currentX > totalTextWidth)
+            {
+                totalTextWidth = currentX;
+            }
             currentX = 0;
+
+            totalTextHeight += fabs(currentY);
         }
         else
         {
-            // Save this to some variable for the character
-            // Or just use it in positioning
-            const float spaceAboveChar = ascent + yCoord1;
-            const float characterYOffset = -spaceAboveChar * size + currentY;
+            const float spaceAboveCharPixels = ascent + yCoord1;
+            const float characterYOffset = currentY - spaceAboveCharPixels * size;
 
-            // convert to screen units
-            std::cout << character << " - X offset: " << currentX << std::endl;
-            std::cout << character << " - Y offset: " << characterYOffset << std::endl;
-
-            const float quadScreenWidth = charWidth * size;
+            const float quadScreenWidth  = charWidth * size;
             const float quadScreenHeight = charHeight * size;
 
-            // Since this uses a single character for each texture, stride is just the width of the character
+            // Current x and y are in top left corner, so offset into the center of quad
+            const float finalXOffset = currentX + quadScreenWidth / 2.0f;
+            const float finalYOffset = characterYOffset - quadScreenHeight / 2.0f;
+
+            // Since this uses a single character for each texture, stride is just the pixel width of the character
             const int kStride = charWidth;
             stbtt_MakeCodepointBitmap(&font, alphaTexture.data(), charWidth, charHeight, kStride, scale, scale, character);
 
-            std::cout << "Creating Text Character" << std::endl;
-
-            // auto tc = std::make_unique<TextCharacter>(alphaTexture, quadScreenWidth, quadScreenHeight,
-            //                  glm::vec3(currentX + quadScreenWidth / 2.0f, characterYOffset - quadScreenHeight / 2.0f, 0.0f),
-            //                  charWidth, charHeight);
-
-            // std::cout << "Moved Text Character" << std::endl;
-            // mCharacters.push_back(std::move(tc));
-
             mCharacters.emplace_back(alphaTexture, quadScreenWidth, quadScreenHeight,
-                                     glm::vec3(currentX + quadScreenWidth / 2.0f, characterYOffset - quadScreenHeight / 2.0f, 0.0f),
+                                     glm::vec3(finalXOffset, finalYOffset, 0.0f),
                                      charWidth, charHeight);
 
-            currentX += glpyhWidth * size * scale;
-            currentX -= leftSideBearing * size * scale;
-            std::cout << "currentX: " << currentX << std::endl;
+            currentX += (glpyhWidth - leftSideBearing) * size * scale;
         }
 
         const int kern = stbtt_GetCodepointKernAdvance(&font, character, text[i + 1]);
-        currentX -= kern * size * scale;
-        std::cout << "currentX + glpyhWidth + kern: " << currentX << std::endl;
-
-        std::string fileName = "char_" + std::to_string(i) + ".png";
-        stbi_write_png(fileName.c_str(), charWidth, charHeight, 1, alphaTexture.data(), charWidth);
+        currentX += fabs(kern * size * scale);
     }
-
-    PrintString(path, "Helo\nabcd");
 }
 
 void Text::Render()
