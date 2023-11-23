@@ -94,10 +94,10 @@ Text::Text(const std::string& text, const std::string& path, float size, int pix
 
             auto rgbTexture = Texture::ConvertAlphaImageToRGBA(alphaTexture);
 
-            auto textCharacter = std::make_unique<TextCharacter>(rgbTexture, quadScreenWidth, quadScreenHeight,
-                                                                 glm::vec3(currentX + quadScreenWidth / 2.0f, characterYOffset - quadScreenHeight / 2.0f, 0.0f),
-                                                                 charWidth, charHeight);
-            mCharacters.emplace_back(std::move(textCharacter));
+            TextCharacter tc(rgbTexture, quadScreenWidth, quadScreenHeight,
+                             glm::vec3(currentX + quadScreenWidth / 2.0f, characterYOffset - quadScreenHeight / 2.0f, 0.0f),
+                             charWidth, charHeight);
+            mCharacters.push_back(std::move(tc));
 
             currentX += roundf(glpyhWidth * size * scale);
             std::cout << "currentX: " << currentX << std::endl;
@@ -271,7 +271,7 @@ void Text::Render()
 {
     for (const auto& character : mCharacters)
     {
-        character->Draw(mPosition);
+        character.Draw(mPosition);
     }
 }
 

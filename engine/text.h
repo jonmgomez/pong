@@ -21,7 +21,7 @@ public:
     glm::vec3 mPosition { 0.0f };
 
 private:
-    std::vector<std::unique_ptr<TextCharacter>> mCharacters {};
+    std::vector<TextCharacter> mCharacters {};
 };
 
 } // namespace pong

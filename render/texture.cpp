@@ -37,9 +37,7 @@ Texture Texture::CreateFromRawData(const std::vector<unsigned char>& imageData, 
     std::vector<unsigned char> flippedImageData {};
     FlipImageVertically(imageData, width, height, 4, flippedImageData);
 
-    Texture texture(*flippedImageData.data(), width, height, GL_RGBA);
-
-    return std::move(texture);
+    return Texture(*flippedImageData.data(), width, height, GL_RGBA);
 }
 
 Texture Texture::CreateFromSolidColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
@@ -48,9 +46,7 @@ Texture Texture::CreateFromSolidColor(unsigned char r, unsigned char g, unsigned
     constexpr int kWidth = 1;
     constexpr int kHeight = 1;
 
-    Texture texture(*data, kWidth, kHeight, GL_RGBA);
-
-    return std::move(texture);
+    return Texture(*data, kWidth, kHeight, GL_RGBA);
 }
 
 Texture::Texture(const unsigned char& imageData, int width, int height, GLenum format) :
@@ -97,6 +93,8 @@ Texture::Texture(Texture&& other) :
 {
     std::cout << "Texture move constructor called" << std::endl;
     other.mRendererID = 0;
+    other.mWidth = 0;
+    other.mHeight = 0;
 }
 
 Texture& Texture::operator=(Texture&& other)
@@ -107,6 +105,8 @@ Texture& Texture::operator=(Texture&& other)
         mWidth = other.mWidth;
         mHeight = other.mHeight;
         mRendererID = other.mRendererID;
+        other.mWidth = 0;
+        other.mHeight = 0;
         other.mRendererID = 0;
     }
 
