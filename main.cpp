@@ -8,15 +8,13 @@
 #include "renderutils.h"
 #include "timer.h"
 #include "logger.h"
+#include "utils.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
 #include <nlohmann/json.hpp>
-#include <spdlog/spdlog.h>
 
 #include <fstream>
-#include <iostream>
 #include <string>
 
 using namespace pong;
@@ -44,12 +42,6 @@ GLFWwindow* SetupGLFW()
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, Input::KeyCallback);
 
-    const bool fpsCapped = Config::GetValue("fps_capped", true);
-    if (!fpsCapped)
-    {
-        glfwSwapInterval(0);
-    }
-
     if (glewInit() != GLEW_OK)
     {
         LogError("glewInit() failure");
@@ -73,27 +65,69 @@ void PlayPong(GLFWwindow* window)
 {
     Pong::Init();
 
-    double lastTime = glfwGetTime();
+    // Is the framerate managed by glfw
+    bool fpsLimitManaged = true;
+    int targetFPS = 60;
+
+
+    const auto targetFPSJson = Config::GetJsonValue("target_fps");
+    if (targetFPSJson.has_value() && targetFPSJson.value().is_number_integer())
+    {
+        glfwSwapInterval(0);
+        if (targetFPSJson.value() > 0)
+        {
+            fpsLimitManaged = false;
+            targetFPS = targetFPSJson.value();
+            LogInfo("Target FPS: {}", targetFPS);
+        }
+        else
+        {
+            LogInfo("Target FPS: Unlimited");
+        }
+    }
+    else
+    {
+        // Let glfw tie framerate to refresh rate
+        glfwSwapInterval(1);
+        LogInfo("Target FPS not specified or invalid. Using refresh rate.");
+    }
+
+    const auto nanoSecondsPerFrame = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::seconds(1)) / targetFPS;
+    std::chrono::nanoseconds takenTime(nanoSecondsPerFrame);
+
     int frameCount = 0;
+    const auto windowStartTime = std::chrono::high_resolution_clock::now();
+    auto start = windowStartTime;
 
     while (!glfwWindowShouldClose(window))
     {
-        Renderer::Clear();
+        if (fpsLimitManaged || takenTime >= nanoSecondsPerFrame)
+        {
+            takenTime = std::chrono::nanoseconds(0);
 
-        Pong::GameLoop();
+            Renderer::Clear();
 
-        frameCount++;
+            Pong::GameLoop();
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+            frameCount++;
+
+            glfwSwapBuffers(window);
+            glfwPollEvents();
+        }
+        else
+        {
+            const auto now = std::chrono::high_resolution_clock::now();
+            takenTime += std::chrono::duration_cast<std::chrono::nanoseconds>(now - start);
+            start = now;
+        }
     }
 
-    double currentTime = glfwGetTime();
-    double elapsedTime = currentTime - lastTime;
+    const auto windowEndTime = std::chrono::high_resolution_clock::now();
+    const std::chrono::duration<double> elapsedTime = windowEndTime - windowStartTime;
 
-    LogInfo("Elapsed time: {}", elapsedTime);
+    LogInfo("Elapsed time: {}s", roundf(static_cast<float>(elapsedTime.count()) * 100.0f) / 100.0f);
     LogInfo("Total frames: {}", frameCount);
-    LogInfo("Avg framerate: {}", frameCount / elapsedTime);
+    LogInfo("Avg framerate: {} FPS", static_cast<int>(frameCount / elapsedTime.count()));
 
     Pong::Cleanup();
     Renderer::Cleanup();
@@ -126,7 +160,20 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    std::string shaderPath = Config::GetValue<std::string>("shader");
+    const auto shaderKey = Config::GetJsonValue("shader");
+    if (!shaderKey.has_value())
+    {
+        LogError("\"shader\" JSON key not found");
+        return -1;
+    }
+
+    if (!shaderKey.value().is_string())
+    {
+        LogError("\"shader\" JSON key is not a string");
+        return -1;
+    }
+
+    const std::string shaderPath = shaderKey.value();
     std::ifstream shaderFile(shaderPath);
     if (shaderFile.fail())
     {

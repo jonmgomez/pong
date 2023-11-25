@@ -10,7 +10,7 @@
 namespace pong
 {
 
-float Timer::frameTime = 1.0f;
+float Timer::frameTime = 0.0f;
 
 void Timer::Init()
 {
@@ -23,7 +23,7 @@ void Timer::HandleTimerCallbacks()
     const auto timeWaitedUs = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - mLastTime);
     mLastTime = std::chrono::system_clock::now();
 
-    Timer::frameTime = (std::chrono::duration_cast<std::chrono::duration<float>>(timeWaitedUs)).count();
+    Timer::frameTime = std::chrono::duration_cast<std::chrono::duration<float>>(timeWaitedUs).count();
 
     for (auto& timerRequest : mActiveTimers)
     {

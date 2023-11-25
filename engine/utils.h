@@ -18,5 +18,19 @@ namespace pong
         do { (void)sizeof(cond); } while(0)
 #endif
 
+#ifdef DEBUG
+    #define MEASURE_TIME(x, name) \
+    { \
+        const auto start = std::chrono::high_resolution_clock::now(); \
+        x; \
+        const auto end = std::chrono::high_resolution_clock::now(); \
+        const auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start); \
+        std::cout << name << ", Time taken: " << duration.count() << "us" << std::endl; \
+    }
+#else
+    #define MEASURE_TIME(x, name) \
+        do { (void)sizeof(x); } while(0)
+#endif
+
 }
 
