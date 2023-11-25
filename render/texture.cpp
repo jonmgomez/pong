@@ -8,12 +8,13 @@
 #include <stb_image.h>
 #pragma warning(pop)
 
+#include <array>
 #include <iostream>
 
 namespace pong
 {
 
-Texture Texture::CreateFromFile(const std::string& filePath)
+Texture::Texture(const std::string& filePath)
 {
     stbi_set_flip_vertically_on_load(1);
 
@@ -22,32 +23,29 @@ Texture Texture::CreateFromFile(const std::string& filePath)
     int height = 0;
     unsigned char* buffer = stbi_load(filePath.c_str(), &width, &height, &bytesPerPixel, 4);
 
-    Texture texture(*buffer, width, height, GL_RGBA);
+    this->Texture::Texture(*buffer, width, height, GL_RGBA);
 
     if (buffer)
     {
         stbi_image_free(buffer);
     }
-
-    return std::move(texture);
 }
 
-Texture Texture::CreateFromFontCharacter(const std::vector<unsigned char>& imageData, int width, int height)
+Texture::Texture(const std::vector<unsigned char>& alphaImage, int width, int height)
 {
-    auto rgbTexture = Texture::ConvertAlphaImageToRGBA(imageData);
-    std::vector<unsigned char> flippedImageData {};
-    FlipImageVertically(rgbTexture, width, height, 4, flippedImageData);
+    auto rgbTexture = Texture::ConvertAlphaImageToRGBA(alphaImage);
+    auto finalImage = Texture::FlipImageVertically(rgbTexture, width, height, 4);
 
-    return Texture(*flippedImageData.data(), width, height, GL_RGBA);
+    this->Texture::Texture(*finalImage.data(), width, height, GL_RGBA);
 }
 
-Texture Texture::CreateFromSolidColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+Texture::Texture(const RGBAColor& color)
 {
-    unsigned char data[] = { r, g, b, a };
+    const std::array<unsigned char, 4> pixel { color.r, color.g, color.b, color.a };
     constexpr int kWidth = 1;
     constexpr int kHeight = 1;
 
-    return Texture(*data, kWidth, kHeight, GL_RGBA);
+    this->Texture::Texture(*pixel.data(), kWidth, kHeight, GL_RGBA);
 }
 
 Texture::Texture(const unsigned char& imageData, int width, int height, GLenum format) :
@@ -132,26 +130,32 @@ std::vector<unsigned char> Texture::ConvertAlphaImageToRGBA(const std::vector<un
         convertedImage.emplace_back(alpha);
     }
 
-    return std::move(convertedImage);
+    return convertedImage;
 }
 
-void Texture::FlipImageVertically(const std::vector<unsigned char>& imageData, int width, int height, int comp, std::vector<unsigned char>& outFlippedImageData)
+std::vector<unsigned char> Texture::FlipImageVertically(const std::vector<unsigned char>& imageData, int width, int height, int comp)
 {
     ASSERT(imageData.size() == width * height * comp);
 
-    outFlippedImageData.reserve(imageData.size());
-    for (int rowIndex = height - 1; rowIndex >= 0; rowIndex--)
+    std::vector<unsigned char> flippedImage {};
+    flippedImage.reserve(imageData.size());
+
+    const int stride = width * comp;
+    for (int rowNumber = height - 1; rowNumber >= 0; rowNumber--)
     {
-        for (int colIndex = 0; colIndex < width; colIndex++)
+        const int rowIndex = rowNumber * stride;
+        for (int colNumber = 0; colNumber < width; colNumber++)
         {
             // For each pixel, copy all the components
-            const int index = (rowIndex * width * comp) + (colIndex * comp);
+            const int pixelIndex = rowIndex + (colNumber * comp);
             for (int componentIndex = 0; componentIndex < comp; componentIndex++)
             {
-                outFlippedImageData.emplace_back(imageData[index + componentIndex]);
+                flippedImage.emplace_back(imageData[pixelIndex + componentIndex]);
             }
         }
     }
+
+    return flippedImage;
 }
 
 } // namespace pong

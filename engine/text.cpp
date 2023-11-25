@@ -25,6 +25,7 @@ void Text::CreateText()
     if (!file)
     {
         RealTimeLogError("Failed to open true type font file: {}", mFontPath);
+        ASSERT(false);
         return;
     }
 

@@ -8,19 +8,28 @@
 namespace pong
 {
 
+struct RGBAColor
+{
+    unsigned char r {0};
+    unsigned char g {0};
+    unsigned char b {0};
+    unsigned char a {0};
+};
+
 class Texture
 {
 public:
 
-    static Texture CreateFromFile(const std::string& filePath);
-    /* Assumes the data is grayscale and stored from top left to bottom right in vector */
-    static Texture CreateFromFontCharacter(const std::vector<unsigned char>& imageData, int width, int height);
-    static Texture CreateFromSolidColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-
     Texture() = default;
+    Texture(const std::string& filePath);
+    Texture(const RGBAColor& color);
+    /* Assumes the data is grayscale and stored from top left to bottom right in vector */
+    Texture(const std::vector<unsigned char>& alphaImage, int width, int height);
     Texture(const unsigned char& imageData, int width, int height, GLenum format);
+
     // Copy constructors are deleted because the renderer id is used to destroy the object in opengl
     // in the destructor. The move operator gets around this by setting the renderer id to 0.
+    // The same goes for other opengl objects.
     Texture(const Texture&) = delete;
     Texture& operator=(const Texture&) = delete;
     Texture(Texture&&);
@@ -34,7 +43,7 @@ public:
     int GetHeight() const;
 
     static std::vector<unsigned char> ConvertAlphaImageToRGBA(const std::vector<unsigned char>& imageData);
-    static void FlipImageVertically(const std::vector<unsigned char>& imageData, int width, int height, int comp, std::vector<unsigned char>& outFlippedImageData);
+    static std::vector<unsigned char> FlipImageVertically(const std::vector<unsigned char>& imageData, int width, int height, int comp);
 
 protected:
     int mWidth {0};

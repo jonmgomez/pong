@@ -57,7 +57,8 @@ Circle::Circle(float radius, int sides) :
     mVA.AddBuffer(mVB, layout);
 
     const unsigned char kColorValue = 255;
-    mTexture = Texture::CreateFromSolidColor(kColorValue, kColorValue, kColorValue, kColorValue);
+    const RGBAColor allWhiteColor{kColorValue, kColorValue, kColorValue, kColorValue};
+    mTexture = Texture(allWhiteColor);
 }
 
 } // namespace pong
