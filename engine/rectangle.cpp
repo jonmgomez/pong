@@ -40,7 +40,18 @@ Rectangle::Rectangle(float width, float height) :
     mVA.AddBuffer(mVB, layout);
 
     const unsigned char kColorValue = 255;
-    mTexture = std::make_unique<SolidColorTexture>(kColorValue, kColorValue, kColorValue, kColorValue);
+    const RGBAColor allWhiteColor{kColorValue, kColorValue, kColorValue, kColorValue};
+    mTexture = Texture(allWhiteColor);
+}
+
+float Rectangle::GetWidth() const
+{
+    return mWidth;
+}
+
+float Rectangle::GetHeight() const
+{
+    return mHeight;
 }
 
 } // namespace pong

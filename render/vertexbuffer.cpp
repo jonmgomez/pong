@@ -21,22 +21,6 @@ VertexBuffer::VertexBuffer(unsigned int size)
     mSize = size;
 }
 
-VertexBuffer::VertexBuffer(const VertexBuffer& other)
-{
-    mRendererID = other.mRendererID;
-    mSize = other.mSize;
-}
-
-VertexBuffer& VertexBuffer::operator=(const VertexBuffer& other)
-{
-    if (this != &other)
-    {
-        mRendererID = other.mRendererID;
-        mSize = other.mSize;
-    }
-    return *this;
-}
-
 VertexBuffer::VertexBuffer(VertexBuffer&& other)
 {
     mRendererID = other.mRendererID;

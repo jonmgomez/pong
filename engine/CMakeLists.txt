@@ -11,6 +11,8 @@ set(SOURCES
     random.cpp
     realtimelogger.cpp
     rectangle.cpp
+    text.cpp
+    textcharacter.cpp
     timer.cpp
 )
 

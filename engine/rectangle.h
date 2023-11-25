@@ -16,6 +16,9 @@ class Rectangle : public Mesh
 public:
     Rectangle(float width, float height);
 
+    float GetWidth() const;
+    float GetHeight() const;
+
 private:
     float mWidth { 0.0f };
     float mHeight { 0.0f };

@@ -2,6 +2,8 @@
 
 #include "ball.h"
 #include "colliderbox.h"
+#include "config.h"
+#include "logger.h"
 #include "opponent.h"
 #include "player.h"
 #include "scorearea.h"
@@ -88,11 +90,17 @@ void Pong::GameLoop()
     {
         gameObject->Render();
     }
+
+    for (auto& text : GetInstance().mTexts)
+    {
+        text->Render();
+    }
 }
 
 void Pong::Cleanup()
 {
     GetInstance().mGameObjects.clear();
+    GetInstance().mTexts.clear();
 }
 
 GameObject* Pong::FindGameObjectByName(const std::string& name)
@@ -108,6 +116,16 @@ GameObject* Pong::FindGameObjectByName(const std::string& name)
     }
 
     return nullptr;
+}
+
+Text* Pong::AddText(const std::string& text, const std::string& fontPath,
+                    float scale, int pixelLineHeight,
+                    const glm::vec3& position)
+{
+    auto newText = std::make_unique<Text>(text, fontPath, scale, pixelLineHeight);
+    newText->SetPosition(position);
+    GetInstance().mTexts.push_back(std::move(newText));
+    return GetInstance().mTexts.back().get();
 }
 
 void Pong::SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback)

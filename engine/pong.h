@@ -2,6 +2,7 @@
 
 #include "collisionmanager.h"
 #include "gameobject.h"
+#include "text.h"
 #include "timer.h"
 #include "utils.h"
 
@@ -38,6 +39,10 @@ public:
 
     static GameObject* FindGameObjectByName(const std::string& name);
 
+    static Text* AddText(const std::string& text, const std::string& fontPath,
+                         float scale, int pixelLineHeight = 128,
+                         const glm::vec3& position = glm::vec3(0.0f));
+
     static void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
 
 private:
@@ -51,7 +56,9 @@ private:
     CollisionManager& GetCollisionManager();
     Timer& GetTimer();
 
-    std::vector<std::unique_ptr<GameObject>>mGameObjects {};
+    std::vector<std::unique_ptr<GameObject>> mGameObjects {};
+    std::vector<std::unique_ptr<Text>> mTexts {};
+
     CollisionManager mCollisionManager {};
     Timer mTimer {};
     bool mFirstFrame { true };
