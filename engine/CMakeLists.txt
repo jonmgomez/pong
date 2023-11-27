@@ -1,4 +1,5 @@
 set(SOURCES
+    audio.cpp
     circle.cpp
     colliderbox.cpp
     collisionmanager.cpp
@@ -24,6 +25,8 @@ target_link_libraries(engine
         gameobjects
         fmt::fmt
         concurrentqueue
+        portaudio_static
+        AudioFile
 )
 
 target_include_directories(engine

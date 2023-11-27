@@ -47,3 +47,13 @@ FetchContent_Declare(stb
 FetchContent_MakeAvailable(stb)
 add_library(stb INTERFACE)
 target_include_directories(stb INTERFACE ${stb_SOURCE_DIR})
+
+FetchContent_Declare(portaudio
+    URL ${CMAKE_SOURCE_DIR}/tps/portaudio-19.7.0.zip
+)
+FetchContent_MakeAvailable(portaudio)
+
+FetchContent_Declare(audiofile
+    URL ${CMAKE_SOURCE_DIR}/tps/AudioFile-1.1.1.zip
+)
+FetchContent_MakeAvailable(audiofile)
