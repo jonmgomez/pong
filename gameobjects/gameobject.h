@@ -2,6 +2,7 @@
 
 #include "colliderbox.h"
 #include "mesh.h"
+#include "audio.h"
 #include "utils.h"
 
 #include <glm/glm.hpp>
@@ -34,6 +35,7 @@ public:
 
     bool CheckForCollision(GameObject& other);
     void SetTimeout(std::chrono::duration<double> timeout, std::function<void()> callback);
+    void PlaySound(const Sound& sound);
 
     void Render() const;
     template <typename T>

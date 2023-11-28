@@ -29,6 +29,11 @@ Timer& Pong::GetTimer()
     return mTimer;
 }
 
+AudioMixer& Pong::GetAudioMixer()
+{
+    return mAudioMixer;
+}
+
 void Pong::Init()
 {
     auto player = std::make_unique<Player>();

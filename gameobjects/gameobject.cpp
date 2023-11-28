@@ -77,6 +77,11 @@ void GameObject::SetTimeout(std::chrono::duration<double> timeout, std::function
     Pong::SetTimeout(GetId(), timeout, callback);
 }
 
+void GameObject::PlaySound(const Sound& sound)
+{
+    Pong::GetInstance().GetAudioMixer().PlaySound(sound);
+}
+
 void GameObject::Render() const
 {
     if (mMesh != nullptr)

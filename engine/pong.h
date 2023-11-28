@@ -1,5 +1,6 @@
 #pragma once
 
+#include "audio.h"
 #include "collisionmanager.h"
 #include "gameobject.h"
 #include "text.h"
@@ -45,6 +46,10 @@ public:
 
     static void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
 
+    CollisionManager& GetCollisionManager();
+    Timer& GetTimer();
+    AudioMixer& GetAudioMixer();
+
 private:
     Pong() = default;
     Pong(const Pong&) = delete;
@@ -53,14 +58,12 @@ private:
     Pong& operator=(Pong&&) = delete;
     ~Pong() = default;
 
-    CollisionManager& GetCollisionManager();
-    Timer& GetTimer();
-
     std::vector<std::unique_ptr<GameObject>> mGameObjects {};
     std::vector<std::unique_ptr<Text>> mTexts {};
 
     CollisionManager mCollisionManager {};
     Timer mTimer {};
+    AudioMixer mAudioMixer {};
     bool mFirstFrame { true };
 };
 

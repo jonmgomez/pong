@@ -26,6 +26,8 @@ void Ball::OnStart()
     mOpponent = Pong::FindGameObject<Opponent>();
     SetInstanceName("Ball");
 
+    PlaySound(mBounceSound);
+
     ResetBall();
 }
 
