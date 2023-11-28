@@ -190,26 +190,7 @@ int main(int argc, char* argv[])
     Renderer::SetShader(shaderPath);
 
     std::string difficulty = Config::GetValue<std::string>("difficulty", "normal");
-    if (difficulty == "easy")
-    {
-        Difficulty::SetLevel(Difficulty::Level::Easy);
-    }
-    else if (difficulty == "normal")
-    {
-        Difficulty::SetLevel(Difficulty::Level::Normal);
-    }
-    else if (difficulty == "hard")
-    {
-        Difficulty::SetLevel(Difficulty::Level::Hard);
-    }
-    else if (difficulty == "insane")
-    {
-        Difficulty::SetLevel(Difficulty::Level::Insane);
-    }
-    else
-    {
-        LogError("Invalid difficulty: {}", difficulty);
-    }
+    Difficulty::SetDifficulty(difficulty);
     LogInfo("Set Difficulty: {}", Difficulty::to_string(Difficulty::GetLevel()));
 
     PlayPong(window);

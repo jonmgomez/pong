@@ -16,6 +16,7 @@ public:
         Insane
     };
 
+    static void SetDifficulty(const std::string& difficulty);
     static Level GetLevel();
     static void SetLevel(Level level);
     static std::string to_string(Difficulty::Level level);
