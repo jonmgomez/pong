@@ -25,7 +25,9 @@ private:
     glm::vec3 mVelocity { 0.0f };
     float mSpeed { BALL_START_SPEED };
     Opponent* mOpponent { nullptr };
-    Sound mBounceSound { "assets/test.wav" };
+    Sound mPaddleBounceSound {};
+    Sound mWallBounceSound {};
+    Sound mScoreSound {};
 
     void ResetBall();
 };

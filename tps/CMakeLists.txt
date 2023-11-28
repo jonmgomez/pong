@@ -57,3 +57,4 @@ FetchContent_Declare(audiofile
     URL ${CMAKE_SOURCE_DIR}/tps/AudioFile-1.1.1.zip
 )
 FetchContent_MakeAvailable(audiofile)
+target_compile_options(AudioFile INTERFACE /wd4456)

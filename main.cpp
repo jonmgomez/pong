@@ -69,7 +69,6 @@ GLFWwindow* SetupGLFW()
 
 void PlayPong(GLFWwindow* window)
 {
-    (void)window;
     Pong::Init();
 
     // Is the framerate managed by glfw
@@ -105,61 +104,6 @@ void PlayPong(GLFWwindow* window)
     int frameCount = 0;
     const auto windowStartTime = std::chrono::high_resolution_clock::now();
     auto start = windowStartTime;
-
-        PaError err = Pa_Initialize();
-    if (err != paNoError) {
-        std::cerr << "PortAudio initialization failed: " << Pa_GetErrorText(err) << std::endl;
-    }
-
-    PaStreamParameters outputParameters;
-    outputParameters.device = Pa_GetDefaultOutputDevice();
-    outputParameters.channelCount = 2; // Stereo
-    outputParameters.sampleFormat = paFloat32;
-    outputParameters.suggestedLatency = Pa_GetDeviceInfo(outputParameters.device)->defaultLowOutputLatency;
-    outputParameters.hostApiSpecificStreamInfo = nullptr;
-
-    const int numDevices = Pa_GetDeviceCount();
-    if( numDevices < 0 )
-    {
-        printf( "ERROR: Pa_CountDevices returned 0x%x\n", numDevices );
-        err = numDevices;
-    }
-
-    const PaDeviceInfo *deviceInfo;
-    for(int i = 0; i < numDevices; i++)
-    {
-        deviceInfo = Pa_GetDeviceInfo( i );
-        std::cout << "Device " << i << ": {" << deviceInfo->name << "}\n";
-    }
-
-    PaStream* stream;
-    err = Pa_OpenStream(&stream, nullptr, &outputParameters, SAMPLE_RATE, FRAMES_PER_BUFFER, paClipOff, AudioCallback, nullptr);
-    if (err != paNoError) {
-        std::cerr << "PortAudio stream opening failed: " << Pa_GetErrorText(err) << std::endl;
-        Pa_Terminate();
-    }
-
-    err = Pa_StartStream(stream);
-    if (err != paNoError) {
-        std::cerr << "PortAudio stream starting failed: " << Pa_GetErrorText(err) << std::endl;
-        Pa_CloseStream(stream);
-        Pa_Terminate();
-    }
-
-    std::cout << "Press Enter to quit..." << std::endl;
-    std::cin.get();
-
-    err = Pa_StopStream(stream);
-    if (err != paNoError) {
-        std::cerr << "PortAudio stream stopping failed: " << Pa_GetErrorText(err) << std::endl;
-    }
-
-    err = Pa_CloseStream(stream);
-    if (err != paNoError) {
-        std::cerr << "PortAudio stream closing failed: " << Pa_GetErrorText(err) << std::endl;
-    }
-
-    Pa_Terminate();
 
     while (!glfwWindowShouldClose(window))
     {
@@ -267,12 +211,6 @@ int main(int argc, char* argv[])
         LogError("Invalid difficulty: {}", difficulty);
     }
     LogInfo("Set Difficulty: {}", Difficulty::to_string(Difficulty::GetLevel()));
-
-    printf("Test");
-
-    ReadFile();
-
-
 
     PlayPong(window);
 

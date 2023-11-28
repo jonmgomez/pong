@@ -1,27 +1,14 @@
 #pragma once
 
+#include "sound.h"
 #include "utils.h"
 
-#pragma warning(push, 0)
-#include <AudioFile.h>
-#pragma warning(pop)
 #include <portaudio.h>
 
 #include <string>
 
 namespace pong
 {
-
-class Sound
-{
-public:
-    Sound(const std::string& filePath);
-
-    const AudioFile<float>& GetAudioFile() const;
-
-private:
-    AudioFile<float> mAudioFile {};
-};
 
 class PlayingSound
 {
@@ -40,6 +27,9 @@ private:
 class AudioMixer
 {
 public:
+    bool Init();
+    void Cleanup();
+
     int AudioCallback(const void* inputBuffer, void* outputBuffer,
                     unsigned long framesPerBuffer,
                     const PaStreamCallbackTimeInfo* timeInfo,
@@ -49,15 +39,15 @@ public:
     void PlaySound(const Sound& sound);
 
 private:
+    PaStream* mStream { nullptr };
     std::vector<PlayingSound> mPlayingSounds {};
+    float mVolume { 0.5f };
 };
 
-void ReadFile();
-
-int AudioCallback(const void* inputBuffer, void* outputBuffer,
-                  unsigned long framesPerBuffer,
-                  const PaStreamCallbackTimeInfo* timeInfo,
-                  PaStreamCallbackFlags statusFlags,
-                  void* userData);
+int AudioCallbackWrapper(const void* inputBuffer, void* outputBuffer,
+                         unsigned long framesPerBuffer,
+                         const PaStreamCallbackTimeInfo* timeInfo,
+                         PaStreamCallbackFlags statusFlags,
+                         void* userData);
 
 } // namespace pong

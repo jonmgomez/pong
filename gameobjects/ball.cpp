@@ -1,5 +1,6 @@
 #include "ball.h"
 
+#include "config.h"
 #include "logger.h"
 #include "opponent.h"
 #include "player.h"
@@ -26,7 +27,9 @@ void Ball::OnStart()
     mOpponent = Pong::FindGameObject<Opponent>();
     SetInstanceName("Ball");
 
-    PlaySound(mBounceSound);
+    mPaddleBounceSound.SetSource(Config::GetValue<std::string>("paddle_hit_sound"));
+    mWallBounceSound.SetSource(Config::GetValue<std::string>("wall_hit_sound"));
+    mScoreSound.SetSource(Config::GetValue<std::string>("score_sound"));
 
     ResetBall();
 }
@@ -41,6 +44,8 @@ void Ball::OnCollisionStart(GameObject& other)
 {
     if (other.GetInstanceName() == "ScoreArea")
     {
+        PlaySound(mScoreSound);
+
         SetTimeout(BALL_RESET_WAIT_S, [this] ()
         {
             this->ResetBall();
@@ -48,6 +53,8 @@ void Ball::OnCollisionStart(GameObject& other)
     }
     else if (other.GetInstanceName() == "Player" || other.GetInstanceName() == "Opponent")
     {
+        PlaySound(mPaddleBounceSound);
+
         mSpeed += BALL_SPEED_BOUNCE_INCREMENT;
 
         const float yPosDiff = GetPosition().y - other.GetPosition().y;
@@ -76,6 +83,8 @@ void Ball::OnCollisionStart(GameObject& other)
     }
     else
     {
+        PlaySound(mWallBounceSound);
+
         mSpeed += BALL_SPEED_BOUNCE_INCREMENT;
         mVelocity = glm::normalize(glm::vec3(mVelocity.x, -mVelocity.y, 0.0f)) * mSpeed;
     }
