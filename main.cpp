@@ -17,13 +17,7 @@
 #include <fstream>
 #include <string>
 
-#include "audio.h"
-
 using namespace pong;
-
-
-#define SAMPLE_RATE 44100
-#define FRAMES_PER_BUFFER 256
 
 GLFWwindow* SetupGLFW()
 {

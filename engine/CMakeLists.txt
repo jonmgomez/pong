@@ -8,6 +8,7 @@ set(SOURCES
     input.cpp
     logger.cpp
     mesh.cpp
+    playingsound.cpp
     pong.cpp
     random.cpp
     realtimelogger.cpp

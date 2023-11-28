@@ -107,6 +107,7 @@ void Pong::Cleanup()
 {
     GetInstance().mGameObjects.clear();
     GetInstance().mTexts.clear();
+    GetInstance().GetAudioMixer().Cleanup();
 }
 
 GameObject* Pong::FindGameObjectByName(const std::string& name)

@@ -1,4 +1,4 @@
-#include "audio.h"
+#include "audiomixer.h"
 
 #include "config.h"
 #include "logger.h"
@@ -15,8 +15,8 @@
 namespace pong
 {
 
-#define SAMPLE_RATE 44100
-#define FRAMES_PER_BUFFER 256
+static constexpr int SAMPLE_RATE = 44100;
+static constexpr int FRAMES_PER_BUFFER = 256;
 
 auto lastTime = std::chrono::system_clock::now();
 
@@ -27,30 +27,6 @@ int AudioCallbackWrapper(const void* inputBuffer, void* outputBuffer,
                   void* userData)
 {
     return Pong::GetInstance().GetAudioMixer().AudioCallback(inputBuffer, outputBuffer, framesPerBuffer, timeInfo, statusFlags, userData);
-}
-
-PlayingSound::PlayingSound(const Sound& sound) :
-    mSound(&sound),
-    mNumFrames(sound.GetAudioFile().getNumSamplesPerChannel())
-{
-}
-
-float PlayingSound::GetNextSample()
-{
-    if (mIndex >= mNumFrames)
-    {
-        return 0.0f;
-    }
-
-    const float sample = mSound->GetAudioFile().samples[0][mIndex];
-    mIndex++;
-
-    return sample;
-}
-
-bool PlayingSound::IsFinished() const
-{
-    return mIndex >= mNumFrames;
 }
 
 bool AudioMixer::Init()
@@ -112,13 +88,10 @@ void AudioMixer::PlaySound(const Sound& sound)
 
 int AudioMixer::AudioCallback(const void* /*inputBuffer*/, void* outputBuffer,
                               unsigned long framesPerBuffer,
-                              const PaStreamCallbackTimeInfo* timeInfo,
-                              PaStreamCallbackFlags statusFlags,
-                              void* userData)
+                              const PaStreamCallbackTimeInfo* /*timeInfo*/,
+                              PaStreamCallbackFlags /*statusFlags*/,
+                              void* /*userData*/)
 {
-    (void)timeInfo; // Unused
-    (void)statusFlags; // Unused
-    (void)userData; // Unused
 
     auto currentTime = std::chrono::system_clock::now();
     auto timeWaitedUs = std::chrono::duration_cast<std::chrono::microseconds>(currentTime - lastTime);

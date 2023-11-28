@@ -1,5 +1,6 @@
 #pragma once
 
+#include "playingsound.h"
 #include "sound.h"
 #include "utils.h"
 
@@ -9,20 +10,6 @@
 
 namespace pong
 {
-
-class PlayingSound
-{
-public:
-    PlayingSound(const Sound& sound);
-
-    float GetNextSample();
-    bool IsFinished() const;
-
-private:
-    const Sound* mSound { nullptr };
-    int mIndex {0};
-    int mNumFrames {0};
-};
 
 class AudioMixer
 {
@@ -43,11 +30,5 @@ private:
     std::vector<PlayingSound> mPlayingSounds {};
     float mVolume { 0.5f };
 };
-
-int AudioCallbackWrapper(const void* inputBuffer, void* outputBuffer,
-                         unsigned long framesPerBuffer,
-                         const PaStreamCallbackTimeInfo* timeInfo,
-                         PaStreamCallbackFlags statusFlags,
-                         void* userData);
 
 } // namespace pong
