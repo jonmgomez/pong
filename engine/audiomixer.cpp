@@ -21,8 +21,6 @@ static constexpr glm::vec3 LEFT_LISTENER_POSITION = glm::vec3(-1125.0f, 0.0f, 0.
 static constexpr glm::vec3 RIGHT_LISTENER_POSITION = glm::vec3(1125.0f, 0.0f, 0.0f);
 static constexpr float MIN_DISTANCE = 250.0f;
 
-auto lastTime = std::chrono::system_clock::now();
-
 int AudioCallbackWrapper(const void* inputBuffer, void* outputBuffer,
                   unsigned long framesPerBuffer,
                   const PaStreamCallbackTimeInfo* timeInfo,
