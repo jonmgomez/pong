@@ -9,22 +9,42 @@ PlayingSound::PlayingSound(const Sound& sound) :
 {
 }
 
-float PlayingSound::GetNextSample()
+PlayingSound::PlayingSound(const Sound& sound, const glm::vec3& position) :
+    mSound(&sound),
+    mNumFrames(sound.GetAudioFile().getNumSamplesPerChannel()),
+    mPosition(position),
+    mPositional(true)
 {
-    if (mIndex >= mNumFrames)
-    {
-        return 0.0f;
-    }
+}
 
-    const float sample = mSound->GetAudioFile().samples[0][mIndex];
+int PlayingSound::GetNumChannels() const
+{
+    return mSound->GetAudioFile().getNumChannels();
+}
+
+float PlayingSound::GetSample(int channel) const
+{
+    return mSound->GetAudioFile().samples[channel][mIndex];
+}
+
+void PlayingSound::NextSample()
+{
     mIndex++;
-
-    return sample;
 }
 
 bool PlayingSound::IsFinished() const
 {
     return mIndex >= mNumFrames;
+}
+
+glm::vec3 PlayingSound::GetPosition() const
+{
+    return mPosition;
+}
+
+bool PlayingSound::IsPositional() const
+{
+    return mPositional;
 }
 
 } // namespace pong

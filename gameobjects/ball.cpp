@@ -44,7 +44,7 @@ void Ball::OnCollisionStart(GameObject& other)
 {
     if (other.GetInstanceName() == "ScoreArea")
     {
-        PlaySound(mScoreSound);
+        PlaySound(mScoreSound, GetPosition());
 
         SetTimeout(BALL_RESET_WAIT_S, [this] ()
         {
@@ -53,7 +53,7 @@ void Ball::OnCollisionStart(GameObject& other)
     }
     else if (other.GetInstanceName() == "Player" || other.GetInstanceName() == "Opponent")
     {
-        PlaySound(mPaddleBounceSound);
+        PlaySound(mPaddleBounceSound, GetPosition());
 
         mSpeed += BALL_SPEED_BOUNCE_INCREMENT;
 
@@ -83,7 +83,7 @@ void Ball::OnCollisionStart(GameObject& other)
     }
     else
     {
-        PlaySound(mWallBounceSound);
+        PlaySound(mWallBounceSound, GetPosition());
 
         mSpeed += BALL_SPEED_BOUNCE_INCREMENT;
         mVelocity = glm::normalize(glm::vec3(mVelocity.x, -mVelocity.y, 0.0f)) * mSpeed;

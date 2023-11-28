@@ -36,6 +36,7 @@ public:
     bool CheckForCollision(GameObject& other);
     void SetTimeout(std::chrono::duration<double> timeout, std::function<void()> callback);
     void PlaySound(const Sound& sound);
+    void PlaySound(const Sound& sound, const glm::vec3& position);
 
     void Render() const;
     template <typename T>

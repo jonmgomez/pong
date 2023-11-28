@@ -5,7 +5,7 @@
 #include "pong.h"
 #include "sound.h"
 
-#include <AudioFile.h>
+#include <glm/glm.hpp>
 
 #include <algorithm>
 #include <cmath>
@@ -17,6 +17,9 @@ namespace pong
 
 static constexpr int SAMPLE_RATE = 44100;
 static constexpr int FRAMES_PER_BUFFER = 256;
+static constexpr glm::vec3 LEFT_LISTENER_POSITION = glm::vec3(-1125.0f, 0.0f, 0.0f);
+static constexpr glm::vec3 RIGHT_LISTENER_POSITION = glm::vec3(1125.0f, 0.0f, 0.0f);
+static constexpr float MIN_DISTANCE = 250.0f;
 
 auto lastTime = std::chrono::system_clock::now();
 
@@ -33,6 +36,9 @@ bool AudioMixer::Init()
 {
     mVolume = Config::GetValue("volume", 0.5f);
     LogInfo("Volume: {}", mVolume);
+
+    mSpatialAudioEnabled = Config::GetValue("spatial_audio", false);
+    LogInfo("Spatial Audio: {}", mSpatialAudioEnabled ? "Enabled" : "Disabled");
 
     PaError err = Pa_Initialize();
     if (err != paNoError) {
@@ -86,18 +92,17 @@ void AudioMixer::PlaySound(const Sound& sound)
     mPlayingSounds.emplace_back(sound);
 }
 
+void AudioMixer::PlaySound(const Sound& sound, const glm::vec3& position)
+{
+    mPlayingSounds.emplace_back(sound, position);
+}
+
 int AudioMixer::AudioCallback(const void* /*inputBuffer*/, void* outputBuffer,
                               unsigned long framesPerBuffer,
                               const PaStreamCallbackTimeInfo* /*timeInfo*/,
                               PaStreamCallbackFlags /*statusFlags*/,
                               void* /*userData*/)
 {
-
-    auto currentTime = std::chrono::system_clock::now();
-    auto timeWaitedUs = std::chrono::duration_cast<std::chrono::microseconds>(currentTime - lastTime);
-    std::cout << "AudioCallback called with " << framesPerBuffer << " framesPerBuffer, and " << timeWaitedUs.count() << " us since last call\n";
-    lastTime = currentTime;
-
     float* out = static_cast<float*>(outputBuffer);
 
     int frames = static_cast<int>(framesPerBuffer);
@@ -113,8 +118,35 @@ int AudioMixer::AudioCallback(const void* /*inputBuffer*/, void* outputBuffer,
                 continue;
             }
 
-            sampleL += sound.GetNextSample();
-            sampleR += sampleL;
+            if (sound.GetNumChannels() >= 2)
+            {
+                sampleL += sound.GetSample(0);
+                sampleR += sound.GetSample(1);
+                sound.NextSample();
+            }
+            else
+            {
+                sampleL += sound.GetSample(0);
+                sampleR += sound.GetSample(0);
+                sound.NextSample();
+            }
+
+            if (mSpatialAudioEnabled && sound.IsPositional())
+            {
+                const glm::vec3 soundPosition = sound.GetPosition();
+                const float leftDistance = glm::distance(LEFT_LISTENER_POSITION, soundPosition);
+                const float rightDistance = glm::distance(RIGHT_LISTENER_POSITION, soundPosition);
+
+                // calculate attenuation
+                float leftAttenuation = 1.0f / (leftDistance / MIN_DISTANCE);
+                float rightAttenuation = 1.0f / (rightDistance / MIN_DISTANCE);
+
+                leftAttenuation = std::clamp(leftAttenuation, 0.0f, 1.0f);
+                rightAttenuation = std::clamp(rightAttenuation, 0.0f, 1.0f);
+
+                sampleL *= leftAttenuation;
+                sampleR *= rightAttenuation;
+            }
         }
 
         sampleL *= mVolume;

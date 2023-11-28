@@ -1,5 +1,5 @@
 set(SOURCES
-    audio.cpp
+    audiomixer.cpp
     circle.cpp
     colliderbox.cpp
     collisionmanager.cpp
