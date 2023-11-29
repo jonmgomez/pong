@@ -74,7 +74,7 @@ void Pong::Init()
     GetInstance().mGameObjects.push_back(std::move(scoreController));
 
     Pong::GetInstance().GetTimer().Init();
-    ASSERT(Pong::GetInstance().GetAudioMixer().Init());
+    Pong::GetInstance().GetAudioMixer().Init();
 
     for (auto& gameObject : GetInstance().mGameObjects)
     {

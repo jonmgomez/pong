@@ -6,7 +6,9 @@
 
 #include <portaudio.h>
 
+#include <mutex>
 #include <string>
+#include <vector>
 
 namespace pong
 {
@@ -14,7 +16,7 @@ namespace pong
 class AudioMixer
 {
 public:
-    bool Init();
+    void Init();
     void Cleanup();
 
     void PlaySound(const Sound& sound);
@@ -29,6 +31,7 @@ public:
 private:
     PaStream* mStream { nullptr };
     std::vector<PlayingSound> mPlayingSounds {};
+    std::mutex mPlayingSoundsMutex {};
     float mVolume { 0.5f };
     bool mSpatialAudioEnabled { false };
 };

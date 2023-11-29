@@ -30,7 +30,7 @@ int AudioCallbackWrapper(const void* inputBuffer, void* outputBuffer,
     return Pong::GetInstance().GetAudioMixer().AudioCallback(inputBuffer, outputBuffer, framesPerBuffer, timeInfo, statusFlags, userData);
 }
 
-bool AudioMixer::Init()
+void AudioMixer::Init()
 {
     mVolume = Config::GetValue("volume", 0.5f);
     LogInfo("Volume: {}", mVolume);
@@ -43,9 +43,11 @@ bool AudioMixer::Init()
         LogError("PortAudio initialization failed: {}", Pa_GetErrorText(err));
     }
 
+    const int kAudioChannelsStereo = 2;
+
     PaStreamParameters outputParameters;
     outputParameters.device = Pa_GetDefaultOutputDevice();
-    outputParameters.channelCount = 2; // Stereo
+    outputParameters.channelCount = kAudioChannelsStereo;
     outputParameters.sampleFormat = paFloat32;
     outputParameters.suggestedLatency = Pa_GetDeviceInfo(outputParameters.device)->defaultLowOutputLatency;
     outputParameters.hostApiSpecificStreamInfo = nullptr;
@@ -54,7 +56,7 @@ bool AudioMixer::Init()
     if (err != paNoError) {
         LogError("PortAudio stream opening failed: {}", Pa_GetErrorText(err));
         Pa_Terminate();
-        return false;
+        ASSERT(false);
     }
 
     err = Pa_StartStream(mStream);
@@ -62,10 +64,8 @@ bool AudioMixer::Init()
         LogError("PortAudio stream starting failed: {}", Pa_GetErrorText(err));
         Pa_CloseStream(mStream);
         Pa_Terminate();
-        return false;
+        ASSERT(false);
     }
-
-    return true;
 }
 
 void AudioMixer::Cleanup()
@@ -73,12 +73,14 @@ void AudioMixer::Cleanup()
     PaError err = Pa_StopStream(mStream);
     if (err != paNoError) {
         LogError("PortAudio stream stopping failed: {}", Pa_GetErrorText(err));
+        ASSERT(false);
         return;
     }
 
     err = Pa_CloseStream(mStream);
     if (err != paNoError) {
         LogError("PortAudio stream closing failed: {}", Pa_GetErrorText(err));
+        ASSERT(false);
         return;
     }
 
@@ -87,12 +89,16 @@ void AudioMixer::Cleanup()
 
 void AudioMixer::PlaySound(const Sound& sound)
 {
+    mPlayingSoundsMutex.lock();
     mPlayingSounds.emplace_back(sound);
+    mPlayingSoundsMutex.unlock();
 }
 
 void AudioMixer::PlaySound(const Sound& sound, const glm::vec3& position)
 {
+    mPlayingSoundsMutex.lock();
     mPlayingSounds.emplace_back(sound, position);
+    mPlayingSoundsMutex.unlock();
 }
 
 int AudioMixer::AudioCallback(const void* /*inputBuffer*/, void* outputBuffer,
@@ -102,6 +108,8 @@ int AudioMixer::AudioCallback(const void* /*inputBuffer*/, void* outputBuffer,
                               void* /*userData*/)
 {
     float* out = static_cast<float*>(outputBuffer);
+
+    mPlayingSoundsMutex.lock();
 
     int frames = static_cast<int>(framesPerBuffer);
     for (int i = 0; i < frames; i++)
@@ -160,6 +168,8 @@ int AudioMixer::AudioCallback(const void* /*inputBuffer*/, void* outputBuffer,
     mPlayingSounds.erase(std::remove_if(mPlayingSounds.begin(), mPlayingSounds.end(), [](const auto& sound) {
         return sound.IsFinished();
     }), mPlayingSounds.end());
+
+    mPlayingSoundsMutex.unlock();
 
     return paContinue;
 }
