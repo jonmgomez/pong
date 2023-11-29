@@ -29,6 +29,7 @@ add_subdirectory(tps)
 add_subdirectory(render)
 add_subdirectory(engine)
 add_subdirectory(gameobjects)
+add_subdirectory(ui)
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE

@@ -22,6 +22,7 @@ target_link_libraries(engine
     PUBLIC
         render
         gameobjects
+        ui
         fmt::fmt
         concurrentqueue
 )
