@@ -16,14 +16,24 @@
 namespace pong
 {
 
+enum class Scene
+{
+    TitleScreen,
+    Settings,
+    Game
+};
+
 class Pong
 {
 public:
     static Pong& GetInstance();
 
-    static void Init();
+    static void Init(GLFWwindow* window);
     static void GameLoop();
     static void Cleanup();
+
+    static void LoadSceneNext(Scene scene);
+    static void ExitGame();
 
     template<typename T>
     static T* FindGameObject()
@@ -68,17 +78,22 @@ private:
     Pong& operator=(Pong&&) = delete;
     ~Pong() = default;
 
+    void LoadScene(Scene scene);
+
     CollisionManager& GetCollisionManager();
     UIEventManager& GetUIEventManager();
     Timer& GetTimer();
 
+    GLFWwindow* mWindow { nullptr };
     std::vector<std::unique_ptr<GameObject>> mGameObjects {};
     std::vector<std::unique_ptr<UIElement>> mUIElements {};
 
     CollisionManager mCollisionManager {};
     UIEventManager mUIEventManager {};
     Timer mTimer {};
-    bool mFirstFrame { true };
+
+    Scene mNextScene { Scene::TitleScreen };
+    bool mChangeSceneRequested { false };
 };
 
 } // namespace pong

@@ -65,7 +65,7 @@ GLFWwindow* SetupGLFW()
 
 void PlayPong(GLFWwindow* window)
 {
-    Pong::Init();
+    Pong::Init(window);
 
     // Is the framerate managed by glfw
     bool fpsLimitManaged = true;

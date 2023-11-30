@@ -15,7 +15,8 @@ static constexpr int WINDOW_HEIGHT = 960;
 // All keys are intalized to false, for not pressed
 std::array<bool, GLFW_KEY_LAST + 1> Input::mKeys {};
 std::array<bool, GLFW_MOUSE_BUTTON_LAST + 1> Input::mMouseButtons {};
-glm::vec3 Input::mMousePosition { 0.0f };
+// Initalize way outside the screen so it does not trigger anything before it should
+glm::vec3 Input::mMousePosition { std::numeric_limits<float>::max() };
 
 bool Input::IsKeyPressed(unsigned int keycode)
 {
@@ -53,8 +54,6 @@ void Input::MousePositionCallback(GLFWwindow* /*window*/, double xPos, double yP
     // y coords are positive going down, so we need to invert them
     mMousePosition.y = (y <= halfWindowHeight) ?
         (halfWindowHeight - y) * 2.0f : (y - halfWindowHeight) * -2.0f;
-
-    LogInfo("Mouse position: x{}, y{}", mMousePosition.x, mMousePosition.y);
 }
 
 bool Input::IsMouseButtonPressed(unsigned int button)
