@@ -17,9 +17,13 @@ public:
     bool CheckPointInBounds(const glm::vec3& position) const;
 
     float GetWidth() const;
+    void SetWidth(float width);
     float GetHeight() const;
+    void SetHeight(float height);
 
 private:
+    void RecalculateBounds();
+
     std::array<glm::vec3, 4> mBounds {};
     std::array<glm::vec3, 4> mPositionBounds {};
     float mWidth { 0.0f };

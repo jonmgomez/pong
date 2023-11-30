@@ -67,9 +67,36 @@ float ColliderBox::GetWidth() const
     return mWidth;
 }
 
+void ColliderBox::SetWidth(float width)
+{
+    mWidth = width;
+    RecalculateBounds();
+}
+
 float ColliderBox::GetHeight() const
 {
     return mHeight;
+}
+
+void ColliderBox::SetHeight(float height)
+{
+    mHeight = height;
+    RecalculateBounds();
+}
+
+void ColliderBox::RecalculateBounds()
+{
+    // A little jank, but we need to figure out our current offset
+    const glm::vec3 position = mPositionBounds[0] - mBounds[0];
+
+    mBounds = {
+        glm::vec3(-mWidth / 2.0f, -mHeight / 2.0f, 0.0f),
+        glm::vec3( mWidth / 2.0f,  mHeight / 2.0f, 0.0f),
+        glm::vec3(-mWidth / 2.0f,  mHeight / 2.0f, 0.0f),
+        glm::vec3( mWidth / 2.0f, -mHeight / 2.0f, 0.0f)
+    };
+
+    OnPositionUpdate(position);
 }
 
 } // namespace pong

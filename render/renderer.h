@@ -26,6 +26,9 @@ public:
                      const GLRGBAColor& color);
     static void Clear();
 
+    static float GetXScreenCoords();
+    static float GetYScreenCoords();
+
 private:
     Renderer() = default;
     Renderer(const Renderer&) = delete;
@@ -35,6 +38,8 @@ private:
     ~Renderer() = default;
 
     std::unique_ptr<Shader>mShader { nullptr };
+    float mXScreenCoords { SCREEN_WIDTH };
+    float mYScreenCoords { SCREEN_HEIGHT };
 };
 
 } // namespace pong

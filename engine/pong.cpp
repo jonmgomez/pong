@@ -25,6 +25,11 @@ CollisionManager& Pong::GetCollisionManager()
     return mCollisionManager;
 }
 
+UIEventManager& Pong::GetUIEventManager()
+{
+    return mUIEventManager;
+}
+
 Timer& Pong::GetTimer()
 {
     return mTimer;
@@ -84,6 +89,7 @@ void Pong::GameLoop()
 {
     Pong::GetInstance().GetTimer().HandleTimerCallbacks();
     Pong::GetInstance().GetCollisionManager().ProcessCollisions(GetInstance().mGameObjects);
+    Pong::GetInstance().GetUIEventManager().ProcessEvents(GetInstance().mUIElements);
 
     for (auto& gameObject : GetInstance().mGameObjects)
     {
@@ -132,6 +138,14 @@ Text* Pong::AddText(const std::string& text, const std::string& fontPath,
     newText->SetPosition(position);
     GetInstance().mUIElements.push_back(std::move(newText));
     return textPtr;
+}
+
+void Pong::UpdateUIElementOrderLayer()
+{
+    std::sort(GetInstance().mUIElements.begin(), GetInstance().mUIElements.end(), [] (const auto& lhs, const auto& rhs)
+    {
+        return lhs->GetOrderLayer() < rhs->GetOrderLayer();
+    });
 }
 
 void Pong::SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback)

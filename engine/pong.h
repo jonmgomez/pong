@@ -5,6 +5,7 @@
 #include "text.h"
 #include "timer.h"
 #include "uielement.h"
+#include "uieventmanager.h"
 #include "utils.h"
 
 #include <chrono>
@@ -51,8 +52,11 @@ public:
         auto uiElementPtr = newUIElement.get();
 
         GetInstance().mUIElements.push_back(std::move(newUIElement));
+        Pong::UpdateUIElementOrderLayer();
         return uiElementPtr;
     }
+
+    static void UpdateUIElementOrderLayer();
 
     static void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
 
@@ -65,12 +69,14 @@ private:
     ~Pong() = default;
 
     CollisionManager& GetCollisionManager();
+    UIEventManager& GetUIEventManager();
     Timer& GetTimer();
 
     std::vector<std::unique_ptr<GameObject>> mGameObjects {};
     std::vector<std::unique_ptr<UIElement>> mUIElements {};
 
     CollisionManager mCollisionManager {};
+    UIEventManager mUIEventManager {};
     Timer mTimer {};
     bool mFirstFrame { true };
 };

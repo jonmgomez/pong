@@ -12,14 +12,14 @@ namespace pong
 
 enum class UIEventType
 {
-    Click,
+    Pressed,
     Release,
     Hover,
     Unhover,
     EVENTS_COUNT
 };
 
-using ListenerVector = std::vector<std::function<void()>>;
+using ListenerCallbacks = std::vector<std::function<void()>>;
 
 class UIElement
 {
@@ -41,13 +41,19 @@ public:
     void SetOrderLayer(int orderLayer);
     glm::vec3 GetPosition() const;
     void SetPosition(const glm::vec3& position);
+    ColliderBox* GetColliderBox() const;
+    void SetColliderBox(float width, float height);
+    bool IsPressed() const;
+    bool IsHovered() const;
 
 private:
     int mOrderLayer { 0 };
     glm::vec3 mPosition { 0.0f };
     Mesh mMesh {};
-    ColliderBox* mColliderBox { nullptr };
-    std::array<ListenerVector, static_cast<int>(UIEventType::EVENTS_COUNT)> mListeners {};
+    std::unique_ptr<ColliderBox> mColliderBox { nullptr };
+    std::array<ListenerCallbacks, static_cast<int>(UIEventType::EVENTS_COUNT)> mListeners {};
+    bool mPressed { false };
+    bool mHovered { false };
 };
 
 } // namespace pong

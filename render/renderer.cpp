@@ -60,4 +60,14 @@ void Renderer::Clear()
     GLCall(glClear(GL_COLOR_BUFFER_BIT));
 }
 
+float Renderer::GetXScreenCoords()
+{
+    return GetInstance().mXScreenCoords;
+}
+
+float Renderer::GetYScreenCoords()
+{
+    return GetInstance().mYScreenCoords;
+}
+
 } // namespace pong
