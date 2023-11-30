@@ -119,7 +119,7 @@ void Text::CreateText()
                                      glm::vec3(finalXOffset, finalYOffset, 0.0f),
                                      charWidth, charHeight);
 
-            currentX += glpyhWidth;
+            currentX += glpyhWidth * mScale;
 
             // TODO: Needs to also be checked after a \n character
             if (i == mText.length() - 1)
