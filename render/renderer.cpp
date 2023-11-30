@@ -33,7 +33,9 @@ void Renderer::SetShader(const std::string& filePath)
     GetInstance().mShader = std::make_unique<Shader>(filePath);
 }
 
-void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const glm::vec3& position, const Texture& texture)
+void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib,
+                    const glm::vec3& position, const Texture& texture,
+                    const GLRGBAColor& color)
 {
     va.Bind();
     ib.Bind();
@@ -47,7 +49,7 @@ void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const glm::vec
 
     texture.Bind(0);
     GetInstance().mShader->SetUniform1i("u_Texture", 0);
-    GetInstance().mShader->SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
+    GetInstance().mShader->SetUniform4f("u_Color", color.r, color.g, color.b, color.a);
     GetInstance().mShader->SetUniformMat4f("u_MVP", mvp);
 
     GLCall(glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr));

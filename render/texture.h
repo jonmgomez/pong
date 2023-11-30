@@ -1,5 +1,7 @@
 #pragma once
 
+#include "renderutils.h"
+
 #include <GL/glew.h>
 
 #include <string>
@@ -8,18 +10,9 @@
 namespace pong
 {
 
-struct RGBAColor
-{
-    unsigned char r {0};
-    unsigned char g {0};
-    unsigned char b {0};
-    unsigned char a {0};
-};
-
 class Texture
 {
 public:
-
     Texture() = default;
     Texture(const std::string& filePath);
     Texture(const RGBAColor& color);

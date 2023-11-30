@@ -148,16 +148,6 @@ void Text::CreateText()
     }
 }
 
-glm::vec3 Text::GetPosition() const
-{
-    return mPosition;
-}
-
-void Text::SetPosition(const glm::vec3& position)
-{
-    mPosition = position;
-}
-
 std::string Text::GetText() const
 {
     return mText;
@@ -170,11 +160,20 @@ void Text::SetText(const std::string& text)
     CreateText();
 }
 
-void Text::Render()
+void Text::SetColor(GLRGBAColor color)
 {
+    for (auto& character : mCharacters)
+    {
+        character.SetColor(color);
+    }
+}
+
+void Text::Render() const
+{
+    const glm::vec3 position = GetPosition();
     for (const auto& character : mCharacters)
     {
-        character.Draw(mPosition);
+        character.Draw(position);
     }
 }
 
