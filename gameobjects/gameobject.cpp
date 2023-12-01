@@ -1,5 +1,6 @@
 #include "gameobject.h"
 
+#include "audiomixer.h"
 #include "renderutils.h"
 #include "pong.h"
 
@@ -75,6 +76,16 @@ bool GameObject::CheckForCollision(GameObject& other)
 void GameObject::SetTimeout(std::chrono::duration<double> timeout, std::function<void()> callback)
 {
     Pong::SetTimeout(GetId(), timeout, callback);
+}
+
+void GameObject::PlaySound(const Sound& sound)
+{
+    Pong::GetInstance().GetAudioMixer().PlaySound(sound);
+}
+
+void GameObject::PlaySound(const Sound& sound, const glm::vec3& position)
+{
+    Pong::GetInstance().GetAudioMixer().PlaySound(sound, position);
 }
 
 void GameObject::Render() const

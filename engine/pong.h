@@ -1,5 +1,6 @@
 #pragma once
 
+#include "audiomixer.h"
 #include "collisionmanager.h"
 #include "gameobject.h"
 #include "text.h"
@@ -30,6 +31,7 @@ public:
 
     static void Init(GLFWwindow* window);
     static void GameLoop();
+    static void Reset();
     static void Cleanup();
 
     static void LoadSceneNext(Scene scene);
@@ -70,6 +72,11 @@ public:
 
     static void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
 
+    CollisionManager& GetCollisionManager();
+    UIEventManager& GetUIEventManager();
+    AudioMixer& GetAudioMixer();
+    Timer& GetTimer();
+
 private:
     Pong() = default;
     Pong(const Pong&) = delete;
@@ -80,16 +87,13 @@ private:
 
     void LoadScene(Scene scene);
 
-    CollisionManager& GetCollisionManager();
-    UIEventManager& GetUIEventManager();
-    Timer& GetTimer();
-
     GLFWwindow* mWindow { nullptr };
     std::vector<std::unique_ptr<GameObject>> mGameObjects {};
     std::vector<std::unique_ptr<UIElement>> mUIElements {};
 
     CollisionManager mCollisionManager {};
     UIEventManager mUIEventManager {};
+    AudioMixer mAudioMixer {};
     Timer mTimer {};
 
     Scene mNextScene { Scene::TitleScreen };

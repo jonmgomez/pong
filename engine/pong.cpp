@@ -30,6 +30,11 @@ UIEventManager& Pong::GetUIEventManager()
     return mUIEventManager;
 }
 
+AudioMixer& Pong::GetAudioMixer()
+{
+    return mAudioMixer;
+}
+
 Timer& Pong::GetTimer()
 {
     return mTimer;
@@ -38,6 +43,8 @@ Timer& Pong::GetTimer()
 void Pong::Init(GLFWwindow* window)
 {
     GetInstance().mWindow = window;
+    GetInstance().GetAudioMixer().Init();
+    GetInstance().GetTimer().Init();
     GetInstance().LoadScene(Scene::TitleScreen);
 }
 
@@ -69,10 +76,16 @@ void Pong::GameLoop()
     }
 }
 
-void Pong::Cleanup()
+void Pong::Reset()
 {
     GetInstance().mGameObjects.clear();
     GetInstance().mUIElements.clear();
+}
+
+void Pong::Cleanup()
+{
+    Pong::Reset();
+    GetInstance().GetAudioMixer().Cleanup();
 }
 
 void Pong::LoadSceneNext(Scene scene)
@@ -83,7 +96,7 @@ void Pong::LoadSceneNext(Scene scene)
 
 void Pong::LoadScene(Scene scene)
 {
-    Pong::Cleanup();
+    Pong::Reset();
 
     switch (scene)
     {
