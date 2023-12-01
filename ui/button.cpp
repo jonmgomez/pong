@@ -22,26 +22,26 @@ UIElementType Button::GetType() const
     return UIElementType::Button;
 }
 
-void Button::AddListener(UIEventType event, std::function<void()> callback)
+void Button::AddListener(ButtonEvent event, std::function<void()> callback)
 {
-    ASSERT(event < UIEventType::EVENTS_COUNT);
+    ASSERT(event < ButtonEvent::EVENTS_COUNT);
     mListeners.at(static_cast<int>(event)).emplace_back(callback);
 }
 
-void Button::OnEvent(UIEventType event)
+void Button::OnEvent(ButtonEvent event)
 {
     switch (event)
     {
-        case UIEventType::Pressed:
+        case ButtonEvent::Pressed:
             mPressed = true;
             break;
-        case UIEventType::Release:
+        case ButtonEvent::Release:
             mPressed = false;
             break;
-        case UIEventType::Hover:
+        case ButtonEvent::Hover:
             mHovered = true;
             break;
-        case UIEventType::Unhover:
+        case ButtonEvent::Unhover:
             mHovered = false;
             break;
     }

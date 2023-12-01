@@ -170,10 +170,9 @@ void Text::SetColor(GLRGBAColor color)
 
 void Text::Render() const
 {
-    const glm::vec3 position = GetPosition();
     for (const auto& character : mCharacters)
     {
-        character.Draw(position);
+        character.Draw(mPosition);
     }
 }
 

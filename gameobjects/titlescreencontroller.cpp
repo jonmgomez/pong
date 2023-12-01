@@ -10,28 +10,33 @@ namespace pong
 
 static constexpr float BUTTON_WIDTH = 400.0f;
 static constexpr float BUTTON_HEIGHT = 200.0f;
+static constexpr float HOVER_BUTTON_WIDTH = 400.0f * 1.35f;
+static constexpr float HOVER_BUTTON_HEIGHT = 200.0f * 1.35f;
 static constexpr GLRGBAColor IDLE_TEXT_COLOR = { 0.0f, 0.0f, 0.0f, 1.0f };
 static constexpr GLRGBAColor HOVER_TEXT_COLOR = { 0.4f, 0.4f, 0.4f, 1.0f };
+static constexpr glm::vec3 PONG_TEXT_POSITION(0.0f, 750.0f, 0.0f);
+static constexpr glm::vec3 SETTINGS_BUTTON_POSITION(0.0f, -300.0f, 0.0f);
+static constexpr glm::vec3 QUIT_BUTTON_POSITION(0.0f, -600.0f, 0.0f);
 
 void TitleScreenController::OnStart()
 {
     const std::string kFontPath = Config::GetValue<std::string>("font");
     mPongText = Pong::AddUIElement<Text>("Pong", kFontPath, 1.5f, 256);
-    mPongText->SetPosition(glm::vec3(0.0f, 750.0f, 0.0f));
+    mPongText->SetPosition(PONG_TEXT_POSITION);
 
 
 
     mPlayButton = Pong::AddUIElement<Button>(BUTTON_WIDTH, BUTTON_HEIGHT);
 
-    mPlayButton->AddListener(UIEventType::Pressed, []() {
+    mPlayButton->AddListener(ButtonEvent::Pressed, []() {
         Pong::LoadSceneNext(Scene::Game);
     });
 
-    mPlayButton->AddListener(UIEventType::Hover, [this]() {
+    mPlayButton->AddListener(ButtonEvent::Hover, [this]() {
         this->HoverOverButton(mPlayButton, mPlayText);
     });
 
-    mPlayButton->AddListener(UIEventType::Unhover, [this]() {
+    mPlayButton->AddListener(ButtonEvent::Unhover, [this]() {
         this->UnhoverOverButton(mPlayButton, mPlayText);
     });
 
@@ -42,51 +47,51 @@ void TitleScreenController::OnStart()
 
 
     mSettingsButton = Pong::AddUIElement<Button>(BUTTON_WIDTH, BUTTON_HEIGHT);
-    mSettingsButton->SetPosition(glm::vec3(0.0f, -300.0f, 0.0f));
+    mSettingsButton->SetPosition(SETTINGS_BUTTON_POSITION);
 
-    mSettingsButton->AddListener(UIEventType::Pressed, []() {
+    mSettingsButton->AddListener(ButtonEvent::Pressed, []() {
         Pong::LoadSceneNext(Scene::Settings);
     });
 
-    mSettingsButton->AddListener(UIEventType::Hover, [this]() {
+    mSettingsButton->AddListener(ButtonEvent::Hover, [this]() {
         this->HoverOverButton(mSettingsButton, mSettingsText);
     });
 
-    mSettingsButton->AddListener(UIEventType::Unhover, [this]() {
+    mSettingsButton->AddListener(ButtonEvent::Unhover, [this]() {
         this->UnhoverOverButton(mSettingsButton, mSettingsText);
     });
 
     mSettingsText = Pong::AddUIElement<Text>("Settings", kFontPath, 1.0f, 75);
     mSettingsText->SetOrderLayer(1);
     mSettingsText->SetColor(IDLE_TEXT_COLOR);
-    mSettingsText->SetPosition(glm::vec3(0.0f, -300.0f, 0.0f));
+    mSettingsText->SetPosition(SETTINGS_BUTTON_POSITION);
 
 
 
     mQuitButton = Pong::AddUIElement<Button>(BUTTON_WIDTH, BUTTON_HEIGHT);
-    mQuitButton->SetPosition(glm::vec3(0.0f, -600.0f, 0.0f));
+    mQuitButton->SetPosition(QUIT_BUTTON_POSITION);
 
-    mQuitButton->AddListener(UIEventType::Pressed, []() {
+    mQuitButton->AddListener(ButtonEvent::Pressed, []() {
         Pong::ExitGame();
     });
 
-    mQuitButton->AddListener(UIEventType::Hover, [this]() {
+    mQuitButton->AddListener(ButtonEvent::Hover, [this]() {
         this->HoverOverButton(mQuitButton, mQuitText);
     });
 
-    mQuitButton->AddListener(UIEventType::Unhover, [this]() {
+    mQuitButton->AddListener(ButtonEvent::Unhover, [this]() {
         this->UnhoverOverButton(mQuitButton, mQuitText);
     });
 
     mQuitText = Pong::AddUIElement<Text>("Quit", kFontPath, 1.0f, 75);
     mQuitText->SetOrderLayer(1);
     mQuitText->SetColor(IDLE_TEXT_COLOR);
-    mQuitText->SetPosition(glm::vec3(0.0f, -600.0f, 0.0f));
+    mQuitText->SetPosition(QUIT_BUTTON_POSITION);
 }
 
 void TitleScreenController::HoverOverButton(Button* button, Text* buttonText)
 {
-    button->Resize(BUTTON_WIDTH * 1.35f, BUTTON_HEIGHT * 1.35f);
+    button->Resize(HOVER_BUTTON_WIDTH, HOVER_BUTTON_HEIGHT);
     buttonText->SetColor(HOVER_TEXT_COLOR);
 }
 

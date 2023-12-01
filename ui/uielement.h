@@ -10,15 +10,6 @@
 namespace pong
 {
 
-enum class UIEventType
-{
-    Pressed,
-    Release,
-    Hover,
-    Unhover,
-    EVENTS_COUNT
-};
-
 enum class UIElementType
 {
     Button,

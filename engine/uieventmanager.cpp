@@ -25,24 +25,24 @@ void UIEventManager::ProcessEvents(const std::vector<std::unique_ptr<UIElement>>
         {
             if (!button.IsHovered())
             {
-                button.OnEvent(UIEventType::Hover);
+                button.OnEvent(ButtonEvent::Hover);
             }
 
             if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
             {
                 if (!button.IsPressed())
                 {
-                    button.OnEvent(UIEventType::Pressed);
+                    button.OnEvent(ButtonEvent::Pressed);
                 }
             }
             else if (button.IsPressed())
             {
-                button.OnEvent(UIEventType::Release);
+                button.OnEvent(ButtonEvent::Release);
             }
         }
         else if (button.IsHovered())
         {
-            button.OnEvent(UIEventType::Unhover);
+            button.OnEvent(ButtonEvent::Unhover);
         }
     }
 }
