@@ -18,8 +18,11 @@ public:
 
     float GetWidth() const;
     float GetHeight() const;
+    void Resize(float width, float height);
 
 private:
+    void RecomputeVertices();
+
     float mWidth { 0.0f };
     float mHeight { 0.0f };
 };

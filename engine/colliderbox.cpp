@@ -84,6 +84,13 @@ void ColliderBox::SetHeight(float height)
     RecalculateBounds();
 }
 
+void ColliderBox::Resize(float width, float height)
+{
+    mWidth = width;
+    mHeight = height;
+    RecalculateBounds();
+}
+
 void ColliderBox::RecalculateBounds()
 {
     // A little jank, but we need to figure out our current offset

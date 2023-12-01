@@ -1,5 +1,6 @@
 #include "titlescreencontroller.h"
 
+#include "button.h"
 #include "logger.h"
 #include "config.h"
 #include "pong.h"
@@ -9,16 +10,17 @@ namespace pong
 
 static constexpr float BUTTON_WIDTH = 400.0f;
 static constexpr float BUTTON_HEIGHT = 200.0f;
+static constexpr GLRGBAColor IDLE_TEXT_COLOR = { 0.0f, 0.0f, 0.0f, 1.0f };
+static constexpr GLRGBAColor HOVER_TEXT_COLOR = { 0.4f, 0.4f, 0.4f, 1.0f };
 
 void TitleScreenController::OnStart()
 {
-    mPongText = Pong::AddText("Pong", Config::GetValue<std::string>("font"), 1.0f, 400);
+    const std::string kFontPath = Config::GetValue<std::string>("font");
+    mPongText = Pong::AddText("Pong", kFontPath, 1.0f, 256);
     mPongText->SetPosition(glm::vec3(0.0f, 750.0f, 0.0f));
 
 
-    mPlayButton = Pong::AddUIElement<UIElement>();
-    mPlayButton->UseMesh<Rectangle>(BUTTON_WIDTH, BUTTON_HEIGHT);
-    mPlayButton->SetColliderBox(BUTTON_WIDTH, BUTTON_HEIGHT);
+    mPlayButton = Pong::AddUIElement<Button>(BUTTON_WIDTH, BUTTON_HEIGHT);
 
     mPlayButton->AddListener(UIEventType::Pressed, []() {
         Pong::LoadSceneNext(Scene::Game);
@@ -32,15 +34,13 @@ void TitleScreenController::OnStart()
         this->UnhoverOverButton(mPlayButton, mPlayText);
     });
 
-    mPlayText = Pong::AddUIElement<Text>("Play", Config::GetValue<std::string>("font"), 1.0f);
+    mPlayText = Pong::AddUIElement<Text>("Play", kFontPath, 1.0f);
     mPlayText->SetOrderLayer(1);
-    mPlayText->SetColor({ 0.0f, 0.0f, 0.0f, 1.0f });
+    mPlayText->SetColor(IDLE_TEXT_COLOR);
 
 
 
-    mSettingsButton = Pong::AddUIElement<UIElement>();
-    mSettingsButton->UseMesh<Rectangle>(BUTTON_WIDTH, BUTTON_HEIGHT);
-    mSettingsButton->SetColliderBox(BUTTON_WIDTH, BUTTON_HEIGHT);
+    mSettingsButton = Pong::AddUIElement<Button>(BUTTON_WIDTH, BUTTON_HEIGHT);
     mSettingsButton->SetPosition(glm::vec3(0.0f, -300.0f, 0.0f));
 
     mSettingsButton->AddListener(UIEventType::Pressed, []() {
@@ -55,15 +55,14 @@ void TitleScreenController::OnStart()
         this->UnhoverOverButton(mSettingsButton, mSettingsText);
     });
 
-    mSettingsText = Pong::AddUIElement<Text>("Settings", Config::GetValue<std::string>("font"), 1.0f, 75);
+    mSettingsText = Pong::AddUIElement<Text>("Settings", kFontPath, 1.0f, 75);
     mSettingsText->SetOrderLayer(1);
-    mSettingsText->SetColor({ 0.0f, 0.0f, 0.0f, 1.0f });
+    mSettingsText->SetColor(IDLE_TEXT_COLOR);
     mSettingsText->SetPosition(glm::vec3(0.0f, -300.0f, 0.0f));
 
 
-    mQuitButton = Pong::AddUIElement<UIElement>();
-    mQuitButton->UseMesh<Rectangle>(BUTTON_WIDTH, BUTTON_HEIGHT);
-    mQuitButton->SetColliderBox(BUTTON_WIDTH, BUTTON_HEIGHT);
+
+    mQuitButton = Pong::AddUIElement<Button>(BUTTON_WIDTH, BUTTON_HEIGHT);
     mQuitButton->SetPosition(glm::vec3(0.0f, -600.0f, 0.0f));
 
     mQuitButton->AddListener(UIEventType::Pressed, []() {
@@ -78,22 +77,22 @@ void TitleScreenController::OnStart()
         this->UnhoverOverButton(mQuitButton, mQuitText);
     });
 
-    mQuitText = Pong::AddUIElement<Text>("Quit", Config::GetValue<std::string>("font"), 1.0f, 75);
+    mQuitText = Pong::AddUIElement<Text>("Quit", kFontPath, 1.0f, 75);
     mQuitText->SetOrderLayer(1);
-    mQuitText->SetColor({ 0.0f, 0.0f, 0.0f, 1.0f });
+    mQuitText->SetColor(IDLE_TEXT_COLOR);
     mQuitText->SetPosition(glm::vec3(0.0f, -600.0f, 0.0f));
 }
 
-void TitleScreenController::HoverOverButton(UIElement* button, Text* buttonText)
+void TitleScreenController::HoverOverButton(Button* button, Text* buttonText)
 {
-    button->UseMesh<Rectangle>(BUTTON_WIDTH * 1.35f, 175.0f * 1.35f);
-    buttonText->SetColor({ 0.4f, 0.4f, 0.4f, 1.0f });
+    button->Resize(BUTTON_WIDTH * 1.35f, BUTTON_HEIGHT * 1.35f);
+    buttonText->SetColor(HOVER_TEXT_COLOR);
 }
 
-void TitleScreenController::UnhoverOverButton(UIElement* button, Text* buttonText)
+void TitleScreenController::UnhoverOverButton(Button* button, Text* buttonText)
 {
-    button->UseMesh<Rectangle>(BUTTON_WIDTH, BUTTON_HEIGHT);
-    buttonText->SetColor({ 0.0f, 0.0f, 0.0f, 1.0f });
+    button->Resize(BUTTON_WIDTH, BUTTON_HEIGHT);
+    buttonText->SetColor(IDLE_TEXT_COLOR);
 }
 
 } // namespace pong

@@ -55,11 +55,11 @@ public:
                          float scale, int pixelLineHeight = 128,
                          const glm::vec3& position = glm::vec3(0.0f));
 
-    template<typename MeshType, typename... Args>
-    static MeshType* AddUIElement(Args&&... args)
+    template<typename UIType, typename... Args>
+    static UIType* AddUIElement(Args&&... args)
     {
-        auto newUIElement = std::make_unique<MeshType>(std::forward<Args>(args)...);
-        auto uiElementPtr = newUIElement.get();
+        auto newUIElement = std::make_unique<UIType>(std::forward<Args>(args)...);
+        UIType* uiElementPtr = newUIElement.get();
 
         GetInstance().mUIElements.push_back(std::move(newUIElement));
         Pong::UpdateUIElementOrderLayer();

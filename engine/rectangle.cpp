@@ -24,6 +24,15 @@ Rectangle::Rectangle(float width, float height) :
     mWidth {width},
     mHeight {height}
 {
+    RecomputeVertices();
+
+    const unsigned char kColorValue = 255;
+    const RGBAColor allWhiteColor{kColorValue, kColorValue, kColorValue, kColorValue};
+    mTexture = Texture(allWhiteColor);
+}
+
+void Rectangle::RecomputeVertices()
+{
     const std::array<float, 16> positions = {
         -mWidth / 2, -mHeight / 2, 0.0f, 0.0f,
          mWidth / 2, -mHeight / 2, 1.0f, 0.0f,
@@ -38,10 +47,6 @@ Rectangle::Rectangle(float width, float height) :
     layout.Push<float>(2);
     layout.Push<float>(2);
     mVA.AddBuffer(mVB, layout);
-
-    const unsigned char kColorValue = 255;
-    const RGBAColor allWhiteColor{kColorValue, kColorValue, kColorValue, kColorValue};
-    mTexture = Texture(allWhiteColor);
 }
 
 float Rectangle::GetWidth() const
@@ -52,6 +57,14 @@ float Rectangle::GetWidth() const
 float Rectangle::GetHeight() const
 {
     return mHeight;
+}
+
+void Rectangle::Resize(float width, float height)
+{
+    mWidth = width;
+    mHeight = height;
+
+    RecomputeVertices();
 }
 
 } // namespace pong

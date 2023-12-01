@@ -1,5 +1,6 @@
 #include "uieventmanager.h"
 
+#include "button.h"
 #include "colliderbox.h"
 #include "logger.h"
 #include "input.h"
@@ -14,33 +15,34 @@ void UIEventManager::ProcessEvents(const std::vector<std::unique_ptr<UIElement>>
 
     for (auto& uiElement : uiElements)
     {
-        if (uiElement->GetColliderBox() == nullptr)
+        if (uiElement->GetType() != UIElementType::Button)
         {
             continue;
         }
 
-        if (uiElement->GetColliderBox()->CheckPointInBounds(mousePosition))
+        auto& button = static_cast<Button&>(*uiElement);
+        if (button.GetColliderBox()->CheckPointInBounds(mousePosition))
         {
-            if (!uiElement->IsHovered())
+            if (!button.IsHovered())
             {
-                uiElement->OnEvent(UIEventType::Hover);
+                button.OnEvent(UIEventType::Hover);
             }
 
             if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
             {
-                if (!uiElement->IsPressed())
+                if (!button.IsPressed())
                 {
-                    uiElement->OnEvent(UIEventType::Pressed);
+                    button.OnEvent(UIEventType::Pressed);
                 }
             }
-            else if (uiElement->IsPressed())
+            else if (button.IsPressed())
             {
-                uiElement->OnEvent(UIEventType::Release);
+                button.OnEvent(UIEventType::Release);
             }
         }
-        else if (uiElement->IsHovered())
+        else if (button.IsHovered())
         {
-            uiElement->OnEvent(UIEventType::Unhover);
+            button.OnEvent(UIEventType::Unhover);
         }
     }
 }

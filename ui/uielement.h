@@ -19,41 +19,29 @@ enum class UIEventType
     EVENTS_COUNT
 };
 
-using ListenerCallbacks = std::vector<std::function<void()>>;
+enum class UIElementType
+{
+    Button,
+    Text
+};
 
 class UIElement
 {
 public:
-    UIElement() = default;
-
-    template<typename MeshType, typename... Args>
-    void UseMesh(Args&&... args)
-    {
-        mMesh = MeshType(std::forward<Args>(args)...);
-    }
-
+    virtual ~UIElement() = default;
     virtual void Render() const;
-
-    void AddListener(UIEventType event, std::function<void()> callback);
-    void OnEvent(UIEventType event);
+    virtual UIElementType GetType() const = 0;
 
     int GetOrderLayer() const;
     void SetOrderLayer(int orderLayer);
     glm::vec3 GetPosition() const;
-    void SetPosition(const glm::vec3& position);
-    ColliderBox* GetColliderBox() const;
-    void SetColliderBox(float width, float height);
-    bool IsPressed() const;
-    bool IsHovered() const;
+    virtual void SetPosition(const glm::vec3& position);
+
+protected:
+    glm::vec3 mPosition { 0.0f };
 
 private:
     int mOrderLayer { 0 };
-    glm::vec3 mPosition { 0.0f };
-    Mesh mMesh {};
-    std::unique_ptr<ColliderBox> mColliderBox { nullptr };
-    std::array<ListenerCallbacks, static_cast<int>(UIEventType::EVENTS_COUNT)> mListeners {};
-    bool mPressed { false };
-    bool mHovered { false };
 };
 
 } // namespace pong

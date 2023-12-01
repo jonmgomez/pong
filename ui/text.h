@@ -21,6 +21,7 @@ public:
     void SetColor(GLRGBAColor color);
 
     void Render() const override;
+    UIElementType GetType() const override;
 
 private:
     void CreateText();

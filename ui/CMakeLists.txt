@@ -1,4 +1,5 @@
 set(SOURCES
+    button.cpp
     text.cpp
     uielement.cpp
 )

@@ -1,5 +1,5 @@
 set(SOURCES
-	${CMAKE_CURRENT_SOURCE_DIR}/uieventmanager.cpp
+	uieventmanager.cpp
     circle.cpp
     colliderbox.cpp
     collisionmanager.cpp

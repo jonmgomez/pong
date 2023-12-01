@@ -34,7 +34,7 @@ struct GLRGBAColor
 
     GLRGBAColor() = default;
 
-    GLRGBAColor(float r, float g, float b, float a)
+    constexpr GLRGBAColor(float r, float g, float b, float a)
         : r(r), g(g), b(b), a(a)
     {
     }

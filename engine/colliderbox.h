@@ -20,6 +20,7 @@ public:
     void SetWidth(float width);
     float GetHeight() const;
     void SetHeight(float height);
+    void Resize(float width, float height);
 
 private:
     void RecalculateBounds();

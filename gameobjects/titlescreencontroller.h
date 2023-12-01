@@ -1,9 +1,8 @@
 #pragma once
 
+#include "button.h"
 #include "gameobject.h"
-#include "rectangle.h"
 #include "text.h"
-#include "uielement.h"
 
 namespace pong
 {
@@ -14,16 +13,16 @@ public:
     void OnStart() override;
 
 private:
-    void HoverOverButton(UIElement* button, Text* buttonText);
-    void UnhoverOverButton(UIElement* button, Text* buttonText);
+    void HoverOverButton(Button* button, Text* buttonText);
+    void UnhoverOverButton(Button* button, Text* buttonText);
 
-    Text* mPongText { nullptr };
-    UIElement* mPlayButton { nullptr };
-    Text* mPlayText { nullptr };
-    UIElement* mSettingsButton { nullptr };
-    Text* mSettingsText { nullptr };
-    UIElement* mQuitButton { nullptr };
-    Text* mQuitText { nullptr };
+    Text*   mPongText { nullptr };
+    Button* mPlayButton { nullptr };
+    Text*   mPlayText   { nullptr };
+    Button* mSettingsButton { nullptr };
+    Text*   mSettingsText   { nullptr };
+    Button* mQuitButton { nullptr };
+    Text*   mQuitText   { nullptr };
 };
 
 } // namespace pong

@@ -177,4 +177,9 @@ void Text::Render() const
     }
 }
 
+UIElementType Text::GetType() const
+{
+    return UIElementType::Text;
+}
+
 } // namespace pong
