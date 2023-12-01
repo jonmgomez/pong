@@ -29,6 +29,11 @@ Timer& Pong::GetTimer()
     return mTimer;
 }
 
+AudioMixer& Pong::GetAudioMixer()
+{
+    return mAudioMixer;
+}
+
 void Pong::Init()
 {
     auto player = std::make_unique<Player>();
@@ -69,6 +74,7 @@ void Pong::Init()
     GetInstance().mGameObjects.push_back(std::move(scoreController));
 
     Pong::GetInstance().GetTimer().Init();
+    Pong::GetInstance().GetAudioMixer().Init();
 
     for (auto& gameObject : GetInstance().mGameObjects)
     {
@@ -101,6 +107,7 @@ void Pong::Cleanup()
 {
     GetInstance().mGameObjects.clear();
     GetInstance().mTexts.clear();
+    GetInstance().GetAudioMixer().Cleanup();
 }
 
 GameObject* Pong::FindGameObjectByName(const std::string& name)

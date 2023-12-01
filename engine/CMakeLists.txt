@@ -1,4 +1,5 @@
 set(SOURCES
+    audiomixer.cpp
     circle.cpp
     colliderbox.cpp
     collisionmanager.cpp
@@ -7,10 +8,12 @@ set(SOURCES
     input.cpp
     logger.cpp
     mesh.cpp
+    playingsound.cpp
     pong.cpp
     random.cpp
     realtimelogger.cpp
     rectangle.cpp
+    sound.cpp
     text.cpp
     textcharacter.cpp
     timer.cpp
@@ -24,6 +27,8 @@ target_link_libraries(engine
         gameobjects
         fmt::fmt
         concurrentqueue
+        portaudio_static
+        AudioFile
 )
 
 target_include_directories(engine
