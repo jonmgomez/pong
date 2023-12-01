@@ -53,13 +53,11 @@ public:
 
     static GameObject* FindGameObjectByName(const std::string& name);
 
-    static Text* AddText(const std::string& text, const std::string& fontPath,
-                         float scale, int pixelLineHeight = 128,
-                         const glm::vec3& position = glm::vec3(0.0f));
-
     template<typename UIType, typename... Args>
     static UIType* AddUIElement(Args&&... args)
     {
+        static_assert(std::is_base_of<UIElement, UIType>::value, "UIType must derive from a UIElement");
+
         auto newUIElement = std::make_unique<UIType>(std::forward<Args>(args)...);
         UIType* uiElementPtr = newUIElement.get();
 

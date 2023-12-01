@@ -178,18 +178,6 @@ GameObject* Pong::FindGameObjectByName(const std::string& name)
     return nullptr;
 }
 
-Text* Pong::AddText(const std::string& text, const std::string& fontPath,
-                    float scale, int pixelLineHeight,
-                    const glm::vec3& position)
-{
-    auto newText = std::make_unique<Text>(text, fontPath, scale, pixelLineHeight);
-    Text* textPtr = newText.get();
-
-    newText->SetPosition(position);
-    GetInstance().mUIElements.push_back(std::move(newText));
-    return textPtr;
-}
-
 void Pong::UpdateUIElementOrderLayer()
 {
     std::sort(GetInstance().mUIElements.begin(), GetInstance().mUIElements.end(), [] (const auto& lhs, const auto& rhs)

@@ -16,7 +16,7 @@ static constexpr GLRGBAColor HOVER_TEXT_COLOR = { 0.4f, 0.4f, 0.4f, 1.0f };
 void TitleScreenController::OnStart()
 {
     const std::string kFontPath = Config::GetValue<std::string>("font");
-    mPongText = Pong::AddText("Pong", kFontPath, 1.5f, 256);
+    mPongText = Pong::AddUIElement<Text>("Pong", kFontPath, 1.5f, 256);
     mPongText->SetPosition(glm::vec3(0.0f, 750.0f, 0.0f));
 
 

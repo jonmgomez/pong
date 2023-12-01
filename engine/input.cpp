@@ -1,7 +1,5 @@
 #include "input.h"
 
-#include "logger.h"
-
 #include <GLFW/glfw3.h>
 
 #include <iostream>
