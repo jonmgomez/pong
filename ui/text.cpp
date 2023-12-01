@@ -59,8 +59,8 @@ void Text::CreateText()
 	    int unscaledLeftSideBearing = 0;
         stbtt_GetCodepointHMetrics(&font, character, &unscaledGlpyhWidth, &unscaledLeftSideBearing);
 
-        const float glpyhWidth = unscaledGlpyhWidth * pixelScale;
-        const float leftSideBearing = unscaledLeftSideBearing * pixelScale;
+        const float glpyhWidth = unscaledGlpyhWidth * pixelScale * mScale;
+        const float leftSideBearing = unscaledLeftSideBearing * pixelScale * mScale;
 
         int xCoord1 = 0;
         int yCoord1 = 0;
@@ -119,7 +119,7 @@ void Text::CreateText()
                                      glm::vec3(finalXOffset, finalYOffset, 0.0f),
                                      charWidth, charHeight);
 
-            currentX += glpyhWidth * mScale;
+            currentX += glpyhWidth;
 
             // TODO: Needs to also be checked after a \n character
             if (i == mText.length() - 1)
