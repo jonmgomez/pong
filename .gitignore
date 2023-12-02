@@ -39,3 +39,5 @@ build*
 *.swp
 pong_config.json
 config.json
+scripts/*
+assets/*
