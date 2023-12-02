@@ -14,9 +14,9 @@ set(SOURCES
     realtimelogger.cpp
     rectangle.cpp
     sound.cpp
-    text.cpp
     textcharacter.cpp
     timer.cpp
+    uieventmanager.cpp
 )
 
 add_library(engine ${SOURCES})
@@ -25,6 +25,7 @@ target_link_libraries(engine
     PUBLIC
         render
         gameobjects
+        ui
         fmt::fmt
         concurrentqueue
         portaudio_static

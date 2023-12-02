@@ -13,7 +13,12 @@ namespace pong
 
 void Mesh::Draw(const glm::vec3& position) const
 {
-    Renderer::Draw(mVA, mIB, position, mTexture);
+    Renderer::Draw(mVA, mIB, position, mTexture, mColor);
+}
+
+void Mesh::SetColor(const GLRGBAColor& color)
+{
+    mColor = color;
 }
 
 } // namespace pong

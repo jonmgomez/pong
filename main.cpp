@@ -41,6 +41,8 @@ GLFWwindow* SetupGLFW()
 
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, Input::KeyCallback);
+    glfwSetCursorPosCallback(window, Input::MousePositionCallback);
+    glfwSetMouseButtonCallback(window, Input::MouseButtonCallback);
 
     if (glewInit() != GLEW_OK)
     {
@@ -63,7 +65,7 @@ GLFWwindow* SetupGLFW()
 
 void PlayPong(GLFWwindow* window)
 {
-    Pong::Init();
+    Pong::Init(window);
 
     // Is the framerate managed by glfw
     bool fpsLimitManaged = true;

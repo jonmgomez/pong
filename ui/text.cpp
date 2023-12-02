@@ -59,8 +59,8 @@ void Text::CreateText()
 	    int unscaledLeftSideBearing = 0;
         stbtt_GetCodepointHMetrics(&font, character, &unscaledGlpyhWidth, &unscaledLeftSideBearing);
 
-        const float glpyhWidth = unscaledGlpyhWidth * pixelScale;
-        const float leftSideBearing = unscaledLeftSideBearing * pixelScale;
+        const float glpyhWidth = unscaledGlpyhWidth * pixelScale * mScale;
+        const float leftSideBearing = unscaledLeftSideBearing * pixelScale * mScale;
 
         int xCoord1 = 0;
         int yCoord1 = 0;
@@ -148,16 +148,6 @@ void Text::CreateText()
     }
 }
 
-glm::vec3 Text::GetPosition() const
-{
-    return mPosition;
-}
-
-void Text::SetPosition(const glm::vec3& position)
-{
-    mPosition = position;
-}
-
 std::string Text::GetText() const
 {
     return mText;
@@ -170,12 +160,25 @@ void Text::SetText(const std::string& text)
     CreateText();
 }
 
-void Text::Render()
+void Text::SetColor(GLRGBAColor color)
+{
+    for (auto& character : mCharacters)
+    {
+        character.SetColor(color);
+    }
+}
+
+void Text::Render() const
 {
     for (const auto& character : mCharacters)
     {
         character.Draw(mPosition);
     }
+}
+
+UIElementType Text::GetType() const
+{
+    return UIElementType::Text;
 }
 
 } // namespace pong

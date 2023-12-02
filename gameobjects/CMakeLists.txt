@@ -5,6 +5,7 @@ set(SOURCES
     player.cpp
     scorearea.cpp
     scorecontroller.cpp
+    titlescreencontroller.cpp
     wall.cpp
 )
 

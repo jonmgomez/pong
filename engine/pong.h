@@ -5,6 +5,8 @@
 #include "gameobject.h"
 #include "text.h"
 #include "timer.h"
+#include "uielement.h"
+#include "uieventmanager.h"
 #include "utils.h"
 
 #include <chrono>
@@ -15,14 +17,25 @@
 namespace pong
 {
 
+enum class Scene
+{
+    TitleScreen,
+    Settings,
+    Game
+};
+
 class Pong
 {
 public:
     static Pong& GetInstance();
 
-    static void Init();
+    static void Init(GLFWwindow* window);
     static void GameLoop();
+    static void Reset();
     static void Cleanup();
+
+    static void LoadSceneNext(Scene scene);
+    static void ExitGame();
 
     template<typename T>
     static T* FindGameObject()
@@ -40,15 +53,25 @@ public:
 
     static GameObject* FindGameObjectByName(const std::string& name);
 
-    static Text* AddText(const std::string& text, const std::string& fontPath,
-                         float scale, int pixelLineHeight = 128,
-                         const glm::vec3& position = glm::vec3(0.0f));
+    template<typename UIType, typename = std::enable_if_t<std::is_base_of_v<UIElement, UIType>>, typename... Args>
+    static UIType* AddUIElement(Args&&... args)
+    {
+        auto newUIElement = std::make_unique<UIType>(std::forward<Args>(args)...);
+        UIType* uiElementPtr = newUIElement.get();
+
+        GetInstance().mUIElements.push_back(std::move(newUIElement));
+        Pong::UpdateUIElementOrderLayer();
+        return uiElementPtr;
+    }
+
+    static void UpdateUIElementOrderLayer();
 
     static void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
 
     CollisionManager& GetCollisionManager();
-    Timer& GetTimer();
+    UIEventManager& GetUIEventManager();
     AudioMixer& GetAudioMixer();
+    Timer& GetTimer();
 
 private:
     Pong() = default;
@@ -58,13 +81,19 @@ private:
     Pong& operator=(Pong&&) = delete;
     ~Pong() = default;
 
+    void LoadScene(Scene scene);
+
+    GLFWwindow* mWindow { nullptr };
     std::vector<std::unique_ptr<GameObject>> mGameObjects {};
-    std::vector<std::unique_ptr<Text>> mTexts {};
+    std::vector<std::unique_ptr<UIElement>> mUIElements {};
 
     CollisionManager mCollisionManager {};
-    Timer mTimer {};
+    UIEventManager mUIEventManager {};
     AudioMixer mAudioMixer {};
-    bool mFirstFrame { true };
+    Timer mTimer {};
+
+    Scene mNextScene { Scene::TitleScreen };
+    bool mChangeSceneRequested { false };
 };
 
 } // namespace pong

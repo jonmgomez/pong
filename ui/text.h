@@ -1,6 +1,7 @@
 #pragma once
 
 #include "textcharacter.h"
+#include "uielement.h"
 
 #include <glm/glm.hpp>
 
@@ -10,25 +11,24 @@
 namespace pong
 {
 
-class Text
+class Text : public UIElement
 {
 public:
     Text(const std::string&, const std::string& path, float scale, int pixelLineHeight = 128);
 
-    void CreateText();
-
-    glm::vec3 GetPosition() const;
-    void SetPosition(const glm::vec3& position);
     std::string GetText() const;
     void SetText(const std::string& text);
+    void SetColor(GLRGBAColor color);
 
-    void Render();
+    void Render() const override;
+    UIElementType GetType() const override;
 
 private:
+    void CreateText();
+
     std::string mText { "" };
     std::vector<TextCharacter> mCharacters {};
     std::string mFontPath { "" };
-    glm::vec3 mPosition { 0.0f };
     float mScale { 1.0f };
     int mPixelLineHeight { 0 };
 };
