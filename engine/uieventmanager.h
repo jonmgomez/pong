@@ -8,10 +8,12 @@
 namespace pong
 {
 
+using UIElementCollection = std::vector<std::unique_ptr<UIElement>>;
+
 class UIEventManager
 {
 public:
-    void ProcessEvents(const std::vector<std::unique_ptr<UIElement>>& uiElements);
+    void ProcessEvents(const UIElementCollection& uiElements);
 };
 
 } // namespace pong

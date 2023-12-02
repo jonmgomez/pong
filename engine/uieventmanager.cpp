@@ -9,7 +9,7 @@
 namespace pong
 {
 
-void UIEventManager::ProcessEvents(const std::vector<std::unique_ptr<UIElement>>& uiElements)
+void UIEventManager::ProcessEvents(const UIElementCollection& uiElements)
 {
     const glm::vec3 mousePosition = Input::GetMousePosition();
 
