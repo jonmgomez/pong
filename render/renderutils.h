@@ -32,19 +32,22 @@ struct GLRGBAColor
     float b { 1.0f };
     float a { 1.0f };
 
-    GLRGBAColor() = default;
+    constexpr GLRGBAColor() = default;
 
-    constexpr GLRGBAColor(float r, float g, float b, float a)
-        : r(r), g(g), b(b), a(a)
+    constexpr GLRGBAColor(float r, float g, float b, float a) :
+        r(r), g(g), b(b), a(a)
     {
     }
 
-    GLRGBAColor(const RGBAColor& color) :
+    constexpr GLRGBAColor(const RGBAColor& color) :
         r(color.r / 255.0f), g(color.g / 255.0f),
         b(color.b / 255.0f), a(color.a / 255.0f)
     {
     }
 };
+
+static constexpr RGBAColor RGBA_WHITE { 255, 255, 255, 255 };
+static constexpr GLRGBAColor GLRGBA_WHITE { 1.0f, 1.0f, 1.0f, 1.0f };
 
 void GLClearError();
 bool GLLogCall(const char *function, const char *file, int line);

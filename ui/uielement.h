@@ -20,7 +20,7 @@ class UIElement
 {
 public:
     virtual ~UIElement() = default;
-    virtual void Render() const;
+    virtual void Render() const = 0;
     virtual UIElementType GetType() const = 0;
 
     int GetOrderLayer() const;

@@ -5,10 +5,6 @@
 namespace pong
 {
 
-void UIElement::Render() const
-{
-}
-
 int UIElement::GetOrderLayer() const
 {
     return mOrderLayer;

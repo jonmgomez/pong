@@ -23,24 +23,24 @@ void UIEventManager::ProcessEvents(const std::vector<std::unique_ptr<UIElement>>
         auto& button = static_cast<Button&>(*uiElement);
         if (button.GetColliderBox()->CheckPointInBounds(mousePosition))
         {
-            if (!button.IsHovered())
+            if (!button.WasHovered())
             {
                 button.OnEvent(ButtonEvent::Hover);
             }
 
             if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
             {
-                if (!button.IsPressed())
+                if (!button.WasPressed())
                 {
                     button.OnEvent(ButtonEvent::Pressed);
                 }
             }
-            else if (button.IsPressed())
+            else if (button.WasPressed())
             {
                 button.OnEvent(ButtonEvent::Release);
             }
         }
-        else if (button.IsHovered())
+        else if (button.WasHovered())
         {
             button.OnEvent(ButtonEvent::Unhover);
         }

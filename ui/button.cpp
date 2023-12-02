@@ -70,12 +70,12 @@ ColliderBox* Button::GetColliderBox()
     return &mColliderBox;
 }
 
-bool Button::IsPressed() const
+bool Button::WasPressed() const
 {
     return mPressed;
 }
 
-bool Button::IsHovered() const
+bool Button::WasHovered() const
 {
     return mHovered;
 }

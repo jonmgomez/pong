@@ -25,10 +25,7 @@ Rectangle::Rectangle(float width, float height) :
     mHeight {height}
 {
     RecomputeVertices();
-
-    const unsigned char kColorValue = 255;
-    const RGBAColor allWhiteColor{kColorValue, kColorValue, kColorValue, kColorValue};
-    mTexture = Texture(allWhiteColor);
+    mTexture = Texture(RGBA_WHITE);
 }
 
 void Rectangle::RecomputeVertices()

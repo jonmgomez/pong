@@ -38,8 +38,8 @@ public:
     void SetPosition(const glm::vec3& position) override;
     void Resize(float width, float height);
     ColliderBox* GetColliderBox();
-    bool IsPressed() const;
-    bool IsHovered() const;
+    bool WasPressed() const;
+    bool WasHovered() const;
 
 private:
     Rectangle mRectangle { 0.0f, 0.0f };

@@ -53,11 +53,9 @@ public:
 
     static GameObject* FindGameObjectByName(const std::string& name);
 
-    template<typename UIType, typename... Args>
+    template<typename UIType, typename = std::enable_if_t<std::is_base_of_v<UIElement, UIType>>, typename... Args>
     static UIType* AddUIElement(Args&&... args)
     {
-        static_assert(std::is_base_of<UIElement, UIType>::value, "UIType must derive from a UIElement");
-
         auto newUIElement = std::make_unique<UIType>(std::forward<Args>(args)...);
         UIType* uiElementPtr = newUIElement.get();
 

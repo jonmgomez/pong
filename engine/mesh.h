@@ -25,7 +25,7 @@ protected:
     VertexBuffer mVB {};
     IndexBuffer mIB {};
     Texture mTexture {};
-    GLRGBAColor mColor { 1.0f, 1.0f, 1.0f, 1.0f };
+    GLRGBAColor mColor { RGBA_WHITE };
 };
 
 } // namespace pong
