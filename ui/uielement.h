@@ -13,6 +13,7 @@ namespace pong
 enum class UIElementType
 {
     Button,
+    Slider,
     Text
 };
 

@@ -1,8 +1,9 @@
 #include "titlescreencontroller.h"
 
 #include "button.h"
-#include "logger.h"
 #include "config.h"
+#include "logger.h"
+#include "slider.h"
 #include "pong.h"
 
 namespace pong
@@ -87,6 +88,9 @@ void TitleScreenController::OnStart()
     mQuitText->SetOrderLayer(1);
     mQuitText->SetColor(IDLE_TEXT_COLOR);
     mQuitText->SetPosition(QUIT_BUTTON_POSITION);
+
+    Slider* test = Pong::AddUIElement<Slider>(400.0f, 100.0f, 0.0f, 100.0f, 50.0f, 50.0f);
+    test->SetPosition(glm::vec3(600.0f, 300.0f, 0.0f));
 }
 
 void TitleScreenController::HoverOverButton(Button* button, Text* buttonText)

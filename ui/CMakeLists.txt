@@ -1,5 +1,6 @@
 set(SOURCES
     button.cpp
+    slider.cpp
     text.cpp
     uielement.cpp
 )
