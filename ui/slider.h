@@ -11,6 +11,7 @@
 namespace pong
 {
 
+// Slider is built from multiple meshes each with an offset from the slider's position/origin
 struct SliderMesh
 {
     Rectangle mMesh { 0.0f, 0.0f };
@@ -28,7 +29,7 @@ public:
     UIElementType GetType() const override;
     void SetPosition(const glm::vec3& position) override;
 
-    void OnMouseHeld(glm::vec3 mousePosition);
+    void OnMouseHeld(const glm::vec3& mousePosition);
     void OnMouseReleased();
     void AddValueChangeListener(std::function<void(float)> listener);
 
@@ -38,8 +39,10 @@ public:
 
 private:
     // Represents the slider background, the slider handle, and the slider fill
-    std::array<SliderMesh, 6> mSliderMeshes {};
-    ColliderBox mHandleColliderBox { 0.0f, 0.0f };
+    std::array<SliderMesh, 4> mBorderMeshes {};
+    SliderMesh mFillMesh {};
+    SliderMesh mHandleMesh {};
+    ColliderBox mColliderBox { 0.0f, 0.0f };
     std::vector<std::function<void(float)>> mValueChangeListeners {};
     float mWidth { 0.0f };
     float mHeight { 0.0f };

@@ -5,6 +5,11 @@
 namespace pong
 {
 
+constexpr float BORDER_THICKNESS = 10;
+constexpr float BORDER_GAP = 10;
+constexpr float HANDLE_WIDTH_PERCENT = 0.9f;
+constexpr float HANDLE_HEIGHT_PERCENT = 1.25f;
+
 Slider::Slider(float width, float height, float min, float max, float step, float startValue) :
     mWidth(width),
     mHeight(height),
@@ -14,32 +19,37 @@ Slider::Slider(float width, float height, float min, float max, float step, floa
     mValue(std::clamp(startValue, min, max))
 {
     ASSERT(min < max && step > 0.0f);
-    const float borderThickness = height * 0.05f;
-    const float verticalBorderXPos = width / 2.0f - borderThickness / 2.0f;
-    const float horizontalBorderYPos = height / 2.0f - borderThickness / 2.0f;
-    const float fillHeight = height * 0.75f;
-    const float fillWidth = width * (mValue - mMin) / (mMax - mMin) * 0.9f;
-    const float fillXPos = fillWidth / -2.0f;
-    const float handleWidth = height * 1.1f;
-    const float handleHeight = handleWidth;
+    const float verticalBorderXPos = width / 2.0f - BORDER_THICKNESS / 2.0f;
+    const float horizontalBorderYPos = height / 2.0f - BORDER_THICKNESS / 2.0f;
+    const float fillHeight = height - (BORDER_GAP + BORDER_THICKNESS) * 2.0f;
+    const float fillWidth = width * (mValue - mMin) / (mMax - mMin) - (BORDER_GAP + BORDER_THICKNESS);
+    const float startXPos = BORDER_GAP + BORDER_THICKNESS;
+    const float endXPos = width + BORDER_GAP + BORDER_THICKNESS;
+    const float fillXPos = fillWidth / -2.0f - (1.0f - mValue / (mMax - mMin) - 0.5f) * (endXPos - startXPos);
+    const float handleWidth = height * HANDLE_WIDTH_PERCENT;
+    const float handleHeight = height * HANDLE_HEIGHT_PERCENT;
     const float handleXPos = fillWidth - width / 2.0f;
 
-    mSliderMeshes[0] = { Rectangle(borderThickness, height),   glm::vec3(-verticalBorderXPos, 0.0f, 0.0f),   glm::vec3(-verticalBorderXPos, 0.0f, 0.0f)   }; // Border
-    mSliderMeshes[1] = { Rectangle(borderThickness, height),   glm::vec3(verticalBorderXPos, 0.0f, 0.0f),    glm::vec3(verticalBorderXPos, 0.0f, 0.0f)    }; // Border
-    mSliderMeshes[2] = { Rectangle(width, borderThickness),    glm::vec3(0.0f, -horizontalBorderYPos, 0.0f), glm::vec3(0.0f, -horizontalBorderYPos, 0.0f) }; // Border
-    mSliderMeshes[3] = { Rectangle(width, borderThickness),    glm::vec3(0.0f, horizontalBorderYPos, 0.0f),  glm::vec3(0.0f, horizontalBorderYPos, 0.0f)  }; // Border
-    mSliderMeshes[4] = { Rectangle(fillWidth, fillHeight),     glm::vec3(fillXPos, 0.0f, 0.0f),              glm::vec3(0.0f) }; // Fill
-    mSliderMeshes[5] = { Rectangle(handleWidth, handleHeight), glm::vec3(handleXPos, 0.0f, 0.0f),            glm::vec3(0.0f) }; // Handle
+    mBorderMeshes[0] = { Rectangle(BORDER_THICKNESS, height),   glm::vec3(-verticalBorderXPos, 0.0f, 0.0f),   glm::vec3(-verticalBorderXPos, 0.0f, 0.0f)   };
+    mBorderMeshes[1] = { Rectangle(BORDER_THICKNESS, height),   glm::vec3(verticalBorderXPos, 0.0f, 0.0f),    glm::vec3(verticalBorderXPos, 0.0f, 0.0f)    };
+    mBorderMeshes[2] = { Rectangle(width, BORDER_THICKNESS),    glm::vec3(0.0f, -horizontalBorderYPos, 0.0f), glm::vec3(0.0f, -horizontalBorderYPos, 0.0f) };
+    mBorderMeshes[3] = { Rectangle(width, BORDER_THICKNESS),    glm::vec3(0.0f, horizontalBorderYPos, 0.0f),  glm::vec3(0.0f, horizontalBorderYPos, 0.0f)  };
 
-    mHandleColliderBox = ColliderBox(width, height);
+    mFillMesh   = { Rectangle(fillWidth, fillHeight),     glm::vec3(fillXPos, 0.0f, 0.0f),   glm::vec3(fillXPos, 0.0f, 0.0f)   };
+    mHandleMesh = { Rectangle(handleWidth, handleHeight), glm::vec3(handleXPos, 0.0f, 0.0f), glm::vec3(handleXPos, 0.0f, 0.0f) };
+
+    mColliderBox = ColliderBox(width, height);
 }
 
 void Slider::Render() const
 {
-    for (const auto& sliderMesh : mSliderMeshes)
+    for (const auto& sliderMesh : mBorderMeshes)
     {
         sliderMesh.mMesh.Draw(sliderMesh.mPosition);
     }
+
+    mFillMesh.mMesh.Draw(mFillMesh.mPosition);
+    mHandleMesh.mMesh.Draw(mHandleMesh.mPosition);
 }
 
 UIElementType Slider::GetType() const
@@ -50,49 +60,43 @@ UIElementType Slider::GetType() const
 void Slider::SetPosition(const glm::vec3& position)
 {
     mPosition = position;
-    for (auto& sliderMesh : mSliderMeshes)
+    for (auto& sliderMesh : mBorderMeshes)
     {
         sliderMesh.mPosition = mPosition + sliderMesh.mOffset;
     }
 
-    mHandleColliderBox.OnPositionUpdate(mSliderMeshes[5].mPosition);
+    mFillMesh.mPosition = mPosition + mFillMesh.mOffset;
+    mHandleMesh.mPosition = mPosition + mHandleMesh.mOffset;
+    mColliderBox.OnPositionUpdate(mPosition);
 }
 
-void Slider::OnMouseHeld(glm::vec3 mousePosition)
+void Slider::OnMouseHeld(const glm::vec3& mousePosition)
 {
     mWasPressed = true;
 
     const int steps = static_cast<int>((mMax - mMin) / mStep) + 1;
-    const float minX = mPosition.x - (mWidth * 0.9f) / 2.0f;
-    const float maxX = mPosition.x + (mWidth * 0.9f) / 2.0f;
-    const float currentX = mousePosition.x - minX;
-    const float stepSize = (maxX - minX) / (steps - 1);
-    const float percent = currentX / (maxX - minX);
     const float percentPerStep = 1.0f / (steps - 1);
-    const int stepsIn = static_cast<int>(std::roundf(percent / percentPerStep));
-    float lastStepPercent = 0;
-    float stepPercent = percentPerStep;
-    // print out all variables
-    std::cout << "mousePosition.x: " << mousePosition.x << ", mousePosition.y: " << mousePosition.y << std::endl;
-    std::cout << "mPosition.x: " << mPosition.x << ", mPosition.y: " << mPosition.y << std::endl;
-    std::cout << "MinX: " << minX << ", MaxX: " << maxX << ", CurrentX: " << currentX << ", StepSize: " << stepSize << std::endl;
-    std::cout << "Percent: " << percent << std::endl;
-    while (!(lastStepPercent < percent && percent < stepPercent))
-    {
-        lastStepPercent = stepPercent;
-        stepPercent += percentPerStep;
-    }
-    // round to nearest step
-    float roundedPercent = (percent - lastStepPercent) < (stepPercent - percent) ? lastStepPercent : stepPercent;
-    std::cout << "Percent lower: " << lastStepPercent << ", upper: " << stepPercent << std::endl;
-    std::cout << "Rounded percent: " << roundedPercent << std::endl;
-    const float value = roundedPercent * (mMax - mMin) + mMin;
-    std::cout << "Value: " << value << std::endl;
-    roundedPercent -= 0.5f;
-    const float newHandleXOffset = roundedPercent * (maxX - minX);
-    mSliderMeshes[5].mOffset.x = newHandleXOffset;
-    mSliderMeshes[5].mPosition.x = mPosition.x + mSliderMeshes[5].mOffset.x;
-    //mSliderMeshes[5].mPosition.x = std::clamp(mSliderMeshes[5].mPosition.x, );
+
+    const float halfFillWidth = (mWidth - (BORDER_GAP + BORDER_THICKNESS) * 2.0f) / 2.0f;
+    const float minX = mPosition.x - halfFillWidth;
+    const float maxX = mPosition.x + halfFillWidth;
+
+    const float currentMouseX = std::clamp(mousePosition.x, minX, maxX) - minX;
+    const float percentIn = currentMouseX / (maxX - minX);
+    const int stepsIn = static_cast<int>(std::roundf(percentIn / percentPerStep));
+
+    float stepPercent = percentPerStep * stepsIn;
+    mValue = stepPercent * (mMax - mMin) + mMin;
+
+    const float newFillWidth = stepPercent * (maxX - minX);
+    const float newFillOffset = newFillWidth / -2.0f - (1.0f - stepPercent - 0.5f) * (maxX - minX);
+    mFillMesh.mOffset.x = newFillOffset;
+    mFillMesh.mPosition.x = mPosition.x + mFillMesh.mOffset.x;
+    mFillMesh.mMesh.Resize(newFillWidth, mFillMesh.mMesh.GetHeight());
+
+    const float newHandleXOffset = (stepPercent - 0.5f) * (maxX - minX);
+    mHandleMesh.mOffset.x = newHandleXOffset;
+    mHandleMesh.mPosition.x = mPosition.x + mHandleMesh.mOffset.x;
 }
 
 void Slider::OnMouseReleased()
@@ -112,7 +116,7 @@ bool Slider::WasPressed() const
 
 ColliderBox* Slider::GetColliderBox()
 {
-    return &mHandleColliderBox;
+    return &mColliderBox;
 }
 
 float Slider::GetValue() const

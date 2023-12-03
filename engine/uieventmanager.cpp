@@ -54,11 +54,11 @@ void UIEventManager::ProcessEvents(const UIElementCollection& uiElements)
             const bool inBounds = slider.GetColliderBox()->CheckPointInBounds(mousePosition);
             const bool mousePressed = Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT);
 
-            if (inBounds && mousePressed)
+            if ((inBounds && mousePressed) || (mousePressed && slider.WasPressed()))
             {
                 slider.OnMouseHeld(mousePosition);
             }
-            else if (inBounds && !mousePressed && slider.WasPressed())
+            else if (!mousePressed && slider.WasPressed())
             {
                 slider.OnMouseReleased();
             }
