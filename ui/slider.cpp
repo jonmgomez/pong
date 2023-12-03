@@ -97,6 +97,11 @@ void Slider::OnMouseHeld(const glm::vec3& mousePosition)
     const float newHandleXOffset = (stepPercent - 0.5f) * (maxX - minX);
     mHandleMesh.mOffset.x = newHandleXOffset;
     mHandleMesh.mPosition.x = mPosition.x + mHandleMesh.mOffset.x;
+
+    for (const auto& listener : mValueChangeListeners)
+    {
+        listener(mValue);
+    }
 }
 
 void Slider::OnMouseReleased()

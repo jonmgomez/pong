@@ -6,6 +6,7 @@
 
 #include <portaudio.h>
 
+#include <atomic>
 #include <mutex>
 #include <string>
 #include <vector>
@@ -28,11 +29,13 @@ public:
                     PaStreamCallbackFlags statusFlags,
                     void* userData);
 
+    void SetVolume(float volume);
+
 private:
     PaStream* mStream { nullptr };
     std::vector<PlayingSound> mPlayingSounds {};
     std::mutex mPlayingSoundsMutex {};
-    float mVolume { 0.5f };
+    std::atomic<float> mVolume { 0.5f };
     bool mSpatialAudioEnabled { false };
 };
 

@@ -8,6 +8,7 @@
 #include "player.h"
 #include "scorearea.h"
 #include "scorecontroller.h"
+#include "settingsscreencontroller.h"
 #include "titlescreencontroller.h"
 #include "wall.h"
 
@@ -108,6 +109,8 @@ void Pong::LoadScene(Scene scene)
         }
         case Scene::Settings:
         {
+            auto settingsScreen = std::make_unique<SettingsScreenController>();
+            GetInstance().mGameObjects.push_back(std::move(settingsScreen));
             break;
         }
         case Scene::Game:
