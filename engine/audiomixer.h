@@ -29,13 +29,16 @@ public:
                     PaStreamCallbackFlags statusFlags,
                     void* userData);
 
+    float GetVolume() const;
     void SetVolume(float volume);
+    bool GetSpatialAudioEnabled() const;
+    void SetSpatialAudioEnabled(bool enabled);
 
 private:
     PaStream* mStream { nullptr };
     std::vector<PlayingSound> mPlayingSounds {};
     std::mutex mPlayingSoundsMutex {};
-    std::atomic<float> mVolume { 0.5f };
+    std::atomic<float> mVolume { 0.75f };
     bool mSpatialAudioEnabled { false };
 };
 

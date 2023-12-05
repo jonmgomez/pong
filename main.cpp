@@ -40,9 +40,7 @@ GLFWwindow* SetupGLFW()
     }
 
     glfwMakeContextCurrent(window);
-    glfwSetKeyCallback(window, Input::KeyCallback);
-    glfwSetCursorPosCallback(window, Input::MousePositionCallback);
-    glfwSetMouseButtonCallback(window, Input::MouseButtonCallback);
+    Input::Init(window);
 
     if (glewInit() != GLEW_OK)
     {

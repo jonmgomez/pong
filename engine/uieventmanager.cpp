@@ -1,6 +1,7 @@
 #include "uieventmanager.h"
 
 #include "button.h"
+#include "checkbox.h"
 #include "colliderbox.h"
 #include "logger.h"
 #include "input.h"
@@ -21,21 +22,21 @@ void UIEventManager::ProcessEvents(const UIElementCollection& uiElements)
         case UIElementType::Button:
         {
             auto& button = static_cast<Button&>(*uiElement);
-            if (button.GetColliderBox()->CheckPointInBounds(mousePosition))
+
+            const bool inBounds = button.GetColliderBox()->CheckPointInBounds(mousePosition);
+            const InputState mouseButtonState = Input::GetMouseButtonState(GLFW_MOUSE_BUTTON_LEFT);
+            if (inBounds)
             {
                 if (!button.WasHovered())
                 {
                     button.OnEvent(ButtonEvent::Hover);
                 }
 
-                if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
+                if (mouseButtonState == InputState::Pressed)
                 {
-                    if (!button.WasPressed())
-                    {
-                        button.OnEvent(ButtonEvent::Pressed);
-                    }
+                    button.OnEvent(ButtonEvent::Pressed);
                 }
-                else if (button.WasPressed())
+                else if (mouseButtonState == InputState::Released)
                 {
                     button.OnEvent(ButtonEvent::Release);
                 }
@@ -46,13 +47,21 @@ void UIEventManager::ProcessEvents(const UIElementCollection& uiElements)
             }
             break;
         }
+        case UIElementType::CheckBox:
+        {
+            auto& checkBox = static_cast<CheckBox&>(*uiElement);
+            if (checkBox.GetColliderBox()->CheckPointInBounds(mousePosition) && Input::GetMouseButtonState(GLFW_MOUSE_BUTTON_LEFT) == InputState::Pressed)
+            {
+                checkBox.OnClick();
+            }
+            break;
+        }
         case UIElementType::Slider:
         {
-            //LogInfo("Slider");
             auto& slider = static_cast<Slider&>(*uiElement);
 
             const bool inBounds = slider.GetColliderBox()->CheckPointInBounds(mousePosition);
-            const bool mousePressed = Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT);
+            const bool mousePressed = Input::CheckMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT);
 
             if ((inBounds && mousePressed) || (mousePressed && slider.WasPressed()))
             {

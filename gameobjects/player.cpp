@@ -25,11 +25,11 @@ void Player::OnUpdate()
 {
     mVelocity = glm::vec3(0.0f);
 
-    if (Input::IsKeyPressed(GLFW_KEY_W))
+    if (Input::CheckKeyDown(GLFW_KEY_W))
     {
         mVelocity = glm::vec3(0.0f, PLAYER_SPEED, 0.0f);
     }
-    else if (Input::IsKeyPressed(GLFW_KEY_S))
+    else if (Input::CheckKeyDown(GLFW_KEY_S))
     {
         mVelocity = glm::vec3(0.0f, -PLAYER_SPEED, 0.0f);
     }

@@ -32,12 +32,6 @@ int AudioCallbackWrapper(const void* inputBuffer, void* outputBuffer,
 
 void AudioMixer::Init()
 {
-    mVolume = Config::GetValue("volume", 0.5f);
-    LogInfo("Volume: {}", mVolume.load());
-
-    mSpatialAudioEnabled = Config::GetValue("spatial_audio", false);
-    LogInfo("Spatial Audio: {}", mSpatialAudioEnabled ? "Enabled" : "Disabled");
-
     PaError err = Pa_Initialize();
     if (err != paNoError) {
         LogError("PortAudio initialization failed: {}", Pa_GetErrorText(err));
@@ -174,9 +168,24 @@ int AudioMixer::AudioCallback(const void* /*inputBuffer*/, void* outputBuffer,
     return paContinue;
 }
 
+float AudioMixer::GetVolume() const
+{
+    return mVolume;
+}
+
 void AudioMixer::SetVolume(float volume)
 {
     mVolume = volume;
+}
+
+bool AudioMixer::GetSpatialAudioEnabled() const
+{
+    return mSpatialAudioEnabled;
+}
+
+void AudioMixer::SetSpatialAudioEnabled(bool enabled)
+{
+    mSpatialAudioEnabled = enabled;
 }
 
 } // namespace pong

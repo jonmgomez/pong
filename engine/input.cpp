@@ -11,14 +11,47 @@ static constexpr int WINDOW_WIDTH = 1280;
 static constexpr int WINDOW_HEIGHT = 960;
 
 // All keys are intalized to false, for not pressed
-std::array<bool, GLFW_KEY_LAST + 1> Input::mKeys {};
-std::array<bool, GLFW_MOUSE_BUTTON_LAST + 1> Input::mMouseButtons {};
+std::array<InputState, GLFW_KEY_LAST + 1> Input::mKeys {};
+std::array<InputState, GLFW_MOUSE_BUTTON_LAST + 1> Input::mMouseButtons {};
 // Initalize way outside the screen so it does not trigger anything before it should
 glm::vec3 Input::mMousePosition { std::numeric_limits<float>::max() };
 
-bool Input::IsKeyPressed(unsigned int keycode)
+void Input::Init(GLFWwindow* window)
 {
-    return mKeys[keycode];
+    for (auto& inputVal : mKeys)
+    {
+        inputVal = InputState::NotPressed;
+    }
+
+    for (auto& inputVal : mMouseButtons)
+    {
+        inputVal = InputState::NotPressed;
+    }
+
+    glfwSetKeyCallback(window, Input::KeyCallback);
+    glfwSetCursorPosCallback(window, Input::MousePositionCallback);
+    glfwSetMouseButtonCallback(window, Input::MouseButtonCallback);
+}
+
+void Input::Update()
+{
+    const auto updateInputState = [](InputState* inputStates, size_t size)
+    {
+        for (int i = 0; i < size; ++i)
+        {
+            if (inputStates[i] == InputState::Pressed)
+            {
+                inputStates[i] = InputState::Held;
+            }
+            else if (inputStates[i] == InputState::Released)
+            {
+                inputStates[i] = InputState::NotPressed;
+            }
+        }
+    };
+
+    updateInputState(mKeys.data(), mKeys.size());
+    updateInputState(mMouseButtons.data(), mMouseButtons.size());
 }
 
 void Input::KeyCallback(GLFWwindow* /*window*/, int key, int /*scancode*/, int action, int /*mods*/)
@@ -27,10 +60,17 @@ void Input::KeyCallback(GLFWwindow* /*window*/, int key, int /*scancode*/, int a
     if (key < 0)
         return;
 
-    if (action == GLFW_PRESS)
-        mKeys[key] = true;
-    else if (action == GLFW_RELEASE)
-        mKeys[key] = false;
+    mKeys[key] = (action == GLFW_PRESS || action == GLFW_REPEAT) ? InputState::Pressed : InputState::Released;
+}
+
+bool Input::CheckKeyDown(unsigned int button)
+{
+    return mKeys[button] == InputState::Pressed || mKeys[button] == InputState::Held;
+}
+
+bool Input::CheckKeyUp(unsigned int button)
+{
+    return mKeys[button] == InputState::Released || mKeys[button] == InputState::NotPressed;
 }
 
 // Mouse position converted to screen/world coordinates
@@ -54,14 +94,24 @@ void Input::MousePositionCallback(GLFWwindow* /*window*/, double xPos, double yP
         (halfWindowHeight - y) * 2.0f : (y - halfWindowHeight) * -2.0f;
 }
 
-bool Input::IsMouseButtonPressed(unsigned int button)
+void Input::MouseButtonCallback(GLFWwindow* /*window*/, int button, int action, int /*mods*/)
+{
+    mMouseButtons[button] = (action == GLFW_PRESS) ? InputState::Pressed : InputState::Released;
+}
+
+InputState Input::GetMouseButtonState(unsigned int button)
 {
     return mMouseButtons[button];
 }
 
-void Input::MouseButtonCallback(GLFWwindow* /*window*/, int button, int action, int /*mods*/)
+bool Input::CheckMouseButtonDown(unsigned int button)
 {
-    mMouseButtons[button] = (action == GLFW_PRESS);
+    return mMouseButtons[button] == InputState::Pressed || mMouseButtons[button] == InputState::Held;
+}
+
+bool Input::CheckMouseButtonUp(unsigned int button)
+{
+    return mMouseButtons[button] == InputState::Released || mMouseButtons[button] == InputState::NotPressed;
 }
 
 } // namespace pong

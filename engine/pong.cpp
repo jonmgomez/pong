@@ -3,6 +3,7 @@
 #include "ball.h"
 #include "colliderbox.h"
 #include "config.h"
+#include "input.h"
 #include "logger.h"
 #include "opponent.h"
 #include "player.h"
@@ -75,6 +76,10 @@ void Pong::GameLoop()
     {
         uiElements->Render();
     }
+
+    // Done last because input callbacks are done in glfwPollEvents after this loop.
+    // So this effectively keeps the values from the new frame before updated from pressed -> held
+    Input::Update();
 }
 
 void Pong::Reset()

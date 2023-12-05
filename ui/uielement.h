@@ -1,7 +1,7 @@
 #pragma once
 
 #include "colliderbox.h"
-#include "mesh.h"
+#include "rectangle.h"
 
 #include <glm/glm.hpp>
 
@@ -10,9 +10,27 @@
 namespace pong
 {
 
+// Uses to build complex meshes using multiple meshes, with offsets from origin
+struct MeshComponent
+{
+public:
+    Rectangle mMesh { 0.0f, 0.0f };
+    glm::vec3 mOffset { 0.0f };
+    glm::vec3 mPosition { 0.0f };
+
+    MeshComponent() = default;
+    MeshComponent(float width, float height, const glm::vec3& offset) :
+        mMesh{width, height},
+        mOffset{offset},
+        mPosition(mOffset)
+    {
+    }
+};
+
 enum class UIElementType
 {
     Button,
+    CheckBox,
     Slider,
     Text
 };

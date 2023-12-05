@@ -59,6 +59,16 @@ void Button::SetPosition(const glm::vec3& position)
     mColliderBox.OnPositionUpdate(position);
 }
 
+float Button::GetWidth() const
+{
+    return mRectangle.GetWidth();
+}
+
+float Button::GetHeight() const
+{
+    return mRectangle.GetHeight();
+}
+
 void Button::Resize(float width, float height)
 {
     mRectangle.Resize(width, height);

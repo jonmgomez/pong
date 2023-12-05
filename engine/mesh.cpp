@@ -13,7 +13,20 @@ namespace pong
 
 void Mesh::Draw(const glm::vec3& position) const
 {
-    Renderer::Draw(mVA, mIB, position, mTexture, mColor);
+    if (mEnabled)
+    {
+        Renderer::Draw(mVA, mIB, position, mTexture, mColor);
+    }
+}
+
+void Mesh::SetEnabled(bool enabled)
+{
+    mEnabled = enabled;
+}
+
+bool Mesh::IsEnabled() const
+{
+    return mEnabled;
 }
 
 void Mesh::SetColor(const GLRGBAColor& color)

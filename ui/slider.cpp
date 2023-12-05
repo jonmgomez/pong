@@ -30,13 +30,13 @@ Slider::Slider(float width, float height, float min, float max, float step, floa
     const float handleHeight = height * HANDLE_HEIGHT_PERCENT;
     const float handleXPos = fillWidth - width / 2.0f;
 
-    mBorderMeshes[0] = { Rectangle(BORDER_THICKNESS, height),   glm::vec3(-verticalBorderXPos, 0.0f, 0.0f),   glm::vec3(-verticalBorderXPos, 0.0f, 0.0f)   };
-    mBorderMeshes[1] = { Rectangle(BORDER_THICKNESS, height),   glm::vec3(verticalBorderXPos, 0.0f, 0.0f),    glm::vec3(verticalBorderXPos, 0.0f, 0.0f)    };
-    mBorderMeshes[2] = { Rectangle(width, BORDER_THICKNESS),    glm::vec3(0.0f, -horizontalBorderYPos, 0.0f), glm::vec3(0.0f, -horizontalBorderYPos, 0.0f) };
-    mBorderMeshes[3] = { Rectangle(width, BORDER_THICKNESS),    glm::vec3(0.0f, horizontalBorderYPos, 0.0f),  glm::vec3(0.0f, horizontalBorderYPos, 0.0f)  };
+    mBorderMeshes[0] = { BORDER_THICKNESS, height,           glm::vec3(-verticalBorderXPos, 0.0f, 0.0f)   };
+    mBorderMeshes[1] = { BORDER_THICKNESS, height,           glm::vec3(verticalBorderXPos, 0.0f, 0.0f)    };
+    mBorderMeshes[2] = { width,            BORDER_THICKNESS, glm::vec3(0.0f, -horizontalBorderYPos, 0.0f) };
+    mBorderMeshes[3] = { width,            BORDER_THICKNESS, glm::vec3(0.0f, horizontalBorderYPos, 0.0f)  };
 
-    mFillMesh   = { Rectangle(fillWidth, fillHeight),     glm::vec3(fillXPos, 0.0f, 0.0f),   glm::vec3(fillXPos, 0.0f, 0.0f)   };
-    mHandleMesh = { Rectangle(handleWidth, handleHeight), glm::vec3(handleXPos, 0.0f, 0.0f), glm::vec3(handleXPos, 0.0f, 0.0f) };
+    mFillMesh   = { fillWidth,   fillHeight,   glm::vec3(fillXPos, 0.0f, 0.0f)   };
+    mHandleMesh = { handleWidth, handleHeight, glm::vec3(handleXPos, 0.0f, 0.0f) };
 
     mColliderBox = ColliderBox(width, height);
 }

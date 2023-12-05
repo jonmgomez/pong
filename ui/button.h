@@ -36,6 +36,8 @@ public:
     void OnEvent(ButtonEvent event);
 
     void SetPosition(const glm::vec3& position) override;
+    float GetWidth() const;
+    float GetHeight() const;
     void Resize(float width, float height);
     ColliderBox* GetColliderBox();
     bool WasPressed() const;

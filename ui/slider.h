@@ -11,14 +11,6 @@
 namespace pong
 {
 
-// Slider is built from multiple meshes each with an offset from the slider's position/origin
-struct SliderMesh
-{
-    Rectangle mMesh { 0.0f, 0.0f };
-    glm::vec3 mOffset { 0.0f };
-    glm::vec3 mPosition { 0.0f };
-};
-
 class Slider : public UIElement
 {
 public:
@@ -39,9 +31,9 @@ public:
 
 private:
     // Represents the slider background, the slider handle, and the slider fill
-    std::array<SliderMesh, 4> mBorderMeshes {};
-    SliderMesh mFillMesh {};
-    SliderMesh mHandleMesh {};
+    std::array<MeshComponent, 4> mBorderMeshes {};
+    MeshComponent mFillMesh {};
+    MeshComponent mHandleMesh {};
     ColliderBox mColliderBox { 0.0f, 0.0f };
     std::vector<std::function<void(float)>> mValueChangeListeners {};
     float mWidth { 0.0f };

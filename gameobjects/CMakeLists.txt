@@ -7,6 +7,7 @@ set(SOURCES
     scorecontroller.cpp
     settingsscreencontroller.cpp
     titlescreencontroller.cpp
+    uimenu.cpp
     wall.cpp
 )
 
