@@ -39,7 +39,7 @@ private:
     std::vector<PlayingSound> mPlayingSounds {};
     std::mutex mPlayingSoundsMutex {};
     std::atomic<float> mVolume { 0.75f };
-    bool mSpatialAudioEnabled { false };
+    std::atomic<bool> mSpatialAudioEnabled { false };
 };
 
 } // namespace pong
