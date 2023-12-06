@@ -17,11 +17,11 @@ public:
     Slider(float width, float height, float min, float max, float step, float startValue);
     ~Slider() = default;
 
-    void Render() const override;
     UIElementType GetType() const override;
+    void Render() const override;
     void SetPosition(const glm::vec3& position) override;
 
-    void OnMouseHeld(const glm::vec3& mousePosition);
+    void OnMouseDown(const glm::vec3& mousePosition);
     void OnMouseReleased();
     void AddValueChangeListener(std::function<void(float)> listener);
 

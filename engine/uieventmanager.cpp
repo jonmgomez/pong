@@ -65,7 +65,7 @@ void UIEventManager::ProcessEvents(const UIElementCollection& uiElements)
 
             if ((inBounds && mousePressed) || (mousePressed && slider.WasPressed()))
             {
-                slider.OnMouseHeld(mousePosition);
+                slider.OnMouseDown(mousePosition);
             }
             else if (!mousePressed && slider.WasPressed())
             {

@@ -21,19 +21,21 @@ Slider::Slider(float width, float height, float min, float max, float step, floa
     ASSERT(min < max && step > 0.0f);
     const float verticalBorderXPos = width / 2.0f - BORDER_THICKNESS / 2.0f;
     const float horizontalBorderYPos = height / 2.0f - BORDER_THICKNESS / 2.0f;
-    const float fillHeight = height - (BORDER_GAP + BORDER_THICKNESS) * 2.0f;
-    const float fillWidth = width * (mValue - mMin) / (mMax - mMin) - (BORDER_GAP + BORDER_THICKNESS);
-    const float startXPos = BORDER_GAP + BORDER_THICKNESS;
-    const float endXPos = width + BORDER_GAP + BORDER_THICKNESS;
-    const float fillXPos = fillWidth / -2.0f - (1.0f - mValue / (mMax - mMin) - 0.5f) * (endXPos - startXPos);
-    const float handleWidth = height * HANDLE_WIDTH_PERCENT;
-    const float handleHeight = height * HANDLE_HEIGHT_PERCENT;
-    const float handleXPos = fillWidth - width / 2.0f;
 
     mBorderMeshes[0] = { BORDER_THICKNESS, height,           glm::vec3(-verticalBorderXPos, 0.0f, 0.0f)   };
     mBorderMeshes[1] = { BORDER_THICKNESS, height,           glm::vec3(verticalBorderXPos, 0.0f, 0.0f)    };
     mBorderMeshes[2] = { width,            BORDER_THICKNESS, glm::vec3(0.0f, -horizontalBorderYPos, 0.0f) };
     mBorderMeshes[3] = { width,            BORDER_THICKNESS, glm::vec3(0.0f, horizontalBorderYPos, 0.0f)  };
+
+    const float startXPos = BORDER_GAP + BORDER_THICKNESS;
+    const float endXPos = width + startXPos;
+    const float fillHeight = height - (BORDER_GAP + BORDER_THICKNESS) * 2.0f;
+    const float fillWidth = width * std::fabs(mValue - mMin) / (mMax - mMin) - startXPos;
+    const float percentValue = std::fabs(mValue - mMin) / (mMax - mMin);
+    const float fillXPos = fillWidth / -2.0f - (1.0f - percentValue - 0.5f) * (endXPos - startXPos);
+    const float handleWidth = height * HANDLE_WIDTH_PERCENT;
+    const float handleHeight = height * HANDLE_HEIGHT_PERCENT;
+    const float handleXPos = fillWidth - width / 2.0f;
 
     mFillMesh   = { fillWidth,   fillHeight,   glm::vec3(fillXPos, 0.0f, 0.0f)   };
     mHandleMesh = { handleWidth, handleHeight, glm::vec3(handleXPos, 0.0f, 0.0f) };
@@ -43,9 +45,9 @@ Slider::Slider(float width, float height, float min, float max, float step, floa
 
 void Slider::Render() const
 {
-    for (const auto& sliderMesh : mBorderMeshes)
+    for (const auto& borderMesh : mBorderMeshes)
     {
-        sliderMesh.mMesh.Draw(sliderMesh.mPosition);
+        borderMesh.mMesh.Draw(borderMesh.mPosition);
     }
 
     mFillMesh.mMesh.Draw(mFillMesh.mPosition);
@@ -60,9 +62,9 @@ UIElementType Slider::GetType() const
 void Slider::SetPosition(const glm::vec3& position)
 {
     mPosition = position;
-    for (auto& sliderMesh : mBorderMeshes)
+    for (auto& borderMesh : mBorderMeshes)
     {
-        sliderMesh.mPosition = mPosition + sliderMesh.mOffset;
+        borderMesh.mPosition = mPosition + borderMesh.mOffset;
     }
 
     mFillMesh.mPosition = mPosition + mFillMesh.mOffset;
@@ -70,7 +72,7 @@ void Slider::SetPosition(const glm::vec3& position)
     mColliderBox.OnPositionUpdate(mPosition);
 }
 
-void Slider::OnMouseHeld(const glm::vec3& mousePosition)
+void Slider::OnMouseDown(const glm::vec3& mousePosition)
 {
     mWasPressed = true;
 
