@@ -1,4 +1,5 @@
 set(SOURCES
+    applicationwindow.cpp
     audiomixer.cpp
     circle.cpp
     colliderbox.cpp
@@ -18,7 +19,6 @@ set(SOURCES
     textcharacter.cpp
     timer.cpp
     uieventmanager.cpp
-    applicationwindow.cpp
 )
 
 add_library(engine ${SOURCES})
