@@ -3,19 +3,17 @@
 #include "button.h"
 #include "gameobject.h"
 #include "text.h"
+#include "uimenu.h"
 
 namespace pong
 {
 
-class TitleScreenController : public GameObject
+class TitleScreenController : public GameObject, public UIMenu
 {
 public:
     void OnStart() override;
 
 private:
-    void HoverOverButton(Button* button, Text* buttonText);
-    void UnhoverOverButton(Button* button, Text* buttonText);
-
     Text*   mPongText { nullptr };
     Button* mPlayButton { nullptr };
     Text*   mPlayText   { nullptr };

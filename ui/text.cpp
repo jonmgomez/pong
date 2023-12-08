@@ -176,9 +176,9 @@ void Text::Render() const
     }
 }
 
-UIElementType Text::GetType() const
+void Text::Accept(ProcessEventVisitor& visitor)
 {
-    return UIElementType::Text;
+    visitor.Visit(*this);
 }
 
 } // namespace pong

@@ -17,9 +17,9 @@ void Button::Render() const
     mRectangle.Draw(mPosition);
 }
 
-UIElementType Button::GetType() const
+void Button::Accept(ProcessEventVisitor& uiElement)
 {
-    return UIElementType::Button;
+    uiElement.Visit(*this);
 }
 
 void Button::AddListener(ButtonEvent event, std::function<void()> callback)
@@ -57,6 +57,16 @@ void Button::SetPosition(const glm::vec3& position)
 {
     mPosition = position;
     mColliderBox.OnPositionUpdate(position);
+}
+
+float Button::GetWidth() const
+{
+    return mRectangle.GetWidth();
+}
+
+float Button::GetHeight() const
+{
+    return mRectangle.GetHeight();
 }
 
 void Button::Resize(float width, float height)

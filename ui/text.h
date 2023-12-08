@@ -21,7 +21,7 @@ public:
     void SetColor(GLRGBAColor color);
 
     void Render() const override;
-    UIElementType GetType() const override;
+    void Accept(ProcessEventVisitor& visitor) override;
 
 private:
     void CreateText();

@@ -30,12 +30,14 @@ public:
     Button(float width, float height);
 
     void Render() const override;
-    UIElementType GetType() const override;
+    void Accept(ProcessEventVisitor& uiElement) override;
 
     void AddListener(ButtonEvent event, std::function<void()> callback);
     void OnEvent(ButtonEvent event);
 
     void SetPosition(const glm::vec3& position) override;
+    float GetWidth() const;
+    float GetHeight() const;
     void Resize(float width, float height);
     ColliderBox* GetColliderBox();
     bool WasPressed() const;

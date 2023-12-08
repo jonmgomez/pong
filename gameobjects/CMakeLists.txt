@@ -5,7 +5,9 @@ set(SOURCES
     player.cpp
     scorearea.cpp
     scorecontroller.cpp
+    settingsscreencontroller.cpp
     titlescreencontroller.cpp
+    uimenu.cpp
     wall.cpp
 )
 

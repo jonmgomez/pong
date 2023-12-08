@@ -3,11 +3,13 @@
 #include "ball.h"
 #include "colliderbox.h"
 #include "config.h"
+#include "input.h"
 #include "logger.h"
 #include "opponent.h"
 #include "player.h"
 #include "scorearea.h"
 #include "scorecontroller.h"
+#include "settingsscreencontroller.h"
 #include "titlescreencontroller.h"
 #include "wall.h"
 
@@ -74,6 +76,10 @@ void Pong::GameLoop()
     {
         uiElements->Render();
     }
+
+    // Done last because input callbacks are done in glfwPollEvents after this loop.
+    // So this effectively keeps the values from the new frame before updated from pressed -> held
+    Input::Update();
 }
 
 void Pong::Reset()
@@ -108,6 +114,8 @@ void Pong::LoadScene(Scene scene)
         }
         case Scene::Settings:
         {
+            auto settingsScreen = std::make_unique<SettingsScreenController>();
+            GetInstance().mGameObjects.push_back(std::move(settingsScreen));
             break;
         }
         case Scene::Game:
