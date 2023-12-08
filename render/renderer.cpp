@@ -18,8 +18,8 @@
 namespace pong
 {
 
-static constexpr float SCREEN_X_COORDS = SCREEN_WIDTH;
-static constexpr float SCREEN_Y_COORDS = SCREEN_HEIGHT;
+static constexpr float SCREEN_X_COORDS = 1280;
+static constexpr float SCREEN_Y_COORDS = 960;
 
 Renderer& Renderer::GetInstance()
 {
@@ -103,14 +103,14 @@ void Renderer::Clear()
     GLCall(glClear(GL_COLOR_BUFFER_BIT));
 }
 
-float Renderer::GetXScreenCoords()
+float Renderer::GetXCoordMax()
 {
-    return GetInstance().mXScreenCoords;
+    return SCREEN_X_COORDS;
 }
 
-float Renderer::GetYScreenCoords()
+float Renderer::GetYCoordMax()
 {
-    return GetInstance().mYScreenCoords;
+    return SCREEN_Y_COORDS;
 }
 
 } // namespace pong

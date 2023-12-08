@@ -15,6 +15,10 @@ public:
     static void SwapBuffers();
     static void Cleanup();
 
+    static int GetScreenWidth();
+    static int GetScreenHeight();
+    static void WindowResizeCallback(GLFWwindow* window, int width, int height);
+
     static bool ShouldClose();
     static void SetShouldCloseWindow();
 
@@ -32,6 +36,8 @@ private:
     ApplicationWindow& operator=(ApplicationWindow&&) = delete;
 
     GLFWwindow* mWindow { nullptr };
+    int mScreenWidth { 1280 };
+    int mScreenHeight { 960 };
     bool mVSync { true };
 };
 

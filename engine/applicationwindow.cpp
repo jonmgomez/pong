@@ -39,8 +39,7 @@ void ApplicationWindow::Init()
         ASSERT(false);
     }
 
-    // glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetWindowAspectRatio(GetInstance().mWindow, SCREEN_WIDTH, SCREEN_HEIGHT);
+    glfwSetFramebufferSizeCallback(GetInstance().mWindow, ApplicationWindow::WindowResizeCallback);
     glfwMakeContextCurrent(GetInstance().mWindow);
     SetVSync(true);
 
@@ -57,6 +56,23 @@ void ApplicationWindow::Cleanup()
 {
     glfwDestroyWindow(GetInstance().mWindow);
     glfwTerminate();
+}
+
+int ApplicationWindow::GetScreenWidth()
+{
+    return GetInstance().mScreenWidth;
+}
+
+int ApplicationWindow::GetScreenHeight()
+{
+    return GetInstance().mScreenHeight;
+}
+
+void ApplicationWindow::WindowResizeCallback(GLFWwindow* /*window*/, int width, int height)
+{
+    GetInstance().mScreenWidth = width;
+    GetInstance().mScreenHeight = height;
+    glViewport(0, 0, width, height);
 }
 
 bool ApplicationWindow::ShouldClose()

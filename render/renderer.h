@@ -11,9 +11,6 @@
 namespace pong
 {
 
-static constexpr int SCREEN_WIDTH = 1280;
-static constexpr int SCREEN_HEIGHT = 960;
-
 class Renderer
 {
 public:
@@ -26,8 +23,10 @@ public:
                      const GLRGBAColor& color);
     static void Clear();
 
-    static float GetXScreenCoords();
-    static float GetYScreenCoords();
+    // Returns the maximum X coordinate of the viewable screen (minimum in opposite direction)
+    static float GetXCoordMax();
+    // Returns the maximum Y coordinate of the viewable screen (minimum in opposite direction)
+    static float GetYCoordMax();
 
 private:
     Renderer() = default;
@@ -38,8 +37,6 @@ private:
     ~Renderer() = default;
 
     std::unique_ptr<Shader>mShader { nullptr };
-    float mXScreenCoords { SCREEN_WIDTH };
-    float mYScreenCoords { SCREEN_HEIGHT };
 };
 
 } // namespace pong
