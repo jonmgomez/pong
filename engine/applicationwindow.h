@@ -9,19 +9,28 @@ namespace pong
 class ApplicationWindow
 {
 public:
-    void Init();
-    void SwapBuffers();
-    void Cleanup();
+    static ApplicationWindow& GetInstance();
 
-    bool ShouldClose() const;
-    void SetShouldCloseWindow();
+    static void Init();
+    static void SwapBuffers();
+    static void Cleanup();
 
-    bool IsVSyncActive() const;
-    void SetVSync(bool active);
+    static bool ShouldClose();
+    static void SetShouldCloseWindow();
+
+    static bool IsVSyncActive();
+    static void SetVSync(bool active);
 
     GLFWwindow* GetWindow() const;
 
 private:
+    ApplicationWindow() = default;
+    ~ApplicationWindow() = default;
+    ApplicationWindow(const ApplicationWindow&) = delete;
+    ApplicationWindow& operator=(const ApplicationWindow&) = delete;
+    ApplicationWindow(ApplicationWindow&&) = delete;
+    ApplicationWindow& operator=(ApplicationWindow&&) = delete;
+
     GLFWwindow* mWindow { nullptr };
     bool mVSync { true };
 };

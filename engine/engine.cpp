@@ -24,15 +24,15 @@ void Engine::Init(const std::string& configPath)
 {
     ASSERT(Config::LoadConfig(configPath));
 
-    mWindow.Init();
-    Input::Init(mWindow);
+    ApplicationWindow::Init();
+    Input::Init();
     Renderer::Init();
     Pong::Init();
 
     const auto targetFPSJson = Config::GetJsonValue("target_fps");
     if (targetFPSJson.has_value() && targetFPSJson.value().is_number_integer())
     {
-        mWindow.SetVSync(false);
+        SetVSync(false);
         if (targetFPSJson.value() > 0)
         {
             SetTargetFPS(targetFPSJson.value());
@@ -45,7 +45,7 @@ void Engine::Init(const std::string& configPath)
     }
     else
     {
-        mWindow.SetVSync(true);
+        SetVSync(true);
         LogInfo("Target FPS not specified or invalid. Using refresh rate.");
     }
 }
@@ -55,7 +55,7 @@ void Engine::RunApplication()
     int frameCount = 0;
     const auto windowStartTime = std::chrono::high_resolution_clock::now();
 
-    while (!mWindow.ShouldClose())
+    while (!ApplicationWindow::ShouldClose())
     {
         if (IsNextFrameReady())
         {
@@ -63,7 +63,7 @@ void Engine::RunApplication()
 
             Renderer::Clear();
             Pong::GameLoop();
-            mWindow.SwapBuffers();
+            ApplicationWindow::SwapBuffers();
         }
     }
 
@@ -77,7 +77,7 @@ void Engine::RunApplication()
 
 bool Engine::IsNextFrameReady()
 {
-    if (mWindow.IsVSyncActive())
+    if (ApplicationWindow::IsVSyncActive())
     {
         mLastFrameTimeStamp = std::chrono::high_resolution_clock::now();
         return true;
@@ -97,7 +97,7 @@ bool Engine::IsNextFrameReady()
 
 void Engine::Cleanup()
 {
-    mWindow.Cleanup();
+    ApplicationWindow::Cleanup();
     Pong::Cleanup();
     Renderer::Cleanup();
 }
@@ -109,9 +109,14 @@ void Engine::SetTargetFPS(int fps)
     GetInstance().mTimePerFrame = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::seconds(1)) / GetInstance().mTargetFPS;
 }
 
+void Engine::SetVSync(bool active)
+{
+    ApplicationWindow::SetVSync(active);
+}
+
 void Engine::QuitApplication()
 {
-    GetInstance().mWindow.SetShouldCloseWindow();
+    ApplicationWindow::SetShouldCloseWindow();
 }
 
 } // namespace pong

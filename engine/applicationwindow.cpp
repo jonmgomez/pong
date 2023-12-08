@@ -11,6 +11,12 @@ namespace pong
 static constexpr int SCREEN_WIDTH = 1280;
 static constexpr int SCREEN_HEIGHT = 960;
 
+ApplicationWindow& ApplicationWindow::GetInstance()
+{
+    static ApplicationWindow instance;
+    return instance;
+}
+
 void ApplicationWindow::Init()
 {
     if (!glfwInit())
@@ -25,8 +31,8 @@ void ApplicationWindow::Init()
 
     GLFWmonitor* kMonitor = nullptr;
     GLFWwindow* kShare = nullptr;
-    mWindow = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Pong", kMonitor, kShare);
-    if (mWindow == nullptr)
+    GetInstance().mWindow = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Pong", kMonitor, kShare);
+    if (GetInstance().mWindow == nullptr)
     {
         LogError("glfwCreateWindow() failure");
         glfwTerminate();
@@ -34,43 +40,44 @@ void ApplicationWindow::Init()
     }
 
     // glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    glfwSetWindowAspectRatio(mWindow, SCREEN_WIDTH, SCREEN_HEIGHT);
-    glfwMakeContextCurrent(mWindow);
+    glfwSetWindowAspectRatio(GetInstance().mWindow, SCREEN_WIDTH, SCREEN_HEIGHT);
+    glfwMakeContextCurrent(GetInstance().mWindow);
+    SetVSync(true);
 
     LogInfo("Window created: {}x{}", SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 void ApplicationWindow::SwapBuffers()
 {
-    glfwSwapBuffers(mWindow);
+    glfwSwapBuffers(GetInstance().mWindow);
     glfwPollEvents();
 }
 
 void ApplicationWindow::Cleanup()
 {
-    glfwDestroyWindow(mWindow);
+    glfwDestroyWindow(GetInstance().mWindow);
     glfwTerminate();
 }
 
-bool ApplicationWindow::ShouldClose() const
+bool ApplicationWindow::ShouldClose()
 {
-    return glfwWindowShouldClose(mWindow);
+    return glfwWindowShouldClose(GetInstance().mWindow);
 }
 
 void ApplicationWindow::SetShouldCloseWindow()
 {
-    glfwSetWindowShouldClose(mWindow, GLFW_TRUE);
+    glfwSetWindowShouldClose(GetInstance().mWindow, GLFW_TRUE);
 }
 
-bool ApplicationWindow::IsVSyncActive() const
+bool ApplicationWindow::IsVSyncActive()
 {
-    return mVSync;
+    return GetInstance().mVSync;
 }
 
 void ApplicationWindow::SetVSync(bool active)
 {
-    mVSync = active;
-    glfwSwapInterval(mVSync ? GLFW_TRUE : GLFW_FALSE);
+    GetInstance().mVSync = active;
+    glfwSwapInterval(GetInstance().mVSync ? GLFW_TRUE : GLFW_FALSE);
 }
 
 GLFWwindow* ApplicationWindow::GetWindow() const

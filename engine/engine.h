@@ -17,6 +17,7 @@ public:
     void RunApplication();
 
     static void SetTargetFPS(int fps);
+    static void SetVSync(bool active);
     static void QuitApplication();
 
 private:
@@ -30,9 +31,6 @@ private:
     bool IsNextFrameReady();
     void Cleanup();
 
-    ApplicationWindow mWindow {};
-
-    bool mVSync { true };
     int mTargetFPS { 60 };
     std::chrono::nanoseconds mTimePerFrame { 0 };
     std::chrono::steady_clock::time_point mLastFrameTimeStamp { std::chrono::steady_clock::now() };

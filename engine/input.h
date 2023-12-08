@@ -1,7 +1,5 @@
 #pragma once
 
-#include "applicationwindow.h"
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -23,7 +21,7 @@ enum class InputState
 class Input
 {
 public:
-    static void Init(const ApplicationWindow& window);
+    static void Init();
     static void Update();
 
     static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
