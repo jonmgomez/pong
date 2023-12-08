@@ -33,9 +33,9 @@ void CheckBox::Render() const
     }
 }
 
-UIElementType CheckBox::GetType() const
+void CheckBox::Accept(ProcessEventVisitor& visitor)
 {
-    return UIElementType::CheckBox;
+    visitor.VisitCheckBox(*this);
 }
 
 void CheckBox::SetPosition(const glm::vec3& position)

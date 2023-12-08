@@ -35,23 +35,23 @@ void Input::Init(GLFWwindow* window)
 
 void Input::Update()
 {
-    const auto updateInputState = [](InputState* inputStates, size_t size)
+    const auto updateInputState = [](auto& inputStatesArray)
     {
-        for (int i = 0; i < size; ++i)
+        for (auto& state : inputStatesArray)
         {
-            if (inputStates[i] == InputState::Pressed)
+            if (state == InputState::Pressed)
             {
-                inputStates[i] = InputState::Held;
+                state = InputState::Held;
             }
-            else if (inputStates[i] == InputState::Released)
+            else if (state == InputState::Released)
             {
-                inputStates[i] = InputState::NotPressed;
+                state = InputState::NotPressed;
             }
         }
     };
 
-    updateInputState(mKeys.data(), mKeys.size());
-    updateInputState(mMouseButtons.data(), mMouseButtons.size());
+    updateInputState(mKeys);
+    updateInputState(mMouseButtons);
 }
 
 void Input::KeyCallback(GLFWwindow* /*window*/, int key, int /*scancode*/, int action, int /*mods*/)

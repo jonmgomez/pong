@@ -17,9 +17,9 @@ void Button::Render() const
     mRectangle.Draw(mPosition);
 }
 
-UIElementType Button::GetType() const
+void Button::Accept(ProcessEventVisitor& uiElement)
 {
-    return UIElementType::Button;
+    uiElement.VisitButton(*this);
 }
 
 void Button::AddListener(ButtonEvent event, std::function<void()> callback)

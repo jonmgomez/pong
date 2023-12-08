@@ -2,6 +2,7 @@
 
 #include "colliderbox.h"
 #include "rectangle.h"
+#include "processeventvisitor.h"
 
 #include <glm/glm.hpp>
 
@@ -27,20 +28,12 @@ public:
     }
 };
 
-enum class UIElementType
-{
-    Button,
-    CheckBox,
-    Slider,
-    Text
-};
-
 class UIElement
 {
 public:
     virtual ~UIElement() = default;
     virtual void Render() const = 0;
-    virtual UIElementType GetType() const = 0;
+    virtual void Accept(ProcessEventVisitor& visitor) = 0;
 
     int GetOrderLayer() const;
     void SetOrderLayer(int orderLayer);

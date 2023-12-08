@@ -30,7 +30,7 @@ public:
     Button(float width, float height);
 
     void Render() const override;
-    UIElementType GetType() const override;
+    void Accept(ProcessEventVisitor& uiElement) override;
 
     void AddListener(ButtonEvent event, std::function<void()> callback);
     void OnEvent(ButtonEvent event);

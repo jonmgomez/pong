@@ -13,8 +13,8 @@ class CheckBox : public UIElement
 public:
     CheckBox(float width, float height, bool defaultValue);
 
-    UIElementType GetType() const override;
     void Render() const override;
+    void Accept(ProcessEventVisitor& visitor) override;
     void SetPosition(const glm::vec3& position) override;
 
     void OnClick();

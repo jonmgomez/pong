@@ -54,9 +54,9 @@ void Slider::Render() const
     mHandleMesh.mMesh.Draw(mHandleMesh.mPosition);
 }
 
-UIElementType Slider::GetType() const
+void Slider::Accept(ProcessEventVisitor& visitor)
 {
-    return UIElementType::Slider;
+    visitor.VisitSlider(*this);
 }
 
 void Slider::SetPosition(const glm::vec3& position)
