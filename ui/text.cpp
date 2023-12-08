@@ -178,7 +178,7 @@ void Text::Render() const
 
 void Text::Accept(ProcessEventVisitor& visitor)
 {
-    visitor.VisitText(*this);
+    visitor.Visit(*this);
 }
 
 } // namespace pong

@@ -35,7 +35,7 @@ void CheckBox::Render() const
 
 void CheckBox::Accept(ProcessEventVisitor& visitor)
 {
-    visitor.VisitCheckBox(*this);
+    visitor.Visit(*this);
 }
 
 void CheckBox::SetPosition(const glm::vec3& position)

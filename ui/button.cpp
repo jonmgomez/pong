@@ -19,7 +19,7 @@ void Button::Render() const
 
 void Button::Accept(ProcessEventVisitor& uiElement)
 {
-    uiElement.VisitButton(*this);
+    uiElement.Visit(*this);
 }
 
 void Button::AddListener(ButtonEvent event, std::function<void()> callback)

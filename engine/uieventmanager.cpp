@@ -11,7 +11,7 @@
 namespace pong
 {
 
-void UIEventManager::VisitButton(Button& button)
+void UIEventManager::Visit(Button& button)
 {
     const glm::vec3 mousePosition = Input::GetMousePosition();
     const bool inBounds = button.GetColliderBox()->CheckPointInBounds(mousePosition);
@@ -39,7 +39,7 @@ void UIEventManager::VisitButton(Button& button)
     }
 }
 
-void UIEventManager::VisitCheckBox(CheckBox& checkBox)
+void UIEventManager::Visit(CheckBox& checkBox)
 {
     const glm::vec3 mousePosition = Input::GetMousePosition();
     if (checkBox.GetColliderBox()->CheckPointInBounds(mousePosition) && Input::GetMouseButtonState(GLFW_MOUSE_BUTTON_LEFT) == InputState::Pressed)
@@ -48,7 +48,7 @@ void UIEventManager::VisitCheckBox(CheckBox& checkBox)
     }
 }
 
-void UIEventManager::VisitSlider(Slider& slider)
+void UIEventManager::Visit(Slider& slider)
 {
     const glm::vec3 mousePosition = Input::GetMousePosition();
     const bool inBounds = slider.GetColliderBox()->CheckPointInBounds(mousePosition);
@@ -64,7 +64,7 @@ void UIEventManager::VisitSlider(Slider& slider)
     }
 }
 
-void UIEventManager::VisitText(Text& /*text*/)
+void UIEventManager::Visit(Text& /*text*/)
 {
     // No events to process on text objects
 }

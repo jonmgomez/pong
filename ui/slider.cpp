@@ -56,7 +56,7 @@ void Slider::Render() const
 
 void Slider::Accept(ProcessEventVisitor& visitor)
 {
-    visitor.VisitSlider(*this);
+    visitor.Visit(*this);
 }
 
 void Slider::SetPosition(const glm::vec3& position)

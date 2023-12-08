@@ -11,10 +11,10 @@ class Text;
 class ProcessEventVisitor
 {
 public:
-    virtual void VisitButton(Button& button) = 0;
-    virtual void VisitCheckBox(CheckBox& checkBox) = 0;
-    virtual void VisitSlider(Slider& slider) = 0;
-    virtual void VisitText(Text& text) = 0;
+    virtual void Visit(Button& button) = 0;
+    virtual void Visit(CheckBox& checkBox) = 0;
+    virtual void Visit(Slider& slider) = 0;
+    virtual void Visit(Text& text) = 0;
 };
 
 } // namespace pong

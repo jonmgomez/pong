@@ -17,10 +17,10 @@ using UIElementCollection = std::vector<std::unique_ptr<UIElement>>;
 class UIEventManager : public ProcessEventVisitor
 {
 public:
-    void VisitButton(Button& button) override;
-    void VisitCheckBox(CheckBox& checkBox) override;
-    void VisitSlider(Slider& slider) override;
-    void VisitText(Text& text) override;
+    void Visit(Button& button) override;
+    void Visit(CheckBox& checkBox) override;
+    void Visit(Slider& slider) override;
+    void Visit(Text& text) override;
 
     void ProcessEvents(const UIElementCollection& uiElements);
 };
