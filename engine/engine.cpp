@@ -25,14 +25,14 @@ void Engine::Init(const std::string& configPath)
     ASSERT(Config::LoadConfig(configPath));
 
     ApplicationWindow::Init();
-    Input::Init();
     Renderer::Init();
+    Input::Init();
     Pong::Init();
 
     const auto targetFPSJson = Config::GetJsonValue("target_fps");
     if (targetFPSJson.has_value() && targetFPSJson.value().is_number_integer())
     {
-        SetVSync(false);
+        ApplicationWindow::SetVSync(false);
         if (targetFPSJson.value() > 0)
         {
             SetTargetFPS(targetFPSJson.value());
@@ -45,7 +45,7 @@ void Engine::Init(const std::string& configPath)
     }
     else
     {
-        SetVSync(true);
+        ApplicationWindow::SetVSync(true);
         LogInfo("Target FPS not specified or invalid. Using refresh rate.");
     }
 }
@@ -107,11 +107,6 @@ void Engine::SetTargetFPS(int fps)
     ASSERT(fps > 0);
     GetInstance().mTargetFPS = fps;
     GetInstance().mTimePerFrame = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::seconds(1)) / GetInstance().mTargetFPS;
-}
-
-void Engine::SetVSync(bool active)
-{
-    ApplicationWindow::SetVSync(active);
 }
 
 void Engine::QuitApplication()

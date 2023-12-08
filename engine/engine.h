@@ -17,7 +17,6 @@ public:
     void RunApplication();
 
     static void SetTargetFPS(int fps);
-    static void SetVSync(bool active);
     static void QuitApplication();
 
 private:
