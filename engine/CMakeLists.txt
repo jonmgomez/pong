@@ -5,6 +5,7 @@ set(SOURCES
     collisionmanager.cpp
     config.cpp
     difficulty.cpp
+    engine.cpp
     input.cpp
     logger.cpp
     mesh.cpp
@@ -17,6 +18,7 @@ set(SOURCES
     textcharacter.cpp
     timer.cpp
     uieventmanager.cpp
+    applicationwindow.cpp
 )
 
 add_library(engine ${SOURCES})

@@ -2,6 +2,7 @@
 
 #include "button.h"
 #include "config.h"
+#include "engine.h"
 #include "logger.h"
 #include "slider.h"
 #include "pong.h"
@@ -42,7 +43,7 @@ void TitleScreenController::OnStart()
     mQuitText = Pong::AddUIElement<Text>("Quit", kFontPath, 1.0f, 75);
     mQuitButton = Pong::AddUIElement<Button>(BUTTON_WIDTH, BUTTON_HEIGHT);
     mQuitButton->AddListener(ButtonEvent::Pressed, []() {
-        Pong::ExitGame();
+        Engine::QuitApplication();
     });
     SetupButton(mQuitButton, mQuitText, QUIT_BUTTON_POSITION);
 }

@@ -16,7 +16,7 @@ std::array<InputState, GLFW_MOUSE_BUTTON_LAST + 1> Input::mMouseButtons {};
 // Initalize way outside the screen so it does not trigger anything before it should
 glm::vec3 Input::mMousePosition { std::numeric_limits<float>::max() };
 
-void Input::Init(GLFWwindow* window)
+void Input::Init(const ApplicationWindow& window)
 {
     for (auto& inputVal : mKeys)
     {
@@ -28,9 +28,10 @@ void Input::Init(GLFWwindow* window)
         inputVal = InputState::NotPressed;
     }
 
-    glfwSetKeyCallback(window, Input::KeyCallback);
-    glfwSetCursorPosCallback(window, Input::MousePositionCallback);
-    glfwSetMouseButtonCallback(window, Input::MouseButtonCallback);
+    GLFWwindow* glfwWindow = window.GetWindow();
+    glfwSetKeyCallback(glfwWindow, Input::KeyCallback);
+    glfwSetCursorPosCallback(glfwWindow, Input::MousePositionCallback);
+    glfwSetMouseButtonCallback(glfwWindow, Input::MouseButtonCallback);
 }
 
 void Input::Update()

@@ -29,13 +29,12 @@ class Pong
 public:
     static Pong& GetInstance();
 
-    static void Init(GLFWwindow* window);
+    static void Init();
     static void GameLoop();
     static void Reset();
     static void Cleanup();
 
     static void LoadSceneNext(Scene scene);
-    static void ExitGame();
 
     template<typename T>
     static T* FindGameObject()
@@ -83,7 +82,6 @@ private:
 
     void LoadScene(Scene scene);
 
-    GLFWwindow* mWindow { nullptr };
     std::vector<std::unique_ptr<GameObject>> mGameObjects {};
     std::vector<std::unique_ptr<UIElement>> mUIElements {};
 
