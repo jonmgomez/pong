@@ -16,7 +16,9 @@ public:
     void Init(const std::string& configPath);
     void RunApplication();
 
+    static int GetTargetFPS();
     static void SetTargetFPS(int fps);
+
     static void QuitApplication();
 
 private:

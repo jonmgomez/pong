@@ -19,6 +19,10 @@ private:
     Text* mSettingsText { nullptr };
     Button* mBackButton { nullptr };
     Text* mBackText { nullptr };
+    Text* mTargetFPSText { nullptr };
+    Slider* mTargetFPSSlider { nullptr };
+    CheckBox* mVSync { nullptr };
+    Text* mVSyncText { nullptr };
     Slider* mVolumeSlider { nullptr };
     Text* mVolumeText { nullptr };
     CheckBox* mSpatialAudio { nullptr };

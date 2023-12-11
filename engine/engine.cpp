@@ -102,6 +102,11 @@ void Engine::Cleanup()
     Renderer::Cleanup();
 }
 
+int Engine::GetTargetFPS()
+{
+    return GetInstance().mTargetFPS;
+}
+
 void Engine::SetTargetFPS(int fps)
 {
     ASSERT(fps > 0);
