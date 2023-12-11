@@ -1,20 +1,25 @@
 #include "renderer.h"
 
+#include "config.h"
+#include "logger.h"
 #include "indexbuffer.h"
 #include "renderutils.h"
 #include "texture.h"
 #include "vertexarray.h"
 
+#include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <iostream>
+#include <fstream>
+#include <memory>
 
 namespace pong
 {
 
-static constexpr float SCREEN_X_COORDS = SCREEN_WIDTH;
-static constexpr float SCREEN_Y_COORDS = SCREEN_HEIGHT;
+static constexpr float SCREEN_X_COORDS = 1280;
+static constexpr float SCREEN_Y_COORDS = 960;
 
 Renderer& Renderer::GetInstance()
 {
@@ -22,15 +27,53 @@ Renderer& Renderer::GetInstance()
     return sInstance;
 }
 
+void Renderer::Init()
+{
+    if (glewInit() != GLEW_OK)
+    {
+        LogError("glewInit() failure");
+        ASSERT(false);
+    }
+
+    GLCall(glEnable(GL_BLEND));
+    GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
+    const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+    LogInfo("Using OpenGL version: {}", glVersion);
+
+    int numTextureSlots;
+    glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &numTextureSlots);
+    LogDebug("Texture Slots Available: {}", numTextureSlots);
+
+
+    const auto shaderKey = Config::GetJsonValue("shader");
+    if (!shaderKey.has_value())
+    {
+        LogError("\"shader\" JSON key not found");
+        ASSERT(false);
+    }
+
+    if (!shaderKey.value().is_string())
+    {
+        LogError("\"shader\" JSON key is not a string");
+        ASSERT(false);
+    }
+
+    const std::string shaderPath = shaderKey.value();
+    std::ifstream shaderFile(shaderPath);
+    if (shaderFile.fail())
+    {
+        LogError("Failed to open shader file: {}", shaderPath);
+        ASSERT(false);
+    }
+
+    GetInstance().mShader = std::make_unique<Shader>(shaderPath);
+}
+
 void Renderer::Cleanup()
 {
     GetInstance().mShader.reset();
     GetInstance().mShader = nullptr;
-}
-
-void Renderer::SetShader(const std::string& filePath)
-{
-    GetInstance().mShader = std::make_unique<Shader>(filePath);
 }
 
 void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib,
@@ -60,14 +103,14 @@ void Renderer::Clear()
     GLCall(glClear(GL_COLOR_BUFFER_BIT));
 }
 
-float Renderer::GetXScreenCoords()
+float Renderer::GetXCoordMax()
 {
-    return GetInstance().mXScreenCoords;
+    return SCREEN_X_COORDS;
 }
 
-float Renderer::GetYScreenCoords()
+float Renderer::GetYCoordMax()
 {
-    return GetInstance().mYScreenCoords;
+    return SCREEN_Y_COORDS;
 }
 
 } // namespace pong

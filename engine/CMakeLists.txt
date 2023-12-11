@@ -1,10 +1,12 @@
 set(SOURCES
+    applicationwindow.cpp
     audiomixer.cpp
     circle.cpp
     colliderbox.cpp
     collisionmanager.cpp
     config.cpp
     difficulty.cpp
+    engine.cpp
     input.cpp
     logger.cpp
     mesh.cpp

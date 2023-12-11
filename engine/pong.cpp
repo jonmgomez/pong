@@ -42,9 +42,8 @@ Timer& Pong::GetTimer()
     return mTimer;
 }
 
-void Pong::Init(GLFWwindow* window)
+void Pong::Init()
 {
-    GetInstance().mWindow = window;
     GetInstance().GetAudioMixer().Init();
     GetInstance().GetTimer().Init();
     GetInstance().LoadScene(Scene::TitleScreen);
@@ -164,11 +163,6 @@ void Pong::LoadScene(Scene scene)
     {
         gameObject->OnStart();
     }
-}
-
-void Pong::ExitGame()
-{
-    glfwSetWindowShouldClose(GetInstance().mWindow, GLFW_TRUE);
 }
 
 GameObject* Pong::FindGameObjectByName(const std::string& name)
