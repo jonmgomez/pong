@@ -27,6 +27,11 @@ CollisionManager& Pong::GetCollisionManager()
     return mCollisionManager;
 }
 
+ComponentManager& Pong::GetComponentManager()
+{
+    return mComponentManager;
+}
+
 UIEventManager& Pong::GetUIEventManager()
 {
     return mUIEventManager;

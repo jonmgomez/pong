@@ -1,5 +1,7 @@
 #pragma once
 
+#include "component.h"
+
 #include <glm/glm.hpp>
 
 #include <array>
@@ -7,7 +9,7 @@
 namespace pong
 {
 
-class ColliderBox
+class ColliderBox : public Component<ColliderBox>
 {
 public:
     ColliderBox(float width, float height);

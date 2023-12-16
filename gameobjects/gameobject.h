@@ -48,6 +48,7 @@ public:
 protected:
     std::unique_ptr<Mesh>mMesh { nullptr };
     std::unique_ptr<ColliderBox>mColliderBox { nullptr };
+    // std::vector<Component> mComponents {};
 
 private:
     static int sId;

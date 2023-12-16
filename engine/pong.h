@@ -2,12 +2,16 @@
 
 #include "audiomixer.h"
 #include "collisionmanager.h"
+#include "component.h"
+#include "componentmanager.h"
 #include "gameobject.h"
 #include "text.h"
 #include "timer.h"
 #include "uielement.h"
 #include "uieventmanager.h"
 #include "utils.h"
+
+#include "transform.h"
 
 #include <chrono>
 #include <memory>
@@ -63,11 +67,19 @@ public:
         return uiElementPtr;
     }
 
+    template<typename ComponentSubType, typename... Args>
+    static void AddComponent(Args&&... args)
+    {
+        auto newComponent = std::make_unique<ComponentSubType>(std::forward<Args>(args)...);
+        GetInstance().mComponentManager.AddComponent<ComponentSubType>(newComponent);
+    }
+
     static void UpdateUIElementOrderLayer();
 
     static void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
 
     CollisionManager& GetCollisionManager();
+    ComponentManager& GetComponentManager();
     UIEventManager& GetUIEventManager();
     AudioMixer& GetAudioMixer();
     Timer& GetTimer();
@@ -85,7 +97,12 @@ private:
     std::vector<std::unique_ptr<GameObject>> mGameObjects {};
     std::vector<std::unique_ptr<UIElement>> mUIElements {};
 
+    std::vector<std::unique_ptr<ColliderBox>> mCompColliderBoxes {};
+    std::vector<std::unique_ptr<Transform>> mCompTransforms {};
+    //std::vector<std::unique_ptr<Mesh>> mCompMeshes {};
+
     CollisionManager mCollisionManager {};
+    ComponentManager mComponentManager {};
     UIEventManager mUIEventManager {};
     AudioMixer mAudioMixer {};
     Timer mTimer {};
