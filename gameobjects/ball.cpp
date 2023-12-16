@@ -20,8 +20,17 @@ static constexpr float Y_STARTING_POSITION_BOUNDS = 500.0f;
 
 static constexpr std::chrono::seconds BALL_RESET_WAIT_S { 3 };
 
+void Ball::InitalizeComponents()
+{
+    AddComponent<Transform>(glm::vec3(0.0f));
+    AddComponent<Rectangle>(BALL_WIDTH, BALL_WIDTH);
+    AddComponent<ColliderBox>(BALL_WIDTH, BALL_WIDTH);
+}
+
 void Ball::OnStart()
 {
+    mTransform = GetComponent<Transform>();
+    ASSERT(mTransform != nullptr);
     mMesh = std::make_unique<Rectangle>(BALL_WIDTH, BALL_WIDTH);
     mColliderBox = std::make_unique<ColliderBox>(BALL_WIDTH, BALL_WIDTH);
     mOpponent = Pong::FindGameObject<Opponent>();
@@ -37,6 +46,7 @@ void Ball::OnStart()
 void Ball::OnUpdate()
 {
     const glm::vec3 newPosition = GetPosition() + mVelocity * Timer::frameTime;
+    mTransform->mPosition = newPosition;
     SetPosition(newPosition);
 }
 
@@ -101,7 +111,7 @@ void Ball::ResetBall()
     const float yDir = Random::Bool() ? 1.0f : -1.0f;
     mVelocity = glm::normalize(glm::vec3(xDir, yDir, 0.0f)) * mSpeed;
 
-    mOpponent->OnBallVelocityChange(mVelocity);
+    // mOpponent->OnBallVelocityChange(mVelocity);
 }
 
 glm::vec3 Ball::GetVelocity() const

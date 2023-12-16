@@ -33,6 +33,8 @@ template<typename T> int TypeIDGenerator<T>::mID = 0;
 class Entity
 {
 public:
+    virtual void InitalizeComponents() = 0;
+
     void Register()
     {
         mID = sID++;
@@ -59,6 +61,7 @@ public:
     ComponentSubType* AddComponent(Args&&... args)
     {
         std::unique_ptr<ComponentSubType> component = std::make_unique<ComponentSubType>(std::forward<Args>(args)...);
+        component->SetEntity(this);
         component->SetEntityID(mID);
 
         const int componentID = GetComponentTypeID<ComponentSubType>();
@@ -74,7 +77,5 @@ private:
     std::unordered_map<int, BaseComponent*> mComponents {};
     int mID { 0 };
 };
-
-int Entity::sID = 0;
 
 } // namespace pong

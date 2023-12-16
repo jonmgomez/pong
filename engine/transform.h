@@ -10,7 +10,7 @@ namespace pong
 class Transform : public Component<Transform>
 {
 public:
-    Transform(glm::vec3 position) { mPosition = position; };
+    Transform(glm::vec3 position) { mPosition = position; }
 
     glm::vec3 mPosition { 0.0f };
 };

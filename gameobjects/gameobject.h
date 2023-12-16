@@ -1,5 +1,6 @@
 #pragma once
 
+#include "component.h"
 #include "colliderbox.h"
 #include "mesh.h"
 #include "sound.h"
@@ -20,6 +21,7 @@ public:
     GameObject() = default;
     virtual ~GameObject() = default;
 
+    virtual void InitalizeComponents() {};
     virtual void OnStart();
     virtual void OnUpdate();
     virtual void OnCollisionStart(GameObject& other);
@@ -45,10 +47,41 @@ public:
         return dynamic_cast<T*>(this);
     }
 
+    template<typename T>
+    T* GetComponent()
+    {
+        const int componentID = GetComponentTypeID<T>();
+
+        std::cout << mComponents.size() << " id: " << componentID << std::endl;
+
+        auto iterator = mComponents.find(componentID);
+        if (iterator != mComponents.end())
+        {
+            std::cout << "found" << std::endl;
+            return static_cast<T*>(mComponents[componentID]);
+        }
+
+        return nullptr;
+    }
+
+    template<typename T, typename... Args>
+    T* AddComponent(Args&&... args)
+    {
+        std::unique_ptr<T> component = std::make_unique<T>(std::forward<Args>(args)...);
+        component->SetGameObject(this);
+        component->SetGameObjectID(mId);
+
+        const int componentID = GetComponentTypeID<T>();
+        mComponents.insert(std::make_pair(componentID, component.get()));
+        T::AddComponent(std::move(component));
+
+        return component.get();
+    }
+
 protected:
-    std::unique_ptr<Mesh>mMesh { nullptr };
-    std::unique_ptr<ColliderBox>mColliderBox { nullptr };
-    // std::vector<Component> mComponents {};
+    std::unique_ptr<Mesh> mMesh {};
+    std::unique_ptr<ColliderBox> mColliderBox {};
+    std::unordered_map<int, BaseComponent*> mComponents {};
 
 private:
     static int sId;

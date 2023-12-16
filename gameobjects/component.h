@@ -7,8 +7,7 @@
 namespace pong
 {
 
-class Behavior;
-class Transform;
+class GameObject;
 
 template<typename ComponentSubType>
 int GetComponentTypeID()
@@ -35,26 +34,6 @@ public:
     static std::vector<std::unique_ptr<T>> mComponents;
 };
 
-// template<>
-// class Component<Behavior>
-// {
-// public:
-//     virtual ~Component() = default;
-
-//     static void AddComponent(std::unique_ptr<Behavior> component)
-//     {
-//         std::cout << "Component<Behavior>::AddComponent()" << std::endl;
-//         mComponents.push_back(std::move(component));
-//     }
-
-//     static const std::vector<std::unique_ptr<Behavior>>& GetComponents()
-//     {
-//         return mComponents;
-//     }
-
-//     static std::vector<std::unique_ptr<Behavior>> mComponents;
-// };
-
 template<typename T> std::vector<std::unique_ptr<T>> Component<T>::mComponents {};
 
 class BaseComponent
@@ -62,11 +41,14 @@ class BaseComponent
 public:
     virtual ~BaseComponent() = default;
 
-    int GetEntityID() const { return mEntityID; }
-    void SetEntityID(int entityID) { mEntityID = entityID; }
+    int GetGameObjectID() const { return mGameObjectID; }
+    void SetGameObjectID(int gameObjectID) { mGameObjectID = gameObjectID; }
+    GameObject* GetGameObject() const { return mGameObject; }
+    void SetGameObject(GameObject* gameObject) { mGameObject = gameObject; }
 
 private:
-    int mEntityID { 0 };
+    int mGameObjectID { 0 };
+    GameObject* mGameObject { nullptr };
 };
 
 } // namespace pong

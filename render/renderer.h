@@ -1,9 +1,11 @@
 #pragma once
 
 #include "indexbuffer.h"
+#include "mesh.h"
 #include "renderutils.h"
 #include "shader.h"
 #include "texture.h"
+#include "transform.h"
 #include "vertexarray.h"
 
 #include <memory>
@@ -18,6 +20,7 @@ public:
 
     static void Init();
     static void Cleanup();
+    static void DrawAllMeshes(const std::vector<std::unique_ptr<Mesh>>& meshes);
     static void Draw(const VertexArray& va, const IndexBuffer& ib,
                      const glm::vec3& position, const Texture& texture,
                      const GLRGBAColor& color);

@@ -5,6 +5,7 @@
 #include "component.h"
 #include "componentmanager.h"
 #include "gameobject.h"
+#include "entity.h"
 #include "text.h"
 #include "timer.h"
 #include "uielement.h"
@@ -40,6 +41,18 @@ public:
 
     static void LoadSceneNext(Scene scene);
 
+    template<typename T, typename... Args>
+    static T* CreateGameObject()
+    {
+        std::unique_ptr<T> newGameObject = std::make_unique<T>();
+        newGameObject->InitalizeComponents();
+        newGameObject->OnStart();
+        T* gameObjectPtr = newGameObject.get();
+        GetInstance().mGameObjects.emplace_back(std::move(newGameObject));
+        return gameObjectPtr;
+    }
+
+
     template<typename T>
     static T* FindGameObject()
     {
@@ -65,13 +78,6 @@ public:
         GetInstance().mUIElements.push_back(std::move(newUIElement));
         Pong::UpdateUIElementOrderLayer();
         return uiElementPtr;
-    }
-
-    template<typename ComponentSubType, typename... Args>
-    static void AddComponent(Args&&... args)
-    {
-        auto newComponent = std::make_unique<ComponentSubType>(std::forward<Args>(args)...);
-        GetInstance().mComponentManager.AddComponent<ComponentSubType>(newComponent);
     }
 
     static void UpdateUIElementOrderLayer();
@@ -100,6 +106,8 @@ private:
     std::vector<std::unique_ptr<ColliderBox>> mCompColliderBoxes {};
     std::vector<std::unique_ptr<Transform>> mCompTransforms {};
     //std::vector<std::unique_ptr<Mesh>> mCompMeshes {};
+
+    std::vector<Entity> mEntities {};
 
     CollisionManager mCollisionManager {};
     ComponentManager mComponentManager {};

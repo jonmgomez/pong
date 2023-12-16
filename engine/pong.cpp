@@ -6,7 +6,9 @@
 #include "input.h"
 #include "logger.h"
 #include "opponent.h"
+#include "entity.h"
 #include "player.h"
+#include "renderer.h"
 #include "scorearea.h"
 #include "scorecontroller.h"
 #include "settingsscreencontroller.h"
@@ -51,7 +53,11 @@ void Pong::Init()
 {
     GetInstance().GetAudioMixer().Init();
     GetInstance().GetTimer().Init();
-    GetInstance().LoadScene(Scene::TitleScreen);
+    // GetInstance().LoadScene(Scene::TitleScreen);
+
+    CreateGameObject<Ball>();
+    // main->AddComponent<Transform>(glm::vec3(0.0f, 100.0f, 0.0f));
+    // main->AddComponent<Rectangle>(50.0f, 50.0f);
 }
 
 void Pong::GameLoop()
@@ -71,15 +77,17 @@ void Pong::GameLoop()
         gameObject->OnUpdate();
     }
 
-    for (auto& gameObject : GetInstance().mGameObjects)
-    {
-        gameObject->Render();
-    }
+    // for (auto& gameObject : GetInstance().mGameObjects)
+    // {
+    //     gameObject->Render();
+    // }
 
-    for (auto& uiElements : GetInstance().mUIElements)
-    {
-        uiElements->Render();
-    }
+    Renderer::DrawAllMeshes(Mesh::GetComponents());
+
+    // for (auto& uiElements : GetInstance().mUIElements)
+    // {
+    //     uiElements->Render();
+    // }
 
     // Done last because input callbacks are done in glfwPollEvents after this loop.
     // So this effectively keeps the values from the new frame before updated from pressed -> held
