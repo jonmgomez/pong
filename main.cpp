@@ -1,9 +1,7 @@
 #include "main.h"
 
 #include "engine.h"
-#include "pong.h"
 #include "logger.h"
-#include "transform.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

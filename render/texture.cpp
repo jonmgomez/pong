@@ -1,7 +1,6 @@
 #include "texture.h"
 
 #include "renderutils.h"
-#include "logger.h"
 
 // Ignore numerous warnings from stb_image.h
 #pragma warning(push, 0)

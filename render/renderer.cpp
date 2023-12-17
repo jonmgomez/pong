@@ -1,11 +1,12 @@
 #include "renderer.h"
 
 #include "config.h"
-#include "logger.h"
-#include "indexbuffer.h"
 #include "gameobject.h"
+#include "indexbuffer.h"
+#include "logger.h"
 #include "renderutils.h"
 #include "texture.h"
+#include "transform.h"
 #include "vertexarray.h"
 
 #include <GL/glew.h>

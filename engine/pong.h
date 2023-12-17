@@ -6,11 +6,10 @@
 #include "gameobject.h"
 #include "text.h"
 #include "timer.h"
+#include "transform.h"
 #include "uielement.h"
 #include "uieventmanager.h"
 #include "utils.h"
-
-#include "transform.h"
 
 #include <chrono>
 #include <memory>
@@ -38,18 +37,6 @@ public:
     static void Cleanup();
 
     static void LoadSceneNext(Scene scene);
-
-    template<typename T, typename... Args>
-    static T* CreateGameObject()
-    {
-        std::unique_ptr<T> newGameObject = std::make_unique<T>(std::forward<Args>(args)...);
-        newGameObject->InitalizeComponents();
-        newGameObject->OnStart();
-        T* gameObjectPtr = newGameObject.get();
-        GetInstance().mGameObjects.emplace_back(std::move(newGameObject));
-        return gameObjectPtr;
-    }
-
 
     template<typename T>
     static T* FindGameObject()
