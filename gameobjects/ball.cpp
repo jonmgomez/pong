@@ -29,12 +29,12 @@ void Ball::InitalizeComponents()
 
 void Ball::OnStart()
 {
+    SetInstanceName("Ball");
+
     mTransform = GetComponent<Transform>();
     ASSERT(mTransform != nullptr);
-    mMesh = std::make_unique<Rectangle>(BALL_WIDTH, BALL_WIDTH);
-    mColliderBox = std::make_unique<ColliderBox>(BALL_WIDTH, BALL_WIDTH);
+
     mOpponent = Pong::FindGameObject<Opponent>();
-    SetInstanceName("Ball");
 
     mPaddleBounceSound.SetSource(Config::GetValue<std::string>("paddle_hit_sound"));
     mWallBounceSound.SetSource(Config::GetValue<std::string>("wall_hit_sound"));
@@ -45,7 +45,7 @@ void Ball::OnStart()
 
 void Ball::OnUpdate()
 {
-    const glm::vec3 newPosition = GetPosition() + mVelocity * Timer::frameTime;
+    const glm::vec3 newPosition = mTransform->mPosition + mVelocity * Timer::frameTime;
     mTransform->mPosition = newPosition;
     SetPosition(newPosition);
 }
@@ -54,7 +54,7 @@ void Ball::OnCollisionStart(GameObject& other)
 {
     if (other.GetInstanceName() == "ScoreArea")
     {
-        PlaySound(mScoreSound, GetPosition());
+        PlaySound(mScoreSound, mTransform->mPosition);
 
         SetTimeout(BALL_RESET_WAIT_S, [this] ()
         {
@@ -63,12 +63,12 @@ void Ball::OnCollisionStart(GameObject& other)
     }
     else if (other.GetInstanceName() == "Player" || other.GetInstanceName() == "Opponent")
     {
-        PlaySound(mPaddleBounceSound, GetPosition());
+        PlaySound(mPaddleBounceSound, mTransform->mPosition);
 
         mSpeed += BALL_SPEED_BOUNCE_INCREMENT;
 
-        const float yPosDiff = GetPosition().y - other.GetPosition().y;
-        const float paddleHeight = other.GetColliderBox()->GetHeight();
+        const float yPosDiff = mTransform->mPosition.y - other.GetComponent<Transform>()->mPosition.y;
+        const float paddleHeight = other.GetComponent<ColliderBox>()->GetHeight();
         const float pointInHeight = paddleHeight / 2.0f - fabs(yPosDiff);
 
         float percent = fabs(pointInHeight / (paddleHeight / 2.0f));
@@ -105,13 +105,13 @@ void Ball::ResetBall()
     mSpeed = BALL_START_SPEED;
 
     const float yStartingPos = Random::ValueInRange(-Y_STARTING_POSITION_BOUNDS, Y_STARTING_POSITION_BOUNDS);
-    SetPosition(glm::vec3(0.0f, yStartingPos, 0.0f));
+    mTransform->mPosition = glm::vec3(0.0f, yStartingPos, 0.0f);
 
     const float xDir = Random::Bool() ? 1.0f : -1.0f;
     const float yDir = Random::Bool() ? 1.0f : -1.0f;
     mVelocity = glm::normalize(glm::vec3(xDir, yDir, 0.0f)) * mSpeed;
 
-    // mOpponent->OnBallVelocityChange(mVelocity);
+    mOpponent->OnBallVelocityChange(mVelocity);
 }
 
 glm::vec3 Ball::GetVelocity() const

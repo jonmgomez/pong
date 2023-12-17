@@ -16,6 +16,11 @@ public:
     TextCharacter(const std::vector<unsigned char>& data,
                   float width, float height, const glm::vec3& offset,
                   int textureWidthPixels, int textureHeightPixels);
+    TextCharacter(const TextCharacter&) = delete;
+    TextCharacter& operator=(const TextCharacter&) = delete;
+    TextCharacter(TextCharacter&&) = default;
+    TextCharacter& operator=(TextCharacter&&) = default;
+    ~TextCharacter() = default;
 
     glm::vec3 GetOffset() const;
     void SetOffset(const glm::vec3& offset);

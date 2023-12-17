@@ -17,6 +17,8 @@ namespace pong
 class Mesh : public Component<Mesh>
 {
 public:
+    Mesh() = default;
+
     virtual void Draw(const glm::vec3& position) const;
 
     void SetEnabled(bool enabled);

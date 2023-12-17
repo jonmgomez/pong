@@ -5,7 +5,6 @@
 #include "component.h"
 #include "componentmanager.h"
 #include "gameobject.h"
-#include "entity.h"
 #include "text.h"
 #include "timer.h"
 #include "uielement.h"
@@ -102,12 +101,6 @@ private:
 
     std::vector<std::unique_ptr<GameObject>> mGameObjects {};
     std::vector<std::unique_ptr<UIElement>> mUIElements {};
-
-    std::vector<std::unique_ptr<ColliderBox>> mCompColliderBoxes {};
-    std::vector<std::unique_ptr<Transform>> mCompTransforms {};
-    //std::vector<std::unique_ptr<Mesh>> mCompMeshes {};
-
-    std::vector<Entity> mEntities {};
 
     CollisionManager mCollisionManager {};
     ComponentManager mComponentManager {};

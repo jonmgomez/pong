@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ball.h"
+#include "colliderbox.h"
 #include "gameobject.h"
 #include "transform.h"
 
@@ -27,6 +28,8 @@ private:
     void PredictBallPostion();
 
     Transform* mTransform { nullptr };
+    ColliderBox* mCollider { nullptr };
+
     glm::vec3 mTargetPosition { 0.0f };
     glm::vec3 mVelocity { 0.0f };
     float mSpeed { OPPONENT_MAX_SPEED };

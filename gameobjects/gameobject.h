@@ -29,18 +29,13 @@ public:
     virtual void OnCollisionStop(GameObject& other);
 
     int GetId() const;
-    ColliderBox* GetColliderBox() const;
-    glm::vec3 GetPosition() const;
-    void SetPosition(const glm::vec3& position);
     std::string GetInstanceName() const;
     void SetInstanceName(const std::string& name);
 
-    bool CheckForCollision(GameObject& other);
     void SetTimeout(std::chrono::duration<double> timeout, std::function<void()> callback);
     void PlaySound(const Sound& sound);
     void PlaySound(const Sound& sound, const glm::vec3& position);
 
-    void Render() const;
     template <typename T>
     T* GetObject()
     {
@@ -75,16 +70,11 @@ public:
         return component.get();
     }
 
-protected:
-    std::unique_ptr<Mesh> mMesh {};
-    std::unique_ptr<ColliderBox> mColliderBox {};
-    std::unordered_map<int, BaseComponent*> mComponents {};
-
 private:
     static int sId;
 
     int mId { sId++ };
-    glm::vec3 mPosition { glm::vec3(0.0f) };
+    std::unordered_map<int, BaseComponent*> mComponents {};
     std::string mInstanceName { "" };
 };
 

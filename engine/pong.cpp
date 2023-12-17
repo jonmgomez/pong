@@ -6,7 +6,6 @@
 #include "input.h"
 #include "logger.h"
 #include "opponent.h"
-#include "entity.h"
 #include "player.h"
 #include "renderer.h"
 #include "scorearea.h"
