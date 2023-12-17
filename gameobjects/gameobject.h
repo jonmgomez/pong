@@ -21,7 +21,7 @@ public:
     GameObject() = default;
     virtual ~GameObject() = default;
 
-    virtual void InitalizeComponents() {};
+    virtual void InitalizeComponents() = 0;
     virtual void OnStart();
     virtual void OnUpdate();
     virtual void OnCollisionStart(GameObject& other);
@@ -52,12 +52,9 @@ public:
     {
         const int componentID = GetComponentTypeID<T>();
 
-        std::cout << mComponents.size() << " id: " << componentID << std::endl;
-
         auto iterator = mComponents.find(componentID);
         if (iterator != mComponents.end())
         {
-            std::cout << "found" << std::endl;
             return static_cast<T*>(mComponents[componentID]);
         }
 

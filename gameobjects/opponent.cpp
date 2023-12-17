@@ -23,11 +23,20 @@ static int decisionTimeLowerBoundMs = 50;
 static int decisionTimeUpperBoundMs = 250;
 static float baseMissChance = 0.1f;
 
+void Opponent::InitalizeComponents()
+{
+    AddComponent<Transform>(OPPONENT_POSITION);
+    AddComponent<Rectangle>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
+    AddComponent<ColliderBox>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
+}
+
 void Opponent::OnStart()
 {
     SetDifficultySettings();
     mMesh = std::make_unique<Rectangle>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
     mColliderBox = std::make_unique<ColliderBox>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
+    mTransform = GetComponent<Transform>();
+    ASSERT(mTransform != nullptr);
     SetPosition(OPPONENT_POSITION);
     mTargetPosition = OPPONENT_POSITION;
     SetInstanceName("Opponent");
@@ -53,10 +62,12 @@ void Opponent::OnUpdate()
         if (distance > (mSpeed * Timer::frameTime))
         {
             mVelocity = glm::normalize(mTargetPosition - currentPosition) * mSpeed * Timer::frameTime;
+            mTransform->mPosition += mVelocity;
             SetPosition(currentPosition + mVelocity);
         }
         else
         {
+            mTransform->mPosition = mTargetPosition;
             SetPosition(mTargetPosition);
         }
     }
@@ -101,6 +112,7 @@ void Opponent::OnCollisionStart(GameObject& other)
     if (other.GetInstanceName().find("Wall") != std::string::npos)
     {
         // Undo movement to stop from going through wall
+        mTransform->mPosition -= mVelocity * Timer::frameTime;
         SetPosition(GetPosition() - mVelocity * Timer::frameTime);
     }
 }

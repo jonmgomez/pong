@@ -13,6 +13,7 @@ namespace pong
 class SettingsScreenController : public GameObject, public UIMenu
 {
 public:
+    void InitalizeComponents() override;
     void OnStart() override;
 
 private:

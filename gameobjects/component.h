@@ -9,6 +9,26 @@ namespace pong
 
 class GameObject;
 
+
+template <typename BaseClass>
+class TypeIDGenerator
+{
+public:
+    template<class SubClass>
+    static const int GetID(bool newInstance = false)
+    {
+        static int instanceCount = 0;
+        static const int idCounter = mID++;
+
+        return idCounter + (newInstance ? instanceCount++ : 0);
+    }
+
+private:
+    static int mID;
+};
+
+template<typename T> int TypeIDGenerator<T>::mID = 0;
+
 template<typename ComponentSubType>
 int GetComponentTypeID()
 {

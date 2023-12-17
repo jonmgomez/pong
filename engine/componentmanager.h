@@ -32,13 +32,6 @@ public:
 
     template<typename ComponentSubType>
     const std::vector<std::unique_ptr<ComponentSubType>>& GetComponents();
-
-
-private:
-    // std::vector<ComponentVector> mComponents {};
-    // std::vector<std::unique_ptr<ColliderBox>> mCompColliderBoxes {};
-    // std::vector<std::unique_ptr<Transform>> mCompTransforms {};
-    // std::vector<std::unique_ptr<Behaviour>> mCompBehaviours {};
 };
 
 } // namespace pong

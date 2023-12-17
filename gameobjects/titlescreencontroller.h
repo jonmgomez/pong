@@ -11,6 +11,7 @@ namespace pong
 class TitleScreenController : public GameObject, public UIMenu
 {
 public:
+    void InitalizeComponents() override;
     void OnStart() override;
 
 private:

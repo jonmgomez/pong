@@ -44,7 +44,7 @@ public:
     template<typename T, typename... Args>
     static T* CreateGameObject()
     {
-        std::unique_ptr<T> newGameObject = std::make_unique<T>();
+        std::unique_ptr<T> newGameObject = std::make_unique<T>(std::forward<Args>(args)...);
         newGameObject->InitalizeComponents();
         newGameObject->OnStart();
         T* gameObjectPtr = newGameObject.get();

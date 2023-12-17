@@ -18,6 +18,13 @@ ScoreArea::ScoreArea(float width, float height, bool playerSide)
     SetInstanceName("ScoreArea");
 }
 
+void ScoreArea::InitalizeComponents()
+{
+    AddComponent<Transform>();
+    AddComponent<Rectangle>(mColliderBox->GetWidth(), mColliderBox->GetHeight());
+    AddComponent<ColliderBox>(mColliderBox->GetWidth(), mColliderBox->GetHeight());
+}
+
 void ScoreArea::OnStart()
 {
     mScoreController = Pong::FindGameObject<ScoreController>();
