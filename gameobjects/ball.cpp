@@ -47,7 +47,6 @@ void Ball::OnUpdate()
 {
     const glm::vec3 newPosition = mTransform->mPosition + mVelocity * Timer::frameTime;
     mTransform->mPosition = newPosition;
-    SetPosition(newPosition);
 }
 
 void Ball::OnCollisionStart(GameObject& other)
@@ -93,7 +92,7 @@ void Ball::OnCollisionStart(GameObject& other)
     }
     else
     {
-        PlaySound(mWallBounceSound, GetPosition());
+        PlaySound(mWallBounceSound, mTransform->mPosition);
 
         mSpeed += BALL_SPEED_BOUNCE_INCREMENT;
         mVelocity = glm::normalize(glm::vec3(mVelocity.x, -mVelocity.y, 0.0f)) * mSpeed;

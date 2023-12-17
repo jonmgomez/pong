@@ -40,11 +40,11 @@ void Opponent::OnStart()
     mTargetPosition = OPPONENT_POSITION;
     mBall = Pong::FindGameObject<Ball>();
 
-    const GameObject* topWall = Pong::FindGameObjectByName("TopWall");
-    mTopWallBound = topWall->GetPosition().y;
+    GameObject* topWall = Pong::FindGameObjectByName("TopWall");
+    mTopWallBound = topWall->GetComponent<Transform>()->mPosition.y;
 
-    const GameObject* bottomWall = Pong::FindGameObjectByName("BottomWall");
-    mBottomWallBound = bottomWall->GetPosition().y;
+    GameObject* bottomWall = Pong::FindGameObjectByName("BottomWall");
+    mBottomWallBound = bottomWall->GetComponent<Transform>()->mPosition.y;
 
     ASSERT(mTransform != nullptr && mCollider != nullptr);
     ASSERT(mBall != nullptr)

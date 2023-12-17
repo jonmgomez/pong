@@ -11,8 +11,6 @@ Wall::Wall(float width, float height) :
     mWidth(width),
     mHeight(height)
 {
-    mMesh = std::make_unique<Rectangle>(width, height);
-    mColliderBox = std::make_unique<ColliderBox>(width, height);
     SetInstanceName("Wall");
 }
 

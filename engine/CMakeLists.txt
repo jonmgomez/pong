@@ -4,7 +4,7 @@ set(SOURCES
     circle.cpp
     colliderbox.cpp
     collisionmanager.cpp
-    componentmanager.cpp
+    component.cpp
     config.cpp
     difficulty.cpp
     engine.cpp

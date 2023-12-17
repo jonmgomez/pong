@@ -18,6 +18,8 @@ public:
 private:
     bool mIsPlayerScoreArea { false };
     ScoreController* mScoreController { nullptr };
+    float mWidth { 0.0f };
+    float mHeight { 0.0f };
 };
 
 } // namespace pong

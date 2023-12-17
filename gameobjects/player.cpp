@@ -23,12 +23,9 @@ void Player::InitalizeComponents()
 
 void Player::OnStart()
 {
-    mMesh = std::make_unique<Rectangle>(PLAYER_WIDTH, PLAYER_HEIGHT);
-    mColliderBox = std::make_unique<ColliderBox>(PLAYER_WIDTH, PLAYER_HEIGHT);
+    SetInstanceName("Player");
     mTransform = GetComponent<Transform>();
     ASSERT(mTransform != nullptr)
-    SetPosition(PLAYER_POSITION);
-    SetInstanceName("Player");
 }
 
 void Player::OnUpdate()
@@ -45,7 +42,6 @@ void Player::OnUpdate()
     }
 
     mTransform->mPosition += mVelocity * Timer::frameTime;
-    SetPosition(GetPosition() + mVelocity * Timer::frameTime);
 }
 
 void Player::OnCollisionStart(GameObject& other)
@@ -54,7 +50,6 @@ void Player::OnCollisionStart(GameObject& other)
     {
         // Undo movement to stop from going through wall
         mTransform->mPosition -= mVelocity * Timer::frameTime;
-        SetPosition(GetPosition() - mVelocity * Timer::frameTime);
     }
 }
 

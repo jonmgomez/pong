@@ -28,11 +28,6 @@ CollisionManager& Pong::GetCollisionManager()
     return mCollisionManager;
 }
 
-ComponentManager& Pong::GetComponentManager()
-{
-    return mComponentManager;
-}
-
 UIEventManager& Pong::GetUIEventManager()
 {
     return mUIEventManager;
@@ -58,7 +53,7 @@ void Pong::Init()
 void Pong::GameLoop()
 {
     Pong::GetInstance().GetTimer().HandleTimerCallbacks();
-    Pong::GetInstance().GetCollisionManager().ProcessCollisionsNew(ColliderBox::GetComponents());
+    Pong::GetInstance().GetCollisionManager().ProcessCollisions(ColliderBox::GetComponents());
     Pong::GetInstance().GetUIEventManager().ProcessEvents(GetInstance().mUIElements);
 
     if (GetInstance().mChangeSceneRequested)
@@ -146,27 +141,23 @@ void Pong::LoadScene(Scene scene)
             auto topWall = std::make_unique<Wall>(horizontalWallWidth, horizontalWallHeight);
             topWall->InitalizeComponents();
             topWall->GetComponent<Transform>()->mPosition = glm::vec3(0.0f, horizontalWallY, 0.0f);
-            topWall->SetPosition(glm::vec3(0.0f, horizontalWallY, 0.0f));
             topWall->SetInstanceName("TopWall");
             GetInstance().mGameObjects.push_back(std::move(topWall));
 
             auto bottomWall = std::make_unique<Wall>(horizontalWallWidth, horizontalWallHeight);
             bottomWall->InitalizeComponents();
             bottomWall->GetComponent<Transform>()->mPosition = glm::vec3(0.0f, -horizontalWallY, 0.0f);
-            bottomWall->SetPosition(glm::vec3(0.0f, -horizontalWallY, 0.0f));
             bottomWall->SetInstanceName("BottomWall");
             GetInstance().mGameObjects.push_back(std::move(bottomWall));
 
             auto playerScoreArea = std::make_unique<ScoreArea>(verticalWallWidth, verticalWallHeight, true);
             playerScoreArea->InitalizeComponents();
             playerScoreArea->GetComponent<Transform>()->mPosition = glm::vec3(verticalWallX, 0.0f, 0.0f);
-            playerScoreArea->SetPosition(glm::vec3(verticalWallX, 0.0f, 0.0f));
             GetInstance().mGameObjects.push_back(std::move(playerScoreArea));
 
             auto opponentScoreArea = std::make_unique<ScoreArea>(verticalWallWidth, verticalWallHeight, false);
             opponentScoreArea->InitalizeComponents();
             opponentScoreArea->GetComponent<Transform>()->mPosition = glm::vec3(-verticalWallX, 0.0f, 0.0f);
-            opponentScoreArea->SetPosition(glm::vec3(-verticalWallX, 0.0f, 0.0f));
             GetInstance().mGameObjects.push_back(std::move(opponentScoreArea));
 
             auto scoreController = std::make_unique<ScoreController>();

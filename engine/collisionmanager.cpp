@@ -10,40 +10,7 @@
 namespace pong
 {
 
-void CollisionManager::ProcessCollisions(const std::vector<std::unique_ptr<GameObject>>& gameObjects)
-{
-    for (int index = 0; index < gameObjects.size(); index++)
-    {
-        auto& gameObject = gameObjects[index];
-        for (int otherIndex = index + 1; otherIndex < gameObjects.size(); otherIndex++)
-        {
-            auto& otherGameObject = gameObjects[otherIndex];
-
-            const bool collision = gameObject->CheckForCollision(*otherGameObject);
-            const bool wereColliding = IsCurrentlyColliding(gameObject->GetId(), otherGameObject->GetId());
-
-            if (collision && !wereColliding)
-            {
-                gameObject->OnCollisionStart(*otherGameObject);
-                otherGameObject->OnCollisionStart(*gameObject);
-                mCurrentCollisions.push_back({ gameObject->GetId(), otherGameObject->GetId() });
-            }
-            else if (collision)
-            {
-                gameObject->OnCollisionStay(*otherGameObject);
-                otherGameObject->OnCollisionStay(*gameObject);
-            }
-            else if (wereColliding)
-            {
-                gameObject->OnCollisionStop(*otherGameObject);
-                otherGameObject->OnCollisionStop(*gameObject);
-                RemoveGameObjectCollisionPair(gameObject->GetId(), otherGameObject->GetId());
-            }
-        }
-    }
-}
-
-void CollisionManager::ProcessCollisionsNew(const std::vector<std::unique_ptr<ColliderBox>>& colliders)
+void CollisionManager::ProcessCollisions(const std::vector<std::unique_ptr<ColliderBox>>& colliders)
 {
     for (int index = 0; index < colliders.size(); index++)
     {
