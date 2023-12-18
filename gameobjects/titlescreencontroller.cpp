@@ -20,6 +20,10 @@ static constexpr glm::vec3 PONG_TEXT_POSITION(0.0f, 750.0f, 0.0f);
 static constexpr glm::vec3 SETTINGS_BUTTON_POSITION(0.0f, -300.0f, 0.0f);
 static constexpr glm::vec3 QUIT_BUTTON_POSITION(0.0f, -600.0f, 0.0f);
 
+void TitleScreenController::InitalizeComponents()
+{
+}
+
 void TitleScreenController::OnStart()
 {
     const std::string kFontPath = Config::GetValue<std::string>("font");

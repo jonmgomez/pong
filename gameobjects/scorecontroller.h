@@ -9,6 +9,7 @@ namespace pong
 class ScoreController : public GameObject
 {
 public:
+    void InitalizeComponents() override;
     void OnStart() override;
 
     int GetPlayerScore() const;

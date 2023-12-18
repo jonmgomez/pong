@@ -1,5 +1,6 @@
 #pragma once
 
+#include "colliderbox.h"
 #include "gameobject.h"
 
 #include <memory>
@@ -17,7 +18,7 @@ struct CollisionPair
 class CollisionManager
 {
 public:
-    void ProcessCollisions(const std::vector<std::unique_ptr<GameObject>>& gameObjects);
+    void ProcessCollisions(const std::vector<std::unique_ptr<ColliderBox>>& colliderBoxes);
 
 private:
     bool IsCurrentlyColliding(int firstGameObjectId, int secondGameObjectId) const;

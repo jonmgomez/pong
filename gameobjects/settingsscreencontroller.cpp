@@ -36,6 +36,9 @@ static constexpr glm::vec3 VOLUME_SLIDER_POSITION = glm::vec3(200.0f, -450.0f, 0
 static constexpr float DIFFICULTY_SPREAD_H = 550.0f;
 static constexpr float DIFFICULTY_SPREAD_V = 150.0f;
 
+void SettingsScreenController::InitalizeComponents()
+{
+}
 
 void SettingsScreenController::OnStart()
 {

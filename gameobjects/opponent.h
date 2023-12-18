@@ -1,7 +1,9 @@
 #pragma once
 
 #include "ball.h"
+#include "colliderbox.h"
 #include "gameobject.h"
+#include "transform.h"
 
 namespace pong
 {
@@ -11,6 +13,7 @@ class Ball;
 class Opponent : public GameObject
 {
 public:
+    void InitalizeComponents() override;
     void OnStart() override;
     void OnUpdate() override;
     void OnCollisionStart(GameObject& other) override;
@@ -23,6 +26,9 @@ private:
 
     void SetDifficultySettings();
     void PredictBallPostion();
+
+    Transform* mTransform { nullptr };
+    ColliderBox* mCollider { nullptr };
 
     glm::vec3 mTargetPosition { 0.0f };
     glm::vec3 mVelocity { 0.0f };

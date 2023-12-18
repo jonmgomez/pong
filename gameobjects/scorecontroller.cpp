@@ -12,6 +12,10 @@ constexpr float SCORE_TEXT_Y = 750.0f;
 constexpr float SCORE_TEXT_SCALE = 1.0f;
 constexpr int SCORE_TEXT_PIXEL_LINE_HEIGHT = 256;
 
+void ScoreController::InitalizeComponents()
+{
+}
+
 void ScoreController::OnStart()
 {
     mPlayerScoreText = Pong::AddUIElement<Text>("0", Config::GetValue<std::string>("font"), SCORE_TEXT_SCALE, SCORE_TEXT_PIXEL_LINE_HEIGHT);

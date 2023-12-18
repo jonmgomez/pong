@@ -1,10 +1,12 @@
 #include "renderer.h"
 
 #include "config.h"
-#include "logger.h"
+#include "gameobject.h"
 #include "indexbuffer.h"
+#include "logger.h"
 #include "renderutils.h"
 #include "texture.h"
+#include "transform.h"
 #include "vertexarray.h"
 
 #include <GL/glew.h>
@@ -74,6 +76,22 @@ void Renderer::Cleanup()
 {
     GetInstance().mShader.reset();
     GetInstance().mShader = nullptr;
+}
+
+void Renderer::DrawAllMeshes(const std::vector<std::unique_ptr<Mesh>>& meshes)
+{
+    for (const auto& mesh : meshes)
+    {
+        glm::vec3 position(0.0f);
+
+        const Transform* transform = mesh->GetGameObject()->GetComponent<Transform>();
+        if (transform != nullptr)
+        {
+            position = transform->mPosition;
+        }
+
+        mesh->Draw(position);
+    }
 }
 
 void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib,

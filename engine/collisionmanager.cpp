@@ -1,6 +1,7 @@
 #include "collisionmanager.h"
 
 #include "gameobject.h"
+#include "transform.h"
 
 #include <algorithm>
 #include <memory>
@@ -9,16 +10,27 @@
 namespace pong
 {
 
-void CollisionManager::ProcessCollisions(const std::vector<std::unique_ptr<GameObject>>& gameObjects)
+void CollisionManager::ProcessCollisions(const std::vector<std::unique_ptr<ColliderBox>>& colliders)
 {
-    for (int index = 0; index < gameObjects.size(); index++)
+    for (int index = 0; index < colliders.size(); index++)
     {
-        auto& gameObject = gameObjects[index];
-        for (int otherIndex = index + 1; otherIndex < gameObjects.size(); otherIndex++)
+        auto& collider = colliders[index];
+        if (auto* transform = collider->GetGameObject()->GetComponent<Transform>(); transform != nullptr)
         {
-            auto& otherGameObject = gameObjects[otherIndex];
+            collider->OnPositionUpdate(transform->mPosition);
+        }
 
-            const bool collision = gameObject->CheckForCollision(*otherGameObject);
+        for (int otherIndex = index + 1; otherIndex < colliders.size(); otherIndex++)
+        {
+            auto& otherCollider = colliders[otherIndex];
+            if (otherCollider->GetGameObject()->GetComponent<Transform>() != nullptr)
+            {
+                otherCollider->OnPositionUpdate(otherCollider->GetGameObject()->GetComponent<Transform>()->mPosition);
+            }
+            const bool collision = collider->CheckForCollision(*otherCollider);
+
+            GameObject* gameObject = collider->GetGameObject();
+            GameObject* otherGameObject = otherCollider->GetGameObject();
             const bool wereColliding = IsCurrentlyColliding(gameObject->GetId(), otherGameObject->GetId());
 
             if (collision && !wereColliding)

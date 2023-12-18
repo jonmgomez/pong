@@ -11,11 +11,19 @@
 namespace pong
 {
 
-ScoreArea::ScoreArea(float width, float height, bool playerSide)
+ScoreArea::ScoreArea(float width, float height, bool playerSide) :
+    mWidth { width },
+    mHeight { height },
+    mIsPlayerScoreArea { playerSide }
 {
-    mColliderBox = std::make_unique<ColliderBox>(width, height);
-    mIsPlayerScoreArea = playerSide;
     SetInstanceName("ScoreArea");
+}
+
+void ScoreArea::InitalizeComponents()
+{
+    AddComponent<Transform>();
+    AddComponent<Rectangle>(mWidth, mHeight);
+    AddComponent<ColliderBox>(mWidth, mHeight);
 }
 
 void ScoreArea::OnStart()

@@ -34,26 +34,6 @@ int GameObject::GetId() const
     return mId;
 }
 
-ColliderBox* GameObject::GetColliderBox() const
-{
-    return mColliderBox.get();
-}
-
-glm::vec3 GameObject::GetPosition() const
-{
-    return mPosition;
-}
-
-void GameObject::SetPosition(const glm::vec3& position)
-{
-    mPosition = position;
-
-    if (mColliderBox != nullptr)
-    {
-        mColliderBox->OnPositionUpdate(mPosition);
-    }
-}
-
 std::string GameObject::GetInstanceName() const
 {
     return mInstanceName;
@@ -62,15 +42,6 @@ std::string GameObject::GetInstanceName() const
 void GameObject::SetInstanceName(const std::string& name)
 {
     mInstanceName = name;
-}
-
-bool GameObject::CheckForCollision(GameObject& other)
-{
-    if (mColliderBox != nullptr && other.mColliderBox != nullptr)
-    {
-        return mColliderBox->CheckForCollision(*other.mColliderBox);
-    }
-    return false;
 }
 
 void GameObject::SetTimeout(std::chrono::duration<double> timeout, std::function<void()> callback)
@@ -86,14 +57,6 @@ void GameObject::PlaySound(const Sound& sound)
 void GameObject::PlaySound(const Sound& sound, const glm::vec3& position)
 {
     Pong::GetInstance().GetAudioMixer().PlaySound(sound, position);
-}
-
-void GameObject::Render() const
-{
-    if (mMesh != nullptr)
-    {
-        mMesh->Draw(mPosition);
-    }
 }
 
 } // namespace pong

@@ -2,9 +2,11 @@
 
 #include "audiomixer.h"
 #include "collisionmanager.h"
+#include "component.h"
 #include "gameobject.h"
 #include "text.h"
 #include "timer.h"
+#include "transform.h"
 #include "uielement.h"
 #include "uieventmanager.h"
 #include "utils.h"

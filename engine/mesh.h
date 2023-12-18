@@ -1,5 +1,6 @@
 #pragma once
 
+#include "component.h"
 #include "indexbuffer.h"
 #include "texture.h"
 #include "renderutils.h"
@@ -13,7 +14,7 @@
 namespace pong
 {
 
-class Mesh
+class Mesh : public Component<Mesh>
 {
 public:
     virtual void Draw(const glm::vec3& position) const;

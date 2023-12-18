@@ -23,22 +23,30 @@ static int decisionTimeLowerBoundMs = 50;
 static int decisionTimeUpperBoundMs = 250;
 static float baseMissChance = 0.1f;
 
+void Opponent::InitalizeComponents()
+{
+    AddComponent<Transform>(OPPONENT_POSITION);
+    AddComponent<Rectangle>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
+    AddComponent<ColliderBox>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
+}
+
 void Opponent::OnStart()
 {
-    SetDifficultySettings();
-    mMesh = std::make_unique<Rectangle>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
-    mColliderBox = std::make_unique<ColliderBox>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
-    SetPosition(OPPONENT_POSITION);
-    mTargetPosition = OPPONENT_POSITION;
     SetInstanceName("Opponent");
+    SetDifficultySettings();
+
+    mTransform = GetComponent<Transform>();
+    mCollider = GetComponent<ColliderBox>();
+    mTargetPosition = OPPONENT_POSITION;
     mBall = Pong::FindGameObject<Ball>();
 
-    const GameObject* topWall = Pong::FindGameObjectByName("TopWall");
-    mTopWallBound = topWall->GetPosition().y;
+    GameObject* topWall = Pong::FindGameObjectByName("TopWall");
+    mTopWallBound = topWall->GetComponent<Transform>()->mPosition.y;
 
-    const GameObject* bottomWall = Pong::FindGameObjectByName("BottomWall");
-    mBottomWallBound = bottomWall->GetPosition().y;
+    GameObject* bottomWall = Pong::FindGameObjectByName("BottomWall");
+    mBottomWallBound = bottomWall->GetComponent<Transform>()->mPosition.y;
 
+    ASSERT(mTransform != nullptr && mCollider != nullptr);
     ASSERT(mBall != nullptr)
     ASSERT(bottomWall != nullptr);
     ASSERT(topWall != nullptr);
@@ -48,16 +56,16 @@ void Opponent::OnUpdate()
 {
     if (mChasingBall)
     {
-        const glm::vec3 currentPosition = GetPosition();
+        const glm::vec3 currentPosition = mTransform->mPosition;
         const float distance = glm::distance(currentPosition, mTargetPosition);
         if (distance > (mSpeed * Timer::frameTime))
         {
             mVelocity = glm::normalize(mTargetPosition - currentPosition) * mSpeed * Timer::frameTime;
-            SetPosition(currentPosition + mVelocity);
+            mTransform->mPosition += mVelocity;
         }
         else
         {
-            SetPosition(mTargetPosition);
+            mTransform->mPosition = mTargetPosition;
         }
     }
 }
@@ -101,7 +109,7 @@ void Opponent::OnCollisionStart(GameObject& other)
     if (other.GetInstanceName().find("Wall") != std::string::npos)
     {
         // Undo movement to stop from going through wall
-        SetPosition(GetPosition() - mVelocity * Timer::frameTime);
+        mTransform->mPosition -= mVelocity * Timer::frameTime;
     }
 }
 
@@ -112,8 +120,8 @@ void Opponent::OnCollisionStay(GameObject& other)
 
 void Opponent::PredictBallPostion()
 {
-    const glm::vec3 currentPosition = GetPosition();
-    const glm::vec3 ballPosition = mBall->GetPosition();
+    const glm::vec3 currentPosition = mTransform->mPosition;
+    const glm::vec3 ballPosition = mBall->GetComponent<Transform>()->mPosition;
     glm::vec3 ballVelocity = mBall->GetVelocity() * Timer::frameTime;
     glm::vec3 finalBallPosition = ballPosition;
 
@@ -156,7 +164,7 @@ void Opponent::PredictBallPostion()
     {
         // Add some error to the final ball position
         // So the paddle does not always hit the ball perfectly
-        const float errorBound = GetColliderBox()->GetHeight() / 4.0f;
+        const float errorBound = mCollider->GetHeight() / 4.0f;
         finalBallPosition.y += Random::ValueInRange(-errorBound, errorBound);
     }
 

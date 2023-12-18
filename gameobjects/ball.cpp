@@ -20,12 +20,21 @@ static constexpr float Y_STARTING_POSITION_BOUNDS = 500.0f;
 
 static constexpr std::chrono::seconds BALL_RESET_WAIT_S { 3 };
 
+void Ball::InitalizeComponents()
+{
+    AddComponent<Transform>(glm::vec3(0.0f));
+    AddComponent<Rectangle>(BALL_WIDTH, BALL_WIDTH);
+    AddComponent<ColliderBox>(BALL_WIDTH, BALL_WIDTH);
+}
+
 void Ball::OnStart()
 {
-    mMesh = std::make_unique<Rectangle>(BALL_WIDTH, BALL_WIDTH);
-    mColliderBox = std::make_unique<ColliderBox>(BALL_WIDTH, BALL_WIDTH);
-    mOpponent = Pong::FindGameObject<Opponent>();
     SetInstanceName("Ball");
+
+    mTransform = GetComponent<Transform>();
+    ASSERT(mTransform != nullptr);
+
+    mOpponent = Pong::FindGameObject<Opponent>();
 
     mPaddleBounceSound.SetSource(Config::GetValue<std::string>("paddle_hit_sound"));
     mWallBounceSound.SetSource(Config::GetValue<std::string>("wall_hit_sound"));
@@ -36,15 +45,15 @@ void Ball::OnStart()
 
 void Ball::OnUpdate()
 {
-    const glm::vec3 newPosition = GetPosition() + mVelocity * Timer::frameTime;
-    SetPosition(newPosition);
+    const glm::vec3 newPosition = mTransform->mPosition + mVelocity * Timer::frameTime;
+    mTransform->mPosition = newPosition;
 }
 
 void Ball::OnCollisionStart(GameObject& other)
 {
     if (other.GetInstanceName() == "ScoreArea")
     {
-        PlaySound(mScoreSound, GetPosition());
+        PlaySound(mScoreSound, mTransform->mPosition);
 
         SetTimeout(BALL_RESET_WAIT_S, [this] ()
         {
@@ -53,12 +62,12 @@ void Ball::OnCollisionStart(GameObject& other)
     }
     else if (other.GetInstanceName() == "Player" || other.GetInstanceName() == "Opponent")
     {
-        PlaySound(mPaddleBounceSound, GetPosition());
+        PlaySound(mPaddleBounceSound, mTransform->mPosition);
 
         mSpeed += BALL_SPEED_BOUNCE_INCREMENT;
 
-        const float yPosDiff = GetPosition().y - other.GetPosition().y;
-        const float paddleHeight = other.GetColliderBox()->GetHeight();
+        const float yPosDiff = mTransform->mPosition.y - other.GetComponent<Transform>()->mPosition.y;
+        const float paddleHeight = other.GetComponent<ColliderBox>()->GetHeight();
         const float pointInHeight = paddleHeight / 2.0f - fabs(yPosDiff);
 
         float percent = fabs(pointInHeight / (paddleHeight / 2.0f));
@@ -83,7 +92,7 @@ void Ball::OnCollisionStart(GameObject& other)
     }
     else
     {
-        PlaySound(mWallBounceSound, GetPosition());
+        PlaySound(mWallBounceSound, mTransform->mPosition);
 
         mSpeed += BALL_SPEED_BOUNCE_INCREMENT;
         mVelocity = glm::normalize(glm::vec3(mVelocity.x, -mVelocity.y, 0.0f)) * mSpeed;
@@ -95,7 +104,7 @@ void Ball::ResetBall()
     mSpeed = BALL_START_SPEED;
 
     const float yStartingPos = Random::ValueInRange(-Y_STARTING_POSITION_BOUNDS, Y_STARTING_POSITION_BOUNDS);
-    SetPosition(glm::vec3(0.0f, yStartingPos, 0.0f));
+    mTransform->mPosition = glm::vec3(0.0f, yStartingPos, 0.0f);
 
     const float xDir = Random::Bool() ? 1.0f : -1.0f;
     const float yDir = Random::Bool() ? 1.0f : -1.0f;
