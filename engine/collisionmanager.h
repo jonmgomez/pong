@@ -28,4 +28,4 @@ private:
     std::vector<CollisionPair>mCurrentCollisions {};
 };
 
-} // namespace pongs
+} // namespace pong

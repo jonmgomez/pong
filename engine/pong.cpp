@@ -119,13 +119,6 @@ void Pong::LoadScene(Scene scene)
         }
         case Scene::Game:
         {
-            constexpr float horizontalWallWidth = 1280 * 2;
-            constexpr float horizontalWallHeight = 25;
-            constexpr float horizontalWallY = 960;
-            constexpr float verticalWallWidth = 25;
-            constexpr float verticalWallHeight = 960 * 2;
-            constexpr float verticalWallX = 1280;
-
             auto player = std::make_unique<Player>();
             player->InitalizeComponents();
             GetInstance().mGameObjects.push_back(std::move(player));
@@ -137,6 +130,13 @@ void Pong::LoadScene(Scene scene)
             auto ball = std::make_unique<Ball>();
             ball->InitalizeComponents();
             GetInstance().mGameObjects.push_back(std::move(ball));
+
+            constexpr float horizontalWallWidth = 1280 * 2;
+            constexpr float horizontalWallHeight = 25;
+            constexpr float horizontalWallY = 960;
+            constexpr float verticalWallWidth = 25;
+            constexpr float verticalWallHeight = 960 * 2;
+            constexpr float verticalWallX = 1280;
 
             auto topWall = std::make_unique<Wall>(horizontalWallWidth, horizontalWallHeight);
             topWall->InitalizeComponents();
