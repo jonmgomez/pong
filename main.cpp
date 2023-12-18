@@ -25,6 +25,7 @@ int main(int argc, char* argv[])
 
     Engine::GetInstance().Init(argv[1]);
     Engine::GetInstance().RunApplication();
+    Engine::GetInstance().Cleanup();
 
     return 0;
 }

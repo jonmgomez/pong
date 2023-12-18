@@ -1,5 +1,6 @@
 #include "applicationwindow.h"
 
+#include "config.h"
 #include "logger.h"
 #include "utils.h"
 
@@ -41,7 +42,7 @@ void ApplicationWindow::Init()
 
     glfwSetFramebufferSizeCallback(GetInstance().mWindow, ApplicationWindow::WindowResizeCallback);
     glfwMakeContextCurrent(GetInstance().mWindow);
-    SetVSync(true);
+    SetVSync(Config::GetValue("vsync", false));
 
     LogInfo("Window created: {}x{}", SCREEN_WIDTH, SCREEN_HEIGHT);
 }
@@ -94,6 +95,7 @@ void ApplicationWindow::SetVSync(bool active)
 {
     GetInstance().mVSync = active;
     glfwSwapInterval(GetInstance().mVSync ? GLFW_TRUE : GLFW_FALSE);
+    Config::SetValue("vsync", active);
 }
 
 GLFWwindow* ApplicationWindow::GetWindow() const

@@ -64,7 +64,7 @@ void SettingsScreenController::OnStart()
     mVSyncText = Pong::AddUIElement<Text>("VSync", font, 1.0f, 75);
     mVSyncText->SetPosition(VSYNC_TEXT_POSITION);
 
-    mVSync = Pong::AddUIElement<CheckBox>(100.0f, 100.0f, Config::GetValue<bool>("vsync", true));
+    mVSync = Pong::AddUIElement<CheckBox>(100.0f, 100.0f, Config::GetValue<bool>("vsync", ApplicationWindow::IsVSyncActive()));
     mVSync->SetPosition(VSYNC_CHECKBOX_POSITION);
     mVSync->AddValueChangeListener([] (bool value) {
         ApplicationWindow::SetVSync(value);
@@ -117,7 +117,7 @@ void SettingsScreenController::OnStart()
     mVolumeSlider->SetPosition(VOLUME_SLIDER_POSITION);
     mVolumeSlider->AddValueChangeListener([this] (float newValue) {
         Pong::GetInstance().GetAudioMixer().SetVolume(newValue);
-        this->mVolumeText->SetText("Volume: " + std::to_string(static_cast<int>(newValue * 100)));
+        this->mVolumeText->SetText("Volume: " + std::to_string(static_cast<int>(roundf(newValue * 100.0f))));
     });
 }
 

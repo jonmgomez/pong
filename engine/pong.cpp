@@ -85,6 +85,7 @@ void Pong::Reset()
 {
     GetInstance().mGameObjects.clear();
     GetInstance().mUIElements.clear();
+    GetInstance().mTimer.Reset();
 }
 
 void Pong::Cleanup()

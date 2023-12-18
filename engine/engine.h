@@ -15,6 +15,7 @@ public:
 
     void Init(const std::string& configPath);
     void RunApplication();
+    void Cleanup();
 
     static int GetTargetFPS();
     static void SetTargetFPS(int fps);
@@ -30,7 +31,6 @@ private:
     Engine& operator=(Engine&&) = delete;
 
     bool IsNextFrameReady();
-    void Cleanup();
 
     int mTargetFPS { 60 };
     std::chrono::nanoseconds mTimePerFrame { 0 };

@@ -11,10 +11,12 @@ class Config
 {
 private:
     nlohmann::json mConfig {};
+    std::string mFilePath {};
 
 public:
     static Config& GetInstance();
     static bool LoadConfig(const std::string& filePath);
+    static void SaveConfig();
 
     static std::optional<nlohmann::json> GetJsonValue(const std::string& key);
 
@@ -52,6 +54,12 @@ public:
         {
             return defaultValue;
         }
+    }
+
+    template<typename T>
+    static void SetValue(const std::string& key, T value)
+    {
+        GetInstance().mConfig[key] = value;
     }
 };
 

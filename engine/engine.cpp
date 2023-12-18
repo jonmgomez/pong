@@ -32,10 +32,9 @@ void Engine::Init(const std::string& configPath)
     const auto targetFPSJson = Config::GetJsonValue("target_fps");
     if (targetFPSJson.has_value() && targetFPSJson.value().is_number_integer())
     {
-        ApplicationWindow::SetVSync(false);
         if (targetFPSJson.value() > 0)
         {
-            SetTargetFPS(targetFPSJson.value());
+            Engine::SetTargetFPS(targetFPSJson.value());
             LogInfo("Target FPS: {}", mTargetFPS);
         }
         else
@@ -97,9 +96,14 @@ bool Engine::IsNextFrameReady()
 
 void Engine::Cleanup()
 {
-    ApplicationWindow::Cleanup();
+    if (Config::GetValue("save_config_settings", true))
+    {
+        Config::SaveConfig();
+    }
+
     Pong::Cleanup();
     Renderer::Cleanup();
+    ApplicationWindow::Cleanup();
 }
 
 int Engine::GetTargetFPS()
@@ -112,6 +116,7 @@ void Engine::SetTargetFPS(int fps)
     ASSERT(fps > 0);
     GetInstance().mTargetFPS = fps;
     GetInstance().mTimePerFrame = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::seconds(1)) / GetInstance().mTargetFPS;
+    Config::SetValue("target_fps", fps);
 }
 
 void Engine::QuitApplication()

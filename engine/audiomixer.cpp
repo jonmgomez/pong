@@ -20,6 +20,7 @@ static constexpr int FRAMES_PER_BUFFER = 256;
 static constexpr glm::vec3 LEFT_LISTENER_POSITION = glm::vec3(-1125.0f, 0.0f, 0.0f);
 static constexpr glm::vec3 RIGHT_LISTENER_POSITION = glm::vec3(1125.0f, 0.0f, 0.0f);
 static constexpr float MIN_DISTANCE = 250.0f;
+static constexpr float DEFAULT_VOLUME = 0.5f;
 
 int AudioCallbackWrapper(const void* inputBuffer, void* outputBuffer,
                   unsigned long framesPerBuffer,
@@ -60,6 +61,9 @@ void AudioMixer::Init()
         Pa_Terminate();
         ASSERT(false);
     }
+
+    mVolume = Config::GetValue<float>("volume", DEFAULT_VOLUME);
+    mSpatialAudioEnabled = Config::GetValue<bool>("spatial_audio", false);
 }
 
 void AudioMixer::Cleanup()
@@ -176,6 +180,7 @@ float AudioMixer::GetVolume() const
 void AudioMixer::SetVolume(float volume)
 {
     mVolume = volume;
+    Config::SetValue("volume", roundf(volume * 100.0f) / 100.0f);
 }
 
 bool AudioMixer::GetSpatialAudioEnabled() const
@@ -186,6 +191,7 @@ bool AudioMixer::GetSpatialAudioEnabled() const
 void AudioMixer::SetSpatialAudioEnabled(bool enabled)
 {
     mSpatialAudioEnabled = enabled;
+    Config::SetValue("spatial_audio", enabled);
 }
 
 } // namespace pong

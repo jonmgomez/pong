@@ -33,6 +33,7 @@ public:
     void Init();
     void AddTimer(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
     void HandleTimerCallbacks();
+    void Reset();
 
 private:
     std::vector<TimerRequest> mActiveTimers {};

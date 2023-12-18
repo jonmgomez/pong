@@ -48,4 +48,9 @@ void Timer::AddTimer(int gameObjectId, std::chrono::duration<double> timeout, st
     mActiveTimers.emplace_back(gameObjectId, timeoutUs, callback);
 }
 
+void Timer::Reset()
+{
+    mActiveTimers.clear();
+}
+
 } // namespace pong
