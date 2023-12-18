@@ -59,7 +59,7 @@ public:
     template<typename T, typename... Args>
     T* AddComponent(Args&&... args)
     {
-        std::unique_ptr<T> component = std::make_unique<T>(std::forward<Args>(args)...);
+        auto component = std::make_unique<T>(std::forward<Args>(args)...);
         component->SetGameObject(this);
         component->SetGameObjectID(mId);
 

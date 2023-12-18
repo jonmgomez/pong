@@ -13,9 +13,9 @@ namespace pong
 
 ScoreArea::ScoreArea(float width, float height, bool playerSide) :
     mWidth { width },
-    mHeight { height }
+    mHeight { height },
+    mIsPlayerScoreArea { playerSide }
 {
-    mIsPlayerScoreArea = playerSide;
     SetInstanceName("ScoreArea");
 }
 

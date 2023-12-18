@@ -15,10 +15,11 @@ void CollisionManager::ProcessCollisions(const std::vector<std::unique_ptr<Colli
     for (int index = 0; index < colliders.size(); index++)
     {
         auto& collider = colliders[index];
-        if (collider->GetGameObject()->GetComponent<Transform>() != nullptr)
+        if (auto* transform = collider->GetGameObject()->GetComponent<Transform>(); transform != nullptr)
         {
-            collider->OnPositionUpdate(collider->GetGameObject()->GetComponent<Transform>()->mPosition);
+            collider->OnPositionUpdate(transform->mPosition);
         }
+
         for (int otherIndex = index + 1; otherIndex < colliders.size(); otherIndex++)
         {
             auto& otherCollider = colliders[otherIndex];

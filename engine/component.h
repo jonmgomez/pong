@@ -14,12 +14,10 @@ class TypeIDGenerator
 {
 public:
     template<class SubClass>
-    static const int GetID(bool newInstance = false)
+    static const int GetID()
     {
-        static int instanceCount = 0;
         static const int idCounter = sID++;
-
-        return idCounter + (newInstance ? instanceCount++ : 0);
+        return idCounter;
     }
 
 private:
@@ -34,26 +32,26 @@ int GetComponentTypeID()
     return TypeIDGenerator<BaseComponent>::GetID<ComponentSubType>();
 }
 
-template<class T>
+template<class Derived>
 class Component : public BaseComponent
 {
 public:
     virtual ~Component() = default;
 
-    static void AddComponent(std::unique_ptr<T> component)
+    static void AddComponent(std::unique_ptr<Derived> component)
     {
         mComponents.push_back(std::move(component));
     }
 
-    static const std::vector<std::unique_ptr<T>>& GetComponents()
+    static const std::vector<std::unique_ptr<Derived>>& GetComponents()
     {
         return mComponents;
     }
 
-    static std::vector<std::unique_ptr<T>> mComponents;
+    static std::vector<std::unique_ptr<Derived>> mComponents;
 };
 
-template<typename T> std::vector<std::unique_ptr<T>> Component<T>::mComponents {};
+template<typename Derived> std::vector<std::unique_ptr<Derived>> Component<Derived>::mComponents {};
 
 class BaseComponent
 {
