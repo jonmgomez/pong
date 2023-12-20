@@ -31,13 +31,13 @@ void CollisionManager::ProcessCollisions(const std::vector<std::unique_ptr<Colli
 
             GameObject* gameObject = collider->GetGameObject();
             GameObject* otherGameObject = otherCollider->GetGameObject();
-            const bool wereColliding = IsCurrentlyColliding(gameObject->GetId(), otherGameObject->GetId());
+            const bool wereColliding = IsCurrentlyColliding(gameObject->GetID(), otherGameObject->GetID());
 
             if (collision && !wereColliding)
             {
                 gameObject->OnCollisionStart(*otherGameObject);
                 otherGameObject->OnCollisionStart(*gameObject);
-                mCurrentCollisions.push_back({ gameObject->GetId(), otherGameObject->GetId() });
+                mCurrentCollisions.push_back({ gameObject->GetID(), otherGameObject->GetID() });
             }
             else if (collision)
             {
@@ -48,7 +48,7 @@ void CollisionManager::ProcessCollisions(const std::vector<std::unique_ptr<Colli
             {
                 gameObject->OnCollisionStop(*otherGameObject);
                 otherGameObject->OnCollisionStop(*gameObject);
-                RemoveGameObjectCollisionPair(gameObject->GetId(), otherGameObject->GetId());
+                RemoveGameObjectCollisionPair(gameObject->GetID(), otherGameObject->GetID());
             }
         }
     }

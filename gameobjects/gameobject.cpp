@@ -29,7 +29,7 @@ void GameObject::OnCollisionStop(GameObject& /*other*/)
 {
 }
 
-int GameObject::GetId() const
+int GameObject::GetID() const
 {
     return mId;
 }
@@ -46,7 +46,7 @@ void GameObject::SetInstanceName(const std::string& name)
 
 void GameObject::SetTimeout(std::chrono::duration<double> timeout, std::function<void()> callback)
 {
-    Pong::GetInstance().GetTimer().AddTimer(GetId(), timeout, callback);
+    Pong::GetInstance().GetTimer().AddTimer(GetID(), timeout, callback);
 }
 
 void GameObject::PlaySound(const Sound& sound)

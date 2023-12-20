@@ -28,7 +28,7 @@ public:
     virtual void OnCollisionStay(GameObject& other);
     virtual void OnCollisionStop(GameObject& other);
 
-    int GetId() const;
+    int GetID() const;
     std::string GetInstanceName() const;
     void SetInstanceName(const std::string& name);
 
