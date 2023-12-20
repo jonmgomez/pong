@@ -9,7 +9,8 @@ namespace pong
 
 int GameObject::sId = 0;
 
-int GameObject::GetId() const
+
+int GameObject::GetID() const
 {
     return mId;
 }

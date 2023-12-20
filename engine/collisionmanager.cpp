@@ -34,13 +34,19 @@ void CollisionManager::ProcessCollisions(const std::vector<std::unique_ptr<Colli
             Behavior* otherScript = otherCollider->GetComponent<Behavior>();
             GameObject* gameObject = collider->GetGameObject();
             GameObject* otherGameObject = otherCollider->GetGameObject();
-            const bool wereColliding = IsCurrentlyColliding(gameObject->GetId(), otherGameObject->GetId());
+            const bool wereColliding = IsCurrentlyColliding(gameObject->GetID(), otherGameObject->GetID());
 
             if (collision && !wereColliding)
             {
+<<<<<<< HEAD
                 script->OnCollisionStart(*otherGameObject);
                 otherScript->OnCollisionStart(*gameObject);
                 mCurrentCollisions.push_back({ gameObject->GetId(), otherGameObject->GetId() });
+=======
+                gameObject->OnCollisionStart(*otherGameObject);
+                otherGameObject->OnCollisionStart(*gameObject);
+                mCurrentCollisions.push_back({ gameObject->GetID(), otherGameObject->GetID() });
+>>>>>>> 7a5ae41882df4a660b83e3884aae92a39657b202
             }
             else if (collision)
             {
@@ -49,9 +55,15 @@ void CollisionManager::ProcessCollisions(const std::vector<std::unique_ptr<Colli
             }
             else if (wereColliding)
             {
+<<<<<<< HEAD
                 script->OnCollisionStop(*otherGameObject);
                 otherScript->OnCollisionStop(*gameObject);
                 RemoveGameObjectCollisionPair(gameObject->GetId(), otherGameObject->GetId());
+=======
+                gameObject->OnCollisionStop(*otherGameObject);
+                otherGameObject->OnCollisionStop(*gameObject);
+                RemoveGameObjectCollisionPair(gameObject->GetID(), otherGameObject->GetID());
+>>>>>>> 7a5ae41882df4a660b83e3884aae92a39657b202
             }
         }
     }

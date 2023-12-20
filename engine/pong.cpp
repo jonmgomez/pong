@@ -151,9 +151,4 @@ void Pong::UpdateUIElementOrderLayer()
     });
 }
 
-void Pong::SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback)
-{
-    GetInstance().mTimer.AddTimer(gameObjectId, timeout, callback);
-}
-
 } // namespace pong

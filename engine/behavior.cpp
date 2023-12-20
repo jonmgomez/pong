@@ -8,7 +8,7 @@ namespace pong
 
 void Behavior::SetTimeout(std::chrono::duration<double> timeout, std::function<void()> callback)
 {
-    Pong::SetTimeout(GetGameObjectID(), timeout, callback);
+    Pong::GetInstance().GetTimer().AddTimer(GetGameObjectID(), timeout, callback);
 }
 
 void Behavior::PlaySound(const Sound& sound)

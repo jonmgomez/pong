@@ -21,7 +21,8 @@ public:
     GameObject() = default;
     virtual ~GameObject() = default;
 
-    int GetId() const;
+
+    int GetID() const;
     std::string GetInstanceName() const;
     void SetInstanceName(const std::string& name);
 

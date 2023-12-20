@@ -84,8 +84,6 @@ public:
 
     static void UpdateUIElementOrderLayer();
 
-    static void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
-
     CollisionManager& GetCollisionManager();
     UIEventManager& GetUIEventManager();
     AudioMixer& GetAudioMixer();
