@@ -1,5 +1,6 @@
 #pragma once
 
+#include "behavior.h"
 #include "gameobject.h"
 #include "opponent.h"
 #include "transform.h"
@@ -11,10 +12,16 @@ namespace pong
 
 class Opponent;
 
-class Ball : public GameObject
+class BallBlueprint : public GameObjectBlueprint
 {
 public:
+    BallBlueprint();
     void InitalizeComponents() override;
+};
+
+class Ball : public Behavior, public BehaviorIDGenerator<Ball>
+{
+public:
     void OnStart() override;
     void OnUpdate() override;
     void OnCollisionStart(GameObject& other) override;

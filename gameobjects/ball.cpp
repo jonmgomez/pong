@@ -20,21 +20,27 @@ static constexpr float Y_STARTING_POSITION_BOUNDS = 500.0f;
 
 static constexpr std::chrono::seconds BALL_RESET_WAIT_S { 3 };
 
-void Ball::InitalizeComponents()
+BallBlueprint::BallBlueprint()
 {
-    AddComponent<Transform>(glm::vec3(0.0f));
+    SetInstanceName("Ball");
+    InitalizeComponents();
+}
+
+void BallBlueprint::InitalizeComponents()
+{
+    AddComponent<Transform>();
     AddComponent<Rectangle>(BALL_WIDTH, BALL_WIDTH);
     AddComponent<ColliderBox>(BALL_WIDTH, BALL_WIDTH);
+    AddComponent<Ball>();
 }
 
 void Ball::OnStart()
 {
-    SetInstanceName("Ball");
-
     mTransform = GetComponent<Transform>();
     ASSERT(mTransform != nullptr);
 
-    mOpponent = Pong::FindGameObject<Opponent>();
+    mOpponent = Pong::FindComponentOfBehavior<Opponent>();
+    ASSERT(mOpponent != nullptr);
 
     mPaddleBounceSound.SetSource(Config::GetValue<std::string>("paddle_hit_sound"));
     mWallBounceSound.SetSource(Config::GetValue<std::string>("wall_hit_sound"));

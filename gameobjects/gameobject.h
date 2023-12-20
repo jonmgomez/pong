@@ -21,26 +21,9 @@ public:
     GameObject() = default;
     virtual ~GameObject() = default;
 
-    virtual void InitalizeComponents() = 0;
-    virtual void OnStart();
-    virtual void OnUpdate();
-    virtual void OnCollisionStart(GameObject& other);
-    virtual void OnCollisionStay(GameObject& other);
-    virtual void OnCollisionStop(GameObject& other);
-
     int GetId() const;
     std::string GetInstanceName() const;
     void SetInstanceName(const std::string& name);
-
-    void SetTimeout(std::chrono::duration<double> timeout, std::function<void()> callback);
-    void PlaySound(const Sound& sound);
-    void PlaySound(const Sound& sound, const glm::vec3& position);
-
-    template <typename T>
-    T* GetObject()
-    {
-        return dynamic_cast<T*>(this);
-    }
 
     template<typename T>
     T* GetComponent()
@@ -76,6 +59,12 @@ private:
     int mId { sId++ };
     std::unordered_map<int, BaseComponent*> mComponents {};
     std::string mInstanceName { "" };
+};
+
+class GameObjectBlueprint : public GameObject
+{
+public:
+    virtual void InitalizeComponents() = 0;
 };
 
 } // namespace pong

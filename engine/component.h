@@ -63,6 +63,12 @@ public:
     GameObject* GetGameObject() const;
     void SetGameObject(GameObject* gameObject);
 
+    template<typename T>
+    T* GetComponent()
+    {
+        return mGameObject->GetComponent<T>();
+    }
+
 private:
     int mGameObjectID { 0 };
     GameObject* mGameObject { nullptr };

@@ -23,33 +23,39 @@ static int decisionTimeLowerBoundMs = 50;
 static int decisionTimeUpperBoundMs = 250;
 static float baseMissChance = 0.1f;
 
-void Opponent::InitalizeComponents()
+OpponentBlueprint::OpponentBlueprint()
+{
+    SetInstanceName("Opponent");
+    InitalizeComponents();
+}
+
+void OpponentBlueprint::InitalizeComponents()
 {
     AddComponent<Transform>(OPPONENT_POSITION);
     AddComponent<Rectangle>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
     AddComponent<ColliderBox>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
+    AddComponent<Opponent>();
 }
 
 void Opponent::OnStart()
 {
-    SetInstanceName("Opponent");
     SetDifficultySettings();
 
     mTransform = GetComponent<Transform>();
     mCollider = GetComponent<ColliderBox>();
     mTargetPosition = OPPONENT_POSITION;
-    mBall = Pong::FindGameObject<Ball>();
+    mBall = Pong::FindComponentOfType<Ball>();
 
     GameObject* topWall = Pong::FindGameObjectByName("TopWall");
-    mTopWallBound = topWall->GetComponent<Transform>()->mPosition.y;
-
     GameObject* bottomWall = Pong::FindGameObjectByName("BottomWall");
+
+    ASSERT(bottomWall != nullptr && topWall != nullptr);
+
+    mTopWallBound = topWall->GetComponent<Transform>()->mPosition.y;
     mBottomWallBound = bottomWall->GetComponent<Transform>()->mPosition.y;
 
     ASSERT(mTransform != nullptr && mCollider != nullptr);
     ASSERT(mBall != nullptr)
-    ASSERT(bottomWall != nullptr);
-    ASSERT(topWall != nullptr);
 }
 
 void Opponent::OnUpdate()

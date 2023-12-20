@@ -1,5 +1,6 @@
 #pragma once
 
+#include "behavior.h"
 #include "button.h"
 #include "gameobject.h"
 #include "text.h"
@@ -8,10 +9,9 @@
 namespace pong
 {
 
-class TitleScreenController : public GameObject, public UIMenu
+class TitleScreenController : public Behavior, public UIMenu, public BehaviorIDGenerator<TitleScreenController>
 {
 public:
-    void InitalizeComponents() override;
     void OnStart() override;
 
 private:

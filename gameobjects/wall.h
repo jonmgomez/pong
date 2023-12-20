@@ -1,15 +1,15 @@
 #pragma once
 
+#include "behavior.h"
 #include "gameobject.h"
 
 namespace pong
 {
 
-class Wall : public GameObject
+class WallBlueprint : public GameObjectBlueprint
 {
 public:
-    Wall(float width, float height);
-
+    WallBlueprint(float width, float height);
     void InitalizeComponents() override;
 
 private:

@@ -1,6 +1,7 @@
 #include "pong.h"
 
 #include "ball.h"
+#include "behavior.h"
 #include "colliderbox.h"
 #include "config.h"
 #include "input.h"
@@ -13,6 +14,7 @@
 #include "settingsscreencontroller.h"
 #include "titlescreencontroller.h"
 #include "wall.h"
+#include "pongscenes.h"
 
 namespace pong
 {
@@ -47,7 +49,7 @@ void Pong::Init()
 {
     GetInstance().GetAudioMixer().Init();
     GetInstance().GetTimer().Init();
-    GetInstance().LoadScene(Scene::TitleScreen);
+    GetInstance().LoadScene(SceneType::Game);
 }
 
 void Pong::GameLoop()
@@ -62,9 +64,9 @@ void Pong::GameLoop()
         GetInstance().mChangeSceneRequested = false;
     }
 
-    for (auto& gameObject : GetInstance().mGameObjects)
+    for (auto& behavior : Behavior::GetComponents())
     {
-        gameObject->OnUpdate();
+        behavior->OnUpdate();
     }
 
     Renderer::DrawAllMeshes(Mesh::GetComponents());
@@ -92,85 +94,37 @@ void Pong::Cleanup()
     GetInstance().GetAudioMixer().Cleanup();
 }
 
-void Pong::LoadSceneNext(Scene scene)
+void Pong::LoadSceneNext(SceneType sceneType)
 {
-    GetInstance().mNextScene = scene;
+    GetInstance().mNextScene = sceneType;
     GetInstance().mChangeSceneRequested = true;
 }
 
-void Pong::LoadScene(Scene scene)
+void Pong::LoadScene(SceneType sceneType)
 {
     Pong::Reset();
 
-    switch (scene)
+    switch (sceneType)
     {
-        case Scene::TitleScreen:
+        case SceneType::Title:
         {
-            auto titleScreen = std::make_unique<TitleScreenController>();
-            titleScreen->InitalizeComponents();
-            GetInstance().mGameObjects.push_back(std::move(titleScreen));
             break;
         }
-        case Scene::Settings:
+        case SceneType::Settings:
         {
-            auto settingsScreen = std::make_unique<SettingsScreenController>();
-            settingsScreen->InitalizeComponents();
-            GetInstance().mGameObjects.push_back(std::move(settingsScreen));
             break;
         }
-        case Scene::Game:
+        case SceneType::Game:
         {
-            auto player = std::make_unique<Player>();
-            player->InitalizeComponents();
-            GetInstance().mGameObjects.push_back(std::move(player));
-
-            auto opponent = std::make_unique<Opponent>();
-            opponent->InitalizeComponents();
-            GetInstance().mGameObjects.push_back(std::move(opponent));
-
-            auto ball = std::make_unique<Ball>();
-            ball->InitalizeComponents();
-            GetInstance().mGameObjects.push_back(std::move(ball));
-
-            constexpr float horizontalWallWidth = 1280 * 2;
-            constexpr float horizontalWallHeight = 25;
-            constexpr float horizontalWallY = 960;
-            constexpr float verticalWallWidth = 25;
-            constexpr float verticalWallHeight = 960 * 2;
-            constexpr float verticalWallX = 1280;
-
-            auto topWall = std::make_unique<Wall>(horizontalWallWidth, horizontalWallHeight);
-            topWall->InitalizeComponents();
-            topWall->GetComponent<Transform>()->mPosition = glm::vec3(0.0f, horizontalWallY, 0.0f);
-            topWall->SetInstanceName("TopWall");
-            GetInstance().mGameObjects.push_back(std::move(topWall));
-
-            auto bottomWall = std::make_unique<Wall>(horizontalWallWidth, horizontalWallHeight);
-            bottomWall->InitalizeComponents();
-            bottomWall->GetComponent<Transform>()->mPosition = glm::vec3(0.0f, -horizontalWallY, 0.0f);
-            bottomWall->SetInstanceName("BottomWall");
-            GetInstance().mGameObjects.push_back(std::move(bottomWall));
-
-            auto playerScoreArea = std::make_unique<ScoreArea>(verticalWallWidth, verticalWallHeight, true);
-            playerScoreArea->InitalizeComponents();
-            playerScoreArea->GetComponent<Transform>()->mPosition = glm::vec3(verticalWallX, 0.0f, 0.0f);
-            GetInstance().mGameObjects.push_back(std::move(playerScoreArea));
-
-            auto opponentScoreArea = std::make_unique<ScoreArea>(verticalWallWidth, verticalWallHeight, false);
-            opponentScoreArea->InitalizeComponents();
-            opponentScoreArea->GetComponent<Transform>()->mPosition = glm::vec3(-verticalWallX, 0.0f, 0.0f);
-            GetInstance().mGameObjects.push_back(std::move(opponentScoreArea));
-
-            auto scoreController = std::make_unique<ScoreController>();
-            scoreController->InitalizeComponents();
-            GetInstance().mGameObjects.push_back(std::move(scoreController));
-            break;
+            GameScene scene;
+            scene.BuildScene();
+            GetInstance().mGameObjects = scene.TransferGameObjects();
         }
     }
 
-    for (auto& gameObject : GetInstance().mGameObjects)
+    for (auto& behavior : Behavior::GetComponents())
     {
-        gameObject->OnStart();
+        behavior->OnStart();
     }
 }
 

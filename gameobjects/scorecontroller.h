@@ -1,15 +1,15 @@
 #pragma once
 
+#include "behavior.h"
 #include "gameobject.h"
 #include "text.h"
 
 namespace pong
 {
 
-class ScoreController : public GameObject
+class ScoreController : public Behavior, public BehaviorIDGenerator<ScoreController>
 {
 public:
-    void InitalizeComponents() override;
     void OnStart() override;
 
     int GetPlayerScore() const;

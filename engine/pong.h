@@ -19,9 +19,9 @@
 namespace pong
 {
 
-enum class Scene
+enum class SceneType
 {
-    TitleScreen,
+    Title,
     Settings,
     Game
 };
@@ -36,20 +36,37 @@ public:
     static void Reset();
     static void Cleanup();
 
-    static void LoadSceneNext(Scene scene);
+    static void LoadSceneNext(SceneType scene);
 
-    template<typename T>
-    static T* FindGameObject()
+    // Returns the first component of type T found in the scene
+    template<typename T, typename... Args>
+    static T* FindComponentOfType()
     {
-        for (auto& gameObject : GetInstance().mGameObjects)
+        const std::vector<std::unique_ptr<T>>& components = T::GetComponents();
+
+        if (components.empty())
         {
-            auto castedGameObject = dynamic_cast<T*>(gameObject.get());
-            if (castedGameObject != nullptr)
+            return nullptr;
+        }
+
+        return components[0].get();
+    }
+
+    // Returns the first component of type T found in the scene
+    template<typename T, typename = std::enable_if_t<std::is_base_of_v<Behavior, T>>, typename... Args>
+    static T* FindComponentOfBehavior()
+    {
+        std::vector<std::unique_ptr<Behavior>>& behaviors = Behavior::GetComponents();
+
+        for (auto& behavior : behaviors)
+        {
+            if (static_cast<std::unique_ptr<BehaviorIDGenerator>>(behavior)::GetBehaviorID() == T::GetBehaviorID())
             {
-                return castedGameObject;
+                return static_cast<T*>(component.get());
             }
         }
-        return nullptr;
+
+        return static_cast<T>(behaviors[0].get());
     }
 
     static GameObject* FindGameObjectByName(const std::string& name);
@@ -82,7 +99,7 @@ private:
     Pong& operator=(Pong&&) = delete;
     ~Pong() = default;
 
-    void LoadScene(Scene scene);
+    void LoadScene(SceneType scene);
 
     std::vector<std::unique_ptr<GameObject>> mGameObjects {};
     std::vector<std::unique_ptr<UIElement>> mUIElements {};
@@ -92,7 +109,7 @@ private:
     AudioMixer mAudioMixer {};
     Timer mTimer {};
 
-    Scene mNextScene { Scene::TitleScreen };
+    SceneType mNextScene { SceneType::Title };
     bool mChangeSceneRequested { false };
 };
 

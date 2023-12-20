@@ -1,5 +1,6 @@
 #include "collisionmanager.h"
 
+#include "behavior.h"
 #include "gameobject.h"
 #include "transform.h"
 
@@ -29,25 +30,27 @@ void CollisionManager::ProcessCollisions(const std::vector<std::unique_ptr<Colli
             }
             const bool collision = collider->CheckForCollision(*otherCollider);
 
+            Behavior* script = collider->GetComponent<Behavior>();
+            Behavior* otherScript = otherCollider->GetComponent<Behavior>();
             GameObject* gameObject = collider->GetGameObject();
             GameObject* otherGameObject = otherCollider->GetGameObject();
             const bool wereColliding = IsCurrentlyColliding(gameObject->GetId(), otherGameObject->GetId());
 
             if (collision && !wereColliding)
             {
-                gameObject->OnCollisionStart(*otherGameObject);
-                otherGameObject->OnCollisionStart(*gameObject);
+                script->OnCollisionStart(*otherGameObject);
+                otherScript->OnCollisionStart(*gameObject);
                 mCurrentCollisions.push_back({ gameObject->GetId(), otherGameObject->GetId() });
             }
             else if (collision)
             {
-                gameObject->OnCollisionStay(*otherGameObject);
-                otherGameObject->OnCollisionStay(*gameObject);
+                script->OnCollisionStay(*otherGameObject);
+                otherScript->OnCollisionStay(*gameObject);
             }
             else if (wereColliding)
             {
-                gameObject->OnCollisionStop(*otherGameObject);
-                otherGameObject->OnCollisionStop(*gameObject);
+                script->OnCollisionStop(*otherGameObject);
+                otherScript->OnCollisionStop(*gameObject);
                 RemoveGameObjectCollisionPair(gameObject->GetId(), otherGameObject->GetId());
             }
         }

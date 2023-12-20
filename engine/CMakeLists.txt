@@ -1,6 +1,7 @@
 set(SOURCES
     applicationwindow.cpp
     audiomixer.cpp
+    behavior.cpp
     circle.cpp
     colliderbox.cpp
     collisionmanager.cpp
@@ -13,6 +14,7 @@ set(SOURCES
     mesh.cpp
     playingsound.cpp
     pong.cpp
+    pongscenes.cpp
     random.cpp
     realtimelogger.cpp
     rectangle.cpp
