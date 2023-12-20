@@ -24,7 +24,7 @@ class ScoreArea : public Behavior
 public:
     ScoreArea(bool playerSide);
 
-    int GetBehaviorID() const override { return GetBehaviorSubClassID<ScoreArea>(); }
+    int GetBehaviorID() const override { return GetIDFromBehavior<ScoreArea>(); }
     void OnStart() override;
     void OnCollisionStart(GameObject& other) override;
 

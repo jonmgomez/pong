@@ -19,7 +19,7 @@ public:
 class Player : public Behavior
 {
 public:
-    int GetBehaviorID() const override { return GetBehaviorSubClassID<Player>(); }
+    int GetBehaviorID() const override { return GetIDFromBehavior<Player>(); }
     void OnStart() override;
     void OnUpdate() override;
     void OnCollisionStart(GameObject& other) override;

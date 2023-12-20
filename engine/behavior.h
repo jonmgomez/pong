@@ -29,14 +29,10 @@ public:
     void SetTimeout(std::chrono::duration<double> timeout, std::function<void()> callback);
     void PlaySound(const Sound& sound);
     void PlaySound(const Sound& sound, const glm::vec3& position);
-
-protected:
-    template <typename T>
-    int GetBehaviorSubClassID() const { return TypeIDGenerator<Behavior>::GetID<T>(); }
 };
 
 template<typename T>
-int GetBehaviorID()
+int GetIDFromBehavior()
 {
     return TypeIDGenerator<Behavior>::GetID<T>();
 }

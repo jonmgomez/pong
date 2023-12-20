@@ -62,7 +62,7 @@ public:
 
         for (auto& behavior : behaviors)
         {
-            if (behavior->GetBehaviorID() == GetBehaviorID<T>())
+            if (behavior->GetBehaviorID() == GetIDFromBehavior<T>())
             {
                 return static_cast<T*>(behavior.get());
             }

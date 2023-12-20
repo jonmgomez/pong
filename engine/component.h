@@ -72,6 +72,8 @@ class BaseComponent
 public:
     virtual ~BaseComponent() = default;
 
+    virtual void Destroy() = 0;
+
     int GetGameObjectID() const;
     void SetGameObjectID(int gameObjectID);
     GameObject* GetGameObject() const;
@@ -82,8 +84,6 @@ public:
     {
         return mGameObject->GetComponent<T>();
     }
-
-    virtual void Destroy() = 0;
 
 private:
     int mGameObjectID { 0 };

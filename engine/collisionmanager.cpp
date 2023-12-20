@@ -36,35 +36,8 @@ void CollisionManager::ProcessCollisions(const std::vector<std::unique_ptr<Colli
             GameObject* otherGameObject = otherCollider->GetGameObject();
             const bool wereColliding = IsCurrentlyColliding(gameObject->GetID(), otherGameObject->GetID());
 
-            enum class CollisionType
-            {
-                Start,
-                Stay,
-                Stop
-            };
-
-            const auto CallbackScripts = [](std::vector<Behavior*>& scripts, CollisionType collision, GameObject* gameObject)
-            {
-                for (auto& script : scripts)
-                {
-                    switch (collision)
-                    {
-                    case CollisionType::Start:
-                        script->OnCollisionStart(*gameObject);
-                        break;
-                    case CollisionType::Stay:
-                        script->OnCollisionStay(*gameObject);
-                        break;
-                    case CollisionType::Stop:
-                        script->OnCollisionStop(*gameObject);
-                        break;
-                    }
-                }
-            };
-
             if (collision && !wereColliding)
             {
-                std::cout << "Collision start" << std::endl;
                 CallbackScripts(scripts, CollisionType::Start, otherGameObject);
                 CallbackScripts(otherScripts, CollisionType::Start, gameObject);
                 mCurrentCollisions.push_back({ gameObject->GetID(), otherGameObject->GetID() });
@@ -83,6 +56,25 @@ void CollisionManager::ProcessCollisions(const std::vector<std::unique_ptr<Colli
         }
     }
 }
+
+void CollisionManager::CallbackScripts(const std::vector<Behavior*>& scripts, CollisionType collision, GameObject* gameObject)
+{
+    for (auto& script : scripts)
+    {
+        switch (collision)
+        {
+        case CollisionType::Start:
+            script->OnCollisionStart(*gameObject);
+            break;
+        case CollisionType::Stay:
+            script->OnCollisionStay(*gameObject);
+            break;
+        case CollisionType::Stop:
+            script->OnCollisionStop(*gameObject);
+            break;
+        }
+    }
+};
 
 bool CollisionManager::IsCurrentlyColliding(int firstGameObjectId, int secondGameObjectId) const
 {
