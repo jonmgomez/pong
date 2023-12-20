@@ -38,22 +38,18 @@ void GameScene::BuildScene()
     constexpr float verticalWallX = 1280;
 
     GameObject* topWall = NewObjectFromBlueprint<WallBlueprint>(horizontalWallWidth, horizontalWallHeight);
-    SetName(topWall, "TopWall");
-    SetPosition(topWall, glm::vec3(0.0f, horizontalWallY, 0.0f));
+    SetNameAndPosition(topWall, "TopWall", glm::vec3(0.0f, horizontalWallY, 0.0f));
 
     GameObject* bottomWall = NewObjectFromBlueprint<WallBlueprint>(horizontalWallWidth, horizontalWallHeight);
-    SetName(bottomWall, "BottomWall");
-    SetPosition(bottomWall, glm::vec3(0.0f, -horizontalWallY, 0.0f));
+    SetNameAndPosition(bottomWall, "BottomWall", glm::vec3(0.0f, -horizontalWallY, 0.0f));
 
     constexpr bool kPlayerScoreArea = true;
     GameObject* playerScoreArea = NewObjectFromBlueprint<ScoreAreaBlueprint>(verticalWallWidth, verticalWallHeight, kPlayerScoreArea);
-    SetName(playerScoreArea, "PlayerScoreArea");
-    SetPosition(playerScoreArea, glm::vec3(-verticalWallX, 0.0f, 0.0f));
+    SetNameAndPosition(playerScoreArea, "PlayerScoreArea", glm::vec3(-verticalWallX, 0.0f, 0.0f));
 
     constexpr bool kOpponentScoreArea = false;
     GameObject* opponentScoreArea = NewObjectFromBlueprint<ScoreAreaBlueprint>(verticalWallWidth, verticalWallHeight, kOpponentScoreArea);
-    SetName(opponentScoreArea, "OpponentScoreArea");
-    SetPosition(opponentScoreArea, glm::vec3(verticalWallX, 0.0f, 0.0f));
+    SetNameAndPosition(opponentScoreArea, "OpponentScoreArea", glm::vec3(verticalWallX, 0.0f, 0.0f));
 
     GameObject* scoreController = NewObject();
     scoreController->AddComponent<ScoreController>();

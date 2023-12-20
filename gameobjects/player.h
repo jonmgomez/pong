@@ -16,9 +16,10 @@ public:
     void InitalizeComponents() override;
 };
 
-class Player : public Behavior, public BehaviorIDGenerator<Player>
+class Player : public Behavior
 {
 public:
+    int GetBehaviorID() const override { return GetBehaviorSubClassID<Player>(); }
     void OnStart() override;
     void OnUpdate() override;
     void OnCollisionStart(GameObject& other) override;

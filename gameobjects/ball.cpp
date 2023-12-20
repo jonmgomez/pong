@@ -39,7 +39,7 @@ void Ball::OnStart()
     mTransform = GetComponent<Transform>();
     ASSERT(mTransform != nullptr);
 
-    mOpponent = Pong::FindComponentOfBehavior<Opponent>();
+    mOpponent = Pong::FindComponentOfType<Opponent>();
     ASSERT(mOpponent != nullptr);
 
     mPaddleBounceSound.SetSource(Config::GetValue<std::string>("paddle_hit_sound"));
@@ -57,7 +57,7 @@ void Ball::OnUpdate()
 
 void Ball::OnCollisionStart(GameObject& other)
 {
-    if (other.GetInstanceName() == "ScoreArea")
+    if (other.GetInstanceName().find("ScoreArea") != std::string::npos)
     {
         PlaySound(mScoreSound, mTransform->mPosition);
 

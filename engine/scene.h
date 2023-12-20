@@ -22,9 +22,7 @@ public:
 
     GameObjectCollection TransferGameObjects()
     {
-        GameObjectCollection gameObjects = std::move(mGameObjects);
-        std::cout << "Vector size" << mGameObjects.size() << std::endl;
-        return gameObjects;
+        return std::move(mGameObjects);
     }
 
 protected:
@@ -41,16 +39,13 @@ protected:
         return mGameObjects.back().get();
     }
 
-    void SetPosition(GameObject* object, const glm::vec3& position)
+    void SetNameAndPosition(GameObject* object, const std::string& name, const glm::vec3& position)
     {
+        object->SetInstanceName(name);
+
         Transform* transform = object->GetComponent<Transform>();
         ASSERT(transform != nullptr);
         transform->mPosition = position;
-    }
-
-    void SetName(GameObject* object, const std::string& name)
-    {
-        object->SetInstanceName(name);
     }
 
 private:

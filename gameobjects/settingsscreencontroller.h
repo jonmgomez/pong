@@ -14,7 +14,7 @@ namespace pong
 class SettingsScreenController : public Behavior, public UIMenu
 {
 public:
-    int GetTypeID() const override { return GetBehaviorID<SettingsScreenController>(); }
+    int GetBehaviorID() const override { return GetBehaviorSubClassID<SettingsScreenController>(); }
     void OnStart() override;
 
 private:

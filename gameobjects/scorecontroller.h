@@ -7,9 +7,10 @@
 namespace pong
 {
 
-class ScoreController : public Behavior, public BehaviorIDGenerator<ScoreController>
+class ScoreController : public Behavior
 {
 public:
+    int GetBehaviorID() const override { return GetBehaviorSubClassID<ScoreController>(); }
     void OnStart() override;
 
     int GetPlayerScore() const;

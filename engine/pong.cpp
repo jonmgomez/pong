@@ -49,7 +49,7 @@ void Pong::Init()
 {
     GetInstance().GetAudioMixer().Init();
     GetInstance().GetTimer().Init();
-    GetInstance().LoadScene(SceneType::Game);
+    GetInstance().LoadScene(SceneType::Title);
 }
 
 void Pong::GameLoop()
@@ -83,6 +83,11 @@ void Pong::GameLoop()
 
 void Pong::Reset()
 {
+    // for (auto& gameobjects : GetInstance().mGameObjects)
+    // {
+    //     gameobject->Destroy();
+    // }
+
     GetInstance().mGameObjects.clear();
     GetInstance().mUIElements.clear();
     GetInstance().mTimer.Reset();
@@ -104,21 +109,27 @@ void Pong::LoadScene(SceneType sceneType)
 {
     Pong::Reset();
 
+    const auto LoadSceneObjects = [&](auto scene) {
+        scene.BuildScene();
+        GetInstance().mGameObjects = scene.TransferGameObjects();
+    };
+
     switch (sceneType)
     {
         case SceneType::Title:
         {
+            LoadSceneObjects(TitleScene());
             break;
         }
         case SceneType::Settings:
         {
+            LoadSceneObjects(SettingScene());
             break;
         }
         case SceneType::Game:
         {
-            GameScene scene;
-            scene.BuildScene();
-            GetInstance().mGameObjects = scene.TransferGameObjects();
+            LoadSceneObjects(GameScene());
+            break;
         }
     }
 

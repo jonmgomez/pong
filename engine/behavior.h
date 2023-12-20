@@ -1,10 +1,17 @@
 #pragma once
 
 #include "component.h"
-#include "gameobject.h"
+#include "sound.h"
+
+#include <glm/glm.hpp>
+
+#include <chrono>
+#include <functional>
 
 namespace pong
 {
+
+class GameObject;
 
 class Behavior : public Component<Behavior>
 {
@@ -12,6 +19,7 @@ public:
     Behavior() = default;
     virtual ~Behavior() = default;
 
+    virtual int GetBehaviorID() const = 0;
     virtual void OnStart() {};
     virtual void OnUpdate() {};
     virtual void OnCollisionStart(GameObject& /*other*/) {};
@@ -24,16 +32,13 @@ public:
 
 protected:
     template <typename T>
-    int GetBehaviorID() const { return TypeIDGenerator<Behavior>::GetID<T>(); }
+    int GetBehaviorSubClassID() const { return TypeIDGenerator<Behavior>::GetID<T>(); }
 };
 
-template <typename T>
-class BehaviorIDGenerator
+template<typename T>
+int GetBehaviorID()
 {
-    static int GetBehaviorID()
-    {
-        return TypeIDGenerator<Behavior>::GetID<T>();
-    }
-};
+    return TypeIDGenerator<Behavior>::GetID<T>();
+}
 
 } // namespace pong

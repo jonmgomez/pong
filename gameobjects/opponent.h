@@ -18,9 +18,10 @@ public:
     void InitalizeComponents() override;
 };
 
-class Opponent : public Behavior, public BehaviorIDGenerator<Opponent>
+class Opponent : public Behavior
 {
 public:
+    int GetBehaviorID() const override { return GetBehaviorSubClassID<Opponent>(); }
     void OnStart() override;
     void OnUpdate() override;
     void OnCollisionStart(GameObject& other) override;

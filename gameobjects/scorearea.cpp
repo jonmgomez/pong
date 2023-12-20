@@ -35,7 +35,7 @@ ScoreArea::ScoreArea(bool playerSide) :
 
 void ScoreArea::OnStart()
 {
-    mScoreController = Pong::FindComponentOfBehavior<ScoreController>();
+    mScoreController = Pong::FindComponentOfType<ScoreController>();
     if (mScoreController == nullptr)
     {
         spdlog::error("ScoreController instance not found!");

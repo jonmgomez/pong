@@ -9,9 +9,10 @@
 namespace pong
 {
 
-class TitleScreenController : public Behavior, public UIMenu, public BehaviorIDGenerator<TitleScreenController>
+class TitleScreenController : public Behavior, public UIMenu
 {
 public:
+    int GetBehaviorID() const override { return GetBehaviorSubClassID<TitleScreenController>(); }
     void OnStart() override;
 
 private:

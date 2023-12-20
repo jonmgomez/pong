@@ -1,5 +1,6 @@
 #include "gameobject.h"
 
+#include "behavior.h"
 #include "audiomixer.h"
 #include "renderutils.h"
 #include "pong.h"
@@ -23,6 +24,23 @@ std::string GameObject::GetInstanceName() const
 void GameObject::SetInstanceName(const std::string& name)
 {
     mInstanceName = name;
+}
+
+std::vector<Behavior*> GameObject::GetBehaviorComponents() const
+{
+    std::vector<Behavior*> behaviors {};
+
+    const auto& allBehaviors = Behavior::GetComponents();
+
+    for (auto& behavior : allBehaviors)
+    {
+        if (behavior->GetGameObjectID() == mId)
+        {
+            behaviors.push_back(behavior.get());
+        }
+    }
+
+    return behaviors;
 }
 
 } // namespace pong

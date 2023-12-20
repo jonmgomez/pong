@@ -19,11 +19,12 @@ private:
     bool mIsPlayerScoreArea { false };
 };
 
-class ScoreArea : public Behavior, public BehaviorIDGenerator<ScoreArea>
+class ScoreArea : public Behavior
 {
 public:
     ScoreArea(bool playerSide);
 
+    int GetBehaviorID() const override { return GetBehaviorSubClassID<ScoreArea>(); }
     void OnStart() override;
     void OnCollisionStart(GameObject& other) override;
 

@@ -39,7 +39,7 @@ public:
     static void LoadSceneNext(SceneType scene);
 
     // Returns the first component of type T found in the scene
-    template<typename T, typename... Args>
+    template<typename T, typename = std::enable_if_t<std::is_base_of_v<BaseComponent, T> && !std::is_base_of_v<Behavior, T>>>
     static T* FindComponentOfType()
     {
         const std::vector<std::unique_ptr<T>>& components = T::GetComponents();
@@ -53,20 +53,22 @@ public:
     }
 
     // Returns the first component of type T found in the scene
-    template<typename T, typename = std::enable_if_t<std::is_base_of_v<Behavior, T>>, typename... Args>
-    static T* FindComponentOfBehavior()
+    template<typename T, typename = std::enable_if_t<std::is_base_of_v<Behavior, T>>, typename = void>
+    static T* FindComponentOfType()
     {
-        std::vector<std::unique_ptr<Behavior>>& behaviors = Behavior::GetComponents();
+        // Since behaviors are the only components meant to be overridden, they are stored in a Behavior vector
+        // getting a specific behavior class from the vector is done by comparing the behavior ID
+        const std::vector<std::unique_ptr<Behavior>>& behaviors = Behavior::GetComponents();
 
         for (auto& behavior : behaviors)
         {
-            if (static_cast<std::unique_ptr<BehaviorIDGenerator>>(behavior)::GetBehaviorID() == T::GetBehaviorID())
+            if (behavior->GetBehaviorID() == GetBehaviorID<T>())
             {
-                return static_cast<T*>(component.get());
+                return static_cast<T*>(behavior.get());
             }
         }
 
-        return static_cast<T>(behaviors[0].get());
+        return nullptr;
     }
 
     static GameObject* FindGameObjectByName(const std::string& name);

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "behavior.h"
 #include "component.h"
 #include "colliderbox.h"
 #include "mesh.h"
@@ -25,6 +26,8 @@ public:
     int GetID() const;
     std::string GetInstanceName() const;
     void SetInstanceName(const std::string& name);
+
+    std::vector<Behavior*> GetBehaviorComponents() const;
 
     template<typename T>
     T* GetComponent()
