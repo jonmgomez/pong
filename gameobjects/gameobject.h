@@ -29,6 +29,8 @@ public:
 
     std::vector<Behavior*> GetBehaviorComponents() const;
 
+    void Destroy();
+
     template<typename T>
     T* GetComponent()
     {

@@ -43,4 +43,12 @@ std::vector<Behavior*> GameObject::GetBehaviorComponents() const
     return behaviors;
 }
 
+void GameObject::Destroy()
+{
+    for (auto& component : mComponents)
+    {
+        component.second->Destroy();
+    }
+}
+
 } // namespace pong

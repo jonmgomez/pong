@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -38,9 +39,22 @@ class Component : public BaseComponent
 public:
     virtual ~Component() = default;
 
+    void Destroy() override
+    {
+        Derived::RemoveComponent(this);
+    }
+
     static void AddComponent(std::unique_ptr<Derived> component)
     {
         mComponents.push_back(std::move(component));
+    }
+
+    static void RemoveComponent(Component<Derived>* component)
+    {
+        mComponents.erase(std::remove_if(mComponents.begin(), mComponents.end(), [component](const auto& componentPtr)
+        {
+            return componentPtr.get() == component;
+        }));
     }
 
     static const std::vector<std::unique_ptr<Derived>>& GetComponents()
@@ -68,6 +82,8 @@ public:
     {
         return mGameObject->GetComponent<T>();
     }
+
+    virtual void Destroy() = 0;
 
 private:
     int mGameObjectID { 0 };

@@ -83,10 +83,10 @@ void Pong::GameLoop()
 
 void Pong::Reset()
 {
-    // for (auto& gameobjects : GetInstance().mGameObjects)
-    // {
-    //     gameobject->Destroy();
-    // }
+    for (auto& gameobject : GetInstance().mGameObjects)
+    {
+        gameobject->Destroy();
+    }
 
     GetInstance().mGameObjects.clear();
     GetInstance().mUIElements.clear();
