@@ -9,46 +9,51 @@
 namespace pong
 {
 
+bool RectangleBounds::CheckPointInBounds(const glm::vec3& position) const
+{
+    return position.x >= mBounds[0].x && position.x <= mBounds[1].x
+        && position.y >= mBounds[0].y && position.y <= mBounds[2].y;
+}
+
 ColliderBox::ColliderBox(float width, float height)
     : mWidth(width),
       mHeight(height)
 {
-    mBounds = {
+    mRawBounds = {
         glm::vec3(-mWidth / 2.0f, -mHeight / 2.0f, 0.0f),
         glm::vec3( mWidth / 2.0f,  mHeight / 2.0f, 0.0f),
         glm::vec3(-mWidth / 2.0f,  mHeight / 2.0f, 0.0f),
         glm::vec3( mWidth / 2.0f, -mHeight / 2.0f, 0.0f)
     };
 
-    mPositionBounds = mBounds;
+    mPositionBounds = mRawBounds;
 }
 
 void ColliderBox::OnPositionUpdate(const glm::vec3& position)
 {
-    mPositionBounds[0] = mBounds[0] + position;
-    mPositionBounds[1] = mBounds[1] + position;
-    mPositionBounds[2] = mBounds[2] + position;
-    mPositionBounds[3] = mBounds[3] + position;
+    mPositionBounds.mBounds[0] = mRawBounds.mBounds[0] + position;
+    mPositionBounds.mBounds[1] = mRawBounds.mBounds[1] + position;
+    mPositionBounds.mBounds[2] = mRawBounds.mBounds[2] + position;
+    mPositionBounds.mBounds[3] = mRawBounds.mBounds[3] + position;
 }
 
 bool ColliderBox::CheckForCollision(const ColliderBox& other) const
 {
-    const std::array<glm::vec3, 4>otherBounds = other.mPositionBounds;
-
+    const std::array<glm::vec3, 4>& otherBounds = other.mPositionBounds.mBounds;
     // Check within own bounds
-
     if (std::any_of(std::begin(otherBounds), std::end(otherBounds),
-        [&](const auto& position) { return CheckPointInBounds(position); }))
+        [&](const auto& position) { return mPositionBounds.CheckPointInBounds(position); }))
     {
         return true;
     }
 
+    const std::array<glm::vec3, 4>& bounds = mPositionBounds.mBounds;
     // Check within other collider's bounds. This is due to the
     // possibility of the other collider ecompassing this collider
     // If that occurs, the other colliders positions do not not appear
     // inside the bounds and would not register as collision
-    if (std::any_of(std::begin(mPositionBounds), std::end(mPositionBounds),
-        [&other](const auto& position) { return other.CheckPointInBounds(position); }))
+    if (std::any_of(std::begin(bounds), std::end(bounds),
+        [&other](const auto& position) { return other.mPositionBounds.CheckPointInBounds(position); }))
     {
         return true;
     }
@@ -58,8 +63,7 @@ bool ColliderBox::CheckForCollision(const ColliderBox& other) const
 
 bool ColliderBox::CheckPointInBounds(const glm::vec3& position) const
 {
-    return position.x >= mPositionBounds[0].x && position.x <= mPositionBounds[1].x
-        && position.y >= mPositionBounds[0].y && position.y <= mPositionBounds[2].y;
+    return mPositionBounds.CheckPointInBounds(position);
 }
 
 float ColliderBox::GetWidth() const
@@ -93,10 +97,10 @@ void ColliderBox::Resize(float width, float height)
 
 void ColliderBox::RecalculateBounds()
 {
-    // A little jank, but we need to figure out our current offset
-    const glm::vec3 position = mPositionBounds[0] - mBounds[0];
+    // A little jank, but we need to figure out our current offset then reapply it
+    const glm::vec3 position = mPositionBounds.mBounds[0] - mRawBounds.mBounds[0];
 
-    mBounds = {
+    mRawBounds = {
         glm::vec3(-mWidth / 2.0f, -mHeight / 2.0f, 0.0f),
         glm::vec3( mWidth / 2.0f,  mHeight / 2.0f, 0.0f),
         glm::vec3(-mWidth / 2.0f,  mHeight / 2.0f, 0.0f),

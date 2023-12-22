@@ -9,6 +9,14 @@
 namespace pong
 {
 
+struct RectangleBounds
+{
+public:
+    bool CheckPointInBounds(const glm::vec3& position) const;
+
+    std::array<glm::vec3, 4> mBounds {};
+};
+
 class ColliderBox : public Component<ColliderBox>
 {
 public:
@@ -27,8 +35,8 @@ public:
 private:
     void RecalculateBounds();
 
-    std::array<glm::vec3, 4> mBounds {};
-    std::array<glm::vec3, 4> mPositionBounds {};
+    RectangleBounds mRawBounds {};
+    RectangleBounds mPositionBounds {};
     float mWidth { 0.0f };
     float mHeight { 0.0f };
 };
