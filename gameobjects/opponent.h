@@ -20,7 +20,7 @@ public:
 class Opponent : public Behavior
 {
 public:
-    int GetBehaviorID() const override { return GetIDFromBehavior<Opponent>(); }
+    int GetBehaviorId() const override { return GetIdFromBehavior<Opponent>(); }
     void OnStart() override;
     void OnUpdate() override;
     void OnCollisionStart(GameObject& other) override;

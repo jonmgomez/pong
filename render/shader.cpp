@@ -15,12 +15,12 @@ namespace pong
 Shader::Shader(const std::string& filepath)
 {
     ShaderProgramSource source = ParseShader(filepath);
-    mRendererID = CreateShader(source.vertexSource, source.fragmentSource);
+    mRendererId = CreateShader(source.vertexSource, source.fragmentSource);
 }
 
 Shader::~Shader()
 {
-    GLCall(glDeleteProgram(mRendererID));
+    GLCall(glDeleteProgram(mRendererId));
 }
 
 ShaderProgramSource Shader::ParseShader(const std::string& filepath)
@@ -101,7 +101,7 @@ unsigned int Shader::GetUniformLocation(const std::string& name)
     if (mUniformLocationCache.find(name) != mUniformLocationCache.end())
         return mUniformLocationCache[name];
 
-    GLCall(int location = glGetUniformLocation(mRendererID, name.c_str()));
+    GLCall(int location = glGetUniformLocation(mRendererId, name.c_str()));
     if (location == -1)
         std::cout << "Warning: uniform '" << name << "' doesn't exist!" << std::endl;
 
@@ -111,7 +111,7 @@ unsigned int Shader::GetUniformLocation(const std::string& name)
 
 void Shader::Bind() const
 {
-    GLCall(glUseProgram(mRendererID));
+    GLCall(glUseProgram(mRendererId));
 }
 
 void Shader::Unbind() const

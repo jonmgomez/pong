@@ -9,28 +9,28 @@ namespace pong
 
 VertexArray::VertexArray()
 {
-    GLCall(glGenVertexArrays(1, &mRendererID));
+    GLCall(glGenVertexArrays(1, &mRendererId));
 }
 
 VertexArray::VertexArray(VertexArray&& other) :
-    mRendererID(other.mRendererID)
+    mRendererId(other.mRendererId)
 {
-    other.mRendererID = 0;
+    other.mRendererId = 0;
 }
 
 VertexArray& VertexArray::operator=(VertexArray&& other)
 {
     if (this != &other)
     {
-        mRendererID = other.mRendererID;
-        other.mRendererID = 0;
+        mRendererId = other.mRendererId;
+        other.mRendererId = 0;
     }
     return *this;
 }
 
 VertexArray::~VertexArray()
 {
-    GLCall(glDeleteVertexArrays(1, &mRendererID));
+    GLCall(glDeleteVertexArrays(1, &mRendererId));
 }
 
 void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout)
@@ -57,7 +57,7 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 
 void VertexArray::Bind() const
 {
-    GLCall(glBindVertexArray(mRendererID));
+    GLCall(glBindVertexArray(mRendererId));
 }
 
 void VertexArray::Unbind() const

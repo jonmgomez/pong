@@ -19,7 +19,7 @@ public:
     Behavior() = default;
     virtual ~Behavior() = default;
 
-    virtual int GetBehaviorID() const = 0;
+    virtual int GetBehaviorId() const = 0;
     virtual void OnStart() {};
     virtual void OnUpdate() {};
     virtual void OnCollisionStart(GameObject& /*other*/) {};
@@ -32,9 +32,9 @@ public:
 };
 
 template<typename T>
-int GetIDFromBehavior()
+int GetIdFromBehavior()
 {
-    return TypeIDGenerator<Behavior>::GetID<T>();
+    return TypeIdGenerator<Behavior>::GetId<T>();
 }
 
 } // namespace pong

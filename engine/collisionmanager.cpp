@@ -34,13 +34,13 @@ void CollisionManager::ProcessCollisions(const std::vector<std::unique_ptr<Colli
             std::vector<Behavior*> otherScripts = otherCollider->GetGameObject()->GetBehaviorComponents();
             GameObject* gameObject = collider->GetGameObject();
             GameObject* otherGameObject = otherCollider->GetGameObject();
-            const bool wereColliding = IsCurrentlyColliding(gameObject->GetID(), otherGameObject->GetID());
+            const bool wereColliding = IsCurrentlyColliding(gameObject->GetId(), otherGameObject->GetId());
 
             if (collision && !wereColliding)
             {
                 CallbackScripts(scripts, CollisionType::Start, otherGameObject);
                 CallbackScripts(otherScripts, CollisionType::Start, gameObject);
-                mCurrentCollisions.push_back({ gameObject->GetID(), otherGameObject->GetID() });
+                mCurrentCollisions.push_back({ gameObject->GetId(), otherGameObject->GetId() });
             }
             else if (collision)
             {
@@ -51,7 +51,7 @@ void CollisionManager::ProcessCollisions(const std::vector<std::unique_ptr<Colli
             {
                 CallbackScripts(scripts, CollisionType::Stop, otherGameObject);
                 CallbackScripts(otherScripts, CollisionType::Stop, gameObject);
-                RemoveGameObjectCollisionPair(gameObject->GetID(), otherGameObject->GetID());
+                RemoveGameObjectCollisionPair(gameObject->GetId(), otherGameObject->GetId());
             }
         }
     }

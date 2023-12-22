@@ -11,7 +11,7 @@ namespace pong
 int GameObject::sId = 0;
 
 
-int GameObject::GetID() const
+int GameObject::GetId() const
 {
     return mId;
 }
@@ -34,7 +34,7 @@ std::vector<Behavior*> GameObject::GetBehaviorComponents() const
 
     for (auto& behavior : allBehaviors)
     {
-        if (behavior->GetGameObjectID() == mId)
+        if (behavior->GetGameObjectId() == mId)
         {
             behaviors.push_back(behavior.get());
         }

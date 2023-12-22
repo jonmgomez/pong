@@ -41,7 +41,7 @@ public:
 protected:
     int mWidth {0};
     int mHeight {0};
-    unsigned int mRendererID {0};
+    unsigned int mRendererId {0};
 
 private:
     std::string mFilePath {""};

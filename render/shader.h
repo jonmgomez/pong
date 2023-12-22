@@ -41,7 +41,7 @@ private:
     unsigned int GetUniformLocation(const std::string& name);
 
     std::string mFilePath {""};
-    unsigned int mRendererID {0};
+    unsigned int mRendererId {0};
     std::unordered_map<std::string, int> mUniformLocationCache {};
 };
 

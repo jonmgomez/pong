@@ -3,14 +3,14 @@
 namespace pong
 {
 
-int BaseComponent::GetGameObjectID() const
+int BaseComponent::GetGameObjectId() const
 {
-    return mGameObjectID;
+    return mGameObjectId;
 }
 
-void BaseComponent::SetGameObjectID(int gameObjectID)
+void BaseComponent::SetGameObjectId(int gameObjectId)
 {
-    mGameObjectID = gameObjectID;
+    mGameObjectId = gameObjectId;
 }
 
 GameObject* BaseComponent::GetGameObject() const

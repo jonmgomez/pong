@@ -21,7 +21,7 @@ public:
 class Ball : public Behavior
 {
 public:
-    int GetBehaviorID() const override { return GetIDFromBehavior<Ball>(); }
+    int GetBehaviorId() const override { return GetIdFromBehavior<Ball>(); }
     void OnStart() override;
     void OnUpdate() override;
     void OnCollisionStart(GameObject& other) override;

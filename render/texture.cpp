@@ -52,8 +52,8 @@ Texture::Texture(const unsigned char& imageData, int width, int height, GLenum f
     mWidth(width),
     mHeight(height)
 {
-    GLCall(glGenTextures(1, &mRendererID));
-    GLCall(glBindTexture(GL_TEXTURE_2D, mRendererID));
+    GLCall(glGenTextures(1, &mRendererId));
+    GLCall(glBindTexture(GL_TEXTURE_2D, mRendererId));
 
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
     GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
@@ -67,9 +67,9 @@ Texture::Texture(const unsigned char& imageData, int width, int height, GLenum f
 Texture::Texture(Texture&& other) :
     mWidth(other.mWidth),
     mHeight(other.mHeight),
-    mRendererID(other.mRendererID)
+    mRendererId(other.mRendererId)
 {
-    other.mRendererID = 0;
+    other.mRendererId = 0;
     other.mWidth = 0;
     other.mHeight = 0;
 }
@@ -80,10 +80,10 @@ Texture& Texture::operator=(Texture&& other)
     {
         mWidth = other.mWidth;
         mHeight = other.mHeight;
-        mRendererID = other.mRendererID;
+        mRendererId = other.mRendererId;
         other.mWidth = 0;
         other.mHeight = 0;
-        other.mRendererID = 0;
+        other.mRendererId = 0;
     }
 
     return *this;
@@ -91,13 +91,13 @@ Texture& Texture::operator=(Texture&& other)
 
 Texture::~Texture()
 {
-    GLCall(glDeleteTextures(1, &mRendererID));
+    GLCall(glDeleteTextures(1, &mRendererId));
 }
 
 void Texture::Bind(unsigned int slot) const
 {
     GLCall(glActiveTexture(GL_TEXTURE0 + slot));
-    GLCall(glBindTexture(GL_TEXTURE_2D, mRendererID));
+    GLCall(glBindTexture(GL_TEXTURE_2D, mRendererId));
 }
 
 void Texture::Unbind() const

@@ -22,7 +22,7 @@ public:
     void Unbind() const;
 
 private:
-    unsigned int mRendererID {0};
+    unsigned int mRendererId {0};
 };
 
 } // namespace pong

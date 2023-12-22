@@ -19,7 +19,7 @@ public:
     unsigned int GetCount() const;
 
 private:
-    unsigned int mRendererID {0};
+    unsigned int mRendererId {0};
     unsigned int mCount {0};
 };
 

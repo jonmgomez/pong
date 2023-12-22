@@ -12,7 +12,7 @@ namespace pong
 class TitleScreenController : public Behavior, public UIMenu
 {
 public:
-    int GetBehaviorID() const override { return GetIDFromBehavior<TitleScreenController>(); }
+    int GetBehaviorId() const override { return GetIdFromBehavior<TitleScreenController>(); }
     void OnStart() override;
 
 private:

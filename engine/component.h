@@ -11,26 +11,26 @@ namespace pong
 class GameObject;
 
 template <typename BaseClass>
-class TypeIDGenerator
+class TypeIdGenerator
 {
 public:
     template<class SubClass>
-    static const int GetID()
+    static const int GetId()
     {
-        static const int idCounter = sID++;
+        static const int idCounter = sId++;
         return idCounter;
     }
 
 private:
-    static int sID;
+    static int sId;
 };
 
-template<typename T> int TypeIDGenerator<T>::sID = 0;
+template<typename T> int TypeIdGenerator<T>::sId = 0;
 
 template<typename ComponentSubType>
-int GetComponentTypeID()
+int GetComponentTypeId()
 {
-    return TypeIDGenerator<BaseComponent>::GetID<ComponentSubType>();
+    return TypeIdGenerator<BaseComponent>::GetId<ComponentSubType>();
 }
 
 template<class Derived>
@@ -74,8 +74,8 @@ public:
 
     virtual void Destroy() = 0;
 
-    int GetGameObjectID() const;
-    void SetGameObjectID(int gameObjectID);
+    int GetGameObjectId() const;
+    void SetGameObjectId(int gameObjectId);
     GameObject* GetGameObject() const;
     void SetGameObject(GameObject* gameObject);
 
@@ -86,7 +86,7 @@ public:
     }
 
 private:
-    int mGameObjectID { 0 };
+    int mGameObjectId { 0 };
     GameObject* mGameObject { nullptr };
 };
 

@@ -23,7 +23,7 @@ public:
     virtual ~GameObject() = default;
 
 
-    int GetID() const;
+    int GetId() const;
     std::string GetInstanceName() const;
     void SetInstanceName(const std::string& name);
 
@@ -34,12 +34,12 @@ public:
     template<typename T>
     T* GetComponent()
     {
-        const int componentID = GetComponentTypeID<T>();
+        const int componentId = GetComponentTypeId<T>();
 
-        auto iterator = mComponents.find(componentID);
+        auto iterator = mComponents.find(componentId);
         if (iterator != mComponents.end())
         {
-            return static_cast<T*>(mComponents[componentID]);
+            return static_cast<T*>(mComponents[componentId]);
         }
 
         return nullptr;
@@ -50,10 +50,10 @@ public:
     {
         auto component = std::make_unique<T>(std::forward<Args>(args)...);
         component->SetGameObject(this);
-        component->SetGameObjectID(mId);
+        component->SetGameObjectId(mId);
 
-        const int componentID = GetComponentTypeID<T>();
-        mComponents.insert(std::make_pair(componentID, component.get()));
+        const int componentId = GetComponentTypeId<T>();
+        mComponents.insert(std::make_pair(componentId, component.get()));
         T::AddComponent(std::move(component));
 
         return component.get();

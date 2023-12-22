@@ -20,7 +20,7 @@ public:
     void Unbind() const;
 
 private:
-    unsigned mRendererID {0};
+    unsigned mRendererId {0};
     unsigned int mSize {0};
 };
 

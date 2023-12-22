@@ -57,12 +57,12 @@ public:
     static T* FindComponentOfType()
     {
         // Since behaviors are the only components meant to be overridden, they are stored in a Behavior vector
-        // getting a specific behavior class from the vector is done by comparing the behavior ID
+        // getting a specific behavior class from the vector is done by comparing the behavior Id
         const std::vector<std::unique_ptr<Behavior>>& behaviors = Behavior::GetComponents();
 
         for (auto& behavior : behaviors)
         {
-            if (behavior->GetBehaviorID() == GetIDFromBehavior<T>())
+            if (behavior->GetBehaviorId() == GetIdFromBehavior<T>())
             {
                 return static_cast<T*>(behavior.get());
             }
