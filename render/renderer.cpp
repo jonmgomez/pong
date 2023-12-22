@@ -109,9 +109,9 @@ void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib,
     const glm::mat4 mvp = proj * view * model;
 
     texture.Bind(0);
-    GetInstance().mShader->SetUniform1i("u_Texture", 0);
-    GetInstance().mShader->SetUniform4f("u_Color", color.r, color.g, color.b, color.a);
-    GetInstance().mShader->SetUniformMat4f("u_MVP", mvp);
+    GetInstance().mShader->SetUniform1i("uTexture", 0);
+    GetInstance().mShader->SetUniform4f("uColor", color.r, color.g, color.b, color.a);
+    GetInstance().mShader->SetUniformMat4f("uMVP", mvp);
 
     GLCall(glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr));
 }
