@@ -69,8 +69,6 @@ private:
 
 class GameObjectBlueprint : public GameObject
 {
-public:
-    virtual void InitalizeComponents() = 0;
 };
 
 } // namespace pong

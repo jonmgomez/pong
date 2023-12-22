@@ -13,7 +13,6 @@ class PlayerBlueprint : public GameObjectBlueprint
 {
 public:
     PlayerBlueprint();
-    void InitalizeComponents() override;
 };
 
 class Player : public Behavior

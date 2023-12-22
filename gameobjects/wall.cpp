@@ -9,19 +9,12 @@
 namespace pong
 {
 
-WallBlueprint::WallBlueprint(float width, float height) :
-    mWidth(width),
-    mHeight(height)
+WallBlueprint::WallBlueprint(float width, float height)
 {
     SetInstanceName("Wall");
-    InitalizeComponents();
-}
-
-void WallBlueprint::InitalizeComponents()
-{
     AddComponent<Transform>();
-    AddComponent<Rectangle>(mWidth, mHeight);
-    AddComponent<ColliderBox>(mWidth, mHeight);
+    AddComponent<Rectangle>(width, height);
+    AddComponent<ColliderBox>(width, height);
 }
 
 } // namespace pong

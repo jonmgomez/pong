@@ -16,7 +16,6 @@ class BallBlueprint : public GameObjectBlueprint
 {
 public:
     BallBlueprint();
-    void InitalizeComponents() override;
 };
 
 class Ball : public Behavior

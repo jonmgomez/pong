@@ -15,7 +15,6 @@ class OpponentBlueprint : public GameObjectBlueprint
 {
 public:
     OpponentBlueprint();
-    void InitalizeComponents() override;
 };
 
 class Opponent : public Behavior

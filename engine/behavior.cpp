@@ -6,7 +6,7 @@
 namespace pong
 {
 
-void Behavior::SetTimeout(std::chrono::duration<double> timeout, std::function<void()> callback)
+void Behavior::SetTimeout(const std::chrono::duration<double>& timeout, const std::function<void()>& callback)
 {
     Pong::GetInstance().GetTimer().AddTimer(GetGameObjectID(), timeout, callback);
 }

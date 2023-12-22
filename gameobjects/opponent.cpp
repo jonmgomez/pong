@@ -26,11 +26,6 @@ static float baseMissChance = 0.1f;
 OpponentBlueprint::OpponentBlueprint()
 {
     SetInstanceName("Opponent");
-    InitalizeComponents();
-}
-
-void OpponentBlueprint::InitalizeComponents()
-{
     AddComponent<Transform>(OPPONENT_POSITION);
     AddComponent<Rectangle>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
     AddComponent<ColliderBox>(OPPONENT_WIDTH, OPPONENT_HEIGHT);

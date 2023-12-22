@@ -23,11 +23,6 @@ static constexpr std::chrono::seconds BALL_RESET_WAIT_S { 3 };
 BallBlueprint::BallBlueprint()
 {
     SetInstanceName("Ball");
-    InitalizeComponents();
-}
-
-void BallBlueprint::InitalizeComponents()
-{
     AddComponent<Transform>();
     AddComponent<Rectangle>(BALL_WIDTH, BALL_WIDTH);
     AddComponent<ColliderBox>(BALL_WIDTH, BALL_WIDTH);

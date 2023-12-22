@@ -19,11 +19,6 @@ static constexpr float PLAYER_SPEED = 850.0f;
 PlayerBlueprint::PlayerBlueprint()
 {
     SetInstanceName("Player");
-    InitalizeComponents();
-}
-
-void PlayerBlueprint::InitalizeComponents()
-{
     AddComponent<Transform>(PLAYER_POSITION);
     AddComponent<Rectangle>(PLAYER_WIDTH, PLAYER_HEIGHT);
     AddComponent<ColliderBox>(PLAYER_WIDTH, PLAYER_HEIGHT);
