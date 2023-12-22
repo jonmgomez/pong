@@ -9,8 +9,6 @@
 #include "rectangle.h"
 #include "timer.h"
 
-#include <spdlog/spdlog.h>
-
 namespace pong
 {
 

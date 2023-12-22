@@ -6,8 +6,6 @@
 #include "scorecontroller.h"
 #include "logger.h"
 
-#include <spdlog/spdlog.h>
-
 namespace pong
 {
 
@@ -30,7 +28,7 @@ void ScoreArea::OnStart()
     mScoreController = Pong::FindComponentOfType<ScoreController>();
     if (mScoreController == nullptr)
     {
-        spdlog::error("ScoreController instance not found!");
+        LogError("ScoreController instance not found!");
     }
 }
 
