@@ -1,16 +1,13 @@
 #include "component.h"
 
+#include "gameobject.h"
+
 namespace pong
 {
 
 int BaseComponent::GetGameObjectId() const
 {
-    return mGameObjectId;
-}
-
-void BaseComponent::SetGameObjectId(int gameObjectId)
-{
-    mGameObjectId = gameObjectId;
+    return mGameObject->GetId();
 }
 
 GameObject* BaseComponent::GetGameObject() const

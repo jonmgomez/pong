@@ -74,10 +74,9 @@ public:
 
     virtual void Destroy() = 0;
 
-    int GetGameObjectId() const;
-    void SetGameObjectId(int gameObjectId);
     GameObject* GetGameObject() const;
     void SetGameObject(GameObject* gameObject);
+    int GetGameObjectId() const;
 
     template<typename T>
     T* GetComponent()
@@ -86,7 +85,6 @@ public:
     }
 
 private:
-    int mGameObjectId { 0 };
     GameObject* mGameObject { nullptr };
 };
 

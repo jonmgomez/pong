@@ -50,7 +50,6 @@ public:
     {
         auto component = std::make_unique<T>(std::forward<Args>(args)...);
         component->SetGameObject(this);
-        component->SetGameObjectId(mId);
 
         const int componentId = GetComponentTypeId<T>();
         mComponents.insert(std::make_pair(componentId, component.get()));
