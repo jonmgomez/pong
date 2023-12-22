@@ -4,21 +4,17 @@
 #include "rectangle.h"
 #include "transform.h"
 
+#include <glm/glm.hpp>
+
 namespace pong
 {
 
-Wall::Wall(float width, float height) :
-    mWidth(width),
-    mHeight(height)
+WallBlueprint::WallBlueprint(float width, float height)
 {
     SetInstanceName("Wall");
-}
-
-void Wall::InitalizeComponents()
-{
     AddComponent<Transform>();
-    AddComponent<Rectangle>(mWidth, mHeight);
-    AddComponent<ColliderBox>(mWidth, mHeight);
+    AddComponent<Rectangle>(width, height);
+    AddComponent<ColliderBox>(width, height);
 }
 
 } // namespace pong

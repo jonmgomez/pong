@@ -1,5 +1,6 @@
 #include "gameobject.h"
 
+#include "behavior.h"
 #include "audiomixer.h"
 #include "renderutils.h"
 #include "pong.h"
@@ -9,25 +10,6 @@ namespace pong
 
 int GameObject::sId = 0;
 
-void GameObject::OnStart()
-{
-}
-
-void GameObject::OnUpdate()
-{
-}
-
-void GameObject::OnCollisionStart(GameObject& /*other*/)
-{
-}
-
-void GameObject::OnCollisionStay(GameObject& /*other*/)
-{
-}
-
-void GameObject::OnCollisionStop(GameObject& /*other*/)
-{
-}
 
 int GameObject::GetID() const
 {
@@ -44,19 +26,29 @@ void GameObject::SetInstanceName(const std::string& name)
     mInstanceName = name;
 }
 
-void GameObject::SetTimeout(std::chrono::duration<double> timeout, std::function<void()> callback)
+std::vector<Behavior*> GameObject::GetBehaviorComponents() const
 {
-    Pong::GetInstance().GetTimer().AddTimer(GetID(), timeout, callback);
+    std::vector<Behavior*> behaviors {};
+
+    const auto& allBehaviors = Behavior::GetComponents();
+
+    for (auto& behavior : allBehaviors)
+    {
+        if (behavior->GetGameObjectID() == mId)
+        {
+            behaviors.push_back(behavior.get());
+        }
+    }
+
+    return behaviors;
 }
 
-void GameObject::PlaySound(const Sound& sound)
+void GameObject::Destroy()
 {
-    Pong::GetInstance().GetAudioMixer().PlaySound(sound);
-}
-
-void GameObject::PlaySound(const Sound& sound, const glm::vec3& position)
-{
-    Pong::GetInstance().GetAudioMixer().PlaySound(sound, position);
+    for (auto& component : mComponents)
+    {
+        component.second->Destroy();
+    }
 }
 
 } // namespace pong

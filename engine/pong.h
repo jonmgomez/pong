@@ -19,9 +19,9 @@
 namespace pong
 {
 
-enum class Scene
+enum class SceneType
 {
-    TitleScreen,
+    Title,
     Settings,
     Game
 };
@@ -36,19 +36,38 @@ public:
     static void Reset();
     static void Cleanup();
 
-    static void LoadSceneNext(Scene scene);
+    static void LoadSceneNext(SceneType scene);
 
-    template<typename T>
-    static T* FindGameObject()
+    // Returns the first component of type T found in the scene
+    template<typename T, typename = std::enable_if_t<std::is_base_of_v<BaseComponent, T> && !std::is_base_of_v<Behavior, T>>>
+    static T* FindComponentOfType()
     {
-        for (auto& gameObject : GetInstance().mGameObjects)
+        const std::vector<std::unique_ptr<T>>& components = T::GetComponents();
+
+        if (components.empty())
         {
-            auto castedGameObject = dynamic_cast<T*>(gameObject.get());
-            if (castedGameObject != nullptr)
+            return nullptr;
+        }
+
+        return components[0].get();
+    }
+
+    // Returns the first component of type T found in the scene
+    template<typename T, typename = std::enable_if_t<std::is_base_of_v<Behavior, T>>, typename = void>
+    static T* FindComponentOfType()
+    {
+        // Since behaviors are the only components meant to be overridden, they are stored in a Behavior vector
+        // getting a specific behavior class from the vector is done by comparing the behavior ID
+        const std::vector<std::unique_ptr<Behavior>>& behaviors = Behavior::GetComponents();
+
+        for (auto& behavior : behaviors)
+        {
+            if (behavior->GetBehaviorID() == GetIDFromBehavior<T>())
             {
-                return castedGameObject;
+                return static_cast<T*>(behavior.get());
             }
         }
+
         return nullptr;
     }
 
@@ -80,7 +99,7 @@ private:
     Pong& operator=(Pong&&) = delete;
     ~Pong() = default;
 
-    void LoadScene(Scene scene);
+    void LoadScene(SceneType scene);
 
     std::vector<std::unique_ptr<GameObject>> mGameObjects {};
     std::vector<std::unique_ptr<UIElement>> mUIElements {};
@@ -90,7 +109,7 @@ private:
     AudioMixer mAudioMixer {};
     Timer mTimer {};
 
-    Scene mNextScene { Scene::TitleScreen };
+    SceneType mNextScene { SceneType::Title };
     bool mChangeSceneRequested { false };
 };
 

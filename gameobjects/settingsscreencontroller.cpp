@@ -36,10 +36,6 @@ static constexpr glm::vec3 VOLUME_SLIDER_POSITION = glm::vec3(200.0f, -450.0f, 0
 static constexpr float DIFFICULTY_SPREAD_H = 550.0f;
 static constexpr float DIFFICULTY_SPREAD_V = 150.0f;
 
-void SettingsScreenController::InitalizeComponents()
-{
-}
-
 void SettingsScreenController::OnStart()
 {
     const std::string font = Config::GetValue<std::string>("font");
@@ -50,7 +46,7 @@ void SettingsScreenController::OnStart()
     mBackText = Pong::AddUIElement<Text>("Back", font, 1.0f, 75);
     mBackButton = Pong::AddUIElement<Button>(300.0f, 150.0f);
     mBackButton->AddListener(ButtonEvent::Pressed, []() {
-        Pong::LoadSceneNext(Scene::TitleScreen);
+        Pong::LoadSceneNext(SceneType::Title);
     });
     SetupButton(mBackButton, mBackText, BACK_BUTTON_POSITION);
 

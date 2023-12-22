@@ -1,5 +1,6 @@
 #pragma once
 
+#include "behavior.h"
 #include "button.h"
 #include "checkbox.h"
 #include "gameobject.h"
@@ -10,10 +11,10 @@
 namespace pong
 {
 
-class SettingsScreenController : public GameObject, public UIMenu
+class SettingsScreenController : public Behavior, public UIMenu
 {
 public:
-    void InitalizeComponents() override;
+    int GetBehaviorID() const override { return GetIDFromBehavior<SettingsScreenController>(); }
     void OnStart() override;
 
 private:

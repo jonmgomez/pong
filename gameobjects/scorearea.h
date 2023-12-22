@@ -1,25 +1,30 @@
 #pragma once
 
+#include "behavior.h"
 #include "gameobject.h"
 #include "scorecontroller.h"
 
 namespace pong
 {
 
-class ScoreArea : public GameObject
+class ScoreAreaBlueprint : public GameObjectBlueprint
 {
 public:
-    ScoreArea(float width, float height, bool playerSide);
+    ScoreAreaBlueprint(float width, float height, bool playerSide);
+};
 
-    void InitalizeComponents() override;
+class ScoreArea : public Behavior
+{
+public:
+    ScoreArea(bool playerSide);
+
+    int GetBehaviorID() const override { return GetIDFromBehavior<ScoreArea>(); }
     void OnStart() override;
     void OnCollisionStart(GameObject& other) override;
 
 private:
     bool mIsPlayerScoreArea { false };
     ScoreController* mScoreController { nullptr };
-    float mWidth { 0.0f };
-    float mHeight { 0.0f };
 };
 
 } // namespace pong

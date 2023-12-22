@@ -11,24 +11,23 @@
 namespace pong
 {
 
-ScoreArea::ScoreArea(float width, float height, bool playerSide) :
-    mWidth { width },
-    mHeight { height },
-    mIsPlayerScoreArea { playerSide }
+ScoreAreaBlueprint::ScoreAreaBlueprint(float width, float height, bool playerSide)
 {
     SetInstanceName("ScoreArea");
+    AddComponent<Transform>();
+    AddComponent<Rectangle>(width, height);
+    AddComponent<ColliderBox>(width, height);
+    AddComponent<ScoreArea>(playerSide);
 }
 
-void ScoreArea::InitalizeComponents()
+ScoreArea::ScoreArea(bool playerSide) :
+    mIsPlayerScoreArea { playerSide }
 {
-    AddComponent<Transform>();
-    AddComponent<Rectangle>(mWidth, mHeight);
-    AddComponent<ColliderBox>(mWidth, mHeight);
 }
 
 void ScoreArea::OnStart()
 {
-    mScoreController = Pong::FindGameObject<ScoreController>();
+    mScoreController = Pong::FindComponentOfType<ScoreController>();
     if (mScoreController == nullptr)
     {
         spdlog::error("ScoreController instance not found!");

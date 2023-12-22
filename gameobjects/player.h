@@ -1,5 +1,6 @@
 #pragma once
 
+#include "behavior.h"
 #include "gameobject.h"
 #include "transform.h"
 
@@ -8,10 +9,16 @@
 namespace pong
 {
 
-class Player : public GameObject
+class PlayerBlueprint : public GameObjectBlueprint
 {
 public:
-    void InitalizeComponents() override;
+    PlayerBlueprint();
+};
+
+class Player : public Behavior
+{
+public:
+    int GetBehaviorID() const override { return GetIDFromBehavior<Player>(); }
     void OnStart() override;
     void OnUpdate() override;
     void OnCollisionStart(GameObject& other) override;

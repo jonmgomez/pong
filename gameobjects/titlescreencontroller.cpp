@@ -20,10 +20,6 @@ static constexpr glm::vec3 PONG_TEXT_POSITION(0.0f, 750.0f, 0.0f);
 static constexpr glm::vec3 SETTINGS_BUTTON_POSITION(0.0f, -300.0f, 0.0f);
 static constexpr glm::vec3 QUIT_BUTTON_POSITION(0.0f, -600.0f, 0.0f);
 
-void TitleScreenController::InitalizeComponents()
-{
-}
-
 void TitleScreenController::OnStart()
 {
     const std::string kFontPath = Config::GetValue<std::string>("font");
@@ -33,14 +29,14 @@ void TitleScreenController::OnStart()
     mPlayText = Pong::AddUIElement<Text>("Play", kFontPath, 1.0f);
     mPlayButton = Pong::AddUIElement<Button>(BUTTON_WIDTH, BUTTON_HEIGHT);
     mPlayButton->AddListener(ButtonEvent::Pressed, []() {
-        Pong::LoadSceneNext(Scene::Game);
+        Pong::LoadSceneNext(SceneType::Game);
     });
     SetupButton(mPlayButton, mPlayText, glm::vec3(0.0f));
 
     mSettingsText = Pong::AddUIElement<Text>("Settings", kFontPath, 1.0f, 75);
     mSettingsButton = Pong::AddUIElement<Button>(BUTTON_WIDTH, BUTTON_HEIGHT);
     mSettingsButton->AddListener(ButtonEvent::Pressed, []() {
-        Pong::LoadSceneNext(Scene::Settings);
+        Pong::LoadSceneNext(SceneType::Settings);
     });
     SetupButton(mSettingsButton, mSettingsText, SETTINGS_BUTTON_POSITION);
 

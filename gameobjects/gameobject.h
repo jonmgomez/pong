@@ -1,5 +1,6 @@
 #pragma once
 
+#include "behavior.h"
 #include "component.h"
 #include "colliderbox.h"
 #include "mesh.h"
@@ -21,26 +22,14 @@ public:
     GameObject() = default;
     virtual ~GameObject() = default;
 
-    virtual void InitalizeComponents() = 0;
-    virtual void OnStart();
-    virtual void OnUpdate();
-    virtual void OnCollisionStart(GameObject& other);
-    virtual void OnCollisionStay(GameObject& other);
-    virtual void OnCollisionStop(GameObject& other);
 
     int GetID() const;
     std::string GetInstanceName() const;
     void SetInstanceName(const std::string& name);
 
-    void SetTimeout(std::chrono::duration<double> timeout, std::function<void()> callback);
-    void PlaySound(const Sound& sound);
-    void PlaySound(const Sound& sound, const glm::vec3& position);
+    std::vector<Behavior*> GetBehaviorComponents() const;
 
-    template <typename T>
-    T* GetObject()
-    {
-        return dynamic_cast<T*>(this);
-    }
+    void Destroy();
 
     template<typename T>
     T* GetComponent()
@@ -76,6 +65,10 @@ private:
     int mId { sId++ };
     std::unordered_map<int, BaseComponent*> mComponents {};
     std::string mInstanceName { "" };
+};
+
+class GameObjectBlueprint : public GameObject
+{
 };
 
 } // namespace pong
