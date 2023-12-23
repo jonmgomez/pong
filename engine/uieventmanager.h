@@ -25,7 +25,8 @@ public:
     void ProcessEvents(const UIElementCollection& uiElements);
 
 private:
-    bool CheckMouseInBounds(BaseComponent& component, RectangleBounds bounds) const;
+    bool CheckMouseInComponentBounds(BaseComponent& component, RectangleBounds bounds) const;
+    bool CheckMouseInBounds(const RectangleBounds& bounds) const;
 };
 
 } // namespace pong

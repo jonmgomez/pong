@@ -1,6 +1,6 @@
 #pragma once
 
-#include "colliderbox.h"
+#include "component.h"
 #include "rectangle.h"
 #include "uielement.h"
 
@@ -11,7 +11,7 @@
 namespace pong
 {
 
-class Slider : public UIElement
+class Slider : public UIElement, public Component<Slider>
 {
 public:
     Slider(float width, float height, float min, float max, float step, float startValue);

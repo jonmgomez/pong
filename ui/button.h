@@ -1,6 +1,6 @@
 #pragma once
 
-#include "colliderbox.h"
+#include "component.h"
 #include "rectangle.h"
 #include "uielement.h"
 
@@ -24,7 +24,7 @@ enum class ButtonEvent
 
 using ListenerCallbacks = std::vector<std::function<void()>>;
 
-class Button : public UIElement
+class Button : public UIElement, public Component<Button>
 {
 public:
     Button(float width, float height);

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "component.h"
 #include "textcharacter.h"
 #include "uielement.h"
 
@@ -11,7 +12,7 @@
 namespace pong
 {
 
-class Text : public UIElement
+class Text : public UIElement, public Component<Text>
 {
 public:
     Text(const std::string&, const std::string& path, float scale, int pixelLineHeight = 128);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "colliderbox.h"
+#include "component.h"
 #include "rectangle.h"
 #include "slider.h"
 #include "uielement.h"
@@ -8,7 +8,7 @@
 namespace pong
 {
 
-class CheckBox : public UIElement
+class CheckBox : public UIElement, public Component<CheckBox>
 {
 public:
     CheckBox(float width, float height, bool defaultValue);
