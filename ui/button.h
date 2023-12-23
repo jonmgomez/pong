@@ -39,13 +39,13 @@ public:
     float GetWidth() const;
     float GetHeight() const;
     void Resize(float width, float height);
-    ColliderBox* GetColliderBox();
+    RectangleBounds GetBounds() const;
     bool WasPressed() const;
     bool WasHovered() const;
 
 private:
     Rectangle mRectangle { 0.0f, 0.0f };
-    ColliderBox mColliderBox { 0.0f, 0.0f };
+    RectangleBounds mBounds {};
     std::array<ListenerCallbacks, static_cast<int>(ButtonEvent::EVENTS_COUNT)> mListeners {};
     bool mPressed { false };
     bool mHovered { false };

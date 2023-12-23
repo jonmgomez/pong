@@ -14,7 +14,7 @@ CheckBox::CheckBox(float width, float height, bool defaultValue) :
         MeshComponent { BORDER_THICKNESS, height,           glm::vec3(width / 2.0f - BORDER_THICKNESS / 2.0f, 0.0f, 0.0f) }
     },
     mFill { width - (BORDER_THICKNESS + BORDER_GAP) * 2.0f, height - (BORDER_THICKNESS + BORDER_GAP) * 2.0f},
-    mColliderBox{width, height},
+    mBounds{width, height},
     mValue{defaultValue}
 {
     mFill.SetEnabled(mValue);
@@ -46,8 +46,6 @@ void CheckBox::SetPosition(const glm::vec3& position)
     {
         line.mPosition = mPosition + line.mOffset;
     }
-
-    mColliderBox.OnPositionUpdate(mPosition);
 }
 
 void CheckBox::OnClick()
@@ -76,9 +74,9 @@ bool CheckBox::GetValue() const
     return mValue;
 }
 
-ColliderBox* CheckBox::GetColliderBox()
+RectangleBounds CheckBox::GetBounds() const
 {
-    return &mColliderBox;
+    return mBounds;
 }
 
 } // namespace pong

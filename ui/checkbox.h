@@ -22,12 +22,12 @@ public:
 
     void SetValue(bool value);
     bool GetValue() const;
-    ColliderBox* GetColliderBox();
+    RectangleBounds GetBounds() const;
 
 private:
     std::array<MeshComponent, 4> mLines {};
     Rectangle mFill { 0.0f, 0.0f };
-    ColliderBox mColliderBox { 0.0f, 0.0f };
+    RectangleBounds mBounds {};
     std::vector<std::function<void(bool)>> mValueChangeListeners {};
     bool mValue { true };
 };

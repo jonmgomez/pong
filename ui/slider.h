@@ -26,7 +26,7 @@ public:
     void AddValueChangeListener(std::function<void(float)> listener);
 
     bool WasPressed() const;
-    ColliderBox* GetColliderBox();
+    RectangleBounds GetBounds() const;
     float GetValue() const;
 
 private:
@@ -34,7 +34,7 @@ private:
     std::array<MeshComponent, 4> mBorderMeshes {};
     MeshComponent mFillMesh {};
     MeshComponent mHandleMesh {};
-    ColliderBox mColliderBox { 0.0f, 0.0f };
+    RectangleBounds mBounds {};
     std::vector<std::function<void(float)>> mValueChangeListeners {};
     float mWidth { 0.0f };
     float mHeight { 0.0f };

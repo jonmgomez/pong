@@ -6,6 +6,7 @@
 #include "logger.h"
 #include "input.h"
 #include "slider.h"
+#include "transform.h"
 #include "uielement.h"
 
 namespace pong
@@ -13,8 +14,10 @@ namespace pong
 
 void UIEventManager::Visit(Button& button)
 {
+    RectangleBounds bounds = button.GetBounds();
+    bounds = bounds + button.GetPosition();
     const glm::vec3 mousePosition = Input::GetMousePosition();
-    const bool inBounds = button.GetColliderBox()->CheckPointInBounds(mousePosition);
+    const bool inBounds = bounds.CheckPointInBounds(mousePosition);
     const InputState mouseButtonState = Input::GetMouseButtonState(GLFW_MOUSE_BUTTON_LEFT);
 
     if (inBounds)
@@ -42,7 +45,10 @@ void UIEventManager::Visit(Button& button)
 void UIEventManager::Visit(CheckBox& checkBox)
 {
     const glm::vec3 mousePosition = Input::GetMousePosition();
-    if (checkBox.GetColliderBox()->CheckPointInBounds(mousePosition) && Input::GetMouseButtonState(GLFW_MOUSE_BUTTON_LEFT) == InputState::Pressed)
+    RectangleBounds bounds = checkBox.GetBounds();
+    bounds = bounds + checkBox.GetPosition();
+
+    if (bounds.CheckPointInBounds(mousePosition) && Input::GetMouseButtonState(GLFW_MOUSE_BUTTON_LEFT) == InputState::Pressed)
     {
         checkBox.OnClick();
     }
@@ -50,8 +56,10 @@ void UIEventManager::Visit(CheckBox& checkBox)
 
 void UIEventManager::Visit(Slider& slider)
 {
+    RectangleBounds bounds = slider.GetBounds();
+    bounds = bounds + slider.GetPosition();
     const glm::vec3 mousePosition = Input::GetMousePosition();
-    const bool inBounds = slider.GetColliderBox()->CheckPointInBounds(mousePosition);
+    const bool inBounds = bounds.CheckPointInBounds(mousePosition);
     const bool mousePressed = Input::CheckMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT);
 
     if ((inBounds && mousePressed) || (mousePressed && slider.WasPressed()))
@@ -75,6 +83,20 @@ void UIEventManager::ProcessEvents(const UIElementCollection& uiElements)
     {
         uiElement->Accept(*this);
     }
+}
+
+bool UIEventManager::CheckMouseInBounds(BaseComponent& component, RectangleBounds bounds) const
+{
+    const glm::vec3 mousePosition = Input::GetMousePosition();
+    (void)component;
+
+    // const Transform* transform = component.GetComponent<Transform>();
+    // if (transform != nullptr)
+    // {
+    //     bounds = bounds + transform->mPosition;
+    // }
+
+    return bounds.CheckPointInBounds(mousePosition);
 }
 
 } // namespace pong

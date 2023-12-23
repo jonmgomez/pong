@@ -40,7 +40,7 @@ Slider::Slider(float width, float height, float min, float max, float step, floa
     mFillMesh   = { fillWidth,   fillHeight,   glm::vec3(fillXPos, 0.0f, 0.0f)   };
     mHandleMesh = { handleWidth, handleHeight, glm::vec3(handleXPos, 0.0f, 0.0f) };
 
-    mColliderBox = ColliderBox(width, height);
+    mBounds = {width, height};
 }
 
 void Slider::Render() const
@@ -69,7 +69,6 @@ void Slider::SetPosition(const glm::vec3& position)
 
     mFillMesh.mPosition = mPosition + mFillMesh.mOffset;
     mHandleMesh.mPosition = mPosition + mHandleMesh.mOffset;
-    mColliderBox.OnPositionUpdate(mPosition);
 }
 
 void Slider::OnMouseDown(const glm::vec3& mousePosition)
@@ -121,9 +120,9 @@ bool Slider::WasPressed() const
     return mWasPressed;
 }
 
-ColliderBox* Slider::GetColliderBox()
+RectangleBounds Slider::GetBounds() const
 {
-    return &mColliderBox;
+    return mBounds;
 }
 
 float Slider::GetValue() const

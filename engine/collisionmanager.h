@@ -33,6 +33,8 @@ private:
     bool IsCollisionPairValid(const CollisionPair& pair, int firstGameObjectId, int secondGameObjectId) const;
     void RemoveGameObjectCollisionPair(int firstGameObjectId, int secondGameObjectId);
 
+    bool CheckForCollision(ColliderBox& first, ColliderBox& second) const;
+
     std::vector<CollisionPair>mCurrentCollisions {};
 };
 

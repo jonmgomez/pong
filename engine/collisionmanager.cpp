@@ -13,27 +13,30 @@ namespace pong
 
 void CollisionManager::ProcessCollisions(const std::vector<std::unique_ptr<ColliderBox>>& colliders)
 {
+    const auto GetPositionedBounds = [](ColliderBox& collider)
+    {
+        RectangleBounds bounds = collider.GetBounds();
+        const Transform* transform = collider.GetComponent<Transform>();
+        if (transform != nullptr)
+        {
+            bounds = bounds + transform->mPosition;
+        }
+        return bounds;
+    };
+
     for (int index = 0; index < colliders.size(); index++)
     {
         auto& collider = colliders[index];
-        if (auto* transform = collider->GetGameObject()->GetComponent<Transform>(); transform != nullptr)
-        {
-            collider->OnPositionUpdate(transform->mPosition);
-        }
 
         for (int otherIndex = index + 1; otherIndex < colliders.size(); otherIndex++)
         {
             auto& otherCollider = colliders[otherIndex];
-            if (otherCollider->GetGameObject()->GetComponent<Transform>() != nullptr)
-            {
-                otherCollider->OnPositionUpdate(otherCollider->GetGameObject()->GetComponent<Transform>()->mPosition);
-            }
-            const bool collision = collider->CheckForCollision(*otherCollider);
-
-            std::vector<Behavior*> scripts = collider->GetGameObject()->GetBehaviorComponents();
-            std::vector<Behavior*> otherScripts = otherCollider->GetGameObject()->GetBehaviorComponents();
+            const std::vector<Behavior*> scripts = collider->GetGameObject()->GetBehaviorComponents();
+            const std::vector<Behavior*> otherScripts = otherCollider->GetGameObject()->GetBehaviorComponents();
             GameObject* gameObject = collider->GetGameObject();
             GameObject* otherGameObject = otherCollider->GetGameObject();
+
+            const bool collision = CheckForCollision(*collider, *otherCollider);
             const bool wereColliding = IsCurrentlyColliding(gameObject->GetId(), otherGameObject->GetId());
 
             if (collision && !wereColliding)
@@ -97,6 +100,46 @@ void CollisionManager::RemoveGameObjectCollisionPair(int firstGameObjectId, int 
     mCurrentCollisions.erase(std::remove_if(mCurrentCollisions.begin(), mCurrentCollisions.end(),
         [&](const CollisionPair& collisionPair){ return IsCollisionPairValid(collisionPair, firstGameObjectId, secondGameObjectId); }),
         mCurrentCollisions.end());
+}
+
+bool CollisionManager::CheckForCollision(ColliderBox& first, ColliderBox& second) const
+{
+    const auto GetPositionedBounds = [](ColliderBox& collider)
+    {
+        RectangleBounds bounds = collider.GetBounds();
+        const Transform* transform = collider.GetComponent<Transform>();
+        if (transform != nullptr)
+        {
+            bounds = bounds + transform->mPosition;
+        }
+        return bounds;
+    };
+
+    RectangleBounds bounds = GetPositionedBounds(first);
+    RectangleBounds otherBounds = GetPositionedBounds(second);
+
+    // Check within both collider's bounds. This is due to the
+    // possibility of the one collider ecompassing the other
+    // If that occurs, the other collider's positions do not not appear
+    // inside the bounds and would not register as collision
+
+    for (const auto& position : otherBounds.mBounds)
+    {
+        if (bounds.CheckPointInBounds(position))
+        {
+            return true;
+        }
+    }
+
+    for (const auto& position : bounds.mBounds)
+    {
+        if (otherBounds.CheckPointInBounds(position))
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 } // namespace pong

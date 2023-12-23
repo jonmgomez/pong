@@ -7,9 +7,9 @@ namespace pong
 {
 
 Button::Button(float width, float height) :
-    mRectangle(width, height)
+    mRectangle(width, height),
+    mBounds(width, height)
 {
-    mColliderBox.Resize(width, height);
 }
 
 void Button::Render() const
@@ -56,7 +56,6 @@ void Button::OnEvent(ButtonEvent event)
 void Button::SetPosition(const glm::vec3& position)
 {
     mPosition = position;
-    mColliderBox.OnPositionUpdate(position);
 }
 
 float Button::GetWidth() const
@@ -72,12 +71,12 @@ float Button::GetHeight() const
 void Button::Resize(float width, float height)
 {
     mRectangle.Resize(width, height);
-    mColliderBox.Resize(width, height);
+    mBounds = {width, height};
 }
 
-ColliderBox* Button::GetColliderBox()
+RectangleBounds Button::GetBounds() const
 {
-    return &mColliderBox;
+    return mBounds;
 }
 
 bool Button::WasPressed() const

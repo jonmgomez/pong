@@ -23,6 +23,9 @@ public:
     void Visit(Text& text) override;
 
     void ProcessEvents(const UIElementCollection& uiElements);
+
+private:
+    bool CheckMouseInBounds(BaseComponent& component, RectangleBounds bounds) const;
 };
 
 } // namespace pong
