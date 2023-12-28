@@ -5,47 +5,38 @@ namespace pong
 
 constexpr float BORDER_THICKNESS = 10.0f;
 constexpr float BORDER_GAP = 10.0f;
+constexpr float BORDER_TOTAL = (BORDER_THICKNESS + BORDER_GAP) * 2.0f;
+constexpr float BORDER_ONE_SIDE = BORDER_TOTAL / 2.0f;
 
 CheckBox::CheckBox(float width, float height, bool defaultValue) :
     mLines {
-        MeshComponent { width,            BORDER_THICKNESS, glm::vec3(0.0f, height / 2.0f - BORDER_THICKNESS / 2.0f, 0.0f) },
-        MeshComponent { width,            BORDER_THICKNESS, glm::vec3(0.0f, height / -2.0f + BORDER_THICKNESS / 2.0f, 0.0f) },
-        MeshComponent { BORDER_THICKNESS, height,           glm::vec3(width / -2.0f + BORDER_THICKNESS / 2.0f, 0.0f, 0.0f) },
-        MeshComponent { BORDER_THICKNESS, height,           glm::vec3(width / 2.0f - BORDER_THICKNESS / 2.0f, 0.0f, 0.0f) }
+        OffsetRectangle { Rectangle(width,            BORDER_THICKNESS), glm::vec3(0.0f, height / 2.0f - BORDER_THICKNESS / 2.0f, 0.0f) },
+        OffsetRectangle { Rectangle(width,            BORDER_THICKNESS), glm::vec3(0.0f, height / -2.0f + BORDER_THICKNESS / 2.0f, 0.0f) },
+        OffsetRectangle { Rectangle(BORDER_THICKNESS, height          ), glm::vec3(width / -2.0f + BORDER_THICKNESS / 2.0f, 0.0f, 0.0f) },
+        OffsetRectangle { Rectangle(BORDER_THICKNESS, height          ), glm::vec3(width / 2.0f - BORDER_THICKNESS / 2.0f, 0.0f, 0.0f) }
     },
-    mFill { width - (BORDER_THICKNESS + BORDER_GAP) * 2.0f, height - (BORDER_THICKNESS + BORDER_GAP) * 2.0f},
+    mFill { Rectangle(width - (BORDER_THICKNESS + BORDER_GAP) * 2.0f, height - (BORDER_THICKNESS + BORDER_GAP) * 2.0f), glm::vec3(0.0f)},
     mBounds{width, height},
     mValue{defaultValue}
 {
-    mFill.SetEnabled(mValue);
+    mFill.mRectangle.SetEnabled(mValue);
 }
 
-void CheckBox::Render() const
+std::vector<OffsetGraphic> CheckBox::GetRenderables()
 {
+    std::vector<OffsetGraphic> renderables = {};
+    renderables.emplace_back(mFill.mRectangle, mFill.mOffset);
     for (const auto& line : mLines)
     {
-        line.mMesh.Draw(line.mPosition);
+        renderables.emplace_back(line.mRectangle, line.mOffset);
     }
 
-    if (mValue)
-    {
-        mFill.Draw(mPosition);
-    }
+    return renderables;
 }
 
 void CheckBox::Accept(ProcessEventVisitor& visitor)
 {
     visitor.Visit(*this);
-}
-
-void CheckBox::SetPosition(const glm::vec3& position)
-{
-    mPosition = position;
-
-    for (auto& line : mLines)
-    {
-        line.mPosition = mPosition + line.mOffset;
-    }
 }
 
 void CheckBox::OnClick()
@@ -61,7 +52,7 @@ void CheckBox::AddValueChangeListener(std::function<void(bool)> callback)
 void CheckBox::SetValue(bool value)
 {
     mValue = value;
-    mFill.SetEnabled(mValue);
+    mFill.mRectangle.SetEnabled(mValue);
 
     for (const auto& callback : mValueChangeListeners)
     {

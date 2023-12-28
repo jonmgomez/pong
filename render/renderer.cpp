@@ -1,10 +1,14 @@
 #include "renderer.h"
 
+#include "button.h"
 #include "config.h"
+#include "checkbox.h"
 #include "gameobject.h"
 #include "indexbuffer.h"
 #include "logger.h"
 #include "renderutils.h"
+#include "slider.h"
+#include "text.h"
 #include "texture.h"
 #include "transform.h"
 #include "vertexarray.h"
@@ -78,8 +82,9 @@ void Renderer::Cleanup()
     GetInstance().mShader = nullptr;
 }
 
-void Renderer::DrawAllMeshes(const std::vector<std::unique_ptr<Mesh>>& meshes)
+void Renderer::DrawAll()
 {
+    const std::vector<std::unique_ptr<Mesh>>& meshes = Mesh::GetComponents();
     for (const auto& mesh : meshes)
     {
         glm::vec3 position(0.0f);
@@ -90,8 +95,60 @@ void Renderer::DrawAllMeshes(const std::vector<std::unique_ptr<Mesh>>& meshes)
             position = transform->mPosition;
         }
 
-        mesh->Draw(position);
+        const RenderData renderData = mesh->GetRenderData();
+        Renderer::Draw(renderData, position);
     }
+
+    const auto RenderUIElement = [](auto& uiElement)
+    {
+        glm::vec3 position(0.0f);
+        const Transform* transform = uiElement.GetComponent<Transform>();
+        if (transform != nullptr)
+        {
+            position = transform->mPosition;
+        }
+        const std::vector<OffsetGraphic>& graphics = uiElement.GetRenderables();
+
+        Renderer::Draw(position, graphics);
+    };
+
+    const std::vector<std::unique_ptr<Text>>& texts = Text::GetComponents();
+    for (const auto& text : texts)
+    {
+        RenderUIElement(*text);
+    }
+
+    const std::vector<std::unique_ptr<CheckBox>>& checkBoxes = CheckBox::GetComponents();
+    for (const auto& checkBox : checkBoxes)
+    {
+        RenderUIElement(*checkBox);
+    }
+
+    const std::vector<std::unique_ptr<Button>>& buttons = Button::GetComponents();
+    for (const auto& button : buttons)
+    {
+        RenderUIElement(*button);
+    }
+
+    const std::vector<std::unique_ptr<Slider>>& sliders = Slider::GetComponents();
+    for (const auto& slider : sliders)
+    {
+        RenderUIElement(*slider);
+    }
+}
+
+void Renderer::Draw(const glm::vec3& position, const std::vector<OffsetGraphic>& graphics)
+{
+    for (const auto& graphic : graphics)
+    {
+        const RenderData renderData = graphic.mGraphic.GetRenderData();
+        Draw(renderData, position + graphic.mOffset);
+    }
+}
+
+void Renderer::Draw(const RenderData& renderData, const glm::vec3& position)
+{
+    Draw(renderData.mVA, renderData.mIB, position, renderData.mTexture, renderData.mColor);
 }
 
 void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib,

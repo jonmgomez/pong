@@ -1,5 +1,6 @@
 #pragma once
 
+#include "graphic.h"
 #include "indexbuffer.h"
 #include "mesh.h"
 #include "renderutils.h"
@@ -19,7 +20,9 @@ public:
 
     static void Init();
     static void Cleanup();
-    static void DrawAllMeshes(const std::vector<std::unique_ptr<Mesh>>& meshes);
+    static void DrawAll();
+    static void Draw(const glm::vec3& position, const std::vector<OffsetGraphic>& graphics);
+    static void Draw(const RenderData& renderData, const glm::vec3& position);
     static void Draw(const VertexArray& va, const IndexBuffer& ib,
                      const glm::vec3& position, const Texture& texture,
                      const GLRGBAColor& color);

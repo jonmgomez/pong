@@ -17,9 +17,8 @@ public:
     Slider(float width, float height, float min, float max, float step, float startValue);
     ~Slider() = default;
 
-    void Render() const override;
+    std::vector<OffsetGraphic> GetRenderables() override;
     void Accept(ProcessEventVisitor& visitor) override;
-    void SetPosition(const glm::vec3& position) override;
 
     void OnMouseDown(const glm::vec3& mousePosition);
     void OnMouseReleased();
@@ -31,9 +30,9 @@ public:
 
 private:
     // Represents the slider background, the slider handle, and the slider fill
-    std::array<MeshComponent, 4> mBorderMeshes {};
-    MeshComponent mFillMesh {};
-    MeshComponent mHandleMesh {};
+    std::array<OffsetRectangle, 4> mBorders {};
+    OffsetRectangle mFill {};
+    OffsetRectangle mHandle {};
     RectangleBounds mBounds {};
     std::vector<std::function<void(float)>> mValueChangeListeners {};
     float mWidth { 0.0f };

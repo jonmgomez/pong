@@ -1,5 +1,8 @@
 #include "slider.h"
 
+#include "gameobject.h"
+#include "transform.h"
+
 #include <algorithm>
 
 namespace pong
@@ -22,10 +25,12 @@ Slider::Slider(float width, float height, float min, float max, float step, floa
     const float verticalBorderXPos = width / 2.0f - BORDER_THICKNESS / 2.0f;
     const float horizontalBorderYPos = height / 2.0f - BORDER_THICKNESS / 2.0f;
 
-    mBorderMeshes[0] = { BORDER_THICKNESS, height,           glm::vec3(-verticalBorderXPos, 0.0f, 0.0f)   };
-    mBorderMeshes[1] = { BORDER_THICKNESS, height,           glm::vec3(verticalBorderXPos, 0.0f, 0.0f)    };
-    mBorderMeshes[2] = { width,            BORDER_THICKNESS, glm::vec3(0.0f, -horizontalBorderYPos, 0.0f) };
-    mBorderMeshes[3] = { width,            BORDER_THICKNESS, glm::vec3(0.0f, horizontalBorderYPos, 0.0f)  };
+    mBorders = {
+        OffsetRectangle { Rectangle(BORDER_THICKNESS, height),           glm::vec3(-verticalBorderXPos, 0.0f, 0.0f)   },
+        OffsetRectangle { Rectangle(BORDER_THICKNESS, height),           glm::vec3(verticalBorderXPos, 0.0f, 0.0f)    },
+        OffsetRectangle { Rectangle(width,            BORDER_THICKNESS), glm::vec3(0.0f, -horizontalBorderYPos, 0.0f) },
+        OffsetRectangle { Rectangle(width,            BORDER_THICKNESS), glm::vec3(0.0f, horizontalBorderYPos, 0.0f)  }
+    };
 
     const float startXPos = BORDER_GAP + BORDER_THICKNESS;
     const float endXPos = width + startXPos;
@@ -37,38 +42,28 @@ Slider::Slider(float width, float height, float min, float max, float step, floa
     const float handleHeight = height * HANDLE_HEIGHT_PERCENT;
     const float handleXPos = fillWidth - width / 2.0f;
 
-    mFillMesh   = { fillWidth,   fillHeight,   glm::vec3(fillXPos, 0.0f, 0.0f)   };
-    mHandleMesh = { handleWidth, handleHeight, glm::vec3(handleXPos, 0.0f, 0.0f) };
+    mFill   = { Rectangle(fillWidth,   fillHeight),   glm::vec3(fillXPos, 0.0f, 0.0f)   };
+    mHandle = { Rectangle(handleWidth, handleHeight), glm::vec3(handleXPos, 0.0f, 0.0f) };
 
     mBounds = {width, height};
 }
 
-void Slider::Render() const
+std::vector<OffsetGraphic> Slider::GetRenderables()
 {
-    for (const auto& borderMesh : mBorderMeshes)
+    std::vector<OffsetGraphic> renderables {};
+    renderables.emplace_back(mFill.mRectangle, mFill.mOffset);
+    renderables.emplace_back(mHandle.mRectangle, mHandle.mOffset);
+    for (const auto& border : mBorders)
     {
-        borderMesh.mMesh.Draw(borderMesh.mPosition);
+        renderables.emplace_back(border.mRectangle, border.mOffset);
     }
 
-    mFillMesh.mMesh.Draw(mFillMesh.mPosition);
-    mHandleMesh.mMesh.Draw(mHandleMesh.mPosition);
+    return renderables;
 }
 
 void Slider::Accept(ProcessEventVisitor& visitor)
 {
     visitor.Visit(*this);
-}
-
-void Slider::SetPosition(const glm::vec3& position)
-{
-    mPosition = position;
-    for (auto& borderMesh : mBorderMeshes)
-    {
-        borderMesh.mPosition = mPosition + borderMesh.mOffset;
-    }
-
-    mFillMesh.mPosition = mPosition + mFillMesh.mOffset;
-    mHandleMesh.mPosition = mPosition + mHandleMesh.mOffset;
 }
 
 void Slider::OnMouseDown(const glm::vec3& mousePosition)
@@ -79,8 +74,14 @@ void Slider::OnMouseDown(const glm::vec3& mousePosition)
     const float percentPerStep = 1.0f / (steps - 1);
 
     const float halfFillWidth = (mWidth - (BORDER_GAP + BORDER_THICKNESS) * 2.0f) / 2.0f;
-    const float minX = mPosition.x - halfFillWidth;
-    const float maxX = mPosition.x + halfFillWidth;
+
+    glm::vec3 position(0.0f);
+    if (GetComponent<Transform>() != nullptr)
+    {
+        position = GetComponent<Transform>()->mPosition;
+    }
+    const float minX = position.x - halfFillWidth;
+    const float maxX = position.x + halfFillWidth;
 
     const float currentMouseX = std::clamp(mousePosition.x, minX, maxX) - minX;
     const float percentIn = currentMouseX / (maxX - minX);
@@ -91,13 +92,11 @@ void Slider::OnMouseDown(const glm::vec3& mousePosition)
 
     const float newFillWidth = stepPercent * (maxX - minX);
     const float newFillOffset = newFillWidth / -2.0f - (1.0f - stepPercent - 0.5f) * (maxX - minX);
-    mFillMesh.mOffset.x = newFillOffset;
-    mFillMesh.mPosition.x = mPosition.x + mFillMesh.mOffset.x;
-    mFillMesh.mMesh.Resize(newFillWidth, mFillMesh.mMesh.GetHeight());
+    mFill.mOffset.x = newFillOffset;
+    mFill.mRectangle.Resize(newFillWidth, mFill.mRectangle.GetWidth());
 
     const float newHandleXOffset = (stepPercent - 0.5f) * (maxX - minX);
-    mHandleMesh.mOffset.x = newHandleXOffset;
-    mHandleMesh.mPosition.x = mPosition.x + mHandleMesh.mOffset.x;
+    mHandle.mOffset.x = newHandleXOffset;
 
     for (const auto& listener : mValueChangeListeners)
     {

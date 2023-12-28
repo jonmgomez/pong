@@ -69,12 +69,7 @@ void Pong::GameLoop()
         behavior->OnUpdate();
     }
 
-    Renderer::DrawAllMeshes(Mesh::GetComponents());
-
-    for (auto& uiElements : GetInstance().mUIElements)
-    {
-        uiElements->Render();
-    }
+    Renderer::DrawAll();
 
     // Done last because input callbacks are done in glfwPollEvents after this loop.
     // So this effectively keeps the values from the new frame before updated from pressed -> held

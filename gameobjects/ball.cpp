@@ -22,7 +22,7 @@ BallBlueprint::BallBlueprint()
 {
     SetInstanceName("Ball");
     AddComponent<Transform>();
-    AddComponent<Rectangle>(BALL_WIDTH, BALL_WIDTH);
+    AddComponent<Mesh>(std::make_unique<Rectangle>(BALL_WIDTH, BALL_WIDTH));
     AddComponent<ColliderBox>(BALL_WIDTH, BALL_WIDTH);
     AddComponent<Ball>();
 }

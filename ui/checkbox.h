@@ -1,6 +1,7 @@
 #pragma once
 
 #include "component.h"
+#include "graphic.h"
 #include "rectangle.h"
 #include "slider.h"
 #include "uielement.h"
@@ -13,9 +14,8 @@ class CheckBox : public UIElement, public Component<CheckBox>
 public:
     CheckBox(float width, float height, bool defaultValue);
 
-    void Render() const override;
+    std::vector<OffsetGraphic> GetRenderables() override;
     void Accept(ProcessEventVisitor& visitor) override;
-    void SetPosition(const glm::vec3& position) override;
 
     void OnClick();
     void AddValueChangeListener(std::function<void(bool)> callback);
@@ -25,8 +25,8 @@ public:
     RectangleBounds GetBounds() const;
 
 private:
-    std::array<MeshComponent, 4> mLines {};
-    Rectangle mFill { 0.0f, 0.0f };
+    std::array<OffsetRectangle, 4> mLines {};
+    OffsetRectangle mFill {};
     RectangleBounds mBounds {};
     std::vector<std::function<void(bool)>> mValueChangeListeners {};
     bool mValue { true };

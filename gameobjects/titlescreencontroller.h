@@ -4,12 +4,11 @@
 #include "button.h"
 #include "gameobject.h"
 #include "text.h"
-#include "uimenu.h"
 
 namespace pong
 {
 
-class TitleScreenController : public Behavior, public UIMenu
+class TitleScreenController : public Behavior
 {
 public:
     int GetBehaviorId() const override { return GetIdFromBehavior<TitleScreenController>(); }

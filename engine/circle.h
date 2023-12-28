@@ -6,7 +6,7 @@ namespace pong
 {
 
 
-class Circle : public Mesh
+class Circle : public Graphic
 {
 public:
     Circle(float radius, int sides);

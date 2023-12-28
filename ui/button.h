@@ -29,13 +29,12 @@ class Button : public UIElement, public Component<Button>
 public:
     Button(float width, float height);
 
-    void Render() const override;
+    std::vector<OffsetGraphic> GetRenderables() override;
     void Accept(ProcessEventVisitor& uiElement) override;
 
     void AddListener(ButtonEvent event, std::function<void()> callback);
     void OnEvent(ButtonEvent event);
 
-    void SetPosition(const glm::vec3& position) override;
     float GetWidth() const;
     float GetHeight() const;
     void Resize(float width, float height);
@@ -44,7 +43,7 @@ public:
     bool WasHovered() const;
 
 private:
-    Rectangle mRectangle { 0.0f, 0.0f };
+    Rectangle mRectangle {};
     RectangleBounds mBounds {};
     std::array<ListenerCallbacks, static_cast<int>(ButtonEvent::EVENTS_COUNT)> mListeners {};
     bool mPressed { false };

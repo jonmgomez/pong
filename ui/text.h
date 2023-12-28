@@ -17,11 +17,12 @@ class Text : public UIElement, public Component<Text>
 public:
     Text(const std::string&, const std::string& path, float scale, int pixelLineHeight = 128);
 
+    std::vector<OffsetGraphic> GetRenderables() override;
+
     std::string GetText() const;
     void SetText(const std::string& text);
     void SetColor(GLRGBAColor color);
 
-    void Render() const override;
     void Accept(ProcessEventVisitor& visitor) override;
 
 private:

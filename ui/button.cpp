@@ -7,14 +7,16 @@ namespace pong
 {
 
 Button::Button(float width, float height) :
-    mRectangle(width, height),
-    mBounds(width, height)
+    mRectangle{width, height},
+    mBounds{width, height}
 {
 }
 
-void Button::Render() const
+std::vector<OffsetGraphic> Button::GetRenderables()
 {
-    mRectangle.Draw(mPosition);
+    std::vector<OffsetGraphic> renderables {};
+    renderables.emplace_back(mRectangle, glm::vec3(0.0f));
+    return renderables;
 }
 
 void Button::Accept(ProcessEventVisitor& uiElement)
@@ -51,11 +53,6 @@ void Button::OnEvent(ButtonEvent event)
     {
         callback();
     }
-}
-
-void Button::SetPosition(const glm::vec3& position)
-{
-    mPosition = position;
 }
 
 float Button::GetWidth() const

@@ -22,7 +22,6 @@ public:
     GameObject() = default;
     virtual ~GameObject() = default;
 
-
     int GetId() const;
     std::string GetInstanceName() const;
     void SetInstanceName(const std::string& name);
@@ -45,17 +44,18 @@ public:
         return nullptr;
     }
 
-    template<typename T, typename... Args>
+    template<typename T, typename = std::enable_if_t<std::is_base_of_v<BaseComponent, T>>, typename... Args>
     T* AddComponent(Args&&... args)
     {
         auto component = std::make_unique<T>(std::forward<Args>(args)...);
+        T* componentPtr = component.get();
         component->SetGameObject(this);
 
         const int componentId = GetComponentTypeId<T>();
-        mComponents.insert(std::make_pair(componentId, component.get()));
+        mComponents.insert(std::make_pair(componentId, componentPtr));
         T::AddComponent(std::move(component));
 
-        return component.get();
+        return componentPtr;
     }
 
 private:

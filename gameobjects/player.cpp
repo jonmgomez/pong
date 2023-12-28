@@ -20,7 +20,7 @@ PlayerBlueprint::PlayerBlueprint()
 {
     SetInstanceName("Player");
     AddComponent<Transform>(PLAYER_POSITION);
-    AddComponent<Rectangle>(PLAYER_WIDTH, PLAYER_HEIGHT);
+    AddComponent<Mesh>(std::make_unique<Rectangle>(PLAYER_WIDTH, PLAYER_HEIGHT));
     AddComponent<ColliderBox>(PLAYER_WIDTH, PLAYER_HEIGHT);
     AddComponent<Player>();
 }

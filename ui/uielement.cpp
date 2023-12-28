@@ -16,14 +16,4 @@ void UIElement::SetOrderLayer(int orderLayer)
     Pong::UpdateUIElementOrderLayer();
 }
 
-glm::vec3 UIElement::GetPosition() const
-{
-    return mPosition;
-}
-
-void UIElement::SetPosition(const glm::vec3& position)
-{
-    mPosition = position;
-}
-
 } // namespace pong

@@ -13,7 +13,7 @@ WallBlueprint::WallBlueprint(float width, float height)
 {
     SetInstanceName("Wall");
     AddComponent<Transform>();
-    AddComponent<Rectangle>(width, height);
+    AddComponent<Mesh>(std::make_unique<Rectangle>(width, height));
     AddComponent<ColliderBox>(width, height);
 }
 

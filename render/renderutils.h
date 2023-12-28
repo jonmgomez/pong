@@ -48,6 +48,7 @@ struct GLRGBAColor
 
 static constexpr RGBAColor RGBA_WHITE { 255, 255, 255, 255 };
 static constexpr GLRGBAColor GLRGBA_WHITE { 1.0f, 1.0f, 1.0f, 1.0f };
+static constexpr GLRGBAColor GLRGBA_BLACK { 0.0f, 0.0f, 0.0f, 1.0f };
 
 void GLClearError();
 bool GLLogCall(const char *function, const char *file, int line);

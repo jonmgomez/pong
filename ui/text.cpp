@@ -143,8 +143,8 @@ void Text::CreateText()
     const glm::vec3 center = glm::vec3(totalTextWidth / 2.0f, -totalTextHeight / 2.0f, 0.0f);
     for (auto& character : mCharacters)
     {
-        const glm::vec3 currentOffset = character.GetOffset();
-        character.SetOffset(currentOffset - center);
+        const glm::vec3 currentOffset = character.mOffset;
+        character.mOffset = currentOffset - center;
     }
 }
 
@@ -168,12 +168,14 @@ void Text::SetColor(GLRGBAColor color)
     }
 }
 
-void Text::Render() const
+std::vector<OffsetGraphic> Text::GetRenderables()
 {
-    for (const auto& character : mCharacters)
+    std::vector<OffsetGraphic> renderables {};
+    for (auto& character : mCharacters)
     {
-        character.Draw(mPosition);
+        renderables.emplace_back(character, character.mOffset);
     }
+    return renderables;
 }
 
 void Text::Accept(ProcessEventVisitor& visitor)
