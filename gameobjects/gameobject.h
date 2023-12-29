@@ -2,18 +2,14 @@
 
 #include "behavior.h"
 #include "component.h"
-#include "colliderbox.h"
 #include "componentmanager.h"
-#include "mesh.h"
 #include "pong.h"
-#include "sound.h"
 #include "utils.h"
 
-#include <glm/glm.hpp>
-
-#include <chrono>
-#include <functional>
 #include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 namespace pong
 {

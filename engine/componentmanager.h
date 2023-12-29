@@ -1,12 +1,12 @@
 #pragma once
 
-#include "component.h"
-#include "uielement.h"
 
 #include "button.h"
+#include "component.h"
 #include "checkbox.h"
 #include "slider.h"
 #include "text.h"
+#include "uielement.h"
 
 #include <memory>
 #include <vector>
@@ -36,6 +36,7 @@ public:
         Button* checkBox = component.get();
         Button::AddComponent(std::move(component));
         mUIComponents.push_back(checkBox);
+        UpdateUIElementOrderLayers();
     }
 
     template<>
@@ -44,6 +45,7 @@ public:
         CheckBox* checkBox = component.get();
         CheckBox::AddComponent(std::move(component));
         mUIComponents.push_back(checkBox);
+        UpdateUIElementOrderLayers();
     }
 
     template<>
@@ -52,6 +54,7 @@ public:
         Slider* checkBox = component.get();
         Slider::AddComponent(std::move(component));
         mUIComponents.push_back(checkBox);
+        UpdateUIElementOrderLayers();
     }
 
     template<>
@@ -60,6 +63,7 @@ public:
         Text* checkBox = component.get();
         Text::AddComponent(std::move(component));
         mUIComponents.push_back(checkBox);
+        UpdateUIElementOrderLayers();
     }
 
     const std::vector<UIElement*>& GetUIComponents() const;
