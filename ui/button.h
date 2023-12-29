@@ -1,6 +1,6 @@
 #pragma once
 
-#include "colliderbox.h"
+#include "component.h"
 #include "rectangle.h"
 #include "uielement.h"
 
@@ -24,28 +24,27 @@ enum class ButtonEvent
 
 using ListenerCallbacks = std::vector<std::function<void()>>;
 
-class Button : public UIElement
+class Button : public UIElement, public Component<Button>
 {
 public:
     Button(float width, float height);
 
-    void Render() const override;
-    void Accept(ProcessEventVisitor& uiElement) override;
+    std::vector<OffsetGraphic> GetRenderables() override;
+    BaseComponent* GetBaseComponent() override;
 
     void AddListener(ButtonEvent event, std::function<void()> callback);
     void OnEvent(ButtonEvent event);
 
-    void SetPosition(const glm::vec3& position) override;
     float GetWidth() const;
     float GetHeight() const;
     void Resize(float width, float height);
-    ColliderBox* GetColliderBox();
+    RectangleBounds GetBounds() const;
     bool WasPressed() const;
     bool WasHovered() const;
 
 private:
-    Rectangle mRectangle { 0.0f, 0.0f };
-    ColliderBox mColliderBox { 0.0f, 0.0f };
+    Rectangle mRectangle {};
+    RectangleBounds mBounds {};
     std::array<ListenerCallbacks, static_cast<int>(ButtonEvent::EVENTS_COUNT)> mListeners {};
     bool mPressed { false };
     bool mHovered { false };

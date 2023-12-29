@@ -13,7 +13,6 @@ ScoreAreaBlueprint::ScoreAreaBlueprint(float width, float height, bool playerSid
 {
     SetInstanceName("ScoreArea");
     AddComponent<Transform>();
-    AddComponent<Rectangle>(width, height);
     AddComponent<ColliderBox>(width, height);
     AddComponent<ScoreArea>(playerSide);
 }

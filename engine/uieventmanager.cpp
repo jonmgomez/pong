@@ -2,19 +2,44 @@
 
 #include "button.h"
 #include "checkbox.h"
+#include "component.h"
 #include "colliderbox.h"
+#include "gameobject.h"
 #include "logger.h"
 #include "input.h"
 #include "slider.h"
+#include "transform.h"
 #include "uielement.h"
 
 namespace pong
 {
 
-void UIEventManager::Visit(Button& button)
+void UIEventManager::ProcessEvents()
 {
-    const glm::vec3 mousePosition = Input::GetMousePosition();
-    const bool inBounds = button.GetColliderBox()->CheckPointInBounds(mousePosition);
+    for (auto& button : Button::GetComponents())
+    {
+        Process(*button);
+    }
+
+    for (auto& checkBox : CheckBox::GetComponents())
+    {
+        Process(*checkBox);
+    }
+
+    for (auto& slider : Slider::GetComponents())
+    {
+        Process(*slider);
+    }
+
+    for (auto& text : Text::GetComponents())
+    {
+        Process(*text);
+    }
+}
+
+void UIEventManager::Process(Button& button) const
+{
+    const bool inBounds = CheckMouseInComponentBounds(button, button.GetBounds());
     const InputState mouseButtonState = Input::GetMouseButtonState(GLFW_MOUSE_BUTTON_LEFT);
 
     if (inBounds)
@@ -39,24 +64,25 @@ void UIEventManager::Visit(Button& button)
     }
 }
 
-void UIEventManager::Visit(CheckBox& checkBox)
+void UIEventManager::Process(CheckBox& checkBox) const
 {
-    const glm::vec3 mousePosition = Input::GetMousePosition();
-    if (checkBox.GetColliderBox()->CheckPointInBounds(mousePosition) && Input::GetMouseButtonState(GLFW_MOUSE_BUTTON_LEFT) == InputState::Pressed)
+    const bool inBounds = CheckMouseInComponentBounds(checkBox, checkBox.GetBounds());
+    const InputState mouseButtonState = Input::GetMouseButtonState(GLFW_MOUSE_BUTTON_LEFT);
+
+    if (inBounds && mouseButtonState == InputState::Pressed)
     {
         checkBox.OnClick();
     }
 }
 
-void UIEventManager::Visit(Slider& slider)
+void UIEventManager::Process(Slider& slider) const
 {
-    const glm::vec3 mousePosition = Input::GetMousePosition();
-    const bool inBounds = slider.GetColliderBox()->CheckPointInBounds(mousePosition);
+    const bool inBounds = CheckMouseInComponentBounds(slider, slider.GetBounds());
     const bool mousePressed = Input::CheckMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT);
 
     if ((inBounds && mousePressed) || (mousePressed && slider.WasPressed()))
     {
-        slider.OnMouseDown(mousePosition);
+        slider.OnMouseDown(Input::GetMousePosition());
     }
     else if (!mousePressed && slider.WasPressed())
     {
@@ -64,17 +90,26 @@ void UIEventManager::Visit(Slider& slider)
     }
 }
 
-void UIEventManager::Visit(Text& /*text*/)
+void UIEventManager::Process(Text& /*text*/) const
 {
     // No events to process on text objects
 }
 
-void UIEventManager::ProcessEvents(const UIElementCollection& uiElements)
+bool UIEventManager::CheckMouseInComponentBounds(BaseComponent& component, RectangleBounds bounds) const
 {
-    for (auto& uiElement : uiElements)
+    const Transform* transform = component.GetComponent<Transform>();
+    if (transform != nullptr)
     {
-        uiElement->Accept(*this);
+        bounds = bounds + transform->mPosition;
     }
+
+    return CheckMouseInBounds(bounds);
+}
+
+bool UIEventManager::CheckMouseInBounds(const RectangleBounds& bounds) const
+{
+    const glm::vec3 mousePosition = Input::GetMousePosition();
+    return bounds.CheckPointInBounds(mousePosition);
 }
 
 } // namespace pong

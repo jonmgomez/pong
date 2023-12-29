@@ -3,6 +3,7 @@
 #include "audiomixer.h"
 #include "collisionmanager.h"
 #include "component.h"
+#include "componentmanager.h"
 #include "gameobject.h"
 #include "text.h"
 #include "timer.h"
@@ -73,20 +74,8 @@ public:
 
     static GameObject* FindGameObjectByName(const std::string& name);
 
-    template<typename UIType, typename = std::enable_if_t<std::is_base_of_v<UIElement, UIType>>, typename... Args>
-    static UIType* AddUIElement(Args&&... args)
-    {
-        auto newUIElement = std::make_unique<UIType>(std::forward<Args>(args)...);
-        UIType* uiElementPtr = newUIElement.get();
-
-        GetInstance().mUIElements.push_back(std::move(newUIElement));
-        Pong::UpdateUIElementOrderLayer();
-        return uiElementPtr;
-    }
-
-    static void UpdateUIElementOrderLayer();
-
     CollisionManager& GetCollisionManager();
+    ComponentManager& GetComponentManager();
     UIEventManager& GetUIEventManager();
     AudioMixer& GetAudioMixer();
     Timer& GetTimer();
@@ -102,9 +91,9 @@ private:
     void LoadScene(SceneType scene);
 
     std::vector<std::unique_ptr<GameObject>> mGameObjects {};
-    std::vector<std::unique_ptr<UIElement>> mUIElements {};
 
     CollisionManager mCollisionManager {};
+    ComponentManager mComponentManager {};
     UIEventManager mUIEventManager {};
     AudioMixer mAudioMixer {};
     Timer mTimer {};

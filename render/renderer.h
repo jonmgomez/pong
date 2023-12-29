@@ -1,5 +1,6 @@
 #pragma once
 
+#include "graphic.h"
 #include "indexbuffer.h"
 #include "mesh.h"
 #include "renderutils.h"
@@ -19,10 +20,13 @@ public:
 
     static void Init();
     static void Cleanup();
-    static void DrawAllMeshes(const std::vector<std::unique_ptr<Mesh>>& meshes);
+    static void DrawAll();
+    static void Draw(const std::vector<OffsetGraphic>& graphics, const glm::vec3& position);
+    static void Draw(const Graphic& graphic, const glm::vec3& position);
+    static void Draw(const RenderData& renderData, const glm::vec3& position);
     static void Draw(const VertexArray& va, const IndexBuffer& ib,
-                     const glm::vec3& position, const Texture& texture,
-                     const GLRGBAColor& color);
+                     const Texture& texture, const GLRGBAColor& color,
+                     const glm::vec3& position);
     static void Clear();
 
     // Returns the maximum X coordinate of the viewable screen (minimum in opposite direction)

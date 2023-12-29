@@ -9,57 +9,56 @@
 namespace pong
 {
 
-ColliderBox::ColliderBox(float width, float height)
-    : mWidth(width),
-      mHeight(height)
-{
-    mBounds = {
-        glm::vec3(-mWidth / 2.0f, -mHeight / 2.0f, 0.0f),
-        glm::vec3( mWidth / 2.0f,  mHeight / 2.0f, 0.0f),
-        glm::vec3(-mWidth / 2.0f,  mHeight / 2.0f, 0.0f),
-        glm::vec3( mWidth / 2.0f, -mHeight / 2.0f, 0.0f)
-    };
-
-    mPositionBounds = mBounds;
-}
-
-void ColliderBox::OnPositionUpdate(const glm::vec3& position)
-{
-    mPositionBounds[0] = mBounds[0] + position;
-    mPositionBounds[1] = mBounds[1] + position;
-    mPositionBounds[2] = mBounds[2] + position;
-    mPositionBounds[3] = mBounds[3] + position;
-}
-
-bool ColliderBox::CheckForCollision(const ColliderBox& other) const
-{
-    const std::array<glm::vec3, 4>otherBounds = other.mPositionBounds;
-
-    // Check within own bounds
-
-    if (std::any_of(std::begin(otherBounds), std::end(otherBounds),
-        [&](const auto& position) { return CheckPointInBounds(position); }))
-    {
-        return true;
+RectangleBounds::RectangleBounds(float width, float height) :
+    mBounds {
+        glm::vec3(-width / 2.0f, -height / 2.0f, 0.0f),
+        glm::vec3( width / 2.0f,  height / 2.0f, 0.0f),
+        glm::vec3(-width / 2.0f,  height / 2.0f, 0.0f),
+        glm::vec3( width / 2.0f, -height / 2.0f, 0.0f)
     }
-
-    // Check within other collider's bounds. This is due to the
-    // possibility of the other collider ecompassing this collider
-    // If that occurs, the other colliders positions do not not appear
-    // inside the bounds and would not register as collision
-    if (std::any_of(std::begin(mPositionBounds), std::end(mPositionBounds),
-        [&other](const auto& position) { return other.CheckPointInBounds(position); }))
-    {
-        return true;
-    }
-
-    return false;
+{
 }
 
-bool ColliderBox::CheckPointInBounds(const glm::vec3& position) const
+RectangleBounds RectangleBounds::operator+(const glm::vec3& position)
 {
-    return position.x >= mPositionBounds[0].x && position.x <= mPositionBounds[1].x
-        && position.y >= mPositionBounds[0].y && position.y <= mPositionBounds[2].y;
+    RectangleBounds newBounds{};
+
+    newBounds.mBounds[0] = mBounds[0] + position;
+    newBounds.mBounds[1] = mBounds[1] + position;
+    newBounds.mBounds[2] = mBounds[2] + position;
+    newBounds.mBounds[3] = mBounds[3] + position;
+
+    return newBounds;
+}
+
+RectangleBounds RectangleBounds::operator-(const glm::vec3& position)
+{
+    RectangleBounds newBounds{};
+
+    newBounds.mBounds[0] = mBounds[0] - position;
+    newBounds.mBounds[1] = mBounds[1] - position;
+    newBounds.mBounds[2] = mBounds[2] - position;
+    newBounds.mBounds[3] = mBounds[3] - position;
+
+    return newBounds;
+}
+
+bool RectangleBounds::CheckPointInBounds(const glm::vec3& position) const
+{
+    return position.x >= mBounds[0].x && position.x <= mBounds[1].x
+        && position.y >= mBounds[0].y && position.y <= mBounds[2].y;
+}
+
+ColliderBox::ColliderBox(float width, float height) :
+    mWidth(width),
+    mHeight(height)
+{
+    mBounds = { mWidth, mHeight };
+}
+
+RectangleBounds ColliderBox::GetBounds() const
+{
+    return mBounds;
 }
 
 float ColliderBox::GetWidth() const
@@ -70,7 +69,7 @@ float ColliderBox::GetWidth() const
 void ColliderBox::SetWidth(float width)
 {
     mWidth = width;
-    RecalculateBounds();
+    mBounds = { mWidth, mHeight };
 }
 
 float ColliderBox::GetHeight() const
@@ -81,29 +80,14 @@ float ColliderBox::GetHeight() const
 void ColliderBox::SetHeight(float height)
 {
     mHeight = height;
-    RecalculateBounds();
+    mBounds = { mWidth, mHeight };
 }
 
 void ColliderBox::Resize(float width, float height)
 {
     mWidth = width;
     mHeight = height;
-    RecalculateBounds();
-}
-
-void ColliderBox::RecalculateBounds()
-{
-    // A little jank, but we need to figure out our current offset
-    const glm::vec3 position = mPositionBounds[0] - mBounds[0];
-
-    mBounds = {
-        glm::vec3(-mWidth / 2.0f, -mHeight / 2.0f, 0.0f),
-        glm::vec3( mWidth / 2.0f,  mHeight / 2.0f, 0.0f),
-        glm::vec3(-mWidth / 2.0f,  mHeight / 2.0f, 0.0f),
-        glm::vec3( mWidth / 2.0f, -mHeight / 2.0f, 0.0f)
-    };
-
-    OnPositionUpdate(position);
+    mBounds = { mWidth, mHeight };
 }
 
 } // namespace pong

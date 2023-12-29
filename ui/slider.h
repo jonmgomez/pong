@@ -1,6 +1,6 @@
 #pragma once
 
-#include "colliderbox.h"
+#include "component.h"
 #include "rectangle.h"
 #include "uielement.h"
 
@@ -11,30 +11,29 @@
 namespace pong
 {
 
-class Slider : public UIElement
+class Slider : public UIElement, public Component<Slider>
 {
 public:
     Slider(float width, float height, float min, float max, float step, float startValue);
     ~Slider() = default;
 
-    void Render() const override;
-    void Accept(ProcessEventVisitor& visitor) override;
-    void SetPosition(const glm::vec3& position) override;
+    std::vector<OffsetGraphic> GetRenderables() override;
+    BaseComponent* GetBaseComponent() override;
 
     void OnMouseDown(const glm::vec3& mousePosition);
     void OnMouseReleased();
     void AddValueChangeListener(std::function<void(float)> listener);
 
     bool WasPressed() const;
-    ColliderBox* GetColliderBox();
+    RectangleBounds GetBounds() const;
     float GetValue() const;
 
 private:
     // Represents the slider background, the slider handle, and the slider fill
-    std::array<MeshComponent, 4> mBorderMeshes {};
-    MeshComponent mFillMesh {};
-    MeshComponent mHandleMesh {};
-    ColliderBox mColliderBox { 0.0f, 0.0f };
+    std::array<OffsetRectangle, 4> mBorders {};
+    OffsetRectangle mFill {};
+    OffsetRectangle mHandle {};
+    RectangleBounds mBounds {};
     std::vector<std::function<void(float)>> mValueChangeListeners {};
     float mWidth { 0.0f };
     float mHeight { 0.0f };

@@ -1,4 +1,5 @@
 set(SOURCES
+    graphic.cpp
     indexbuffer.cpp
     renderer.cpp
     renderutils.cpp

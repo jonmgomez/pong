@@ -6,6 +6,7 @@ set(SOURCES
     colliderbox.cpp
     collisionmanager.cpp
     component.cpp
+    componentmanager.cpp
     config.cpp
     difficulty.cpp
     engine.cpp

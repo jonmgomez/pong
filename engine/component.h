@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <functional>
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -60,6 +61,11 @@ public:
     static const std::vector<std::unique_ptr<Derived>>& GetComponents()
     {
         return mComponents;
+    }
+
+    static void SortComponents(std::function<bool(const Derived&, const Derived&)> compare)
+    {
+        std::sort(mComponents.begin(), mComponents.end(), compare);
     }
 
     static std::vector<std::unique_ptr<Derived>> mComponents;

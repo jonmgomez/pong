@@ -17,12 +17,6 @@ public:
                   float width, float height, const glm::vec3& offset,
                   int textureWidthPixels, int textureHeightPixels);
 
-    glm::vec3 GetOffset() const;
-    void SetOffset(const glm::vec3& offset);
-
-    void Draw(const glm::vec3& position) const override;
-
-private:
     glm::vec3 mOffset { 0.0f };
 };
 

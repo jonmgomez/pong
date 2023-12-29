@@ -1,7 +1,6 @@
 #include "gameobject.h"
 
 #include "behavior.h"
-#include "audiomixer.h"
 #include "renderutils.h"
 #include "pong.h"
 
@@ -9,7 +8,6 @@ namespace pong
 {
 
 int GameObject::sId = 0;
-
 
 int GameObject::GetId() const
 {

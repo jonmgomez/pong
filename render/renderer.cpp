@@ -5,6 +5,7 @@
 #include "indexbuffer.h"
 #include "logger.h"
 #include "renderutils.h"
+#include "text.h"
 #include "texture.h"
 #include "transform.h"
 #include "vertexarray.h"
@@ -78,8 +79,9 @@ void Renderer::Cleanup()
     GetInstance().mShader = nullptr;
 }
 
-void Renderer::DrawAllMeshes(const std::vector<std::unique_ptr<Mesh>>& meshes)
+void Renderer::DrawAll()
 {
+    const std::vector<std::unique_ptr<Mesh>>& meshes = Mesh::GetComponents();
     for (const auto& mesh : meshes)
     {
         glm::vec3 position(0.0f);
@@ -90,13 +92,45 @@ void Renderer::DrawAllMeshes(const std::vector<std::unique_ptr<Mesh>>& meshes)
             position = transform->mPosition;
         }
 
-        mesh->Draw(position);
+        const RenderData renderData = mesh->GetRenderData();
+        Renderer::Draw(renderData, position);
+    }
+
+    const std::vector<UIElement*>& uiComponents = Pong::GetInstance().GetComponentManager().GetUIComponents();
+    for (const auto& uiComponent : uiComponents)
+    {
+        const Transform* transform = uiComponent->GetBaseComponent()->GetComponent<Transform>();
+        const glm::vec3 position = transform != nullptr ? transform->mPosition : glm::vec3(0.0f);
+        const std::vector<OffsetGraphic>& graphics = uiComponent->GetRenderables();
+        Renderer::Draw(graphics, position);
     }
 }
 
+void Renderer::Draw(const std::vector<OffsetGraphic>& graphics, const glm::vec3& position)
+{
+    for (const auto& graphic : graphics)
+    {
+        Draw(graphic.mGraphic, position + graphic.mOffset);
+    }
+}
+
+void Renderer::Draw(const Graphic& graphic, const glm::vec3& position)
+{
+    if (graphic.IsEnabled())
+    {
+        const RenderData renderData = graphic.GetRenderData();
+        Draw(renderData.mVA, renderData.mIB, renderData.mTexture, renderData.mColor, position);
+    }
+}
+
+void Renderer::Draw(const RenderData& renderData, const glm::vec3& position)
+{
+    Draw(renderData.mVA, renderData.mIB, renderData.mTexture, renderData.mColor, position);
+}
+
 void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib,
-                    const glm::vec3& position, const Texture& texture,
-                    const GLRGBAColor& color)
+                    const Texture& texture, const GLRGBAColor& color,
+                    const glm::vec3& position)
 {
     va.Bind();
     ib.Bind();

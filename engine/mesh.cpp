@@ -11,12 +11,14 @@
 namespace pong
 {
 
-void Mesh::Draw(const glm::vec3& position) const
+Mesh::Mesh(std::unique_ptr<Graphic> graphic)
+    : mGraphic(std::move(graphic))
 {
-    if (mEnabled)
-    {
-        Renderer::Draw(mVA, mIB, position, mTexture, mColor);
-    }
+}
+
+RenderData Mesh::GetRenderData()
+{
+    return mGraphic->GetRenderData();
 }
 
 void Mesh::SetEnabled(bool enabled)
@@ -27,11 +29,6 @@ void Mesh::SetEnabled(bool enabled)
 bool Mesh::IsEnabled() const
 {
     return mEnabled;
-}
-
-void Mesh::SetColor(const GLRGBAColor& color)
-{
-    mColor = color;
 }
 
 } // namespace pong

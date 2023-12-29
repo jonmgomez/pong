@@ -1,13 +1,7 @@
 #pragma once
 
 #include "component.h"
-#include "indexbuffer.h"
-#include "texture.h"
-#include "renderutils.h"
-#include "vertexarray.h"
-#include "vertexbuffer.h"
-
-#include <glm/glm.hpp>
+#include "graphic.h"
 
 #include <memory>
 
@@ -17,18 +11,14 @@ namespace pong
 class Mesh : public Component<Mesh>
 {
 public:
-    virtual void Draw(const glm::vec3& position) const;
+    Mesh(std::unique_ptr<Graphic> graphic);
 
+    RenderData GetRenderData();
     void SetEnabled(bool enabled);
     bool IsEnabled() const;
-    void SetColor(const GLRGBAColor& color);
 
-protected:
-    VertexArray mVA {};
-    VertexBuffer mVB {};
-    IndexBuffer mIB {};
-    Texture mTexture {};
-    GLRGBAColor mColor { RGBA_WHITE };
+private:
+    std::unique_ptr<Graphic> mGraphic { nullptr };
     bool mEnabled { true };
 };
 

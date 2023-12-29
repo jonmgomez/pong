@@ -27,7 +27,7 @@ OpponentBlueprint::OpponentBlueprint()
 {
     SetInstanceName("Opponent");
     AddComponent<Transform>(OPPONENT_POSITION);
-    AddComponent<Rectangle>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
+    AddComponent<Mesh>(std::make_unique<Rectangle>(OPPONENT_WIDTH, OPPONENT_HEIGHT));
     AddComponent<ColliderBox>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
     AddComponent<Opponent>();
 }

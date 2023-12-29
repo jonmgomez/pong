@@ -1,19 +1,14 @@
 #pragma once
 
-#include "indexbuffer.h"
-#include "mesh.h"
-
-#include <glm/glm.hpp>
-
-#include <array>
-#include <memory>
+#include "graphic.h"
 
 namespace pong
 {
 
-class Rectangle : public Mesh
+class Rectangle : public Graphic
 {
 public:
+    Rectangle() = default;
     Rectangle(float width, float height);
 
     float GetWidth() const;
@@ -25,6 +20,12 @@ private:
 
     float mWidth { 0.0f };
     float mHeight { 0.0f };
+};
+
+struct OffsetRectangle
+{
+    Rectangle mRectangle {};
+    glm::vec3 mOffset { 0.0f, 0.0f, 0.0f };
 };
 
 } // namespace pong

@@ -1,13 +1,15 @@
 #pragma once
 
+#include "behavior.h"
 #include "colliderbox.h"
-#include "gameobject.h"
 
 #include <memory>
 #include <vector>
 
 namespace pong
 {
+
+class GameObject;
 
 enum class CollisionType
 {
@@ -32,6 +34,8 @@ private:
     bool IsCurrentlyColliding(int firstGameObjectId, int secondGameObjectId) const;
     bool IsCollisionPairValid(const CollisionPair& pair, int firstGameObjectId, int secondGameObjectId) const;
     void RemoveGameObjectCollisionPair(int firstGameObjectId, int secondGameObjectId);
+
+    bool CheckForCollision(ColliderBox& first, ColliderBox& second) const;
 
     std::vector<CollisionPair>mCurrentCollisions {};
 };

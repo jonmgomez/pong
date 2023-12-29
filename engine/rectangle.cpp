@@ -7,9 +7,7 @@
 #include "vertexarray.h"
 #include "vertexbuffer.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
+#include <array>
 #include <memory>
 
 namespace pong
@@ -31,10 +29,10 @@ Rectangle::Rectangle(float width, float height) :
 void Rectangle::RecomputeVertices()
 {
     const std::array<float, 16> positions = {
-        -mWidth / 2, -mHeight / 2, 0.0f, 0.0f,
-         mWidth / 2, -mHeight / 2, 1.0f, 0.0f,
-         mWidth / 2,  mHeight / 2, 1.0f, 1.0f,
-        -mWidth / 2,  mHeight / 2, 0.0f, 1.0f
+        -mWidth / 2.0f, -mHeight / 2.0f, 0.0f, 0.0f,
+         mWidth / 2.0f, -mHeight / 2.0f, 1.0f, 0.0f,
+         mWidth / 2.0f,  mHeight / 2.0f, 1.0f, 1.0f,
+        -mWidth / 2.0f,  mHeight / 2.0f, 0.0f, 1.0f
     };
 
     mVB = VertexBuffer(positions.data(), static_cast<unsigned int>(positions.size() * sizeof(float)));

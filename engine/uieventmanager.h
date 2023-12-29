@@ -3,8 +3,8 @@
 #include "button.h"
 #include "checkbox.h"
 #include "slider.h"
+#include "text.h"
 #include "uielement.h"
-#include "processeventvisitor.h"
 
 #include <memory>
 #include <vector>
@@ -12,17 +12,19 @@
 namespace pong
 {
 
-using UIElementCollection = std::vector<std::unique_ptr<UIElement>>;
-
-class UIEventManager : public ProcessEventVisitor
+class UIEventManager
 {
 public:
-    void Visit(Button& button) override;
-    void Visit(CheckBox& checkBox) override;
-    void Visit(Slider& slider) override;
-    void Visit(Text& text) override;
+    void ProcessEvents();
 
-    void ProcessEvents(const UIElementCollection& uiElements);
+private:
+    void Process(Button& button) const;
+    void Process(CheckBox& checkBox) const;
+    void Process(Slider& slider) const;
+    void Process(Text& text) const;
+
+    bool CheckMouseInComponentBounds(BaseComponent& component, RectangleBounds bounds) const;
+    bool CheckMouseInBounds(const RectangleBounds& bounds) const;
 };
 
 } // namespace pong

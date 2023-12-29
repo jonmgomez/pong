@@ -7,19 +7,21 @@ namespace pong
 {
 
 Button::Button(float width, float height) :
-    mRectangle(width, height)
+    mRectangle{width, height},
+    mBounds{width, height}
 {
-    mColliderBox.Resize(width, height);
 }
 
-void Button::Render() const
+std::vector<OffsetGraphic> Button::GetRenderables()
 {
-    mRectangle.Draw(mPosition);
+    std::vector<OffsetGraphic> renderables {};
+    renderables.emplace_back(mRectangle, glm::vec3(0.0f));
+    return renderables;
 }
 
-void Button::Accept(ProcessEventVisitor& uiElement)
+BaseComponent* Button::GetBaseComponent()
 {
-    uiElement.Visit(*this);
+    return this;
 }
 
 void Button::AddListener(ButtonEvent event, std::function<void()> callback)
@@ -53,12 +55,6 @@ void Button::OnEvent(ButtonEvent event)
     }
 }
 
-void Button::SetPosition(const glm::vec3& position)
-{
-    mPosition = position;
-    mColliderBox.OnPositionUpdate(position);
-}
-
 float Button::GetWidth() const
 {
     return mRectangle.GetWidth();
@@ -72,12 +68,12 @@ float Button::GetHeight() const
 void Button::Resize(float width, float height)
 {
     mRectangle.Resize(width, height);
-    mColliderBox.Resize(width, height);
+    mBounds = {width, height};
 }
 
-ColliderBox* Button::GetColliderBox()
+RectangleBounds Button::GetBounds() const
 {
-    return &mColliderBox;
+    return mBounds;
 }
 
 bool Button::WasPressed() const

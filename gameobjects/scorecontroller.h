@@ -7,6 +7,12 @@
 namespace pong
 {
 
+class ScoreTextBlueprint : public GameObjectBlueprint
+{
+public:
+    ScoreTextBlueprint();
+};
+
 class ScoreController : public Behavior
 {
 public:

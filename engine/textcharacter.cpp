@@ -19,19 +19,4 @@ TextCharacter::TextCharacter(const std::vector<unsigned char>& data,
     mTexture = Texture(data, textureWidthPixels, textureHeightPixels);
 }
 
-glm::vec3 TextCharacter::GetOffset() const
-{
-    return mOffset;
-}
-
-void TextCharacter::SetOffset(const glm::vec3& offset)
-{
-    mOffset = offset;
-}
-
-void TextCharacter::Draw(const glm::vec3& position) const
-{
-    Mesh::Draw(position + mOffset);
-}
-
 } // namespace pong

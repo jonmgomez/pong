@@ -2,16 +2,14 @@
 
 #include "behavior.h"
 #include "component.h"
-#include "colliderbox.h"
-#include "mesh.h"
-#include "sound.h"
+#include "componentmanager.h"
+#include "pong.h"
 #include "utils.h"
 
-#include <glm/glm.hpp>
-
-#include <chrono>
-#include <functional>
 #include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 namespace pong
 {
@@ -21,7 +19,6 @@ class GameObject
 public:
     GameObject() = default;
     virtual ~GameObject() = default;
-
 
     int GetId() const;
     std::string GetInstanceName() const;
@@ -45,17 +42,18 @@ public:
         return nullptr;
     }
 
-    template<typename T, typename... Args>
+    template<typename T, typename = std::enable_if_t<std::is_base_of_v<BaseComponent, T>>, typename... Args>
     T* AddComponent(Args&&... args)
     {
         auto component = std::make_unique<T>(std::forward<Args>(args)...);
+        T* componentPtr = component.get();
         component->SetGameObject(this);
 
         const int componentId = GetComponentTypeId<T>();
-        mComponents.insert(std::make_pair(componentId, component.get()));
-        T::AddComponent(std::move(component));
+        mComponents.insert(std::make_pair(componentId, componentPtr));
+        Pong::GetInstance().GetComponentManager().AddComponent<T>(std::move(component));
 
-        return component.get();
+        return componentPtr;
     }
 
 private:

@@ -30,6 +30,11 @@ CollisionManager& Pong::GetCollisionManager()
     return mCollisionManager;
 }
 
+ComponentManager& Pong::GetComponentManager()
+{
+    return mComponentManager;
+}
+
 UIEventManager& Pong::GetUIEventManager()
 {
     return mUIEventManager;
@@ -56,7 +61,7 @@ void Pong::GameLoop()
 {
     Pong::GetInstance().GetTimer().HandleTimerCallbacks();
     Pong::GetInstance().GetCollisionManager().ProcessCollisions(ColliderBox::GetComponents());
-    Pong::GetInstance().GetUIEventManager().ProcessEvents(GetInstance().mUIElements);
+    Pong::GetInstance().GetUIEventManager().ProcessEvents();
 
     if (GetInstance().mChangeSceneRequested)
     {
@@ -69,12 +74,7 @@ void Pong::GameLoop()
         behavior->OnUpdate();
     }
 
-    Renderer::DrawAllMeshes(Mesh::GetComponents());
-
-    for (auto& uiElements : GetInstance().mUIElements)
-    {
-        uiElements->Render();
-    }
+    Renderer::DrawAll();
 
     // Done last because input callbacks are done in glfwPollEvents after this loop.
     // So this effectively keeps the values from the new frame before updated from pressed -> held
@@ -88,8 +88,8 @@ void Pong::Reset()
         gameobject->Destroy();
     }
 
+    GetInstance().mComponentManager.Reset();
     GetInstance().mGameObjects.clear();
-    GetInstance().mUIElements.clear();
     GetInstance().mTimer.Reset();
 }
 
@@ -152,14 +152,6 @@ GameObject* Pong::FindGameObjectByName(const std::string& name)
     }
 
     return nullptr;
-}
-
-void Pong::UpdateUIElementOrderLayer()
-{
-    std::sort(GetInstance().mUIElements.begin(), GetInstance().mUIElements.end(), [] (const auto& lhs, const auto& rhs)
-    {
-        return lhs->GetOrderLayer() < rhs->GetOrderLayer();
-    });
 }
 
 } // namespace pong
