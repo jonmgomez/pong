@@ -3,6 +3,7 @@
 #include "audiomixer.h"
 #include "collisionmanager.h"
 #include "component.h"
+#include "componentmanager.h"
 #include "gameobject.h"
 #include "text.h"
 #include "timer.h"
@@ -87,6 +88,7 @@ public:
     static void UpdateUIElementOrderLayer();
 
     CollisionManager& GetCollisionManager();
+    ComponentManager& GetComponentManager();
     UIEventManager& GetUIEventManager();
     AudioMixer& GetAudioMixer();
     Timer& GetTimer();
@@ -105,6 +107,7 @@ private:
     std::vector<std::unique_ptr<UIElement>> mUIElements {};
 
     CollisionManager mCollisionManager {};
+    ComponentManager mComponentManager {};
     UIEventManager mUIEventManager {};
     AudioMixer mAudioMixer {};
     Timer mTimer {};

@@ -18,6 +18,7 @@ public:
     ~Slider() = default;
 
     std::vector<OffsetGraphic> GetRenderables() override;
+    BaseComponent* GetBaseComponent() override;
     void Accept(ProcessEventVisitor& visitor) override;
 
     void OnMouseDown(const glm::vec3& mousePosition);

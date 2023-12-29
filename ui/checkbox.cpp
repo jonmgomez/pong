@@ -25,6 +25,8 @@ CheckBox::CheckBox(float width, float height, bool defaultValue) :
 std::vector<OffsetGraphic> CheckBox::GetRenderables()
 {
     std::vector<OffsetGraphic> renderables = {};
+    constexpr int totalRenderables = 5;
+    renderables.reserve(totalRenderables);
     renderables.emplace_back(mFill.mRectangle, mFill.mOffset);
     for (const auto& line : mLines)
     {
@@ -32,6 +34,11 @@ std::vector<OffsetGraphic> CheckBox::GetRenderables()
     }
 
     return renderables;
+}
+
+BaseComponent* CheckBox::GetBaseComponent()
+{
+    return this;
 }
 
 void CheckBox::Accept(ProcessEventVisitor& visitor)

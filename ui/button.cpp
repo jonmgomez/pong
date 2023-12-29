@@ -19,6 +19,11 @@ std::vector<OffsetGraphic> Button::GetRenderables()
     return renderables;
 }
 
+BaseComponent* Button::GetBaseComponent()
+{
+    return this;
+}
+
 void Button::Accept(ProcessEventVisitor& uiElement)
 {
     uiElement.Visit(*this);

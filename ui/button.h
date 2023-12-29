@@ -30,6 +30,7 @@ public:
     Button(float width, float height);
 
     std::vector<OffsetGraphic> GetRenderables() override;
+    BaseComponent* GetBaseComponent() override;
     void Accept(ProcessEventVisitor& uiElement) override;
 
     void AddListener(ButtonEvent event, std::function<void()> callback);

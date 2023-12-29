@@ -1,5 +1,6 @@
 #include "uielement.h"
 
+#include "componentmanager.h"
 #include "pong.h"
 
 namespace pong
@@ -13,7 +14,7 @@ int UIElement::GetOrderLayer() const
 void UIElement::SetOrderLayer(int orderLayer)
 {
     mOrderLayer = orderLayer;
-    Pong::UpdateUIElementOrderLayer();
+    Pong::GetInstance().GetComponentManager().UpdateUIElementOrderLayers();
 }
 
 } // namespace pong

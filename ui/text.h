@@ -18,6 +18,7 @@ public:
     Text(const std::string&, const std::string& path, float scale, int pixelLineHeight = 128);
 
     std::vector<OffsetGraphic> GetRenderables() override;
+    BaseComponent* GetBaseComponent() override;
 
     std::string GetText() const;
     void SetText(const std::string& text);

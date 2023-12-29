@@ -3,7 +3,9 @@
 #include "behavior.h"
 #include "component.h"
 #include "colliderbox.h"
+#include "componentmanager.h"
 #include "mesh.h"
+#include "pong.h"
 #include "sound.h"
 #include "utils.h"
 
@@ -53,7 +55,7 @@ public:
 
         const int componentId = GetComponentTypeId<T>();
         mComponents.insert(std::make_pair(componentId, componentPtr));
-        T::AddComponent(std::move(component));
+        Pong::GetInstance().GetComponentManager().AddComponent<T>(std::move(component));
 
         return componentPtr;
     }

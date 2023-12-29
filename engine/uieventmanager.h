@@ -12,8 +12,6 @@
 namespace pong
 {
 
-using UIElementCollection = std::vector<std::unique_ptr<UIElement>>;
-
 class UIEventManager : public ProcessEventVisitor
 {
 public:
@@ -22,7 +20,7 @@ public:
     void Visit(Slider& slider) override;
     void Visit(Text& text) override;
 
-    void ProcessEvents(const UIElementCollection& uiElements);
+    void ProcessEvents(const std::vector<UIElement*>& uiElements);
 
 private:
     bool CheckMouseInComponentBounds(BaseComponent& component, RectangleBounds bounds) const;

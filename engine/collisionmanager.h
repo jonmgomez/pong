@@ -1,13 +1,15 @@
 #pragma once
 
+#include "behavior.h"
 #include "colliderbox.h"
-#include "gameobject.h"
 
 #include <memory>
 #include <vector>
 
 namespace pong
 {
+
+class GameObject;
 
 enum class CollisionType
 {

@@ -72,7 +72,7 @@ void UIEventManager::Visit(Text& /*text*/)
     // No events to process on text objects
 }
 
-void UIEventManager::ProcessEvents(const UIElementCollection& uiElements)
+void UIEventManager::ProcessEvents(const std::vector<UIElement*>& uiElements)
 {
     for (auto& uiElement : uiElements)
     {

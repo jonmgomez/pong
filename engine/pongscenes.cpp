@@ -73,15 +73,18 @@ void TitleScene::BuildScene()
     settingsButton->SetInstanceName("SettingsButton");
     settingsButton->AddComponent<Transform>(SETTINGS_BUTTON_POSITION);
     buttonComponent = settingsButton->AddComponent<Button>(BUTTON_WIDTH, BUTTON_HEIGHT);
-    textComponent = settingsButton->AddComponent<Text>("Settings", kFontPath, 1.0f);
+    textComponent = settingsButton->AddComponent<Text>("Settings", kFontPath, 0.7f);
     SetupButton(buttonComponent, textComponent);
 
     GameObject* quitButton = NewObject();
     quitButton->SetInstanceName("QuitButton");
     quitButton->AddComponent<Transform>(QUIT_BUTTON_POSITION);
     buttonComponent = quitButton->AddComponent<Button>(BUTTON_WIDTH, BUTTON_HEIGHT);
-    textComponent = quitButton->AddComponent<Text>("Quit", kFontPath, 1.0f);
+    textComponent = quitButton->AddComponent<Text>("Quit", kFontPath, 1.0f, 100);
     SetupButton(buttonComponent, textComponent);
+
+    GameObject* titleScreenController = NewObject();
+    titleScreenController->AddComponent<TitleScreenController>();
 }
 
 void SettingScene::BuildScene()

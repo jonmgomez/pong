@@ -36,7 +36,7 @@ void SettingsScreenController::OnStart()
 
     for (int i = 0; i < 4; i++)
     {
-        mDifficultyCheckBoxes[i] = Pong::FindGameObjectByName("Difficulty" + std::to_string(i))->GetComponent<CheckBox>();
+        mDifficultyCheckBoxes[i] = Pong::FindGameObjectByName("DifficultyEnable" + std::to_string(i))->GetComponent<CheckBox>();
         mDifficultyCheckBoxes[i]->AddValueChangeListener([this, i] (bool value) {
             if (value)
             {

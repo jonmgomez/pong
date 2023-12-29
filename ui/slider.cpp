@@ -51,6 +51,8 @@ Slider::Slider(float width, float height, float min, float max, float step, floa
 std::vector<OffsetGraphic> Slider::GetRenderables()
 {
     std::vector<OffsetGraphic> renderables {};
+    constexpr int totalRenderables = 6;
+    renderables.reserve(totalRenderables);
     renderables.emplace_back(mFill.mRectangle, mFill.mOffset);
     renderables.emplace_back(mHandle.mRectangle, mHandle.mOffset);
     for (const auto& border : mBorders)
@@ -59,6 +61,11 @@ std::vector<OffsetGraphic> Slider::GetRenderables()
     }
 
     return renderables;
+}
+
+BaseComponent* Slider::GetBaseComponent()
+{
+    return this;
 }
 
 void Slider::Accept(ProcessEventVisitor& visitor)
@@ -93,7 +100,7 @@ void Slider::OnMouseDown(const glm::vec3& mousePosition)
     const float newFillWidth = stepPercent * (maxX - minX);
     const float newFillOffset = newFillWidth / -2.0f - (1.0f - stepPercent - 0.5f) * (maxX - minX);
     mFill.mOffset.x = newFillOffset;
-    mFill.mRectangle.Resize(newFillWidth, mFill.mRectangle.GetWidth());
+    mFill.mRectangle.Resize(newFillWidth, mFill.mRectangle.GetHeight());
 
     const float newHandleXOffset = (stepPercent - 0.5f) * (maxX - minX);
     mHandle.mOffset.x = newHandleXOffset;

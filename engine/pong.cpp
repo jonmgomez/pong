@@ -30,6 +30,11 @@ CollisionManager& Pong::GetCollisionManager()
     return mCollisionManager;
 }
 
+ComponentManager& Pong::GetComponentManager()
+{
+    return mComponentManager;
+}
+
 UIEventManager& Pong::GetUIEventManager()
 {
     return mUIEventManager;
@@ -56,7 +61,7 @@ void Pong::GameLoop()
 {
     Pong::GetInstance().GetTimer().HandleTimerCallbacks();
     Pong::GetInstance().GetCollisionManager().ProcessCollisions(ColliderBox::GetComponents());
-    Pong::GetInstance().GetUIEventManager().ProcessEvents(GetInstance().mUIElements);
+    Pong::GetInstance().GetUIEventManager().ProcessEvents(GetInstance().GetComponentManager().GetUIComponents());
 
     if (GetInstance().mChangeSceneRequested)
     {
@@ -83,6 +88,7 @@ void Pong::Reset()
         gameobject->Destroy();
     }
 
+    GetInstance().mComponentManager.Reset();
     GetInstance().mGameObjects.clear();
     GetInstance().mUIElements.clear();
     GetInstance().mTimer.Reset();

@@ -99,41 +99,13 @@ void Renderer::DrawAll()
         Renderer::Draw(renderData, position);
     }
 
-    const auto RenderUIElement = [](auto& uiElement)
+    const std::vector<UIElement*>& uiComponents = Pong::GetInstance().GetComponentManager().GetUIComponents();
+    for (const auto& uiComponent : uiComponents)
     {
-        glm::vec3 position(0.0f);
-        const Transform* transform = uiElement.GetComponent<Transform>();
-        if (transform != nullptr)
-        {
-            position = transform->mPosition;
-        }
-        const std::vector<OffsetGraphic>& graphics = uiElement.GetRenderables();
-
+        const Transform* transform = uiComponent->GetBaseComponent()->GetComponent<Transform>();
+        const glm::vec3 position = transform != nullptr ? transform->mPosition : glm::vec3(0.0f);
+        const std::vector<OffsetGraphic>& graphics = uiComponent->GetRenderables();
         Renderer::Draw(position, graphics);
-    };
-
-    const std::vector<std::unique_ptr<Text>>& texts = Text::GetComponents();
-    for (const auto& text : texts)
-    {
-        RenderUIElement(*text);
-    }
-
-    const std::vector<std::unique_ptr<CheckBox>>& checkBoxes = CheckBox::GetComponents();
-    for (const auto& checkBox : checkBoxes)
-    {
-        RenderUIElement(*checkBox);
-    }
-
-    const std::vector<std::unique_ptr<Button>>& buttons = Button::GetComponents();
-    for (const auto& button : buttons)
-    {
-        RenderUIElement(*button);
-    }
-
-    const std::vector<std::unique_ptr<Slider>>& sliders = Slider::GetComponents();
-    for (const auto& slider : sliders)
-    {
-        RenderUIElement(*slider);
     }
 }
 
@@ -141,8 +113,11 @@ void Renderer::Draw(const glm::vec3& position, const std::vector<OffsetGraphic>&
 {
     for (const auto& graphic : graphics)
     {
-        const RenderData renderData = graphic.mGraphic.GetRenderData();
-        Draw(renderData, position + graphic.mOffset);
+        if (graphic.mGraphic.IsEnabled())
+        {
+            const RenderData renderData = graphic.mGraphic.GetRenderData();
+            Draw(renderData, position + graphic.mOffset);
+        }
     }
 }
 

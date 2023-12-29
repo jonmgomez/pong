@@ -34,6 +34,7 @@ class UIElement
 public:
     virtual ~UIElement() = default;
     virtual std::vector<OffsetGraphic> GetRenderables() = 0;
+    virtual BaseComponent* GetBaseComponent() = 0;
     virtual void Accept(ProcessEventVisitor& visitor) = 0;
 
     int GetOrderLayer() const;

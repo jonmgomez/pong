@@ -15,6 +15,7 @@ public:
     CheckBox(float width, float height, bool defaultValue);
 
     std::vector<OffsetGraphic> GetRenderables() override;
+    BaseComponent* GetBaseComponent() override;
     void Accept(ProcessEventVisitor& visitor) override;
 
     void OnClick();
