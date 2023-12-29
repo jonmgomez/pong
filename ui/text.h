@@ -24,8 +24,6 @@ public:
     void SetText(const std::string& text);
     void SetColor(GLRGBAColor color);
 
-    void Accept(ProcessEventVisitor& visitor) override;
-
 private:
     void CreateText();
 

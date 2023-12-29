@@ -19,6 +19,23 @@ Text::Text(const std::string& text, const std::string& path, float scale, int pi
     CreateText();
 }
 
+std::vector<OffsetGraphic> Text::GetRenderables()
+{
+    std::vector<OffsetGraphic> renderables {};
+    const size_t totalRenderables = mCharacters.size();
+    renderables.reserve(totalRenderables);
+    for (auto& character : mCharacters)
+    {
+        renderables.emplace_back(character, character.mOffset);
+    }
+    return renderables;
+}
+
+BaseComponent* Text::GetBaseComponent()
+{
+    return this;
+}
+
 void Text::CreateText()
 {
     std::ifstream file(mFontPath, std::ios::binary);
@@ -166,28 +183,6 @@ void Text::SetColor(GLRGBAColor color)
     {
         character.SetColor(color);
     }
-}
-
-std::vector<OffsetGraphic> Text::GetRenderables()
-{
-    std::vector<OffsetGraphic> renderables {};
-    const size_t totalRenderables = mCharacters.size();
-    renderables.reserve(totalRenderables);
-    for (auto& character : mCharacters)
-    {
-        renderables.emplace_back(character, character.mOffset);
-    }
-    return renderables;
-}
-
-BaseComponent* Text::GetBaseComponent()
-{
-    return this;
-}
-
-void Text::Accept(ProcessEventVisitor& visitor)
-{
-    visitor.Visit(*this);
 }
 
 } // namespace pong

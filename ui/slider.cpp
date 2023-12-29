@@ -68,11 +68,6 @@ BaseComponent* Slider::GetBaseComponent()
     return this;
 }
 
-void Slider::Accept(ProcessEventVisitor& visitor)
-{
-    visitor.Visit(*this);
-}
-
 void Slider::OnMouseDown(const glm::vec3& mousePosition)
 {
     mWasPressed = true;

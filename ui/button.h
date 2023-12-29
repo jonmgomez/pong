@@ -31,7 +31,6 @@ public:
 
     std::vector<OffsetGraphic> GetRenderables() override;
     BaseComponent* GetBaseComponent() override;
-    void Accept(ProcessEventVisitor& uiElement) override;
 
     void AddListener(ButtonEvent event, std::function<void()> callback);
     void OnEvent(ButtonEvent event);

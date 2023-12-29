@@ -61,7 +61,7 @@ void Pong::GameLoop()
 {
     Pong::GetInstance().GetTimer().HandleTimerCallbacks();
     Pong::GetInstance().GetCollisionManager().ProcessCollisions(ColliderBox::GetComponents());
-    Pong::GetInstance().GetUIEventManager().ProcessEvents(GetInstance().GetComponentManager().GetUIComponents());
+    Pong::GetInstance().GetUIEventManager().ProcessEvents();
 
     if (GetInstance().mChangeSceneRequested)
     {

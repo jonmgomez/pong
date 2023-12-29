@@ -14,7 +14,30 @@
 namespace pong
 {
 
-void UIEventManager::Visit(Button& button)
+void UIEventManager::ProcessEvents()
+{
+    for (auto& button : Button::GetComponents())
+    {
+        Process(*button);
+    }
+
+    for (auto& checkBox : CheckBox::GetComponents())
+    {
+        Process(*checkBox);
+    }
+
+    for (auto& slider : Slider::GetComponents())
+    {
+        Process(*slider);
+    }
+
+    for (auto& text : Text::GetComponents())
+    {
+        Process(*text);
+    }
+}
+
+void UIEventManager::Process(Button& button) const
 {
     const bool inBounds = CheckMouseInComponentBounds(button, button.GetBounds());
     const InputState mouseButtonState = Input::GetMouseButtonState(GLFW_MOUSE_BUTTON_LEFT);
@@ -41,7 +64,7 @@ void UIEventManager::Visit(Button& button)
     }
 }
 
-void UIEventManager::Visit(CheckBox& checkBox)
+void UIEventManager::Process(CheckBox& checkBox) const
 {
     const bool inBounds = CheckMouseInComponentBounds(checkBox, checkBox.GetBounds());
     const InputState mouseButtonState = Input::GetMouseButtonState(GLFW_MOUSE_BUTTON_LEFT);
@@ -52,7 +75,7 @@ void UIEventManager::Visit(CheckBox& checkBox)
     }
 }
 
-void UIEventManager::Visit(Slider& slider)
+void UIEventManager::Process(Slider& slider) const
 {
     const bool inBounds = CheckMouseInComponentBounds(slider, slider.GetBounds());
     const bool mousePressed = Input::CheckMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT);
@@ -67,17 +90,9 @@ void UIEventManager::Visit(Slider& slider)
     }
 }
 
-void UIEventManager::Visit(Text& /*text*/)
+void UIEventManager::Process(Text& /*text*/) const
 {
     // No events to process on text objects
-}
-
-void UIEventManager::ProcessEvents(const std::vector<UIElement*>& uiElements)
-{
-    for (auto& uiElement : uiElements)
-    {
-        uiElement->Accept(*this);
-    }
 }
 
 bool UIEventManager::CheckMouseInComponentBounds(BaseComponent& component, RectangleBounds bounds) const

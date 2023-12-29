@@ -24,11 +24,6 @@ BaseComponent* Button::GetBaseComponent()
     return this;
 }
 
-void Button::Accept(ProcessEventVisitor& uiElement)
-{
-    uiElement.Visit(*this);
-}
-
 void Button::AddListener(ButtonEvent event, std::function<void()> callback)
 {
     ASSERT(event < ButtonEvent::EVENTS_COUNT);

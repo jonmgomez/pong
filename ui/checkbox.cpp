@@ -41,11 +41,6 @@ BaseComponent* CheckBox::GetBaseComponent()
     return this;
 }
 
-void CheckBox::Accept(ProcessEventVisitor& visitor)
-{
-    visitor.Visit(*this);
-}
-
 void CheckBox::OnClick()
 {
     SetValue(!mValue);

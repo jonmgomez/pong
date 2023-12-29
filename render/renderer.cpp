@@ -1,13 +1,10 @@
 #include "renderer.h"
 
-#include "button.h"
 #include "config.h"
-#include "checkbox.h"
 #include "gameobject.h"
 #include "indexbuffer.h"
 #include "logger.h"
 #include "renderutils.h"
-#include "slider.h"
 #include "text.h"
 #include "texture.h"
 #include "transform.h"
