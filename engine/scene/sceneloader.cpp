@@ -4,6 +4,7 @@
 #include "button.h"
 #include "checkbox.h"
 #include "colliderbox.h"
+#include "componentdeserializer.h"
 #include "config.h"
 #include "gameobject.h"
 #include "logger.h"
@@ -29,60 +30,60 @@ SceneLoader::SceneLoader()
 {
     // Engine components
     mComponentMappings["Transform"] = [](GameObject* gameObject) {
-        gameObject->AddComponent<Transform>();
+        return gameObject->AddComponent<Transform>();
     };
 
     mComponentMappings["Mesh"] = [](GameObject* gameObject) {
-        gameObject->AddComponent<Mesh>();
+        return gameObject->AddComponent<Mesh>();
     };
 
     mComponentMappings["ColliderBox"] = [](GameObject* gameObject) {
-        gameObject->AddComponent<ColliderBox>();
+        return gameObject->AddComponent<ColliderBox>();
     };
 
     mComponentMappings["Slider"] = [](GameObject* gameObject) {
-        gameObject->AddComponent<Slider>();
+        return gameObject->AddComponent<Slider>();
     };
 
     mComponentMappings["CheckBox"] = [](GameObject* gameObject) {
-        gameObject->AddComponent<CheckBox>();
+        return gameObject->AddComponent<CheckBox>();
     };
 
     mComponentMappings["Button"] = [](GameObject* gameObject) {
-        gameObject->AddComponent<Button>();
+        return gameObject->AddComponent<Button>();
     };
 
     mComponentMappings["Text"] = [](GameObject* gameObject) {
-        gameObject->AddComponent<Text>();
+        return gameObject->AddComponent<Text>();
     };
 
     // User defined components
     mComponentMappings["Player"] = [](GameObject* gameObject) {
-        gameObject->AddComponent<Player>();
+        return gameObject->AddComponent<Player>();
     };
 
     mComponentMappings["Opponent"] = [](GameObject* gameObject) {
-        gameObject->AddComponent<Opponent>();
+        return gameObject->AddComponent<Opponent>();
     };
 
     mComponentMappings["Ball"] = [](GameObject* gameObject) {
-        gameObject->AddComponent<Ball>();
+        return gameObject->AddComponent<Ball>();
     };
 
     mComponentMappings["ScoreArea"] = [](GameObject* gameObject) {
-        gameObject->AddComponent<ScoreArea>();
+        return gameObject->AddComponent<ScoreArea>();
     };
 
     mComponentMappings["ScoreController"] = [](GameObject* gameObject) {
-        gameObject->AddComponent<ScoreController>();
+        return gameObject->AddComponent<ScoreController>();
     };
 
     mComponentMappings["TitleScreenController"] = [](GameObject* gameObject) {
-        gameObject->AddComponent<TitleScreenController>();
+        return gameObject->AddComponent<TitleScreenController>();
     };
 
     mComponentMappings["SettingsScreenController"] = [](GameObject* gameObject) {
-        gameObject->AddComponent<SettingsScreenController>();
+        return gameObject->AddComponent<SettingsScreenController>();
     };
 }
 
@@ -144,10 +145,10 @@ std::vector<std::unique_ptr<GameObject>> SceneLoader::LoadScene(const std::strin
 {
     ASSERT(mScenes.find(sceneName) != mScenes.end());
     const nlohmann::json& sceneJson = mScenes[sceneName];
-    return LoadScene(sceneJson);
+    return LoadSceneFromJson(sceneJson);
 }
 
-std::vector<std::unique_ptr<GameObject>> SceneLoader::LoadScene(const nlohmann::json& sceneJson)
+std::vector<std::unique_ptr<GameObject>> SceneLoader::LoadSceneFromJson(const nlohmann::json& sceneJson)
 {
     std::vector<std::unique_ptr<GameObject>> gameObjects {};
 
@@ -164,11 +165,14 @@ std::vector<std::unique_ptr<GameObject>> SceneLoader::LoadScene(const nlohmann::
 
         for (const auto& componentJson : gameObjectJson["components"])
         {
-            std::string componentTypeName = componentJson["type"];
+            const std::string componentTypeName = componentJson["type"];
             std::cout << "Parsing component: " << componentTypeName << std::endl;
 
             // Add component to game object using the component mapping lambdas
-            mComponentMappings[componentTypeName](gameObject.get());
+            BaseComponent* newComponent = mComponentMappings[componentTypeName](gameObject.get());
+
+            ComponentDeserializer componentDeserializer {};
+            componentDeserializer.DeserializeComponent(newComponent, componentJson);
         }
 
         gameObjects.push_back(std::move(gameObject));

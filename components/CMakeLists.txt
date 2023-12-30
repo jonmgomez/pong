@@ -17,6 +17,7 @@ target_link_libraries(components
         compile_flags
         engine
         gameobjects
+        scene
         logger
         graphics
         audio

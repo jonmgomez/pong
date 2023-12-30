@@ -1,5 +1,7 @@
 #pragma once
 
+#include "component.h"
+
 #include <nlohmann/json.hpp>
 
 #include <memory>
@@ -22,10 +24,11 @@ public:
     std::vector<std::unique_ptr<GameObject>> LoadScene(const std::string& sceneName);
 
 private:
-    std::vector<std::unique_ptr<GameObject>> LoadScene(const nlohmann::json& sceneJson);
+    std::vector<std::unique_ptr<GameObject>> LoadSceneFromJson(const nlohmann::json& sceneJson);
 
     std::unordered_map<std::string, nlohmann::json> mScenes {};
-    std::unordered_map<std::string, std::function<void(GameObject*)>> mComponentMappings {};
+    std::unordered_map<std::string, std::function<BaseComponent*(GameObject*)>> mComponentMappings {};
+    nlohmann::json mCurrentComponentJson {};
 };
 
 } // namespace pong

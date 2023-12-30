@@ -13,7 +13,7 @@ namespace pong
 
 Text::Text()
 {
-    Text("Default", Config::GetValue<std::string>("font"), 1.0f, 128);
+    Text("Default", "D:/code/pong/assets/pixeloid.ttf", 1.0f, 128);
 }
 
 Text::Text(const std::string& text, const std::string& path, float scale, int pixelLineHeight) :

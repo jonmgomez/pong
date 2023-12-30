@@ -30,7 +30,7 @@ private:
 
     std::string mText { "" };
     std::vector<TextCharacter> mCharacters {};
-    std::string mFontPath { "" };
+    std::string mFontPath { "D:/code/pong/assets/pixeloid.ttf" };
     float mScale { 1.0f };
     int mPixelLineHeight { 128 };
 };

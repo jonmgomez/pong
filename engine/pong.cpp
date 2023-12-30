@@ -55,7 +55,8 @@ void Pong::Init()
     GetInstance().GetAudioMixer().Init();
     GetInstance().mSceneLoader.PreLoadScenes();
     GetInstance().GetTimer().Init();
-    GetInstance().LoadScene(SceneType::Title);
+    GetInstance().mGameObjects = GetInstance().mSceneLoader.LoadScene("Title");
+    //GetInstance().LoadScene(SceneType::Title);
 }
 
 void Pong::GameLoop()

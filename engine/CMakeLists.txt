@@ -8,7 +8,6 @@ set(SOURCES
     pongscenes.cpp
     random.cpp
     renderer.cpp
-    sceneloader.cpp
     timer.cpp
     uieventmanager.cpp
 )
@@ -18,6 +17,7 @@ add_library(engine ${SOURCES})
 add_subdirectory(audio)
 add_subdirectory(graphics)
 add_subdirectory(logger)
+add_subdirectory(scene)
 add_subdirectory(settings)
 
 target_link_libraries(engine
