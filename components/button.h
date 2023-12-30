@@ -2,7 +2,7 @@
 
 #include "component.h"
 #include "rectangle.h"
-#include "uielement.h"
+#include "uicomponent.h"
 
 #include <glm/glm.hpp>
 
@@ -24,7 +24,7 @@ enum class ButtonEvent
 
 using ListenerCallbacks = std::vector<std::function<void()>>;
 
-class Button : public UIElement, public Component<Button>
+class Button : public UIComponent, public Component<Button>
 {
 public:
     Button(float width, float height);

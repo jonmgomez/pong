@@ -13,9 +13,11 @@ set(SOURCES
 add_library(gameobjects ${SOURCES})
 
 target_link_libraries(gameobjects
-    PRIVATE
+    PUBLIC
+        compile_flags
         render
         engine
+        components
 )
 
 target_include_directories(gameobjects

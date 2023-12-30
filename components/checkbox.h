@@ -4,12 +4,12 @@
 #include "graphic.h"
 #include "rectangle.h"
 #include "slider.h"
-#include "uielement.h"
+#include "uicomponent.h"
 
 namespace pong
 {
 
-class CheckBox : public UIElement, public Component<CheckBox>
+class CheckBox : public UIComponent, public Component<CheckBox>
 {
 public:
     CheckBox(float width, float height, bool defaultValue);

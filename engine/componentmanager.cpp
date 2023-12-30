@@ -8,14 +8,14 @@ void ComponentManager::Reset()
     mUIComponents.clear();
 }
 
-const std::vector<UIElement*>& ComponentManager::GetUIComponents() const
+const std::vector<UIComponent*>& ComponentManager::GetUIComponents() const
 {
     return mUIComponents;
 }
 
-void ComponentManager::UpdateUIElementOrderLayers()
+void ComponentManager::UpdateUIComponentOrderLayers()
 {
-    std::sort(mUIComponents.begin(), mUIComponents.end(), [](UIElement* a, UIElement* b) {
+    std::sort(mUIComponents.begin(), mUIComponents.end(), [](UIComponent* a, UIComponent* b) {
         return a->GetOrderLayer() < b->GetOrderLayer();
     });
 }

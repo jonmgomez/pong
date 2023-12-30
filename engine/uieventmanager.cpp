@@ -9,7 +9,7 @@
 #include "input.h"
 #include "slider.h"
 #include "transform.h"
-#include "uielement.h"
+#include "uicomponent.h"
 
 namespace pong
 {
