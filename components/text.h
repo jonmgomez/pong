@@ -15,6 +15,7 @@ namespace pong
 class Text : public UIComponent, public Component<Text>
 {
 public:
+    Text();
     Text(const std::string&, const std::string& path, float scale, int pixelLineHeight = 128);
 
     std::vector<OffsetGraphic> GetRenderables() override;
@@ -31,7 +32,7 @@ private:
     std::vector<TextCharacter> mCharacters {};
     std::string mFontPath { "" };
     float mScale { 1.0f };
-    int mPixelLineHeight { 0 };
+    int mPixelLineHeight { 128 };
 };
 
 } // namespace pong

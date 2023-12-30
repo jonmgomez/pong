@@ -16,6 +16,7 @@ public:
 class ScoreArea : public Behavior
 {
 public:
+    ScoreArea() = default;
     ScoreArea(bool playerSide);
 
     int GetBehaviorId() const override { return GetIdFromBehavior<ScoreArea>(); }

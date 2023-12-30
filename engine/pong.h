@@ -5,6 +5,7 @@
 #include "component.h"
 #include "componentmanager.h"
 #include "gameobject.h"
+#include "sceneloader.h"
 #include "text.h"
 #include "timer.h"
 #include "transform.h"
@@ -95,6 +96,7 @@ private:
     CollisionManager mCollisionManager {};
     ComponentManager mComponentManager {};
     UIEventManager mUIEventManager {};
+    SceneLoader mSceneLoader {};
     AudioMixer mAudioMixer {};
     Timer mTimer {};
 

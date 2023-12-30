@@ -22,6 +22,41 @@ Slider::Slider(float width, float height, float min, float max, float step, floa
     mValue(std::clamp(startValue, min, max))
 {
     ASSERT(min < max && step > 0.0f);
+    Resize(width, height);
+}
+
+void Slider::CalculateStart()
+{
+    const float startXPos = BORDER_GAP + BORDER_THICKNESS;
+    const float endXPos = mWidth + startXPos;
+    const float fillHeight = mHeight - (BORDER_GAP + BORDER_THICKNESS) * 2.0f;
+    const float fillWidth = mWidth * std::fabs(mValue - mMin) / (mMax - mMin) - startXPos;
+    const float percentValue = std::fabs(mValue - mMin) / (mMax - mMin);
+    const float fillXPos = fillWidth / -2.0f - (1.0f - percentValue - 0.5f) * (endXPos - startXPos);
+    const float handleWidth = mHeight * HANDLE_WIDTH_PERCENT;
+    const float handleHeight = mHeight * HANDLE_HEIGHT_PERCENT;
+    const float handleXPos = fillWidth - mWidth / 2.0f;
+
+    mFill   = { Rectangle(fillWidth,   fillHeight),   glm::vec3(fillXPos, 0.0f, 0.0f)   };
+    mHandle = { Rectangle(handleWidth, handleHeight), glm::vec3(handleXPos, 0.0f, 0.0f) };
+}
+
+void Slider::SetVariables(float min, float max, float step, float startValue)
+{
+    ASSERT(min < max && step > 0.0f);
+    mMin = min;
+    mMax = max;
+    mStep = step;
+    mValue = std::clamp(startValue, min, max);
+
+    CalculateStart();
+}
+
+void Slider::Resize(float width, float height)
+{
+    mWidth = width;
+    mHeight = height;
+
     const float verticalBorderXPos = width / 2.0f - BORDER_THICKNESS / 2.0f;
     const float horizontalBorderYPos = height / 2.0f - BORDER_THICKNESS / 2.0f;
 
@@ -32,18 +67,7 @@ Slider::Slider(float width, float height, float min, float max, float step, floa
         OffsetRectangle { Rectangle(width,            BORDER_THICKNESS), glm::vec3(0.0f, horizontalBorderYPos, 0.0f)  }
     };
 
-    const float startXPos = BORDER_GAP + BORDER_THICKNESS;
-    const float endXPos = width + startXPos;
-    const float fillHeight = height - (BORDER_GAP + BORDER_THICKNESS) * 2.0f;
-    const float fillWidth = width * std::fabs(mValue - mMin) / (mMax - mMin) - startXPos;
-    const float percentValue = std::fabs(mValue - mMin) / (mMax - mMin);
-    const float fillXPos = fillWidth / -2.0f - (1.0f - percentValue - 0.5f) * (endXPos - startXPos);
-    const float handleWidth = height * HANDLE_WIDTH_PERCENT;
-    const float handleHeight = height * HANDLE_HEIGHT_PERCENT;
-    const float handleXPos = fillWidth - width / 2.0f;
-
-    mFill   = { Rectangle(fillWidth,   fillHeight),   glm::vec3(fillXPos, 0.0f, 0.0f)   };
-    mHandle = { Rectangle(handleWidth, handleHeight), glm::vec3(handleXPos, 0.0f, 0.0f) };
+    CalculateStart();
 
     mBounds = {width, height};
 }

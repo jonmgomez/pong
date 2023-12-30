@@ -8,6 +8,7 @@ set(SOURCES
     pongscenes.cpp
     random.cpp
     renderer.cpp
+    sceneloader.cpp
     timer.cpp
     uieventmanager.cpp
 )

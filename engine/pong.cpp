@@ -53,6 +53,7 @@ Timer& Pong::GetTimer()
 void Pong::Init()
 {
     GetInstance().GetAudioMixer().Init();
+    GetInstance().mSceneLoader.PreLoadScenes();
     GetInstance().GetTimer().Init();
     GetInstance().LoadScene(SceneType::Title);
 }

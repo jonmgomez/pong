@@ -9,17 +9,22 @@ constexpr float BORDER_TOTAL = (BORDER_THICKNESS + BORDER_GAP) * 2.0f;
 constexpr float BORDER_ONE_SIDE = BORDER_TOTAL / 2.0f;
 
 CheckBox::CheckBox(float width, float height, bool defaultValue) :
-    mLines {
+    mValue(defaultValue)
+{
+    Resize(width, height);
+    mFill.mRectangle.SetEnabled(mValue);
+}
+
+void CheckBox::Resize(float width, float height)
+{
+    mLines = {
         OffsetRectangle { Rectangle(width,            BORDER_THICKNESS), glm::vec3(0.0f, height / 2.0f - BORDER_THICKNESS / 2.0f, 0.0f) },
         OffsetRectangle { Rectangle(width,            BORDER_THICKNESS), glm::vec3(0.0f, height / -2.0f + BORDER_THICKNESS / 2.0f, 0.0f) },
         OffsetRectangle { Rectangle(BORDER_THICKNESS, height          ), glm::vec3(width / -2.0f + BORDER_THICKNESS / 2.0f, 0.0f, 0.0f) },
         OffsetRectangle { Rectangle(BORDER_THICKNESS, height          ), glm::vec3(width / 2.0f - BORDER_THICKNESS / 2.0f, 0.0f, 0.0f) }
-    },
-    mFill { Rectangle(width - (BORDER_THICKNESS + BORDER_GAP) * 2.0f, height - (BORDER_THICKNESS + BORDER_GAP) * 2.0f), glm::vec3(0.0f)},
-    mBounds{width, height},
-    mValue{defaultValue}
-{
-    mFill.mRectangle.SetEnabled(mValue);
+    };
+    mFill = { Rectangle(width - (BORDER_THICKNESS + BORDER_GAP) * 2.0f, height - (BORDER_THICKNESS + BORDER_GAP) * 2.0f), glm::vec3(0.0f)};
+    mBounds = {width, height};
 }
 
 std::vector<OffsetGraphic> CheckBox::GetRenderables()

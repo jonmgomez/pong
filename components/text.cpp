@@ -1,5 +1,6 @@
 #include "text.h"
 
+#include "config.h"
 #include "logger.h"
 
 #define STB_TRUETYPE_IMPLEMENTATION
@@ -9,6 +10,11 @@
 
 namespace pong
 {
+
+Text::Text()
+{
+    Text("Default", Config::GetValue<std::string>("font"), 1.0f, 128);
+}
 
 Text::Text(const std::string& text, const std::string& path, float scale, int pixelLineHeight) :
     mText { text },
