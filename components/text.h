@@ -23,6 +23,8 @@ public:
 
     std::string GetText() const;
     void SetText(const std::string& text);
+    void SetScale(float scale);
+    void SetPixelLineHeight(int pixelLineHeight);
     void SetColor(GLRGBAColor color);
 
 private:

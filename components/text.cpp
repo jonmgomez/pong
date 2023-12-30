@@ -183,6 +183,20 @@ void Text::SetText(const std::string& text)
     CreateText();
 }
 
+void Text::SetScale(float scale)
+{
+    mScale = scale;
+    mCharacters.clear();
+    CreateText();
+}
+
+void Text::SetPixelLineHeight(int pixelLineHeight)
+{
+    mPixelLineHeight = pixelLineHeight;
+    mCharacters.clear();
+    CreateText();
+}
+
 void Text::SetColor(GLRGBAColor color)
 {
     for (auto& character : mCharacters)

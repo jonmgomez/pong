@@ -14,7 +14,7 @@ void SettingsScreenController::OnStart()
 {
     mBackButton = Pong::FindGameObjectByName("BackButton")->GetComponent<Button>();
     mBackButton->AddListener(ButtonEvent::Pressed, []() {
-        Pong::LoadSceneNext(SceneType::Title);
+        Pong::LoadSceneNext("Title");
     });
 
     mTargetFPSText = Pong::FindGameObjectByName("TargetFPSText")->GetComponent<Text>();

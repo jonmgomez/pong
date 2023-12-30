@@ -23,6 +23,8 @@ public:
     void OnStart() override;
     void OnCollisionStart(GameObject& other) override;
 
+    void SetIsPlayerSide(bool playerSide);
+
 private:
     bool mIsPlayerScoreArea { false };
     ScoreController* mScoreController { nullptr };

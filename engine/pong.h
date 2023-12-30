@@ -38,7 +38,7 @@ public:
     static void Reset();
     static void Cleanup();
 
-    static void LoadSceneNext(SceneType scene);
+    static void LoadSceneNext(const std::string& sceneName);
 
     // Returns the first component of type T found in the scene
     template<typename T, typename = std::enable_if_t<std::is_base_of_v<BaseComponent, T> && !std::is_base_of_v<Behavior, T>>>
@@ -89,7 +89,7 @@ private:
     Pong& operator=(Pong&&) = delete;
     ~Pong() = default;
 
-    void LoadScene(SceneType scene);
+    void LoadScene(const std::string& sceneName);
 
     std::vector<std::unique_ptr<GameObject>> mGameObjects {};
 
@@ -100,7 +100,7 @@ private:
     AudioMixer mAudioMixer {};
     Timer mTimer {};
 
-    SceneType mNextScene { SceneType::Title };
+    std::string mNextScene { "Title" };
     bool mChangeSceneRequested { false };
 };
 

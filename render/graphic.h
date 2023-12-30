@@ -31,7 +31,7 @@ protected:
     VertexArray mVA {};
     VertexBuffer mVB {};
     IndexBuffer mIB {};
-    Texture mTexture {};
+    Texture mTexture { RGBA_WHITE };
     GLRGBAColor mColor { RGBA_WHITE };
     bool mEnabled { true };
 };

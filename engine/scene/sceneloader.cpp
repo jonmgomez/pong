@@ -21,6 +21,7 @@
 
 #include <nlohmann/json.hpp>
 
+#include <chrono>
 #include <fstream>
 
 namespace pong
@@ -116,7 +117,6 @@ void SceneLoader::PreLoadScenes()
         ASSERT(sceneJson.is_object());
         ASSERT(sceneJson.contains("name") && sceneJson["name"].is_string());
         const std::string sceneName = sceneJson["name"];
-        std::cout << "Parsing scene: " << sceneName << std::endl;
 
         ASSERT(sceneJson.contains("objects") && sceneJson["objects"].is_array());
         for (const auto& gameObjectJson : sceneJson["objects"])
@@ -153,12 +153,14 @@ std::vector<std::unique_ptr<GameObject>> SceneLoader::LoadSceneFromJson(const nl
     std::vector<std::unique_ptr<GameObject>> gameObjects {};
 
     const std::string sceneName = sceneJson["name"];
-    std::cout << "Parsing scene: " << sceneName << std::endl;
+    LogDebug("Loading Scene: {}", sceneName);
+
+    const auto startTime = std::chrono::high_resolution_clock::now();
 
     for (const auto& gameObjectJson : sceneJson["objects"])
     {
         const std::string gameObjectName = gameObjectJson["name"];
-        std::cout << "Parsing game object: " << gameObjectName << std::endl;
+        LogDebug("New Object {}", gameObjectName);
 
         std::unique_ptr<GameObject> gameObject = std::make_unique<GameObject>();
         gameObject->SetInstanceName(gameObjectName);
@@ -166,17 +168,24 @@ std::vector<std::unique_ptr<GameObject>> SceneLoader::LoadSceneFromJson(const nl
         for (const auto& componentJson : gameObjectJson["components"])
         {
             const std::string componentTypeName = componentJson["type"];
-            std::cout << "Parsing component: " << componentTypeName << std::endl;
 
             // Add component to game object using the component mapping lambdas
             BaseComponent* newComponent = mComponentMappings[componentTypeName](gameObject.get());
 
+            LogDebug("Object {} - Adding Component: {}", gameObjectName, componentJson["type"]);
             ComponentDeserializer componentDeserializer {};
             componentDeserializer.DeserializeComponent(newComponent, componentJson);
         }
 
         gameObjects.push_back(std::move(gameObject));
     }
+
+    const auto endTime = std::chrono::high_resolution_clock::now();
+    const auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
+
+    LogInfo("Loaded Scene: {}", sceneName);
+    LogInfo("Total Objects: {}", gameObjects.size());
+    LogInfo("Total Load Time: {}ms ({}us)", duration / 1000, duration);
 
     return gameObjects;
 }

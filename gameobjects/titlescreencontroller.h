@@ -11,6 +11,10 @@ namespace pong
 class TitleScreenController : public Behavior
 {
 public:
+
+    void ButtonHoverAnimation(Button* button, Text* buttonText, float newWidth, float newHeight);
+    void ButtonUnhoverAnimation(Button* button, Text* buttonText, float newWidth, float newHeight);
+    void SetupButton(Button* button, Text* text);
     int GetBehaviorId() const override { return GetIdFromBehavior<TitleScreenController>(); }
     void OnStart() override;
 
