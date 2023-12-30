@@ -1,0 +1,19 @@
+{
+    "name": "Title",
+    "objects": [
+        {
+            "name": "TitleScreenController",
+            "components": [
+                {
+                    "type": "TitleScreenController",
+                    "values": [
+                        {
+                            "name": "text",
+                            "value": "Title"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
