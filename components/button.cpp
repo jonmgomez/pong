@@ -1,7 +1,7 @@
 #include "button.h"
 
 #include "pong.h"
-#include "uielement.h"
+#include "uicomponent.h"
 
 namespace pong
 {

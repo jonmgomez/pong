@@ -2,7 +2,7 @@
 
 #include "component.h"
 #include "textcharacter.h"
-#include "uielement.h"
+#include "uicomponent.h"
 
 #include <glm/glm.hpp>
 
@@ -12,7 +12,7 @@
 namespace pong
 {
 
-class Text : public UIElement, public Component<Text>
+class Text : public UIComponent, public Component<Text>
 {
 public:
     Text(const std::string&, const std::string& path, float scale, int pixelLineHeight = 128);

@@ -2,7 +2,7 @@
 
 #include "component.h"
 #include "rectangle.h"
-#include "uielement.h"
+#include "uicomponent.h"
 
 #include <array>
 #include <functional>
@@ -11,7 +11,7 @@
 namespace pong
 {
 
-class Slider : public UIElement, public Component<Slider>
+class Slider : public UIComponent, public Component<Slider>
 {
 public:
     Slider(float width, float height, float min, float max, float step, float startValue);

@@ -8,7 +8,7 @@
 #include "text.h"
 #include "timer.h"
 #include "transform.h"
-#include "uielement.h"
+#include "uicomponent.h"
 #include "uieventmanager.h"
 #include "utils.h"
 

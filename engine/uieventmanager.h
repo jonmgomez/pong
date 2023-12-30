@@ -4,7 +4,7 @@
 #include "checkbox.h"
 #include "slider.h"
 #include "text.h"
-#include "uielement.h"
+#include "uicomponent.h"
 
 #include <memory>
 #include <vector>

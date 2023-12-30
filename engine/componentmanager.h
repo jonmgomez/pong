@@ -6,7 +6,7 @@
 #include "checkbox.h"
 #include "slider.h"
 #include "text.h"
-#include "uielement.h"
+#include "uicomponent.h"
 
 #include <memory>
 #include <vector>
@@ -16,8 +16,8 @@ namespace pong
 
 // The purpose of this class is to manage all components in the game.
 // Generally each component manages itself using CRTP, but this class manages
-// more complicated components like UIElements, which need to be stored in a certain
-// order to be rendered correctly. So this class manages the order of UIElements and stores
+// more complicated components like UIComponents, which need to be stored in a certain
+// order to be rendered correctly. So this class manages the order of UIComponents and stores
 // them generically in a vector.
 class ComponentManager
 {
@@ -36,7 +36,7 @@ public:
         Button* checkBox = component.get();
         Button::AddComponent(std::move(component));
         mUIComponents.push_back(checkBox);
-        UpdateUIElementOrderLayers();
+        UpdateUIComponentOrderLayers();
     }
 
     template<>
@@ -45,7 +45,7 @@ public:
         CheckBox* checkBox = component.get();
         CheckBox::AddComponent(std::move(component));
         mUIComponents.push_back(checkBox);
-        UpdateUIElementOrderLayers();
+        UpdateUIComponentOrderLayers();
     }
 
     template<>
@@ -54,7 +54,7 @@ public:
         Slider* checkBox = component.get();
         Slider::AddComponent(std::move(component));
         mUIComponents.push_back(checkBox);
-        UpdateUIElementOrderLayers();
+        UpdateUIComponentOrderLayers();
     }
 
     template<>
@@ -63,14 +63,14 @@ public:
         Text* checkBox = component.get();
         Text::AddComponent(std::move(component));
         mUIComponents.push_back(checkBox);
-        UpdateUIElementOrderLayers();
+        UpdateUIComponentOrderLayers();
     }
 
-    const std::vector<UIElement*>& GetUIComponents() const;
-    void UpdateUIElementOrderLayers();
+    const std::vector<UIComponent*>& GetUIComponents() const;
+    void UpdateUIComponentOrderLayers();
 
 private:
-    std::vector<UIElement*> mUIComponents {};
+    std::vector<UIComponent*> mUIComponents {};
 };
 
 } // namespace pong

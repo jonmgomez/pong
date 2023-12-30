@@ -1,41 +1,34 @@
 set(SOURCES
     applicationwindow.cpp
-    audiomixer.cpp
-    behavior.cpp
-    circle.cpp
-    colliderbox.cpp
     collisionmanager.cpp
-    component.cpp
     componentmanager.cpp
-    config.cpp
-    difficulty.cpp
     engine.cpp
     input.cpp
-    logger.cpp
-    mesh.cpp
-    playingsound.cpp
     pong.cpp
     pongscenes.cpp
     random.cpp
-    realtimelogger.cpp
-    rectangle.cpp
-    sound.cpp
-    textcharacter.cpp
+    renderer.cpp
     timer.cpp
     uieventmanager.cpp
 )
 
 add_library(engine ${SOURCES})
 
+add_subdirectory(audio)
+add_subdirectory(graphics)
+add_subdirectory(logger)
+add_subdirectory(settings)
+
 target_link_libraries(engine
     PUBLIC
+        compile_flags
         render
         gameobjects
-        ui
-        fmt::fmt
-        concurrentqueue
-        portaudio_static
-        AudioFile
+        components
+        audio
+        logger
+        graphics
+        settings
 )
 
 target_include_directories(engine

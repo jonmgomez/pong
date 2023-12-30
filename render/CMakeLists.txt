@@ -1,7 +1,6 @@
 set(SOURCES
     graphic.cpp
     indexbuffer.cpp
-    renderer.cpp
     renderutils.cpp
     shader.cpp
     texture.cpp
@@ -14,13 +13,13 @@ add_library(render ${SOURCES})
 
 target_link_libraries(render
     PUBLIC
+        compile_flags
         glfw
         opengl32
         glew
         glm
         spdlog
         nlohmann_json
-        compile_flags
         stb
     PRIVATE
         engine

@@ -26,14 +26,13 @@ target_compile_definitions(compile_flags INTERFACE
 
 add_subdirectory(tps)
 
-add_subdirectory(render)
 add_subdirectory(engine)
+add_subdirectory(render)
 add_subdirectory(gameobjects)
-add_subdirectory(ui)
+add_subdirectory(components)
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-        render
         engine
         compile_flags
 )

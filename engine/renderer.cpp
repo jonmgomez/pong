@@ -96,7 +96,7 @@ void Renderer::DrawAll()
         Renderer::Draw(renderData, position);
     }
 
-    const std::vector<UIElement*>& uiComponents = Pong::GetInstance().GetComponentManager().GetUIComponents();
+    const std::vector<UIComponent*>& uiComponents = Pong::GetInstance().GetComponentManager().GetUIComponents();
     for (const auto& uiComponent : uiComponents)
     {
         const Transform* transform = uiComponent->GetBaseComponent()->GetComponent<Transform>();
