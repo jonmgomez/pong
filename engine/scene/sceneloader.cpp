@@ -143,7 +143,13 @@ void SceneLoader::PreLoadScenes()
 
 std::vector<std::unique_ptr<GameObject>> SceneLoader::LoadScene(const std::string& sceneName)
 {
-    ASSERT(mScenes.find(sceneName) != mScenes.end());
+    if (mScenes.find(sceneName) == mScenes.end())
+    {
+        LogError("Scene {} does not exist!", sceneName);
+        ASSERT(false);
+        return {};
+    }
+
     const nlohmann::json& sceneJson = mScenes[sceneName];
     return LoadSceneFromJson(sceneJson);
 }
