@@ -1,0 +1,198 @@
+{
+  "name": "Game",
+  "objects": [
+    {
+      "name": "Player",
+      "components": [
+        {
+          "type": "Transform",
+          "x": -1125.0,
+          "y": 0.0
+        },
+        {
+          "type": "Mesh",
+          "mesh_type": "Rectangle",
+          "width": 15.0,
+          "height": 125.0
+        },
+        {
+          "type": "ColliderBox",
+          "width": 15.0,
+          "height": 125.0
+        },
+        {
+          "type": "Player",
+          "speed": 850.0
+        }
+      ]
+    },
+    {
+      "name": "Opponent",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 1125.0,
+          "y": 0.0
+        },
+        {
+          "type": "Mesh",
+          "mesh_type": "Rectangle",
+          "width": 15.0,
+          "height": 125.0
+        },
+        {
+          "type": "ColliderBox",
+          "width": 15.0,
+          "height": 125.0
+        },
+        {
+          "type": "Opponent",
+          "speed": 1200.0
+        }
+      ]
+    },
+    {
+      "name": "Ball",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 1125.0,
+          "y": 0.0
+        },
+        {
+          "type": "Mesh",
+          "mesh_type": "Rectangle",
+          "width": 20.0,
+          "height": 20.0
+        },
+        {
+          "type": "ColliderBox",
+          "width": 20.0,
+          "height": 20.0
+        },
+        {
+          "type": "Ball",
+          "speed": 1000.0
+        }
+      ]
+    },
+    {
+      "name": "TopWall",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 0.0,
+          "y": 960.0
+        },
+        {
+          "type": "Mesh",
+          "mesh_type": "Rectangle",
+          "width": 2750.0,
+          "height": 25.0
+        },
+        {
+          "type": "ColliderBox",
+          "width": 2750.0,
+          "height": 25.0
+        }
+      ]
+    },
+    {
+      "name": "BottomWall",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 0.0,
+          "y": -960.0
+        },
+        {
+          "type": "Mesh",
+          "mesh_type": "Rectangle",
+          "width": 2750.0,
+          "height": 25.0
+        },
+        {
+          "type": "ColliderBox",
+          "width": 2750.0,
+          "height": 25.0
+        }
+      ]
+    },
+    {
+      "name": "PlayerScoreArea",
+      "components": [
+        {
+          "type": "Transform",
+          "x": -1280.0,
+          "y": 0.0
+        },
+        {
+          "type": "ColliderBox",
+          "width": 25.0,
+          "height": 1920.0
+        },
+        {
+          "type": "ScoreArea",
+          "player_side": true
+        }
+      ]
+    },
+    {
+      "name": "OpponentScoreArea",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 1280.0,
+          "y": 0.0
+        },
+        {
+          "type": "ColliderBox",
+          "width": 25.0,
+          "height": 1920.0
+        },
+        {
+          "type": "ScoreArea",
+          "player_side": true
+        }
+      ]
+    },
+    {
+      "name": "PlayerScoreText",
+      "components": [
+        {
+          "type": "Transform",
+          "x": -750.0,
+          "y": 750.0
+        },
+        {
+          "type": "Text",
+          "text": "0",
+          "scale": 2.0
+        }
+      ]
+    },
+    {
+      "name": "OpponentScoreText",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 750.0,
+          "y": 750.0
+        },
+        {
+          "type": "Text",
+          "text": "0",
+          "scale": 2.0
+        }
+      ]
+    },
+    {
+      "name": "ScoreController",
+      "components": [
+        {
+          "type": "ScoreController"
+        }
+      ]
+    }
+  ]
+}

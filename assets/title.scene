@@ -1,0 +1,108 @@
+{
+  "name": "Title",
+  "objects": [
+    {
+      "name": "TitleScreenController",
+      "components": [
+        {
+          "type": "TitleScreenController"
+        }
+      ]
+    },
+    {
+      "name": "TitleText",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 0.0,
+          "y": 750.0
+        },
+        {
+          "type": "Text",
+          "text": "Pong",
+          "scale": 1.5,
+          "pixel_height": 256
+        }
+      ]
+    },
+    {
+      "name": "PlayButton",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 0.0,
+          "y": 0.0
+        },
+        {
+          "type": "Button",
+          "width": 400.0,
+          "height": 200.0
+        },
+        {
+          "type": "Text",
+          "text": "Play",
+          "order_layer": 1,
+          "color": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 1.0
+          }
+        }
+      ]
+    },
+    {
+      "name": "SettingsButton",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 0.0,
+          "y": -300.0
+        },
+        {
+          "type": "Button",
+          "width": 400.0,
+          "height": 200.0
+        },
+        {
+          "type": "Text",
+          "text": "Settings",
+          "scale": 0.75,
+          "order_layer": 1,
+          "color": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 1.0
+          }
+        }
+      ]
+    },
+    {
+      "name": "QuitButton",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 0.0,
+          "y": -600.0
+        },
+        {
+          "type": "Button",
+          "width": 400.0,
+          "height": 200.0
+        },
+        {
+          "type": "Text",
+          "text": "Quit",
+          "order_layer": 1,
+          "color": {
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 1.0
+          }
+        }
+      ]
+    }
+  ]
+}
