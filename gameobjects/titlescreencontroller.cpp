@@ -11,40 +11,6 @@
 namespace pong
 {
 
-static constexpr float BUTTON_WIDTH = 400.0f;
-static constexpr float BUTTON_HEIGHT = 200.0f;
-static constexpr float BUTTON_HOVER_SCALE = 1.35f;
-static constexpr float HOVER_BUTTON_WIDTH = BUTTON_WIDTH * BUTTON_HOVER_SCALE;
-static constexpr float HOVER_BUTTON_HEIGHT = BUTTON_HEIGHT * BUTTON_HOVER_SCALE;
-static constexpr GLRGBAColor IDLE_TEXT_COLOR = GLRGBA_BLACK;
-static constexpr GLRGBAColor HOVER_TEXT_COLOR = { 0.4f, 0.4f, 0.4f, 1.0f };
-
-void TitleScreenController::ButtonHoverAnimation(Button* button, Text* buttonText, float newWidth, float newHeight)
-{
-    button->Resize(newWidth, newHeight);
-    buttonText->SetColor(HOVER_TEXT_COLOR);
-}
-
-void TitleScreenController::ButtonUnhoverAnimation(Button* button, Text* buttonText, float newWidth, float newHeight)
-{
-    button->Resize(newWidth, newHeight);
-    buttonText->SetColor(IDLE_TEXT_COLOR);
-}
-
-void TitleScreenController::SetupButton(Button* button, Text* text)
-{
-    text->SetColor(IDLE_TEXT_COLOR);
-    text->SetOrderLayer(1);
-
-    button->AddListener(ButtonEvent::Hover, [this, button, text]() {
-        this->ButtonHoverAnimation(button, text, HOVER_BUTTON_WIDTH, HOVER_BUTTON_HEIGHT);
-    });
-
-    button->AddListener(ButtonEvent::Unhover, [this, button, text]() {
-        this->ButtonUnhoverAnimation(button, text, BUTTON_WIDTH, BUTTON_HEIGHT);
-    });
-}
-
 void TitleScreenController::OnStart()
 {
     mPlayButton = Pong::FindGameObjectByName("PlayButton")->GetComponent<Button>();

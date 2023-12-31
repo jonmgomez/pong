@@ -21,7 +21,7 @@ Slider::Slider(float width, float height, float min, float max, float step, floa
     mStep(step),
     mValue(std::clamp(startValue, min, max))
 {
-    ASSERT(min < max && step > 0.0f);
+    ASSERT(min < max);
     Resize(width, height);
 }
 
@@ -43,7 +43,7 @@ void Slider::CalculateStart()
 
 void Slider::SetVariables(float min, float max, float step, float startValue)
 {
-    ASSERT(min < max && step > 0.0f);
+    ASSERT(min < max);
     mMin = min;
     mMax = max;
     mStep = step;
@@ -153,6 +153,12 @@ RectangleBounds Slider::GetBounds() const
 float Slider::GetValue() const
 {
     return mValue;
+}
+
+void Slider::SetValue(float value)
+{
+    mValue = std::clamp(value, mMin, mMax);
+    CalculateStart();
 }
 
 } // namespace pong

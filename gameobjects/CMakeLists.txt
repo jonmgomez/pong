@@ -8,6 +8,7 @@ set(SOURCES
     settingsscreencontroller.cpp
     titlescreencontroller.cpp
     wall.cpp
+    uimenu.cpp
 )
 
 add_library(gameobjects ${SOURCES})

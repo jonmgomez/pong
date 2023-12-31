@@ -31,6 +31,7 @@ public:
     bool WasPressed() const;
     RectangleBounds GetBounds() const;
     float GetValue() const;
+    void SetValue(float value);
 
 private:
     void CalculateStart();
