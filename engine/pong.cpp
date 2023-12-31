@@ -14,7 +14,6 @@
 #include "settingsscreencontroller.h"
 #include "titlescreencontroller.h"
 #include "wall.h"
-#include "pongscenes.h"
 
 namespace pong
 {
@@ -56,7 +55,7 @@ void Pong::Init()
     GetInstance().mSceneLoader.PreLoadScenes();
     GetInstance().GetTimer().Init();
 
-    GetInstance().LoadScene("Title");
+    GetInstance().LoadScene(Config::GetValue<std::string>("starting_scene"));
 }
 
 void Pong::GameLoop()

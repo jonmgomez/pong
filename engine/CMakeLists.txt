@@ -5,7 +5,6 @@ set(SOURCES
     engine.cpp
     input.cpp
     pong.cpp
-    pongscenes.cpp
     random.cpp
     renderer.cpp
     timer.cpp
