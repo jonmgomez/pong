@@ -11,12 +11,6 @@ namespace pong
 
 class Ball;
 
-class OpponentBlueprint : public GameObjectBlueprint
-{
-public:
-    OpponentBlueprint();
-};
-
 class Opponent : public Behavior
 {
 public:

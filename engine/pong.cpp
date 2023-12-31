@@ -1,19 +1,11 @@
 #include "pong.h"
 
-#include "ball.h"
 #include "behavior.h"
 #include "colliderbox.h"
 #include "config.h"
 #include "input.h"
 #include "logger.h"
-#include "opponent.h"
-#include "player.h"
 #include "renderer.h"
-#include "scorearea.h"
-#include "scorecontroller.h"
-#include "settingsscreencontroller.h"
-#include "titlescreencontroller.h"
-#include "wall.h"
 
 namespace pong
 {

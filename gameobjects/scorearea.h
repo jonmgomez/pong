@@ -7,12 +7,6 @@
 namespace pong
 {
 
-class ScoreAreaBlueprint : public GameObjectBlueprint
-{
-public:
-    ScoreAreaBlueprint(float width, float height, bool playerSide);
-};
-
 class ScoreArea : public Behavior
 {
 public:

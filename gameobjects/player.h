@@ -9,12 +9,6 @@
 namespace pong
 {
 
-class PlayerBlueprint : public GameObjectBlueprint
-{
-public:
-    PlayerBlueprint();
-};
-
 class Player : public Behavior
 {
 public:

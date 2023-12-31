@@ -11,19 +11,6 @@
 namespace pong
 {
 
-static constexpr glm::vec3 PLAYER_POSITION(-1125.0f, 0.0f, 0.0f);
-static constexpr float PLAYER_WIDTH = 15.0f;
-static constexpr float PLAYER_HEIGHT = 125.0f;
-
-PlayerBlueprint::PlayerBlueprint()
-{
-    SetInstanceName("Player");
-    AddComponent<Transform>(PLAYER_POSITION);
-    AddComponent<Mesh>(std::make_unique<Rectangle>(PLAYER_WIDTH, PLAYER_HEIGHT));
-    AddComponent<ColliderBox>(PLAYER_WIDTH, PLAYER_HEIGHT);
-    AddComponent<Player>();
-}
-
 void Player::OnStart()
 {
     mTransform = GetComponent<Transform>();

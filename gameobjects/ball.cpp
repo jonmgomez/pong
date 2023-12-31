@@ -12,20 +12,10 @@
 namespace pong
 {
 
-static constexpr float BALL_WIDTH = 20.0f;
 static constexpr float BALL_SPEED_BOUNCE_INCREMENT = 75.0f;
 static constexpr float Y_STARTING_POSITION_BOUNDS = 500.0f;
 
 static constexpr std::chrono::seconds BALL_RESET_WAIT_S { 3 };
-
-BallBlueprint::BallBlueprint()
-{
-    SetInstanceName("Ball");
-    AddComponent<Transform>();
-    AddComponent<Mesh>(std::make_unique<Rectangle>(BALL_WIDTH, BALL_WIDTH));
-    AddComponent<ColliderBox>(BALL_WIDTH, BALL_WIDTH);
-    AddComponent<Ball>();
-}
 
 void Ball::OnStart()
 {

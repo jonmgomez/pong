@@ -9,14 +9,6 @@
 namespace pong
 {
 
-ScoreAreaBlueprint::ScoreAreaBlueprint(float width, float height, bool playerSide)
-{
-    SetInstanceName("ScoreArea");
-    AddComponent<Transform>();
-    AddComponent<ColliderBox>(width, height);
-    AddComponent<ScoreArea>(playerSide);
-}
-
 ScoreArea::ScoreArea(bool playerSide) :
     mIsPlayerScoreArea { playerSide }
 {
