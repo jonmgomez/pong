@@ -185,4 +185,9 @@ void Opponent::OnBallVelocityChange(const glm::vec3& velocity)
     }
 }
 
+void Opponent::SetSpeed(float speed)
+{
+    mSpeed = speed;
+}
+
 } // namespace pong

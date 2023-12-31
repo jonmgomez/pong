@@ -21,12 +21,15 @@ class Opponent : public Behavior
 {
 public:
     int GetBehaviorId() const override { return GetIdFromBehavior<Opponent>(); }
+    void Accept(ComponentDeserializer& visitor) override { visitor.VisitComponent(this); }
     void OnStart() override;
     void OnUpdate() override;
     void OnCollisionStart(GameObject& other) override;
     void OnCollisionStay(GameObject& other) override;
 
     void OnBallVelocityChange(const glm::vec3& velocity);
+
+    void SetSpeed(float speed);
 
 private:
     static constexpr float OPPONENT_MAX_SPEED = 1200.0f;

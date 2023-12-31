@@ -34,7 +34,7 @@ void ComponentDeserializer::DeserializeComponent(BaseComponent* component, const
 {
     mCurrentJson = json;
     component->Accept(*this);
-    mCurrentJson.clear();
+    //mCurrentJson = {};
 }
 
 void ComponentDeserializer::VisitComponent(Button* component)
@@ -93,19 +93,16 @@ void ComponentDeserializer::VisitComponent(Slider* component)
 
 void ComponentDeserializer::VisitComponent(Text* component)
 {
-    const std::string text = mCurrentJson["text"];
-    component->SetText(text);
+    component->mText =  mCurrentJson["text"];
 
     if (mCurrentJson.contains("scale"))
     {
-        const float scale = mCurrentJson["scale"];
-        component->SetScale(scale);
+        component->mScale = mCurrentJson["scale"];
     }
 
     if (mCurrentJson.contains("pixel_height"))
     {
-        const int pixelLineHeight = mCurrentJson["pixel_height"];
-        component->SetPixelLineHeight(pixelLineHeight);
+        component->mPixelLineHeight = mCurrentJson["pixel_height"];
     }
 
     if (mCurrentJson.contains("color"))
@@ -114,6 +111,8 @@ void ComponentDeserializer::VisitComponent(Text* component)
         const auto& color = mCurrentJson["color"];
         component->SetColor({color["r"], color["g"], color["b"], color["a"]});
     }
+
+    component->RecomputeText();
 
     if (mCurrentJson.contains("order_layer"))
     {
@@ -133,9 +132,10 @@ void ComponentDeserializer::VisitComponent(Behavior* /*component*/)
 {
 }
 
-void ComponentDeserializer::VisitComponent(Opponent* /*component*/)
+void ComponentDeserializer::VisitComponent(Opponent* component)
 {
-
+    const float speed = mCurrentJson["speed"];
+    component->SetSpeed(speed);
 }
 
 void ComponentDeserializer::VisitComponent(Player* component)
@@ -144,9 +144,10 @@ void ComponentDeserializer::VisitComponent(Player* component)
     component->SetSpeed(speed);
 }
 
-void ComponentDeserializer::VisitComponent(Ball* /*component*/)
+void ComponentDeserializer::VisitComponent(Ball* component)
 {
-
+    const float speed = mCurrentJson["speed"];
+    component->SetSpeed(speed);
 }
 
 void ComponentDeserializer::VisitComponent(ScoreArea* component)

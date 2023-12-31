@@ -22,10 +22,12 @@ class Ball : public Behavior
 {
 public:
     int GetBehaviorId() const override { return GetIdFromBehavior<Ball>(); }
+    void Accept(ComponentDeserializer& visitor) override { visitor.VisitComponent(this); }
     void OnStart() override;
     void OnUpdate() override;
     void OnCollisionStart(GameObject& other) override;
 
+    void SetSpeed(float speed);
     glm::vec3 GetVelocity() const;
 
 private:
@@ -34,7 +36,8 @@ private:
     Transform* mTransform { nullptr };
 
     glm::vec3 mVelocity { 0.0f };
-    float mSpeed { BALL_START_SPEED };
+    float mStartSpeed { BALL_START_SPEED };
+    float mSpeed { mStartSpeed };
     Opponent* mOpponent { nullptr };
     Sound mPaddleBounceSound {};
     Sound mWallBounceSound {};

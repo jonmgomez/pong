@@ -181,11 +181,11 @@ std::vector<std::unique_ptr<GameObject>> SceneLoader::LoadSceneFromJson(const nl
     }
 
     const auto endTime = std::chrono::high_resolution_clock::now();
-    const auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
+    const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
 
     LogInfo("Loaded Scene: {}", sceneName);
     LogInfo("Total Objects: {}", gameObjects.size());
-    LogInfo("Total Load Time: {}ms ({}us)", duration / 1000, duration);
+    LogInfo("Total Load Time: {}ms ({}s)", duration, duration / 1000.0f);
 
     return gameObjects;
 }

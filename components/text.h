@@ -26,15 +26,16 @@ public:
     void SetScale(float scale);
     void SetPixelLineHeight(int pixelLineHeight);
     void SetColor(GLRGBAColor color);
-
-private:
-    void CreateText();
+    void RecomputeText();
 
     std::string mText { "" };
-    std::vector<TextCharacter> mCharacters {};
-    std::string mFontPath { "D:/code/pong/assets/pixeloid.ttf" };
     float mScale { 1.0f };
     int mPixelLineHeight { 128 };
+
+private:
+    std::vector<TextCharacter> mCharacters {};
+    std::string mFontPath { "D:/code/pong/assets/pixeloid.ttf" };
+    GLRGBAColor mColor { GLRGBA_WHITE };
 };
 
 } // namespace pong

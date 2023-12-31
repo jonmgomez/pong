@@ -100,7 +100,7 @@ void Ball::OnCollisionStart(GameObject& other)
 
 void Ball::ResetBall()
 {
-    mSpeed = BALL_START_SPEED;
+    mSpeed = mStartSpeed;
 
     const float yStartingPos = Random::ValueInRange(-Y_STARTING_POSITION_BOUNDS, Y_STARTING_POSITION_BOUNDS);
     mTransform->mPosition = glm::vec3(0.0f, yStartingPos, 0.0f);
@@ -110,6 +110,11 @@ void Ball::ResetBall()
     mVelocity = glm::normalize(glm::vec3(xDir, yDir, 0.0f)) * mSpeed;
 
     mOpponent->OnBallVelocityChange(mVelocity);
+}
+
+void Ball::SetSpeed(float speed)
+{
+    mStartSpeed = speed;
 }
 
 glm::vec3 Ball::GetVelocity() const

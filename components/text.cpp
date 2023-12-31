@@ -22,7 +22,7 @@ Text::Text(const std::string& text, const std::string& path, float scale, int pi
     mScale { scale },
     mPixelLineHeight { pixelLineHeight }
 {
-    CreateText();
+    RecomputeText();
 }
 
 std::vector<OffsetGraphic> Text::GetRenderables()
@@ -42,7 +42,7 @@ BaseComponent* Text::GetBaseComponent()
     return this;
 }
 
-void Text::CreateText()
+void Text::RecomputeText()
 {
     std::ifstream file(mFontPath, std::ios::binary);
     if (!file)
@@ -168,6 +168,7 @@ void Text::CreateText()
     {
         const glm::vec3 currentOffset = character.mOffset;
         character.mOffset = currentOffset - center;
+        character.SetColor(mColor);
     }
 }
 
@@ -180,28 +181,29 @@ void Text::SetText(const std::string& text)
 {
     mText = text;
     mCharacters.clear();
-    CreateText();
+    RecomputeText();
 }
 
 void Text::SetScale(float scale)
 {
     mScale = scale;
     mCharacters.clear();
-    CreateText();
+    RecomputeText();
 }
 
 void Text::SetPixelLineHeight(int pixelLineHeight)
 {
     mPixelLineHeight = pixelLineHeight;
     mCharacters.clear();
-    CreateText();
+    RecomputeText();
 }
 
 void Text::SetColor(GLRGBAColor color)
 {
+    mColor = color;
     for (auto& character : mCharacters)
     {
-        character.SetColor(color);
+        character.SetColor(mColor);
     }
 }
 
