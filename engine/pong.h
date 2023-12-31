@@ -21,13 +21,6 @@
 namespace pong
 {
 
-enum class SceneType
-{
-    Title,
-    Settings,
-    Game
-};
-
 class Pong
 {
 public:
