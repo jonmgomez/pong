@@ -153,14 +153,14 @@ std::vector<std::unique_ptr<GameObject>> SceneLoader::LoadSceneFromJson(const nl
     std::vector<std::unique_ptr<GameObject>> gameObjects {};
 
     const std::string sceneName = sceneJson["name"];
-    LogDebug("Loading Scene: {}", sceneName);
+    LogInfo("Loading Scene: {}", sceneName);
 
+    int totalComponents = 0;
     const auto startTime = std::chrono::high_resolution_clock::now();
 
     for (const auto& gameObjectJson : sceneJson["objects"])
     {
         const std::string gameObjectName = gameObjectJson["name"];
-        LogDebug("New Object {}", gameObjectName);
 
         std::unique_ptr<GameObject> gameObject = std::make_unique<GameObject>();
         gameObject->SetInstanceName(gameObjectName);
@@ -171,8 +171,8 @@ std::vector<std::unique_ptr<GameObject>> SceneLoader::LoadSceneFromJson(const nl
 
             // Add component to game object using the component mapping lambdas
             BaseComponent* newComponent = mComponentMappings[componentTypeName](gameObject.get());
+            totalComponents++;
 
-            LogDebug("Object {} - Adding Component: {}", gameObjectName, componentJson["type"]);
             ComponentDeserializer componentDeserializer {};
             componentDeserializer.DeserializeComponent(newComponent, componentJson);
         }
@@ -183,9 +183,8 @@ std::vector<std::unique_ptr<GameObject>> SceneLoader::LoadSceneFromJson(const nl
     const auto endTime = std::chrono::high_resolution_clock::now();
     const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
 
-    LogInfo("Loaded Scene: {}", sceneName);
-    LogInfo("Total Objects: {}", gameObjects.size());
-    LogInfo("Total Load Time: {}ms ({}s)", duration, duration / 1000.0f);
+    LogInfo("Scene Loaded, Time Taken: {}ms ({}s). Total Objects: {} Total Components: {}",
+        duration, duration / 1000.0f, gameObjects.size(), totalComponents);
 
     return gameObjects;
 }

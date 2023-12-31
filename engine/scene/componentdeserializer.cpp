@@ -20,13 +20,6 @@
 #include "titlescreencontroller.h"
 #include "transform.h"
 
-template<typename T>
-struct JsonValue
-{
-    const char* name;
-    T value;
-};
-
 namespace pong
 {
 
@@ -34,7 +27,7 @@ void ComponentDeserializer::DeserializeComponent(BaseComponent* component, const
 {
     mCurrentJson = json;
     component->Accept(*this);
-    //mCurrentJson = {};
+    mCurrentJson = nullptr;
 }
 
 void ComponentDeserializer::VisitComponent(Button* component)
@@ -49,6 +42,11 @@ void ComponentDeserializer::VisitComponent(CheckBox* component)
     const float width = mCurrentJson["width"];
     const float height = mCurrentJson["height"];
     component->Resize(width, height);
+
+    if (mCurrentJson.contains("value"))
+    {
+        component->SetValue(mCurrentJson["value"]);
+    }
 }
 
 void ComponentDeserializer::VisitComponent(ColliderBox* component)
