@@ -20,6 +20,7 @@ public:
     virtual ~Behavior() = default;
 
     virtual int GetBehaviorId() const = 0;
+    virtual void Accept(ComponentDeserializer& /*visitor*/) override {};
     virtual void OnStart() {};
     virtual void OnUpdate() {};
     virtual void OnCollisionStart(GameObject& /*other*/) {};

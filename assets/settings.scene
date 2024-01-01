@@ -1,0 +1,333 @@
+{
+  "name": "Settings",
+  "objects": [
+    {
+      "name": "SettingsScreenController",
+      "components": [
+        {
+          "type": "SettingsScreenController"
+        }
+      ]
+    },
+    {
+      "name": "SettingsText",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 0.0,
+          "y": 750.0
+        },
+        {
+          "type": "Text",
+          "text": "Settings",
+          "scale": 1.5,
+          "pixel_height": 256
+        }
+      ]
+    },
+    {
+      "name": "BackButton",
+      "components": [
+        {
+          "type": "Transform",
+          "x": -950.0,
+          "y": -750.0
+        },
+        {
+          "type": "Button",
+          "width": 400,
+          "height": 200
+        },
+        {
+          "type": "Text",
+          "text": "Back",
+          "order_layer": 1,
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "TargetFPSText",
+      "components": [
+        {
+          "type": "Transform",
+          "x": -750.0,
+          "y": 300.0
+        },
+        {
+          "type": "Text",
+          "text": "Target FPS: -1",
+          "scale": 0.75,
+          "order_layer": 1
+        }
+      ]
+    },
+    {
+      "name": "TargetFPSSlider",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 200.0,
+          "y": 300.0
+        },
+        {
+          "type": "Slider",
+          "width": 1000.0,
+          "height": 100.0,
+          "min": 0,
+          "max": 4000,
+          "step": 1,
+          "start_value": 0
+        }
+      ]
+    },
+    {
+      "name": "VSync",
+      "components": [
+        {
+          "type": "Transform",
+          "x": -750.0,
+          "y": 450.0
+        },
+        {
+          "type": "Text",
+          "text": "Vsync",
+          "scale": 0.75,
+          "order_layer": 1
+        }
+      ]
+    },
+    {
+      "name": "VSyncEnable",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 200.0,
+          "y": 450.0
+        },
+        {
+          "type": "CheckBox",
+          "width": 100.0,
+          "height": 100.0,
+          "value": true
+        }
+      ]
+    },
+    {
+      "name": "SpatialAudio",
+      "components": [
+        {
+          "type": "Transform",
+          "x": -750.0,
+          "y": 150.0
+        },
+        {
+          "type": "Text",
+          "text": "SpatialAudio",
+          "scale": 0.75,
+          "order_layer": 1
+        }
+      ]
+    },
+    {
+      "name": "SpatialAudioEnable",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 200.0,
+          "y": 150.0
+        },
+        {
+          "type": "CheckBox",
+          "width": 100.0,
+          "height": 100.0,
+          "value": true
+        }
+      ]
+    },
+    {
+      "name": "DifficultyText",
+      "components": [
+        {
+          "type": "Transform",
+          "x": -750.0,
+          "y": 0.0
+        },
+        {
+          "type": "Text",
+          "text": "Difficulty",
+          "scale": 0.75,
+          "order_layer": 1
+        }
+      ]
+    },
+    {
+      "name": "DifficultyText0",
+      "components": [
+        {
+          "type": "Transform",
+          "x": -75.0,
+          "y": 0.0
+        },
+        {
+          "type": "Text",
+          "text": "Easy",
+          "scale": 0.75,
+          "order_layer": 1
+        }
+      ]
+    },
+    {
+      "name": "DifficultyEnable0",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 200.0,
+          "y": 0.0
+        },
+        {
+          "type": "CheckBox",
+          "width": 100.0,
+          "height": 100.0,
+          "value": false
+        }
+      ]
+    },
+    {
+      "name": "DifficultyText1",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 475.0,
+          "y": 0.0
+        },
+        {
+          "type": "Text",
+          "text": "Medium",
+          "scale": 0.75,
+          "order_layer": 1
+        }
+      ]
+    },
+    {
+      "name": "DifficultyEnable1",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 750.0,
+          "y": 0.0
+        },
+        {
+          "type": "CheckBox",
+          "width": 100.0,
+          "height": 100.0,
+          "value": false
+        }
+      ]
+    },
+    {
+      "name": "DifficultyText2",
+      "components": [
+        {
+          "type": "Transform",
+          "x": -75.0,
+          "y": -150.0
+        },
+        {
+          "type": "Text",
+          "text": "Hard",
+          "scale": 0.75,
+          "order_layer": 1
+        }
+      ]
+    },
+    {
+      "name": "DifficultyEnable2",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 200.0,
+          "y": -150.0
+        },
+        {
+          "type": "CheckBox",
+          "width": 100.0,
+          "height": 100.0,
+          "value": false
+        }
+      ]
+    },
+    {
+      "name": "DifficultyText3",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 475.0,
+          "y": -150.0
+        },
+        {
+          "type": "Text",
+          "text": "Insane",
+          "scale": 0.75,
+          "order_layer": 1
+        }
+      ]
+    },
+    {
+      "name": "DifficultyEnable3",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 750.0,
+          "y": -150.0
+        },
+        {
+          "type": "CheckBox",
+          "width": 100.0,
+          "height": 100.0,
+          "value": false
+        }
+      ]
+    },
+    {
+      "name": "VolumeText",
+      "components": [
+        {
+          "type": "Transform",
+          "x": -750.0,
+          "y": -450.0
+        },
+        {
+          "type": "Text",
+          "text": "Volume: -1",
+          "scale": 0.75,
+          "order_layer": 1
+        }
+      ]
+    },
+    {
+      "name": "VolumeSlider",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 200.0,
+          "y": -450.0
+        },
+        {
+          "type": "Slider",
+          "width": 1000.0,
+          "height": 100.0,
+          "min": 0.0,
+          "max": 1.0,
+          "step": 0.01,
+          "start_value": 0.5
+        }
+      ]
+    }
+  ]
+}

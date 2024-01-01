@@ -9,14 +9,6 @@
 namespace pong
 {
 
-ScoreAreaBlueprint::ScoreAreaBlueprint(float width, float height, bool playerSide)
-{
-    SetInstanceName("ScoreArea");
-    AddComponent<Transform>();
-    AddComponent<ColliderBox>(width, height);
-    AddComponent<ScoreArea>(playerSide);
-}
-
 ScoreArea::ScoreArea(bool playerSide) :
     mIsPlayerScoreArea { playerSide }
 {
@@ -50,6 +42,11 @@ void ScoreArea::OnCollisionStart(GameObject& other)
 
         RealTimeLogInfo("New Score: P {} - O {}", mScoreController->GetPlayerScore(), mScoreController->GetOpponentScore());
     }
+}
+
+void ScoreArea::SetIsPlayerSide(bool playerSide)
+{
+    mIsPlayerScoreArea = playerSide;
 }
 
 } // namespace pong

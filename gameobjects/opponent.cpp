@@ -14,23 +14,10 @@
 namespace pong
 {
 
-static constexpr float OPPONENT_WIDTH = 15.0f;
-static constexpr float OPPONENT_HEIGHT = 125.0f;
-static constexpr glm::vec3 OPPONENT_POSITION(1125.0f, 0.0f, 0.0f);
-
 // Difficulty settings
 static int decisionTimeLowerBoundMs = 50;
 static int decisionTimeUpperBoundMs = 250;
 static float baseMissChance = 0.1f;
-
-OpponentBlueprint::OpponentBlueprint()
-{
-    SetInstanceName("Opponent");
-    AddComponent<Transform>(OPPONENT_POSITION);
-    AddComponent<Mesh>(std::make_unique<Rectangle>(OPPONENT_WIDTH, OPPONENT_HEIGHT));
-    AddComponent<ColliderBox>(OPPONENT_WIDTH, OPPONENT_HEIGHT);
-    AddComponent<Opponent>();
-}
 
 void Opponent::OnStart()
 {
@@ -38,7 +25,7 @@ void Opponent::OnStart()
 
     mTransform = GetComponent<Transform>();
     mCollider = GetComponent<ColliderBox>();
-    mTargetPosition = OPPONENT_POSITION;
+    mTargetPosition = mTransform->mPosition;
     mBall = Pong::FindComponentOfType<Ball>();
 
     GameObject* topWall = Pong::FindGameObjectByName("TopWall");
@@ -183,6 +170,11 @@ void Opponent::OnBallVelocityChange(const glm::vec3& velocity)
             this->PredictBallPostion();
         });
     }
+}
+
+void Opponent::SetSpeed(float speed)
+{
+    mSpeed = speed;
 }
 
 } // namespace pong

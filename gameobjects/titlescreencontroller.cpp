@@ -6,6 +6,7 @@
 #include "logger.h"
 #include "slider.h"
 #include "pong.h"
+#include "text.h"
 
 namespace pong
 {
@@ -14,18 +15,21 @@ void TitleScreenController::OnStart()
 {
     mPlayButton = Pong::FindGameObjectByName("PlayButton")->GetComponent<Button>();
     mPlayButton->AddListener(ButtonEvent::Pressed, []() {
-        Pong::LoadSceneNext(SceneType::Game);
+        Pong::LoadSceneNext("Game");
     });
+    SetupButton(mPlayButton, mPlayButton->GetComponent<Text>());
 
     mSettingsButton = Pong::FindGameObjectByName("SettingsButton")->GetComponent<Button>();
     mSettingsButton->AddListener(ButtonEvent::Pressed, []() {
-        Pong::LoadSceneNext(SceneType::Settings);
+        Pong::LoadSceneNext("Settings");
     });
+    SetupButton(mSettingsButton, mSettingsButton->GetComponent<Text>());
 
     mQuitButton = Pong::FindGameObjectByName("QuitButton")->GetComponent<Button>();
     mQuitButton->AddListener(ButtonEvent::Pressed, []() {
         Engine::QuitApplication();
     });
+    SetupButton(mQuitButton, mQuitButton->GetComponent<Text>());
 }
 
 } // namespace pong

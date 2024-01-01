@@ -16,6 +16,11 @@ Mesh::Mesh(std::unique_ptr<Graphic> graphic)
 {
 }
 
+void Mesh::SetGraphic(std::unique_ptr<Graphic> graphic)
+{
+    mGraphic = std::move(graphic);
+}
+
 RenderData Mesh::GetRenderData()
 {
     return mGraphic->GetRenderData();

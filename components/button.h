@@ -27,6 +27,7 @@ using ListenerCallbacks = std::vector<std::function<void()>>;
 class Button : public UIComponent, public Component<Button>
 {
 public:
+    Button() = default;
     Button(float width, float height);
 
     std::vector<OffsetGraphic> GetRenderables() override;

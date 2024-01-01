@@ -26,6 +26,7 @@ public:
 class ColliderBox : public Component<ColliderBox>
 {
 public:
+    ColliderBox() = default;
     ColliderBox(float width, float height);
 
     RectangleBounds GetBounds() const;

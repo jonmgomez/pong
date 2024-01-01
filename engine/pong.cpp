@@ -1,20 +1,11 @@
 #include "pong.h"
 
-#include "ball.h"
 #include "behavior.h"
 #include "colliderbox.h"
 #include "config.h"
 #include "input.h"
 #include "logger.h"
-#include "opponent.h"
-#include "player.h"
 #include "renderer.h"
-#include "scorearea.h"
-#include "scorecontroller.h"
-#include "settingsscreencontroller.h"
-#include "titlescreencontroller.h"
-#include "wall.h"
-#include "pongscenes.h"
 
 namespace pong
 {
@@ -53,20 +44,23 @@ Timer& Pong::GetTimer()
 void Pong::Init()
 {
     GetInstance().GetAudioMixer().Init();
+    GetInstance().mSceneLoader.PreLoadScenes();
     GetInstance().GetTimer().Init();
-    GetInstance().LoadScene(SceneType::Title);
+
+    GetInstance().LoadScene(Config::GetValue<std::string>("starting_scene"));
 }
 
 void Pong::GameLoop()
 {
-    Pong::GetInstance().GetTimer().HandleTimerCallbacks();
-    Pong::GetInstance().GetCollisionManager().ProcessCollisions(ColliderBox::GetComponents());
-    Pong::GetInstance().GetUIEventManager().ProcessEvents();
+    Pong& pong = GetInstance();
+    pong.GetTimer().HandleTimerCallbacks();
+    pong.GetCollisionManager().ProcessCollisions(ColliderBox::GetComponents());
+    pong.GetUIEventManager().ProcessEvents();
 
-    if (GetInstance().mChangeSceneRequested)
+    if (pong.mChangeSceneRequested)
     {
-        GetInstance().LoadScene(GetInstance().mNextScene);
-        GetInstance().mChangeSceneRequested = false;
+        pong.LoadScene(pong.mNextScene);
+        pong.mChangeSceneRequested = false;
     }
 
     for (auto& behavior : Behavior::GetComponents())
@@ -99,39 +93,17 @@ void Pong::Cleanup()
     GetInstance().GetAudioMixer().Cleanup();
 }
 
-void Pong::LoadSceneNext(SceneType sceneType)
+void Pong::LoadSceneNext(const std::string& sceneName)
 {
-    GetInstance().mNextScene = sceneType;
+    GetInstance().mNextScene = sceneName;
     GetInstance().mChangeSceneRequested = true;
 }
 
-void Pong::LoadScene(SceneType sceneType)
+void Pong::LoadScene(const std::string& sceneName)
 {
     Pong::Reset();
 
-    const auto LoadSceneObjects = [&](auto scene) {
-        scene.BuildScene();
-        GetInstance().mGameObjects = scene.TransferGameObjects();
-    };
-
-    switch (sceneType)
-    {
-        case SceneType::Title:
-        {
-            LoadSceneObjects(TitleScene());
-            break;
-        }
-        case SceneType::Settings:
-        {
-            LoadSceneObjects(SettingScene());
-            break;
-        }
-        case SceneType::Game:
-        {
-            LoadSceneObjects(GameScene());
-            break;
-        }
-    }
+    GetInstance().mGameObjects = GetInstance().mSceneLoader.LoadScene(sceneName);
 
     for (auto& behavior : Behavior::GetComponents())
     {

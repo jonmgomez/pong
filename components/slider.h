@@ -14,8 +14,12 @@ namespace pong
 class Slider : public UIComponent, public Component<Slider>
 {
 public:
+    Slider() = default;
     Slider(float width, float height, float min, float max, float step, float startValue);
     ~Slider() = default;
+
+    void SetVariables(float min, float max, float step, float startValue);
+    void Resize(float width, float height);
 
     std::vector<OffsetGraphic> GetRenderables() override;
     BaseComponent* GetBaseComponent() override;
@@ -27,8 +31,11 @@ public:
     bool WasPressed() const;
     RectangleBounds GetBounds() const;
     float GetValue() const;
+    void SetValue(float value);
 
 private:
+    void CalculateStart();
+
     // Represents the slider background, the slider handle, and the slider fill
     std::array<OffsetRectangle, 4> mBorders {};
     OffsetRectangle mFill {};

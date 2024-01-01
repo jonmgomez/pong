@@ -1,5 +1,7 @@
 #pragma once
 
+#include "componentdeserializer.h"
+
 #include <algorithm>
 #include <functional>
 #include <iostream>
@@ -34,6 +36,28 @@ int GetComponentTypeId()
     return TypeIdGenerator<BaseComponent>::GetId<ComponentSubType>();
 }
 
+class BaseComponent
+{
+public:
+    virtual ~BaseComponent() = default;
+
+    virtual void Destroy() = 0;
+    virtual void Accept(ComponentDeserializer& visitor) = 0;
+
+    GameObject* GetGameObject() const;
+    void SetGameObject(GameObject* gameObject);
+    int GetGameObjectId() const;
+
+    template<typename T>
+    T* GetComponent()
+    {
+        return mGameObject->GetComponent<T>();
+    }
+
+private:
+    GameObject* mGameObject { nullptr };
+};
+
 template<class Derived>
 class Component : public BaseComponent
 {
@@ -43,6 +67,11 @@ public:
     void Destroy() override
     {
         Derived::RemoveComponent(this);
+    }
+
+    void Accept(ComponentDeserializer& visitor) override
+    {
+        visitor.VisitComponent(static_cast<Derived*>(this));
     }
 
     static void AddComponent(std::unique_ptr<Derived> component)
@@ -72,26 +101,5 @@ public:
 };
 
 template<typename Derived> std::vector<std::unique_ptr<Derived>> Component<Derived>::mComponents {};
-
-class BaseComponent
-{
-public:
-    virtual ~BaseComponent() = default;
-
-    virtual void Destroy() = 0;
-
-    GameObject* GetGameObject() const;
-    void SetGameObject(GameObject* gameObject);
-    int GetGameObjectId() const;
-
-    template<typename T>
-    T* GetComponent()
-    {
-        return mGameObject->GetComponent<T>();
-    }
-
-private:
-    GameObject* mGameObject { nullptr };
-};
 
 } // namespace pong

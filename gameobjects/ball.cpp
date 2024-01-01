@@ -12,20 +12,10 @@
 namespace pong
 {
 
-static constexpr float BALL_WIDTH = 20.0f;
 static constexpr float BALL_SPEED_BOUNCE_INCREMENT = 75.0f;
 static constexpr float Y_STARTING_POSITION_BOUNDS = 500.0f;
 
 static constexpr std::chrono::seconds BALL_RESET_WAIT_S { 3 };
-
-BallBlueprint::BallBlueprint()
-{
-    SetInstanceName("Ball");
-    AddComponent<Transform>();
-    AddComponent<Mesh>(std::make_unique<Rectangle>(BALL_WIDTH, BALL_WIDTH));
-    AddComponent<ColliderBox>(BALL_WIDTH, BALL_WIDTH);
-    AddComponent<Ball>();
-}
 
 void Ball::OnStart()
 {
@@ -100,7 +90,7 @@ void Ball::OnCollisionStart(GameObject& other)
 
 void Ball::ResetBall()
 {
-    mSpeed = BALL_START_SPEED;
+    mSpeed = mStartSpeed;
 
     const float yStartingPos = Random::ValueInRange(-Y_STARTING_POSITION_BOUNDS, Y_STARTING_POSITION_BOUNDS);
     mTransform->mPosition = glm::vec3(0.0f, yStartingPos, 0.0f);
@@ -110,6 +100,11 @@ void Ball::ResetBall()
     mVelocity = glm::normalize(glm::vec3(xDir, yDir, 0.0f)) * mSpeed;
 
     mOpponent->OnBallVelocityChange(mVelocity);
+}
+
+void Ball::SetSpeed(float speed)
+{
+    mStartSpeed = speed;
 }
 
 glm::vec3 Ball::GetVelocity() const

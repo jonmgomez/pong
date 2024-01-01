@@ -11,20 +11,6 @@
 namespace pong
 {
 
-static constexpr glm::vec3 PLAYER_POSITION(-1125.0f, 0.0f, 0.0f);
-static constexpr float PLAYER_WIDTH = 15.0f;
-static constexpr float PLAYER_HEIGHT = 125.0f;
-static constexpr float PLAYER_SPEED = 850.0f;
-
-PlayerBlueprint::PlayerBlueprint()
-{
-    SetInstanceName("Player");
-    AddComponent<Transform>(PLAYER_POSITION);
-    AddComponent<Mesh>(std::make_unique<Rectangle>(PLAYER_WIDTH, PLAYER_HEIGHT));
-    AddComponent<ColliderBox>(PLAYER_WIDTH, PLAYER_HEIGHT);
-    AddComponent<Player>();
-}
-
 void Player::OnStart()
 {
     mTransform = GetComponent<Transform>();
@@ -37,11 +23,11 @@ void Player::OnUpdate()
 
     if (Input::CheckKeyDown(GLFW_KEY_W))
     {
-        mVelocity = glm::vec3(0.0f, PLAYER_SPEED, 0.0f);
+        mVelocity = glm::vec3(0.0f, mSpeed, 0.0f);
     }
     else if (Input::CheckKeyDown(GLFW_KEY_S))
     {
-        mVelocity = glm::vec3(0.0f, -PLAYER_SPEED, 0.0f);
+        mVelocity = glm::vec3(0.0f, -mSpeed, 0.0f);
     }
 
     mTransform->mPosition += mVelocity * Timer::frameTime;
@@ -59,6 +45,11 @@ void Player::OnCollisionStart(GameObject& other)
 void Player::OnCollisionStay(GameObject& other)
 {
     OnCollisionStart(other);
+}
+
+void Player::SetSpeed(float speed)
+{
+    mSpeed = speed;
 }
 
 } // namespace pong

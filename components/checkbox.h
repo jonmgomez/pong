@@ -12,7 +12,10 @@ namespace pong
 class CheckBox : public UIComponent, public Component<CheckBox>
 {
 public:
+    CheckBox() = default;
     CheckBox(float width, float height, bool defaultValue);
+
+    void Resize(float width, float height);
 
     std::vector<OffsetGraphic> GetRenderables() override;
     BaseComponent* GetBaseComponent() override;

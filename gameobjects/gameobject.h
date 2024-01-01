@@ -64,8 +64,4 @@ private:
     std::string mInstanceName { "" };
 };
 
-class GameObjectBlueprint : public GameObject
-{
-};
-
 } // namespace pong

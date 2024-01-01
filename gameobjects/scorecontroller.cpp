@@ -6,16 +6,6 @@
 namespace pong
 {
 
-constexpr float SCORE_TEXT_SCALE = 1.0f;
-constexpr int SCORE_TEXT_PIXEL_LINE_HEIGHT = 256;
-
-ScoreTextBlueprint::ScoreTextBlueprint()
-{
-    SetInstanceName("ScoreText");
-    AddComponent<Transform>();
-    AddComponent<Text>("0", Config::GetValue<std::string>("font", ""), SCORE_TEXT_SCALE, SCORE_TEXT_PIXEL_LINE_HEIGHT);
-}
-
 void ScoreController::OnStart()
 {
     mPlayerScoreText = Pong::FindGameObjectByName("PlayerScoreText")->GetComponent<Text>();
