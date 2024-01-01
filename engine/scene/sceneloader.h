@@ -14,6 +14,8 @@ namespace pong
 
 class GameObject;
 
+using GameObjectCollection = std::vector<std::unique_ptr<GameObject>>;
+
 class SceneLoader
 {
 public:
@@ -21,10 +23,10 @@ public:
     ~SceneLoader() = default;
 
     void PreLoadScenes();
-    std::vector<std::unique_ptr<GameObject>> LoadScene(const std::string& sceneName);
+    GameObjectCollection LoadScene(const std::string& sceneName);
 
 private:
-    std::vector<std::unique_ptr<GameObject>> LoadSceneFromJson(const nlohmann::json& sceneJson);
+    GameObjectCollection LoadSceneFromJson(const nlohmann::json& sceneJson);
 
     std::unordered_map<std::string, nlohmann::json> mScenes {};
     std::unordered_map<std::string, std::function<BaseComponent*(GameObject*)>> mComponentMappings {};

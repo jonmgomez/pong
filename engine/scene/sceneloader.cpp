@@ -141,7 +141,7 @@ void SceneLoader::PreLoadScenes()
     }
 }
 
-std::vector<std::unique_ptr<GameObject>> SceneLoader::LoadScene(const std::string& sceneName)
+GameObjectCollection SceneLoader::LoadScene(const std::string& sceneName)
 {
     if (mScenes.find(sceneName) == mScenes.end())
     {
@@ -154,9 +154,9 @@ std::vector<std::unique_ptr<GameObject>> SceneLoader::LoadScene(const std::strin
     return LoadSceneFromJson(sceneJson);
 }
 
-std::vector<std::unique_ptr<GameObject>> SceneLoader::LoadSceneFromJson(const nlohmann::json& sceneJson)
+GameObjectCollection SceneLoader::LoadSceneFromJson(const nlohmann::json& sceneJson)
 {
-    std::vector<std::unique_ptr<GameObject>> gameObjects {};
+    GameObjectCollection gameObjects {};
 
     const std::string sceneName = sceneJson["name"];
     LogInfo("Loading Scene: {}", sceneName);
