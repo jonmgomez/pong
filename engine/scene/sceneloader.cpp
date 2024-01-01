@@ -27,65 +27,31 @@
 namespace pong
 {
 
+template<typename T>
+BaseComponent* AddComponentToObject(GameObject* gameObject)
+{
+    return gameObject->AddComponent<T>();
+}
+
 SceneLoader::SceneLoader()
 {
     // Engine components
-    mComponentMappings["Transform"] = [](GameObject* gameObject) {
-        return gameObject->AddComponent<Transform>();
-    };
-
-    mComponentMappings["Mesh"] = [](GameObject* gameObject) {
-        return gameObject->AddComponent<Mesh>();
-    };
-
-    mComponentMappings["ColliderBox"] = [](GameObject* gameObject) {
-        return gameObject->AddComponent<ColliderBox>();
-    };
-
-    mComponentMappings["Slider"] = [](GameObject* gameObject) {
-        return gameObject->AddComponent<Slider>();
-    };
-
-    mComponentMappings["CheckBox"] = [](GameObject* gameObject) {
-        return gameObject->AddComponent<CheckBox>();
-    };
-
-    mComponentMappings["Button"] = [](GameObject* gameObject) {
-        return gameObject->AddComponent<Button>();
-    };
-
-    mComponentMappings["Text"] = [](GameObject* gameObject) {
-        return gameObject->AddComponent<Text>();
-    };
+    mComponentMappings["Transform"] = &AddComponentToObject<Transform>;
+    mComponentMappings["Mesh"] = &AddComponentToObject<Mesh>;
+    mComponentMappings["ColliderBox"] = &AddComponentToObject<ColliderBox>;
+    mComponentMappings["Slider"] = &AddComponentToObject<Slider>;
+    mComponentMappings["CheckBox"] = &AddComponentToObject<CheckBox>;
+    mComponentMappings["Button"] = &AddComponentToObject<Button>;
+    mComponentMappings["Text"] = &AddComponentToObject<Text>;
 
     // User defined components
-    mComponentMappings["Player"] = [](GameObject* gameObject) {
-        return gameObject->AddComponent<Player>();
-    };
-
-    mComponentMappings["Opponent"] = [](GameObject* gameObject) {
-        return gameObject->AddComponent<Opponent>();
-    };
-
-    mComponentMappings["Ball"] = [](GameObject* gameObject) {
-        return gameObject->AddComponent<Ball>();
-    };
-
-    mComponentMappings["ScoreArea"] = [](GameObject* gameObject) {
-        return gameObject->AddComponent<ScoreArea>();
-    };
-
-    mComponentMappings["ScoreController"] = [](GameObject* gameObject) {
-        return gameObject->AddComponent<ScoreController>();
-    };
-
-    mComponentMappings["TitleScreenController"] = [](GameObject* gameObject) {
-        return gameObject->AddComponent<TitleScreenController>();
-    };
-
-    mComponentMappings["SettingsScreenController"] = [](GameObject* gameObject) {
-        return gameObject->AddComponent<SettingsScreenController>();
-    };
+    mComponentMappings["Player"] = &AddComponentToObject<Player>;
+    mComponentMappings["Opponent"] = &AddComponentToObject<Opponent>;
+    mComponentMappings["Ball"] = &AddComponentToObject<Ball>;
+    mComponentMappings["ScoreArea"] = &AddComponentToObject<ScoreArea>;
+    mComponentMappings["ScoreController"] = &AddComponentToObject<ScoreController>;
+    mComponentMappings["TitleScreenController"] = &AddComponentToObject<TitleScreenController>;
+    mComponentMappings["SettingsScreenController"] = &AddComponentToObject<SettingsScreenController>;
 }
 
 void SceneLoader::PreLoadScenes()
