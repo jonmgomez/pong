@@ -98,11 +98,6 @@ void ComponentDeserializer::VisitComponent(Text* component)
         component->mScale = mCurrentJson["scale"];
     }
 
-    if (mCurrentJson.contains("pixel_height"))
-    {
-        component->mPixelLineHeight = mCurrentJson["pixel_height"];
-    }
-
     if (mCurrentJson.contains("color"))
     {
         ASSERT(mCurrentJson["color"].is_object());

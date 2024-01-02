@@ -110,7 +110,9 @@ void Renderer::Draw(const std::vector<OffsetGraphic>& graphics, const glm::vec3&
 {
     for (const auto& graphic : graphics)
     {
-        Draw(graphic.mGraphic, position + graphic.mOffset);
+        const glm::vec3 newOffset = position + graphic.mOffset;
+        // std::cout << "New offset: " << newOffset.x << ", " << newOffset.y << std::endl;
+        Draw(graphic.mGraphic, newOffset);
     }
 }
 

@@ -41,6 +41,7 @@
         {
           "type": "Text",
           "text": "Play",
+          "scale": 0.75,
           "order_layer": 1,
           "color": {
             "r": 0.0,
@@ -67,7 +68,7 @@
         {
           "type": "Text",
           "text": "Settings",
-          "scale": 0.75,
+          "scale": 0.5,
           "order_layer": 1,
           "color": {
             "r": 0.0,
@@ -94,6 +95,7 @@
         {
           "type": "Text",
           "text": "Quit",
+          "scale": 0.75,
           "order_layer": 1,
           "color": {
             "r": 0.0,

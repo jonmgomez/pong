@@ -35,9 +35,6 @@ public:
     int GetWidth() const;
     int GetHeight() const;
 
-    static std::vector<unsigned char> ConvertAlphaImageToRGBA(const std::vector<unsigned char>& imageData);
-    static std::vector<unsigned char> FlipImageVertically(const std::vector<unsigned char>& imageData, int width, int height, int comp);
-
 protected:
     int mWidth {0};
     int mHeight {0};

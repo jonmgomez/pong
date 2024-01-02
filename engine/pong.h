@@ -4,6 +4,7 @@
 #include "collisionmanager.h"
 #include "component.h"
 #include "componentmanager.h"
+#include "fontbank.h"
 #include "gameobject.h"
 #include "sceneloader.h"
 #include "text.h"
@@ -72,6 +73,7 @@ public:
     ComponentManager& GetComponentManager();
     UIEventManager& GetUIEventManager();
     AudioMixer& GetAudioMixer();
+    FontBank& GetFontBank();
     Timer& GetTimer();
 
 private:
@@ -91,6 +93,7 @@ private:
     UIEventManager mUIEventManager {};
     SceneLoader mSceneLoader {};
     AudioMixer mAudioMixer {};
+    FontBank mFontBank {};
     Timer mTimer {};
 
     std::string mNextScene { "Title" };

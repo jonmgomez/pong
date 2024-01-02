@@ -77,7 +77,7 @@ void LogInfo(const char* format, Args... args)
 template<typename... Args>
 void LogWarning(const char* format, Args... args)
 {
-    Logger::GetInstance().Log(spdlog:level::warn, format, std::forward<Args>(args)...);
+    Logger::GetInstance().Log(spdlog::level::warn, format, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
