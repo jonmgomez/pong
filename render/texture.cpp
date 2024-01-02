@@ -32,12 +32,9 @@ Texture::Texture(const std::string& filePath)
     }
 }
 
-Texture::Texture(const std::vector<unsigned char>& alphaImage, int width, int height)
+Texture::Texture(const std::vector<unsigned char>& rgbaImage, int width, int height)
 {
-    // auto rgbTexture = image::ConvertAlphaImageToRGBA(alphaImage);
-    // auto finalImage = image::FlipImageVertically(rgbTexture, width, height, 4);
-
-    this->Texture::Texture(*alphaImage.data(), width, height, GL_RGBA);
+    this->Texture::Texture(*rgbaImage.data(), width, height, GL_RGBA);
 }
 
 Texture::Texture(const RGBAColor& color)

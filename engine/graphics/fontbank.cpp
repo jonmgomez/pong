@@ -26,7 +26,6 @@ void FontBank::LoadFonts()
         const auto timeNow = std::chrono::system_clock::now();
         if (font.LoadFont(fontName, fontPath))
         {
-
             fontCount++;
             mFonts[fontName] = std::move(font);
 
@@ -36,6 +35,7 @@ void FontBank::LoadFonts()
         else
         {
             LogError("Failed to load font: {}", fontName);
+            ASSERT(false);
         }
     }
 
@@ -50,6 +50,7 @@ void FontBank::LoadFonts()
         return;
     }
 
+    // Set the default font text components will use. If not present use the first font loaded.
     mDefaultFontName = Config::GetValue<std::string>("default_font");
     if (mFonts.find(mDefaultFontName) == mFonts.end())
     {

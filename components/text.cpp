@@ -48,7 +48,7 @@ void Text::RecomputeText()
     Font* font = Pong::GetInstance().GetFontBank().GetFont(mFont);
     if (font == nullptr)
     {
-        RealTimeLogError("Failed to load font: {}", mFont);
+        RealTimeLogError("Failed to find font: {}", mFont);
         ASSERT(false);
         return;
     }

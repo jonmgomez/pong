@@ -46,7 +46,7 @@ private:
 
     std::unordered_map<char, FontCharacter> mCharacters {};
     std::vector<unsigned char> mFontData {};
-    stbtt_fontinfo* mFontInfo { nullptr };
+    stbtt_fontinfo mFontInfo {};
     float mPixelScale { 0 };
     float mAscent { 0 };
     float mDescent { 0 };

@@ -29,14 +29,13 @@ bool Font::LoadFont(const std::string& fontName, const std::string& fontPath)
         return false;
     }
 
-    mFontInfo = new stbtt_fontinfo();
     mFontData = std::vector<unsigned char>(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
-    ASSERT(stbtt_InitFont(mFontInfo, mFontData.data(), 0) != 0);
+    ASSERT(stbtt_InitFont(&mFontInfo, mFontData.data(), 0) != 0);
 
-    mPixelScale = stbtt_ScaleForPixelHeight(mFontInfo, static_cast<float>(PIXEL_LINE_HEIGHT));
+    mPixelScale = stbtt_ScaleForPixelHeight(&mFontInfo, static_cast<float>(PIXEL_LINE_HEIGHT));
 
     int unscaledAscent, unscaledDescent, unscaledLineGap;
-    stbtt_GetFontVMetrics(mFontInfo, &unscaledAscent, &unscaledDescent, &unscaledLineGap);
+    stbtt_GetFontVMetrics(&mFontInfo, &unscaledAscent, &unscaledDescent, &unscaledLineGap);
 
     mAscent  = unscaledAscent  * mPixelScale;
     mDescent = unscaledDescent * mPixelScale;
@@ -56,7 +55,7 @@ FontCharacter Font::LoadCharacter(const char character)
 
     int unscaledGlpyhWidth = 0;
     int unscaledLeftSideBearing = 0;
-    stbtt_GetCodepointHMetrics(mFontInfo, character, &unscaledGlpyhWidth, &unscaledLeftSideBearing);
+    stbtt_GetCodepointHMetrics(&mFontInfo, character, &unscaledGlpyhWidth, &unscaledLeftSideBearing);
 
     fontCharacter.mGlyphWidth = unscaledGlpyhWidth * mPixelScale;
     fontCharacter.mLeftSideBearing = unscaledLeftSideBearing * mPixelScale;
@@ -65,7 +64,7 @@ FontCharacter Font::LoadCharacter(const char character)
     int yCoord1 = 0;
     int xCoord2 = 0;
     int yCoord2 = 0;
-    stbtt_GetCodepointBitmapBox(mFontInfo, character, mPixelScale, mPixelScale,
+    stbtt_GetCodepointBitmapBox(&mFontInfo, character, mPixelScale, mPixelScale,
                                 &xCoord1, &yCoord1, &xCoord2, &yCoord2);
 
     const int charWidth  = xCoord2 - xCoord1;
@@ -81,7 +80,7 @@ FontCharacter Font::LoadCharacter(const char character)
     {
         // Since this uses a single character for each texture, stride is just the pixel width of the character
         const int kStride = charWidth;
-        stbtt_MakeCodepointBitmap(mFontInfo, alphaTexture.data(),
+        stbtt_MakeCodepointBitmap(&mFontInfo, alphaTexture.data(),
                                     charWidth, charHeight, kStride,
                                     mPixelScale, mPixelScale,
                                     character);
@@ -108,7 +107,7 @@ FontString Font::GetCharacters(const std::string& text)
     float currentX = 0.0f;
     float currentY = 0.0f;
 
-    stbtt_InitFont(mFontInfo, mFontData.data(), 0);
+    stbtt_InitFont(&mFontInfo, mFontData.data(), 0);
 
     for (int i = 0; i < text.length(); i++)
     {
@@ -146,7 +145,7 @@ FontString Font::GetCharacters(const std::string& text)
         {
             // The kerning is the amount of space between a specific character pair
             // This can only be calculated if the next character is known
-            const int kern = stbtt_GetCodepointKernAdvance(mFontInfo, character, text[i + 1]);
+            const int kern = stbtt_GetCodepointKernAdvance(&mFontInfo, character, text[i + 1]);
             currentX += std::fabs(kern * mPixelScale);
         }
 
