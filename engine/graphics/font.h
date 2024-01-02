@@ -10,6 +10,7 @@
 namespace pong
 {
 
+// Represents a single character in a font, including offsets and its bitmap image.
 struct FontCharacter
 {
     std::vector<unsigned char> mBitmap {};
@@ -21,6 +22,8 @@ struct FontCharacter
     float mGlyphWidth { 0 };
 };
 
+// Represents a string of characters in a specific font, including offsets for each character.
+// And total width and height of the string.
 struct FontString
 {
     const std::vector<FontCharacter> mFontCharacters {};

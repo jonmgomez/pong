@@ -122,7 +122,7 @@ FontString Font::GetCharacters(const std::string& text)
         }
         else
         {
-            currentLineHeight = std::fabs(fontCharacter.mYOffset - fontCharacter.mBitmapHeight);
+            currentLineHeight = std::fabs(fontCharacter.mYOffset + fontCharacter.mBitmapHeight);
 
             // Left side bearing is the amount of space between the previous character and this one
             // The first character does not need to take this into account
@@ -162,6 +162,7 @@ FontCharacter Font::GetCharacter(const char character)
     auto it = mCharacters.find(character);
     if (it == mCharacters.end())
     {
+        LogDebug("Character {} not found in cache, loading it", character);
         return LoadCharacter(character);
     }
 
