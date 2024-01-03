@@ -15,11 +15,11 @@ public:
 
     void LoadFonts();
     Font* GetFont(const std::string& fontName);
-    std::string GetDefaultFontName() const;
+    Font* GetDefaultFont();
 
 private:
     std::unordered_map<std::string, Font> mFonts {};
-    std::string mDefaultFontName {};
+    Font* mDefaultFont { nullptr };
 };
 
 } // namespace pong

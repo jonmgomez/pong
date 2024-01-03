@@ -11,6 +11,8 @@
 namespace pong
 {
 
+using image::Image;
+
 class TextCharacter : public Rectangle
 {
 public:

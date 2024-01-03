@@ -21,8 +21,14 @@ static constexpr std::string_view DEFAULT_FONT_CHARACTERS =
 
 static constexpr int PIXEL_LINE_HEIGHT = 256;
 
+std::string Font::GetName() const
+{
+    return mName;
+}
+
 bool Font::LoadFont(const std::string& fontName, const std::string& fontPath)
 {
+    mName = fontName;
     std::ifstream file(fontPath, std::ios::binary);
     if (!file)
     {

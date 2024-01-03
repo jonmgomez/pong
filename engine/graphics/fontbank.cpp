@@ -51,37 +51,36 @@ void FontBank::LoadFonts()
     }
 
     // Set the default font text components will use. If not present use the first font loaded.
-    mDefaultFontName = Config::GetValue<std::string>("default_font");
-    if (mFonts.find(mDefaultFontName) == mFonts.end())
+    const std::string defaultFontName = Config::GetValue<std::string>("default_font");
+    mDefaultFont = GetFont(defaultFontName);
+    if (mDefaultFont == nullptr)
     {
-        std::string newDefault = mFonts.begin()->first;
-        if (mDefaultFontName.empty())
+        mDefaultFont = &mFonts.begin()->second;
+        if (defaultFontName.empty())
         {
-            LogInfo("No default font specified, using {} as default", newDefault);
+            LogInfo("No default font specified, using {} as default", mDefaultFont->GetName());
         }
         else
         {
-            LogWarning("Default font not found: {}, using {} as default", mDefaultFontName, newDefault);
-            ASSERT(false);
+            LogWarning("Default font not found: {}, using {} as default", defaultFontName, mDefaultFont->GetName());
         }
-        mDefaultFontName = newDefault;
     }
 }
 
 Font* FontBank::GetFont(const std::string& fontName)
 {
-    auto font = mFonts.find(fontName);
-    if (font != mFonts.end())
+    auto fontIt = mFonts.find(fontName);
+    if (fontIt != mFonts.end())
     {
-        return &font->second;
+        return &fontIt->second;
     }
 
     return nullptr;
 }
 
-std::string FontBank::GetDefaultFontName() const
+Font* FontBank::GetDefaultFont()
 {
-    return mDefaultFontName;
+    return mDefaultFont;
 }
 
 } // namespace pong

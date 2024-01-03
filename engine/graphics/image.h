@@ -2,7 +2,7 @@
 
 #include <vector>
 
-namespace pong
+namespace pong::image
 {
 
 struct Image
@@ -13,10 +13,6 @@ struct Image
     int mComponents { 0 };
 };
 
-} // namespace pong
-
-namespace pong::image
-{
 
 Image ConvertAlphaImageToRGBA(const Image& image);
 Image FlipImageVertically(const Image& image);

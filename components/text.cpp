@@ -10,17 +10,9 @@
 namespace pong
 {
 
-Text::Text() :
-    mText { "" },
-    mFont { Pong::GetInstance().GetFontBank().GetDefaultFontName() },
-    mScale { 1.0f }
-{
-    RecomputeText();
-}
-
-Text::Text(const std::string& text, const std::string& fontName, float scale) :
+Text::Text(const std::string& text, Font* font, float scale) :
     mText { text },
-    mFont { fontName },
+    mFont { font },
     mScale { scale }
 {
     RecomputeText();
@@ -45,15 +37,9 @@ BaseComponent* Text::GetBaseComponent()
 
 void Text::RecomputeText()
 {
-    Font* font = Pong::GetInstance().GetFontBank().GetFont(mFont);
-    if (font == nullptr)
-    {
-        RealTimeLogError("Failed to find font: {}", mFont);
-        ASSERT(false);
-        return;
-    }
+    ASSERT(mFont != nullptr);
 
-    const FontString fontString = font->GetCharacters(mText);
+    const FontString fontString = mFont->GetCharacters(mText);
     const std::vector<FontCharacter>& fontCharacters = fontString.mFontCharacters;
 
     for (const FontCharacter& character : fontCharacters)
@@ -92,9 +78,9 @@ void Text::SetText(const std::string& text)
     RecomputeText();
 }
 
-void Text::SetFont(const std::string& fontName)
+void Text::SetFont(Font* font)
 {
-    mFont = fontName;
+    mFont = font;
     mCharacters.clear();
     RecomputeText();
 }
