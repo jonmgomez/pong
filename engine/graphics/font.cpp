@@ -16,7 +16,7 @@ namespace pong
 
 // The font will load these characters by default.
 // If a character is not in this list, it will be loaded the first time it is used.
-static const std::string DEFAULT_FONT_CHARACTERS =
+static constexpr std::string_view DEFAULT_FONT_CHARACTERS =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-=_+[]{}\\|;:'\",<.>/?`~ ";
 
 static constexpr int PIXEL_LINE_HEIGHT = 256;
