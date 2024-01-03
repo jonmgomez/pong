@@ -36,6 +36,11 @@ AudioMixer& Pong::GetAudioMixer()
     return mAudioMixer;
 }
 
+FontBank& Pong::GetFontBank()
+{
+    return mFontBank;
+}
+
 Timer& Pong::GetTimer()
 {
     return mTimer;
@@ -44,6 +49,7 @@ Timer& Pong::GetTimer()
 void Pong::Init()
 {
     GetInstance().GetAudioMixer().Init();
+    GetInstance().mFontBank.LoadFonts();
     GetInstance().mSceneLoader.PreLoadScenes();
     GetInstance().GetTimer().Init();
 

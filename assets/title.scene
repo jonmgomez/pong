@@ -20,8 +20,7 @@
         {
           "type": "Text",
           "text": "Pong",
-          "scale": 1.5,
-          "pixel_height": 256
+          "scale": 2.0
         }
       ]
     },
@@ -41,6 +40,7 @@
         {
           "type": "Text",
           "text": "Play",
+          "scale": 0.65,
           "order_layer": 1,
           "color": {
             "r": 0.0,
@@ -67,7 +67,7 @@
         {
           "type": "Text",
           "text": "Settings",
-          "scale": 0.75,
+          "scale": 0.4,
           "order_layer": 1,
           "color": {
             "r": 0.0,
@@ -94,6 +94,7 @@
         {
           "type": "Text",
           "text": "Quit",
+          "scale": 0.65,
           "order_layer": 1,
           "color": {
             "r": 0.0,

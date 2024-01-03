@@ -98,16 +98,25 @@ void ComponentDeserializer::VisitComponent(Text* component)
         component->mScale = mCurrentJson["scale"];
     }
 
-    if (mCurrentJson.contains("pixel_height"))
-    {
-        component->mPixelLineHeight = mCurrentJson["pixel_height"];
-    }
-
     if (mCurrentJson.contains("color"))
     {
         ASSERT(mCurrentJson["color"].is_object());
         const auto& color = mCurrentJson["color"];
         component->SetColor({color["r"], color["g"], color["b"], color["a"]});
+    }
+
+    if (mCurrentJson.contains("font"))
+    {
+        const std::string fontName = mCurrentJson["font"];
+        Font* font = Pong::GetInstance().GetFontBank().GetFont(fontName);
+        ASSERT(font != nullptr);
+        component->mFont = font;
+    }
+    else
+    {
+        Font* font = Pong::GetInstance().GetFontBank().GetDefaultFont();
+        ASSERT(font != nullptr);
+        component->mFont = font;
     }
 
     component->RecomputeText();

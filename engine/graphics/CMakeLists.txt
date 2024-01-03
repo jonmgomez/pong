@@ -1,5 +1,8 @@
 set(SOURCES
     circle.cpp
+    font.cpp
+    fontbank.cpp
+    image.cpp
     rectangle.cpp
     textcharacter.cpp
 )
@@ -11,6 +14,7 @@ target_link_libraries(graphics
         compile_flags
         engine
         render
+        stb
 )
 
 target_include_directories(graphics

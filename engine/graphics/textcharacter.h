@@ -1,5 +1,6 @@
 #pragma once
 
+#include "image.h"
 #include "mesh.h"
 #include "rectangle.h"
 
@@ -10,12 +11,13 @@
 namespace pong
 {
 
+using image::Image;
+
 class TextCharacter : public Rectangle
 {
 public:
-    TextCharacter(const std::vector<unsigned char>& data,
-                  float width, float height, const glm::vec3& offset,
-                  int textureWidthPixels, int textureHeightPixels);
+    TextCharacter(const Image& image, const glm::vec3& offset,
+                  float width, float height);
 
     glm::vec3 mOffset { 0.0f };
 };

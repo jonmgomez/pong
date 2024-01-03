@@ -20,8 +20,7 @@
         {
           "type": "Text",
           "text": "Settings",
-          "scale": 1.5,
-          "pixel_height": 256
+          "scale": 1.5
         }
       ]
     },
@@ -41,6 +40,7 @@
         {
           "type": "Text",
           "text": "Back",
+          "scale": 0.45,
           "order_layer": 1,
           "color": {
             "r": 0,
@@ -62,7 +62,7 @@
         {
           "type": "Text",
           "text": "Target FPS: -1",
-          "scale": 0.75,
+          "scale": 0.4,
           "order_layer": 1
         }
       ]
@@ -97,7 +97,7 @@
         {
           "type": "Text",
           "text": "Vsync",
-          "scale": 0.75,
+          "scale": 0.4,
           "order_layer": 1
         }
       ]
@@ -129,7 +129,7 @@
         {
           "type": "Text",
           "text": "SpatialAudio",
-          "scale": 0.75,
+          "scale": 0.4,
           "order_layer": 1
         }
       ]
@@ -161,7 +161,7 @@
         {
           "type": "Text",
           "text": "Difficulty",
-          "scale": 0.75,
+          "scale": 0.4,
           "order_layer": 1
         }
       ]
@@ -177,7 +177,7 @@
         {
           "type": "Text",
           "text": "Easy",
-          "scale": 0.75,
+          "scale": 0.4,
           "order_layer": 1
         }
       ]
@@ -209,7 +209,7 @@
         {
           "type": "Text",
           "text": "Medium",
-          "scale": 0.75,
+          "scale": 0.4,
           "order_layer": 1
         }
       ]
@@ -241,7 +241,7 @@
         {
           "type": "Text",
           "text": "Hard",
-          "scale": 0.75,
+          "scale": 0.4,
           "order_layer": 1
         }
       ]
@@ -273,7 +273,7 @@
         {
           "type": "Text",
           "text": "Insane",
-          "scale": 0.75,
+          "scale": 0.4,
           "order_layer": 1
         }
       ]
@@ -305,7 +305,7 @@
         {
           "type": "Text",
           "text": "Volume: -1",
-          "scale": 0.75,
+          "scale": 0.4,
           "order_layer": 1
         }
       ]

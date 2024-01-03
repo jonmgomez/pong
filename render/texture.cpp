@@ -1,5 +1,6 @@
 #include "texture.h"
 
+#include "image.h"
 #include "renderutils.h"
 
 // Ignore numerous warnings from stb_image.h
@@ -31,12 +32,9 @@ Texture::Texture(const std::string& filePath)
     }
 }
 
-Texture::Texture(const std::vector<unsigned char>& alphaImage, int width, int height)
+Texture::Texture(const std::vector<unsigned char>& rgbaImage, int width, int height)
 {
-    auto rgbTexture = Texture::ConvertAlphaImageToRGBA(alphaImage);
-    auto finalImage = Texture::FlipImageVertically(rgbTexture, width, height, 4);
-
-    this->Texture::Texture(*finalImage.data(), width, height, GL_RGBA);
+    this->Texture::Texture(*rgbaImage.data(), width, height, GL_RGBA);
 }
 
 Texture::Texture(const RGBAColor& color)
@@ -113,49 +111,6 @@ int Texture::GetHeight() const
 int Texture::GetWidth() const
 {
     return mWidth;
-}
-
-/* Converts a grayscale image to RGBA format */
-std::vector<unsigned char> Texture::ConvertAlphaImageToRGBA(const std::vector<unsigned char>& imageData)
-{
-    std::vector<unsigned char> convertedImage {};
-    convertedImage.reserve(imageData.size() * 4);
-
-    const unsigned char kFullColor = 255;
-    for (auto& alpha : imageData)
-    {
-        convertedImage.emplace_back(kFullColor);
-        convertedImage.emplace_back(kFullColor);
-        convertedImage.emplace_back(kFullColor);
-        convertedImage.emplace_back(alpha);
-    }
-
-    return convertedImage;
-}
-
-std::vector<unsigned char> Texture::FlipImageVertically(const std::vector<unsigned char>& imageData, int width, int height, int comp)
-{
-    ASSERT(imageData.size() == width * height * comp);
-
-    std::vector<unsigned char> flippedImage {};
-    flippedImage.reserve(imageData.size());
-
-    const int stride = width * comp;
-    for (int rowNumber = height - 1; rowNumber >= 0; rowNumber--)
-    {
-        const int rowIndex = rowNumber * stride;
-        for (int colNumber = 0; colNumber < width; colNumber++)
-        {
-            // For each pixel, copy all the components
-            const int pixelIndex = rowIndex + (colNumber * comp);
-            for (int componentIndex = 0; componentIndex < comp; componentIndex++)
-            {
-                flippedImage.emplace_back(imageData[pixelIndex + componentIndex]);
-            }
-        }
-    }
-
-    return flippedImage;
 }
 
 } // namespace pong

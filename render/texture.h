@@ -17,7 +17,7 @@ public:
     Texture(const std::string& filePath);
     Texture(const RGBAColor& color);
     /* Assumes the data is grayscale and stored from top left to bottom right in vector */
-    Texture(const std::vector<unsigned char>& alphaImage, int width, int height);
+    Texture(const std::vector<unsigned char>& rgbaImage, int width, int height);
     Texture(const unsigned char& imageData, int width, int height, GLenum format);
 
     // Copy constructors are deleted because the renderer id is used to destroy the object in opengl
@@ -34,9 +34,6 @@ public:
 
     int GetWidth() const;
     int GetHeight() const;
-
-    static std::vector<unsigned char> ConvertAlphaImageToRGBA(const std::vector<unsigned char>& imageData);
-    static std::vector<unsigned char> FlipImageVertically(const std::vector<unsigned char>& imageData, int width, int height, int comp);
 
 protected:
     int mWidth {0};
