@@ -58,13 +58,12 @@ void Text::RecomputeText()
 
     for (const FontCharacter& character : fontCharacters)
     {
-        const float quadWidth = character.mBitmapWidth * mScale;
-        const float quadHeight = character.mBitmapHeight * mScale;
+        const float quadWidth = character.mBitmap.mWidth * mScale;
+        const float quadHeight = character.mBitmap.mHeight * mScale;
         const float xOffset = character.mXOffset * mScale;
         const float yOffset = character.mYOffset * mScale;
-        mCharacters.emplace_back(character.mBitmap, quadWidth, quadHeight,
-                                 glm::vec3(xOffset, -yOffset, 0.0f),
-                                 character.mBitmapWidth, character.mBitmapHeight);
+        mCharacters.emplace_back(character.mBitmap, glm::vec3(xOffset, -yOffset, 0.0f),
+                                 quadWidth, quadHeight);
     }
 
     const float totalTextWidth = fontString.mWidth * mScale;

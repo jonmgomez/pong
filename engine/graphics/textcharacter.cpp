@@ -10,13 +10,12 @@ static const std::array<unsigned int, 6> kIndicies = {
     2, 3, 0
 };
 
-TextCharacter::TextCharacter(const std::vector<unsigned char>& data,
-                            float width, float height, const glm::vec3& offset,
-                            int textureWidthPixels, int textureHeightPixels) :
+TextCharacter::TextCharacter(const Image& image, const glm::vec3& offset,
+                             float width, float height) :
     Rectangle(width, height),
     mOffset(offset)
 {
-    mTexture = Texture(data, textureWidthPixels, textureHeightPixels);
+    mTexture = Texture(image.mPixels, image.mWidth, image.mHeight);
 }
 
 } // namespace pong

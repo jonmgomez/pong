@@ -5,11 +5,20 @@
 namespace pong
 {
 
-namespace image
+struct Image
+{
+    std::vector<unsigned char> mPixels {};
+    int mWidth { 0 };
+    int mHeight { 0 };
+    int mComponents { 0 };
+};
+
+} // namespace pong
+
+namespace pong::image
 {
 
-std::vector<unsigned char> ConvertAlphaImageToRGBA(const std::vector<unsigned char>& imageData);
-std::vector<unsigned char> FlipImageVertically(const std::vector<unsigned char>& imageData, int width, int height, int comp);
+Image ConvertAlphaImageToRGBA(const Image& image);
+Image FlipImageVertically(const Image& image);
 
-} // namespace image
-} // namespace pong
+} // namespace pong::image

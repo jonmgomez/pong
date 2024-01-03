@@ -1,5 +1,7 @@
 #pragma once
 
+#include "image.h"
+
 #include <stb_truetype.h>
 
 #include <memory>
@@ -13,9 +15,7 @@ namespace pong
 // Represents a single character in a font, including offsets and its bitmap image.
 struct FontCharacter
 {
-    std::vector<unsigned char> mBitmap {};
-    int mBitmapWidth { 0 };
-    int mBitmapHeight { 0 };
+    Image mBitmap {};
     float mXOffset { 0 };
     float mYOffset { 0 };
     float mLeftSideBearing { 0 };

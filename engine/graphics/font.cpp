@@ -4,8 +4,10 @@
 #include "logger.h"
 #include "utils.h"
 
+#ifndef STB_TRUETYPE_IMPLEMENTATION
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>
+#endif
 
 #include <fstream>
 
@@ -70,28 +72,29 @@ FontCharacter Font::LoadCharacter(const char character)
     const int charWidth  = xCoord2 - xCoord1;
     const int charHeight = yCoord2 - yCoord1;
 
-    std::vector<unsigned char> alphaTexture { 0 };
-    alphaTexture.resize(charWidth * charHeight);
-
     const float spaceAboveCharPixels = mAscent + yCoord1;
     fontCharacter.mYOffset = spaceAboveCharPixels;
+
+    fontCharacter.mBitmap.mPixels.resize(charWidth * charHeight);
 
     if (character != '\n')
     {
         // Since this uses a single character for each texture, stride is just the pixel width of the character
         const int kStride = charWidth;
-        stbtt_MakeCodepointBitmap(&mFontInfo, alphaTexture.data(),
-                                    charWidth, charHeight, kStride,
-                                    mPixelScale, mPixelScale,
-                                    character);
+        stbtt_MakeCodepointBitmap(&mFontInfo, fontCharacter.mBitmap.mPixels.data(),
+                                  charWidth, charHeight, kStride,
+                                  mPixelScale, mPixelScale,
+                                  character);
+
+        fontCharacter.mBitmap.mWidth = charWidth;
+        fontCharacter.mBitmap.mHeight = charHeight;
+        fontCharacter.mBitmap.mComponents = 1;
     }
 
     // Bitmap returned is alpha only, and stored bottom left pixel first
     // Convert to RGBA and flip it for OpenGL
-    const auto rgbTexture = image::ConvertAlphaImageToRGBA(alphaTexture);
-    fontCharacter.mBitmap = image::FlipImageVertically(rgbTexture, charWidth, charHeight, 4);
-    fontCharacter.mBitmapWidth  = charWidth;
-    fontCharacter.mBitmapHeight = charHeight;
+    const auto rgbTexture = image::ConvertAlphaImageToRGBA(fontCharacter.mBitmap);
+    fontCharacter.mBitmap = image::FlipImageVertically(rgbTexture);
 
     mCharacters[character] = fontCharacter;
     return fontCharacter;
@@ -121,7 +124,7 @@ FontString Font::GetCharacters(const std::string& text)
         }
         else
         {
-            currentLineHeight = std::fabs(fontCharacter.mYOffset + fontCharacter.mBitmapHeight);
+            currentLineHeight = std::fabs(fontCharacter.mYOffset + fontCharacter.mBitmap.mHeight);
 
             // Left side bearing is the amount of space between the previous character and this one
             // The first character does not need to take this into account
@@ -132,8 +135,8 @@ FontString Font::GetCharacters(const std::string& text)
 
             fontCharacter.mYOffset += currentY;
             // Offset the character to the center of the quad
-            fontCharacter.mXOffset = currentX + fontCharacter.mBitmapWidth / 2.0f;
-            fontCharacter.mYOffset += fontCharacter.mBitmapHeight / 2.0f;
+            fontCharacter.mXOffset = currentX + fontCharacter.mBitmap.mWidth / 2.0f;
+            fontCharacter.mYOffset += fontCharacter.mBitmap.mHeight / 2.0f;
 
             currentX += fontCharacter.mGlyphWidth;
         }
