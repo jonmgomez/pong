@@ -22,6 +22,8 @@ public:
 private:
     std::unique_ptr<Graphic> mGraphic { nullptr };
     bool mEnabled { true };
+
+    friend class ComponentDeserializer;
 };
 
 } // namespace pong

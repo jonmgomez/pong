@@ -19,12 +19,12 @@ public:
     void OnCollisionStart(GameObject& other) override;
     void OnCollisionStay(GameObject& other) override;
 
-    void SetSpeed(float speed);
-
 private:
     Transform* mTransform { nullptr };
     float mSpeed { 0.0f };
     glm::vec3 mVelocity { 0.0f };
+
+    friend class ComponentDeserializer;
 };
 
 } // namespace pong

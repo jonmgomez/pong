@@ -47,9 +47,4 @@ void Player::OnCollisionStay(GameObject& other)
     OnCollisionStart(other);
 }
 
-void Player::SetSpeed(float speed)
-{
-    mSpeed = speed;
-}
-
 } // namespace pong

@@ -42,6 +42,8 @@ private:
     RectangleBounds mBounds {};
     float mWidth { 0.0f };
     float mHeight { 0.0f };
+
+    friend class ComponentDeserializer;
 };
 
 } // namespace pong

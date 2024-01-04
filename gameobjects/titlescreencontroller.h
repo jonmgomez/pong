@@ -23,6 +23,8 @@ private:
     Text*   mSettingsText   { nullptr };
     Button* mQuitButton { nullptr };
     Text*   mQuitText   { nullptr };
+
+    friend class ComponentDeserializer;
 };
 
 } // namespace pong

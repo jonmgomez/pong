@@ -49,6 +49,8 @@ private:
     float mStep { 0.0f };
     float mValue { 0.0f };
     bool mWasPressed { false };
+
+    friend class ComponentDeserializer;
 };
 
 } // namespace pong

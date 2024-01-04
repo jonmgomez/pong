@@ -24,6 +24,8 @@ private:
 
     Text* mPlayerScoreText { nullptr };
     Text* mOpponentScoreText { nullptr };
+
+    friend class ComponentDeserializer;
 };
 
 } // namespace pong

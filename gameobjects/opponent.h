@@ -23,8 +23,6 @@ public:
 
     void OnBallVelocityChange(const glm::vec3& velocity);
 
-    void SetSpeed(float speed);
-
 private:
     static constexpr float OPPONENT_MAX_SPEED = 1200.0f;
 
@@ -43,6 +41,8 @@ private:
 
     float mTopWallBound { 0.0f };
     float mBottomWallBound { 0.0f };
+
+    friend class ComponentDeserializer;
 };
 
 } // namespace pong

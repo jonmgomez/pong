@@ -102,22 +102,21 @@ void ComponentDeserializer::VisitComponent(Text* component)
     {
         ASSERT(mCurrentJson["color"].is_object());
         const auto& color = mCurrentJson["color"];
-        component->SetColor({color["r"], color["g"], color["b"], color["a"]});
+        component->mColor = {color["r"], color["g"], color["b"], color["a"]};
     }
 
+    Font* font = nullptr;
     if (mCurrentJson.contains("font"))
     {
         const std::string fontName = mCurrentJson["font"];
-        Font* font = Pong::GetInstance().GetFontBank().GetFont(fontName);
-        ASSERT(font != nullptr);
-        component->mFont = font;
+        font = Pong::GetInstance().GetFontBank().GetFont(fontName);
     }
     else
     {
-        Font* font = Pong::GetInstance().GetFontBank().GetDefaultFont();
-        ASSERT(font != nullptr);
-        component->mFont = font;
+        font = Pong::GetInstance().GetFontBank().GetDefaultFont();
     }
+    ASSERT(font != nullptr);
+    component->mFont = font;
 
     component->RecomputeText();
 
@@ -142,25 +141,25 @@ void ComponentDeserializer::VisitComponent(Behavior* /*component*/)
 void ComponentDeserializer::VisitComponent(Opponent* component)
 {
     const float speed = mCurrentJson["speed"];
-    component->SetSpeed(speed);
+    component->mSpeed = speed;
 }
 
 void ComponentDeserializer::VisitComponent(Player* component)
 {
     const float speed = mCurrentJson["speed"];
-    component->SetSpeed(speed);
+    component->mSpeed = speed;
 }
 
 void ComponentDeserializer::VisitComponent(Ball* component)
 {
     const float speed = mCurrentJson["speed"];
-    component->SetSpeed(speed);
+    component->mStartSpeed = speed;
 }
 
 void ComponentDeserializer::VisitComponent(ScoreArea* component)
 {
     const bool playerSide = mCurrentJson["player_side"];
-    component->SetIsPlayerSide(playerSide);
+    component->mIsPlayerScoreArea = playerSide;
 }
 
 void ComponentDeserializer::VisitComponent(ScoreController* /*component*/)

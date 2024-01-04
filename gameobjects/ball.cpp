@@ -102,11 +102,6 @@ void Ball::ResetBall()
     mOpponent->OnBallVelocityChange(mVelocity);
 }
 
-void Ball::SetSpeed(float speed)
-{
-    mStartSpeed = speed;
-}
-
 glm::vec3 Ball::GetVelocity() const
 {
     return mVelocity;

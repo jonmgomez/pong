@@ -21,7 +21,6 @@ public:
     void OnUpdate() override;
     void OnCollisionStart(GameObject& other) override;
 
-    void SetSpeed(float speed);
     glm::vec3 GetVelocity() const;
 
 private:
@@ -38,6 +37,8 @@ private:
     Sound mScoreSound {};
 
     void ResetBall();
+
+    friend class ComponentDeserializer;
 };
 
 } // namespace pong

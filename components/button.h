@@ -49,6 +49,8 @@ private:
     std::array<ListenerCallbacks, static_cast<int>(ButtonEvent::EVENTS_COUNT)> mListeners {};
     bool mPressed { false };
     bool mHovered { false };
+
+    friend class ComponentDeserializer;
 };
 
 } // namespace pong

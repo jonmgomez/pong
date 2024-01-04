@@ -44,9 +44,4 @@ void ScoreArea::OnCollisionStart(GameObject& other)
     }
 }
 
-void ScoreArea::SetIsPlayerSide(bool playerSide)
-{
-    mIsPlayerScoreArea = playerSide;
-}
-
 } // namespace pong

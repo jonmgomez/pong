@@ -26,16 +26,17 @@ public:
     void SetText(const std::string& text);
     void SetFont(Font* font);
     void SetScale(float scale);
-    void SetColor(GLRGBAColor color);
+    void SetColor(const GLRGBAColor& color);
     void RecomputeText();
 
+private:
     std::string mText {};
     Font* mFont { nullptr };
     float mScale { 1.0f };
-
-private:
-    std::vector<TextCharacter> mCharacters {};
     GLRGBAColor mColor { GLRGBA_WHITE };
+    std::vector<TextCharacter> mCharacters {};
+
+    friend class ComponentDeserializer;
 };
 
 } // namespace pong

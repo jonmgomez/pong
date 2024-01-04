@@ -39,6 +39,7 @@ void Text::RecomputeText()
 {
     ASSERT(mFont != nullptr);
 
+    mCharacters.clear();
     const FontString fontString = mFont->GetCharacters(mText);
     const std::vector<FontCharacter>& fontCharacters = fontString.mFontCharacters;
 
@@ -74,25 +75,22 @@ std::string Text::GetText() const
 void Text::SetText(const std::string& text)
 {
     mText = text;
-    mCharacters.clear();
     RecomputeText();
 }
 
 void Text::SetFont(Font* font)
 {
     mFont = font;
-    mCharacters.clear();
     RecomputeText();
 }
 
 void Text::SetScale(float scale)
 {
     mScale = scale;
-    mCharacters.clear();
     RecomputeText();
 }
 
-void Text::SetColor(GLRGBAColor color)
+void Text::SetColor(const GLRGBAColor& color)
 {
     mColor = color;
     for (auto& character : mCharacters)

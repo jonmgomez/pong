@@ -33,6 +33,8 @@ private:
     RectangleBounds mBounds {};
     std::vector<std::function<void(bool)>> mValueChangeListeners {};
     bool mValue { true };
+
+    friend class ComponentDeserializer;
 };
 
 } // namespace pong

@@ -30,6 +30,8 @@ private:
     CheckBox* mSpatialAudio { nullptr };
     std::array<CheckBox*, 4> mDifficultyCheckBoxes {};
     std::array<Text*, 4>     mDifficultyTexts {};
+
+    friend class ComponentDeserializer;
 };
 
 } // namespace pong
