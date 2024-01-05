@@ -14,11 +14,6 @@
 namespace pong
 {
 
-// Difficulty settings
-static int decisionTimeLowerBoundMs = 50;
-static int decisionTimeUpperBoundMs = 250;
-static float baseMissChance = 0.1f;
-
 void Opponent::OnStart()
 {
     SetDifficultySettings();
@@ -63,27 +58,27 @@ void Opponent::SetDifficultySettings()
     switch (Difficulty::GetLevel())
     {
         case Difficulty::Level::Easy:
-            decisionTimeLowerBoundMs = 200;
-            decisionTimeUpperBoundMs = 500;
-            baseMissChance = 0.f;
+            mDecisionTimeLowerBounmMs = 200;
+            mDecisionTimeUpperBoundMs = 500;
+            mBaseMissChance = 0.f;
             break;
 
         case Difficulty::Level::Normal:
-            decisionTimeLowerBoundMs = 100;
-            decisionTimeUpperBoundMs = 350;
-            baseMissChance = 0.2f;
+            mDecisionTimeLowerBounmMs = 100;
+            mDecisionTimeUpperBoundMs = 350;
+            mBaseMissChance = 0.2f;
             break;
 
         case Difficulty::Level::Hard:
-            decisionTimeLowerBoundMs = 50;
-            decisionTimeUpperBoundMs = 100;
-            baseMissChance = 0.05f;
+            mDecisionTimeLowerBounmMs = 50;
+            mDecisionTimeUpperBoundMs = 100;
+            mBaseMissChance = 0.05f;
             break;
 
         case Difficulty::Level::Insane:
-            decisionTimeLowerBoundMs = 0;
-            decisionTimeUpperBoundMs = 0;
-            baseMissChance = 0.0f;
+            mDecisionTimeLowerBounmMs = 0;
+            mDecisionTimeUpperBoundMs = 0;
+            mBaseMissChance = 0.0f;
             break;
 
         default:
@@ -122,7 +117,7 @@ void Opponent::PredictBallPostion()
         }
     }
 
-    const bool miss = Random::RollPercentChance(baseMissChance);
+    const bool miss = Random::RollPercentChance(mBaseMissChance);
     if (miss)
     {
         const float minMissDistance = 150.0f;
@@ -165,7 +160,7 @@ void Opponent::OnBallVelocityChange(const glm::vec3& velocity)
 
     if (mChasingBall)
     {
-        SetTimeout(std::chrono::milliseconds(Random::ValueInRange(decisionTimeLowerBoundMs, decisionTimeUpperBoundMs)), [this] ()
+        SetTimeout(std::chrono::milliseconds(Random::ValueInRange(mDecisionTimeLowerBounmMs, mDecisionTimeUpperBoundMs)), [this] ()
         {
             this->PredictBallPostion();
         });

@@ -42,6 +42,11 @@ private:
     float mTopWallBound { 0.0f };
     float mBottomWallBound { 0.0f };
 
+    // Difficulty settings
+    int mDecisionTimeLowerBounmMs = 50;
+    int mDecisionTimeUpperBoundMs = 250;
+    float mBaseMissChance = 0.1f;
+
     friend class ComponentDeserializer;
 };
 
