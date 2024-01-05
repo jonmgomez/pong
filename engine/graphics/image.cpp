@@ -1,9 +1,47 @@
 #include "image.h"
 
+#include "logger.h"
 #include "utils.h"
+
+#ifndef STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+#pragma warning(push, 0)
+#include <stb_image.h>
+#pragma warning(pop)
+#endif
 
 namespace pong::image
 {
+
+Image LoadImage(const std::string& path, bool flipVertically)
+{
+    if (flipVertically)
+    {
+        stbi_set_flip_vertically_on_load(true);
+    }
+
+    Image image {};
+
+    int width = 0;
+    int height = 0;
+    int components = 0;
+    unsigned char* pixels = stbi_load(path.c_str(), &width, &height, &components, 0);
+    if (pixels == nullptr)
+    {
+        LogError("Failed to load image: %s", path.c_str());
+        return image;
+    }
+
+    image.mPixels.insert(image.mPixels.end(), &pixels[0], &pixels[width * height * components]);
+    std::cout << "pixels: " << image.mPixels.size() << std::endl;
+    image.mWidth = width;
+    image.mHeight = height;
+    image.mComponents = components;
+
+    stbi_image_free(pixels);
+
+    return image;
+}
 
 /* Converts an alpha image to RGBA format. */
 Image ConvertAlphaImageToRGBA(const Image& image)

@@ -3,33 +3,19 @@
 #include "image.h"
 #include "renderutils.h"
 
-// Ignore numerous warnings from stb_image.h
-#pragma warning(push, 0)
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
-#pragma warning(pop)
-
 #include <array>
 #include <iostream>
 
 namespace pong
 {
 
+using image::Image;
+
 Texture::Texture(const std::string& filePath)
 {
-    stbi_set_flip_vertically_on_load(1);
-
-    int bytesPerPixel = 0;
-    int width = 0;
-    int height = 0;
-    unsigned char* buffer = stbi_load(filePath.c_str(), &width, &height, &bytesPerPixel, 4);
-
-    this->Texture::Texture(*buffer, width, height, GL_RGBA);
-
-    if (buffer)
-    {
-        stbi_image_free(buffer);
-    }
+    const bool kFlipVertically = true;
+    Image image = image::LoadImage(filePath, kFlipVertically);
+    this->Texture::Texture(*image.mPixels.data(), image.mWidth, image.mHeight, GL_RGBA);
 }
 
 Texture::Texture(const std::vector<unsigned char>& rgbaImage, int width, int height)

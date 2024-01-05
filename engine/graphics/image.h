@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <vector>
 
 namespace pong::image
@@ -13,7 +14,7 @@ struct Image
     int mComponents { 0 };
 };
 
-
+Image LoadImage(const std::string& path, bool flipVertically = false);
 Image ConvertAlphaImageToRGBA(const Image& image);
 Image FlipImageVertically(const Image& image);
 

@@ -25,6 +25,8 @@ void Engine::Init(const std::string& configPath)
     ASSERT(Config::LoadConfig(configPath));
 
     ApplicationWindow::Init();
+    ApplicationWindow::SetWindowTitle("Pong");
+    ApplicationWindow::SetWindowIcon(Config::GetValue<std::string>("window_icon"));
     Renderer::Init();
     Input::Init();
 

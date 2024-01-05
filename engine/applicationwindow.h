@@ -3,6 +3,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <string>
+
 namespace pong
 {
 
@@ -18,6 +20,9 @@ public:
     static int GetScreenWidth();
     static int GetScreenHeight();
     static void WindowResizeCallback(GLFWwindow* window, int width, int height);
+
+    static void SetWindowTitle(const std::string& title);
+    static void SetWindowIcon(const std::string& iconPath);
 
     static bool ShouldClose();
     static void SetShouldCloseWindow();

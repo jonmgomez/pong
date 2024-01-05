@@ -1,6 +1,7 @@
 #include "applicationwindow.h"
 
 #include "config.h"
+#include "image.h"
 #include "logger.h"
 #include "utils.h"
 
@@ -8,6 +9,8 @@
 
 namespace pong
 {
+
+using image::Image;
 
 static constexpr int SCREEN_WIDTH = 1280;
 static constexpr int SCREEN_HEIGHT = 960;
@@ -74,6 +77,19 @@ void ApplicationWindow::WindowResizeCallback(GLFWwindow* /*window*/, int width, 
     GetInstance().mScreenWidth = width;
     GetInstance().mScreenHeight = height;
     glViewport(0, 0, width, height);
+}
+
+void ApplicationWindow::SetWindowTitle(const std::string& title)
+{
+    glfwSetWindowTitle(GetInstance().mWindow, title.c_str());
+}
+
+void ApplicationWindow::SetWindowIcon(const std::string& iconPath)
+{
+    Image icon = image::LoadImage(iconPath);
+    GLFWimage image = { icon.mWidth, icon.mHeight, icon.mPixels.data() };
+
+    glfwSetWindowIcon(GetInstance().mWindow, 1, &image);
 }
 
 bool ApplicationWindow::ShouldClose()
