@@ -30,6 +30,8 @@ public:
     void SetTimeout(const std::chrono::duration<double>& timeout, const std::function<void()>& callback);
     void PlaySound(const Sound& sound);
     void PlaySound(const Sound& sound, const glm::vec3& position);
+
+    bool mOnStartCalled { false };
 };
 
 template<typename T>

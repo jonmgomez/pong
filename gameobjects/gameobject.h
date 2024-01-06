@@ -23,6 +23,8 @@ public:
     int GetId() const;
     std::string GetInstanceName() const;
     void SetInstanceName(const std::string& name);
+    bool ShouldDestroyOnLoad() const;
+    void SetDestroyOnLoad(const bool destroyOnLoad);
 
     std::vector<Behavior*> GetBehaviorComponents() const;
 
@@ -60,6 +62,7 @@ private:
     static int sId;
 
     int mId { sId++ };
+    bool mDestroyOnLoad { true };
     std::unordered_map<int, BaseComponent*> mComponents {};
     std::string mInstanceName { "" };
 };

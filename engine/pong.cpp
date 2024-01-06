@@ -83,13 +83,21 @@ void Pong::GameLoop()
 
 void Pong::Reset()
 {
+    GetInstance().mComponentManager.Reset();
+
     for (auto& gameobject : GetInstance().mGameObjects)
     {
-        gameobject->Destroy();
+        if (gameobject->ShouldDestroyOnLoad())
+        {
+            gameobject->Destroy();
+        }
     }
 
-    GetInstance().mComponentManager.Reset();
-    GetInstance().mGameObjects.clear();
+    GetInstance().mGameObjects.erase(std::remove_if(GetInstance().mGameObjects.begin(), GetInstance().mGameObjects.end(), [] (const auto& gameObject)
+    {
+        return gameObject->ShouldDestroyOnLoad();
+    }), GetInstance().mGameObjects.end());
+
     GetInstance().mTimer.Reset();
 }
 
@@ -109,11 +117,19 @@ void Pong::LoadScene(const std::string& sceneName)
 {
     Pong::Reset();
 
-    GetInstance().mGameObjects = GetInstance().mSceneLoader.LoadScene(sceneName);
+    GameObjectCollection gameObjects = GetInstance().mSceneLoader.LoadScene(sceneName);
+    for (auto& gameObject : gameObjects)
+    {
+        GetInstance().mGameObjects.push_back(std::move(gameObject));
+    }
 
     for (auto& behavior : Behavior::GetComponents())
     {
-        behavior->OnStart();
+        if (!behavior->mOnStartCalled)
+        {
+            behavior->OnStart();
+            behavior->mOnStartCalled = true;
+        }
     }
 }
 

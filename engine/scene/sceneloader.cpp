@@ -145,6 +145,11 @@ GameObjectCollection SceneLoader::LoadSceneFromJson(const nlohmann::json& sceneJ
         std::unique_ptr<GameObject> gameObject = std::make_unique<GameObject>();
         gameObject->SetInstanceName(gameObjectName);
 
+        if (gameObjectJson.contains("destroy_on_load"))
+        {
+            gameObject->SetDestroyOnLoad(gameObjectJson["destroy_on_load"]);
+        }
+
         for (const auto& componentJson : gameObjectJson["components"])
         {
             const std::string componentTypeName = componentJson["type"];

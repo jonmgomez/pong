@@ -24,6 +24,16 @@ void GameObject::SetInstanceName(const std::string& name)
     mInstanceName = name;
 }
 
+bool GameObject::ShouldDestroyOnLoad() const
+{
+    return mDestroyOnLoad;
+}
+
+void GameObject::SetDestroyOnLoad(const bool destroyOnLoad)
+{
+    mDestroyOnLoad = destroyOnLoad;
+}
+
 std::vector<Behavior*> GameObject::GetBehaviorComponents() const
 {
     std::vector<Behavior*> behaviors {};
