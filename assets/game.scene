@@ -47,7 +47,9 @@
         },
         {
           "type": "Opponent",
-          "speed": 1200.0
+          "speed": 1200.0,
+          "component_identifier": 0,
+          "ball": 1
         }
       ]
     },
@@ -72,7 +74,9 @@
         },
         {
           "type": "Ball",
-          "speed": 1000.0
+          "speed": 1000.0,
+          "component_identifier": 1,
+          "opponent": 0
         }
       ]
     },
@@ -167,7 +171,8 @@
         {
           "type": "Text",
           "text": "0",
-          "scale": 1.0
+          "scale": 1.0,
+          "component_identifier": 2
         }
       ]
     },
@@ -182,7 +187,8 @@
         {
           "type": "Text",
           "text": "0",
-          "scale": 1.0
+          "scale": 1.0,
+          "component_identifier": 3
         }
       ]
     },
@@ -190,7 +196,9 @@
       "name": "ScoreController",
       "components": [
         {
-          "type": "ScoreController"
+          "type": "ScoreController",
+          "player_score_text": 2,
+          "opponent_score_text": 3
         }
       ]
     }

@@ -8,6 +8,7 @@
 #include "colliderbox.h"
 #include "component.h"
 #include "graphic.h"
+#include "logger.h"
 #include "mesh.h"
 #include "player.h"
 #include "opponent.h"
@@ -28,6 +29,17 @@ void ComponentDeserializer::DeserializeComponent(BaseComponent* component, const
     mCurrentJson = json;
     component->Accept(*this);
     mCurrentJson = nullptr;
+}
+
+void ComponentDeserializer::RegisterComponentId(BaseComponent* component, const int id)
+{
+    auto it = mComponents.find(id);
+    if (it != mComponents.end())
+    {
+        LogError("Component with id {} already exists", id);
+        ASSERT(false);
+    }
+    mComponents[id] = component;
 }
 
 void ComponentDeserializer::VisitComponent(Button* component)
@@ -142,6 +154,8 @@ void ComponentDeserializer::VisitComponent(Opponent* component)
 {
     const float speed = mCurrentJson["speed"];
     component->mSpeed = speed;
+
+    component->mBall = FindComponent<Ball>(mCurrentJson["ball"]);
 }
 
 void ComponentDeserializer::VisitComponent(Player* component)
@@ -154,6 +168,8 @@ void ComponentDeserializer::VisitComponent(Ball* component)
 {
     const float speed = mCurrentJson["speed"];
     component->mStartSpeed = speed;
+
+    component->mOpponent = FindComponent<Opponent>(mCurrentJson["opponent"]);
 }
 
 void ComponentDeserializer::VisitComponent(ScoreArea* component)
@@ -162,9 +178,10 @@ void ComponentDeserializer::VisitComponent(ScoreArea* component)
     component->mIsPlayerScoreArea = playerSide;
 }
 
-void ComponentDeserializer::VisitComponent(ScoreController* /*component*/)
+void ComponentDeserializer::VisitComponent(ScoreController* component)
 {
-
+    component->mPlayerScoreText = FindComponent<Text>(mCurrentJson["player_score_text"]);
+    component->mOpponentScoreText = FindComponent<Text>(mCurrentJson["opponent_score_text"]);
 }
 
 } // namespace pong

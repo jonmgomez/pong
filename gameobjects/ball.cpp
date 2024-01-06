@@ -21,8 +21,6 @@ void Ball::OnStart()
 {
     mTransform = GetComponent<Transform>();
     ASSERT(mTransform != nullptr);
-
-    mOpponent = Pong::FindComponentOfType<Opponent>();
     ASSERT(mOpponent != nullptr);
 
     mPaddleBounceSound.SetSource(Config::GetValue<std::string>("paddle_hit_sound"));

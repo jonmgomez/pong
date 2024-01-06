@@ -8,8 +8,6 @@ namespace pong
 
 void ScoreController::OnStart()
 {
-    mPlayerScoreText = Pong::FindGameObjectByName("PlayerScoreText")->GetComponent<Text>();
-    mOpponentScoreText = Pong::FindGameObjectByName("OpponentScoreText")->GetComponent<Text>();\
     ASSERT(mPlayerScoreText != nullptr && mOpponentScoreText != nullptr);
 }
 

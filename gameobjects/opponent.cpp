@@ -21,7 +21,6 @@ void Opponent::OnStart()
     mTransform = GetComponent<Transform>();
     mCollider = GetComponent<ColliderBox>();
     mTargetPosition = mTransform->mPosition;
-    mBall = Pong::FindComponentOfType<Ball>();
 
     GameObject* topWall = Pong::FindGameObjectByName("TopWall");
     GameObject* bottomWall = Pong::FindGameObjectByName("BottomWall");

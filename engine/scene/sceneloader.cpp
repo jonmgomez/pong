@@ -122,7 +122,15 @@ GameObjectCollection SceneLoader::LoadScene(const std::string& sceneName)
 
 GameObjectCollection SceneLoader::LoadSceneFromJson(const nlohmann::json& sceneJson)
 {
+    struct ComponentData
+    {
+        BaseComponent* component;
+        const nlohmann::json& json;
+    };
+
+    ComponentDeserializer componentDeserializer {};
     GameObjectCollection gameObjects {};
+    std::vector<ComponentData> components {};
 
     const std::string sceneName = sceneJson["name"];
     LogInfo("Loading Scene: {}", sceneName);
@@ -143,13 +151,27 @@ GameObjectCollection SceneLoader::LoadSceneFromJson(const nlohmann::json& sceneJ
 
             // Add component to game object using the component mapping lambdas
             BaseComponent* newComponent = mComponentMappings[componentTypeName](gameObject.get());
-            totalComponents++;
 
-            ComponentDeserializer componentDeserializer {};
-            componentDeserializer.DeserializeComponent(newComponent, componentJson);
+            if (componentJson.contains("component_identifier"))
+            {
+                const int id = componentJson["component_identifier"];
+                LogInfo("Component id: {}, type: {}", newComponent->GetTypeId(), componentJson["type"]);
+                componentDeserializer.RegisterComponentId(newComponent, id);
+            }
+
+            // Store the component and json data for later deserialization
+            // The reason this is done is because some components may need to reference other components
+            // which may not have been created yet
+            components.push_back({newComponent, componentJson});
+            totalComponents++;
         }
 
         gameObjects.push_back(std::move(gameObject));
+    }
+
+    for (auto& [newComponent, componentJson] : components)
+    {
+        componentDeserializer.DeserializeComponent(newComponent, componentJson);
     }
 
     const auto endTime = std::chrono::high_resolution_clock::now();

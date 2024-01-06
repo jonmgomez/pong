@@ -11,6 +11,7 @@ class ScoreController : public Behavior
 {
 public:
     int GetBehaviorId() const override { return GetIdFromBehavior<ScoreController>(); }
+    void Accept(ComponentDeserializer& visitor) override { visitor.VisitComponent(this); }
     void OnStart() override;
 
     int GetPlayerScore() const;
