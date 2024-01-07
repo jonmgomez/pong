@@ -54,3 +54,15 @@ void Timer::Reset()
 }
 
 } // namespace pong
+
+namespace pong::timer
+{
+
+Timer* gTimer { nullptr };
+
+void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback)
+{
+    gTimer->AddTimer(gameObjectId, timeout, callback);
+}
+
+} // namespace pong::timer

@@ -36,7 +36,7 @@ void SettingsScreenController::OnStart()
 
     mSpatialAudio = Pong::FindGameObjectByName("SpatialAudioEnable")->GetComponent<CheckBox>();
     mSpatialAudio->AddValueChangeListener([] (bool value) {
-        Pong::GetInstance().GetAudioMixer().SetSpatialAudioEnabled(value);
+        audio::SetSpatialAudioEnabled(value);
     });
 
     for (int i = 0; i < 4; i++)
@@ -59,12 +59,12 @@ void SettingsScreenController::OnStart()
     }
 
     mVolumeText = Pong::FindGameObjectByName("VolumeText")->GetComponent<Text>();
-    const float volume = Pong::GetInstance().GetAudioMixer().GetVolume();
+    const float volume = audio::GetVolume();
     mVolumeText->SetText("Volume: " + std::to_string(static_cast<int>(volume * 100.0f)));
     mVolumeSlider = Pong::FindGameObjectByName("VolumeSlider")->GetComponent<Slider>();
     mVolumeSlider->SetValue(volume);
     mVolumeSlider->AddValueChangeListener([this] (float newValue) {
-        Pong::GetInstance().GetAudioMixer().SetVolume(newValue);
+        audio::SetVolume(newValue);
         this->mVolumeText->SetText("Volume: " + std::to_string(static_cast<int>(roundf(newValue * 100.0f))));
     });
 }

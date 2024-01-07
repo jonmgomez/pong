@@ -48,12 +48,16 @@ Timer& Pong::GetTimer()
 
 void Pong::Init()
 {
+    timer::gTimer = &GetInstance().mTimer;
+    audio::gAudioMixer = &GetInstance().mAudioMixer;
+
+
     GetInstance().GetAudioMixer().Init();
     GetInstance().mFontBank.LoadFonts();
     GetInstance().mSceneLoader.PreLoadScenes();
     GetInstance().GetTimer().Init();
 
-    GetInstance().LoadScene(Config::GetValue<std::string>("starting_scene"));
+    GetInstance().LoadScene(Config::GetValue<std::string>("starting_scene", "Title"));
 }
 
 void Pong::GameLoop()

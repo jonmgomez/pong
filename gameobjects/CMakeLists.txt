@@ -19,6 +19,7 @@ target_link_libraries(gameobjects
         render
         engine
         components
+        audio
 )
 
 target_include_directories(gameobjects
