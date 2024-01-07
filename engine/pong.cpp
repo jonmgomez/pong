@@ -98,6 +98,7 @@ void Pong::Reset()
         return gameObject->ShouldDestroyOnLoad();
     }), GetInstance().mGameObjects.end());
 
+    GetInstance().mAudioMixer.Reset();
     GetInstance().mTimer.Reset();
 }
 

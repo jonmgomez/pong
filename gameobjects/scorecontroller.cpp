@@ -9,6 +9,7 @@ namespace pong
 void ScoreController::OnStart()
 {
     ASSERT(mPlayerScoreText != nullptr && mOpponentScoreText != nullptr);
+    mWinningScore = Config::GetValue("WinningScore", 1);
 }
 
 int ScoreController::GetPlayerScore() const
@@ -20,6 +21,7 @@ void ScoreController::PlayerScored()
 {
     mPlayerScore++;
     mPlayerScoreText->SetText(std::to_string(mPlayerScore));
+    CheckForWin();
 }
 
 int ScoreController::GetOpponentScore() const
@@ -31,6 +33,15 @@ void ScoreController::OpponentScored()
 {
     mOpponentScore++;
     mOpponentScoreText->SetText(std::to_string(mOpponentScore));
+    CheckForWin();
+}
+
+void ScoreController::CheckForWin()
+{
+    if (mPlayerScore >= mWinningScore || mOpponentScore >= mWinningScore)
+    {
+        Pong::LoadSceneNext("GameOver");
+    }
 }
 
 } // namespace pong

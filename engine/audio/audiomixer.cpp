@@ -85,6 +85,13 @@ void AudioMixer::Cleanup()
     Pa_Terminate();
 }
 
+void AudioMixer::Reset()
+{
+    mPlayingSoundsMutex.lock();
+    mPlayingSounds.clear();
+    mPlayingSoundsMutex.unlock();
+}
+
 void AudioMixer::PlaySound(const Sound& sound)
 {
     mPlayingSoundsMutex.lock();

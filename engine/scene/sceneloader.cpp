@@ -7,6 +7,7 @@
 #include "componentdeserializer.h"
 #include "config.h"
 #include "gameobject.h"
+#include "gameoverscreencontroller.h"
 #include "logger.h"
 #include "mesh.h"
 #include "player.h"
@@ -52,6 +53,7 @@ SceneLoader::SceneLoader()
     mComponentMappings["ScoreController"] = &AddComponentToObject<ScoreController>;
     mComponentMappings["TitleScreenController"] = &AddComponentToObject<TitleScreenController>;
     mComponentMappings["SettingsScreenController"] = &AddComponentToObject<SettingsScreenController>;
+    mComponentMappings["GameOverScreenController"] = &AddComponentToObject<GameOverScreenController>;
 }
 
 void SceneLoader::PreLoadScenes()
@@ -160,7 +162,6 @@ GameObjectCollection SceneLoader::LoadSceneFromJson(const nlohmann::json& sceneJ
             if (componentJson.contains("component_identifier"))
             {
                 const int id = componentJson["component_identifier"];
-                LogInfo("Component id: {}, type: {}", newComponent->GetTypeId(), componentJson["type"]);
                 componentDeserializer.RegisterComponentId(newComponent, id);
             }
 

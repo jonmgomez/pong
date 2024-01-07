@@ -1,0 +1,106 @@
+{
+  "name": "GameOver",
+  "objects": [
+    {
+      "name": "ResultText",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 0,
+          "y": 750
+        },
+        {
+          "type": "Text",
+          "text": "Place Holder Text",
+          "scale": 1.2
+        }
+      ]
+    },
+    {
+      "name": "PlayButton",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "type": "Button",
+          "width": 400,
+          "height": 200
+        },
+        {
+          "type": "Text",
+          "text": "Play Again",
+          "scale": 0.3,
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "TitleButton",
+      "components": [
+        {
+          "type": "Transform",
+          "x": -350,
+          "y": -350
+        },
+        {
+          "type": "Button",
+          "width": 400,
+          "height": 200
+        },
+        {
+          "type": "Text",
+          "text": "Main Menu",
+          "scale": 0.3,
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "QuitButton",
+      "components": [
+        {
+          "type": "Transform",
+          "x": 350,
+          "y": -350
+        },
+        {
+          "type": "Button",
+          "width": 400,
+          "height": 200
+        },
+        {
+          "type": "Text",
+          "text": "Quit",
+          "scale": 0.5,
+          "color": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "GameOverController",
+      "components": [
+        {
+          "type": "GameOverScreenController"
+        }
+      ]
+    }
+  ]
+}

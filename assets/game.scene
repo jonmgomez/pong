@@ -137,7 +137,7 @@
         },
         {
           "type": "ScoreArea",
-          "player_side": true
+          "player_side": false
         }
       ]
     },
@@ -194,6 +194,7 @@
     },
     {
       "name": "ScoreController",
+      "destroy_on_load": false,
       "components": [
         {
           "type": "ScoreController",

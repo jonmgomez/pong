@@ -19,6 +19,7 @@ class AudioMixer
 public:
     void Init();
     void Cleanup();
+    void Reset();
 
     void PlaySound(const Sound& sound);
     void PlaySound(const Sound& sound, const glm::vec3& position);

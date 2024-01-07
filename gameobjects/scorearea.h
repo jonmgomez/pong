@@ -14,6 +14,7 @@ public:
     ScoreArea(bool playerSide);
 
     int GetBehaviorId() const override { return GetIdFromBehavior<ScoreArea>(); }
+    void Accept(ComponentDeserializer& visitor) override { visitor.VisitComponent(this); }
     void OnStart() override;
     void OnCollisionStart(GameObject& other) override;
 

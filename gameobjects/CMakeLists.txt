@@ -1,6 +1,7 @@
 set(SOURCES
     ball.cpp
     gameobject.cpp
+    gameoverscreencontroller.cpp
     opponent.cpp
     player.cpp
     scorearea.cpp

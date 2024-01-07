@@ -20,8 +20,11 @@ public:
     void OpponentScored();
 
 private:
+    void CheckForWin();
+
     int mPlayerScore { 0 };
     int mOpponentScore { 0 };
+    int mWinningScore { 0 };
 
     Text* mPlayerScoreText { nullptr };
     Text* mOpponentScoreText { nullptr };
