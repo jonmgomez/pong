@@ -159,8 +159,8 @@ void Opponent::OnBallVelocityChange(const glm::vec3& velocity)
 
     if (mChasingBall)
     {
-        const int decisionTime = Random::ValueInRange(mDecisionTimeLowerBoundMs, mDecisionTimeUpperBoundMs);
-        timer::SetTimeout(GetGameObjectId(), std::chrono::milliseconds(decisionTime), [this] ()
+        const int decisionTimeMs = Random::ValueInRange(mDecisionTimeLowerBoundMs, mDecisionTimeUpperBoundMs);
+        timer::SetTimeout(GetGameObjectId(), std::chrono::milliseconds(decisionTimeMs), [this] ()
         {
             this->PredictBallPostion();
         });
