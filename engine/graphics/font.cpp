@@ -81,10 +81,10 @@ FontCharacter Font::LoadCharacter(const char character)
     const float spaceAboveCharPixels = mAscent + yCoord1;
     fontCharacter.mYOffset = spaceAboveCharPixels;
 
-    fontCharacter.mBitmap.mPixels.resize(charWidth * charHeight);
-
     if (character != '\n')
     {
+        fontCharacter.mBitmap.mPixels.resize(charWidth * charHeight);
+
         // Since this uses a single character for each texture, stride is just the pixel width of the character
         const int kStride = charWidth;
         stbtt_MakeCodepointBitmap(&mFontInfo, fontCharacter.mBitmap.mPixels.data(),
@@ -95,12 +95,12 @@ FontCharacter Font::LoadCharacter(const char character)
         fontCharacter.mBitmap.mWidth = charWidth;
         fontCharacter.mBitmap.mHeight = charHeight;
         fontCharacter.mBitmap.mComponents = 1;
-    }
 
-    // Bitmap returned is alpha only, and stored bottom left pixel first
-    // Convert to RGBA and flip it for OpenGL
-    const auto rgbTexture = image::ConvertAlphaImageToRGBA(fontCharacter.mBitmap);
-    fontCharacter.mBitmap = image::FlipImageVertically(rgbTexture);
+        // Bitmap returned is alpha only, and stored bottom left pixel first
+        // Convert to RGBA and flip it for OpenGL
+        const auto rgbTexture = image::ConvertAlphaImageToRGBA(fontCharacter.mBitmap);
+        fontCharacter.mBitmap = image::FlipImageVertically(rgbTexture);
+    }
 
     mCharacters[character] = fontCharacter;
     return fontCharacter;
@@ -170,7 +170,11 @@ FontCharacter Font::GetCharacter(const char character)
     auto it = mCharacters.find(character);
     if (it == mCharacters.end())
     {
-        LogDebug("Character {} not found in cache, loading it", character);
+        std::string characterStr {};
+        if (character == '\n')
+            characterStr = "\\n";
+
+        LogDebug("Character {} not found in cache, loading it", characterStr);
         return LoadCharacter(character);
     }
 

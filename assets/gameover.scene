@@ -26,13 +26,13 @@
         },
         {
           "type": "Button",
-          "width": 400,
-          "height": 200
+          "width": 500,
+          "height": 250
         },
         {
           "type": "Text",
-          "text": "Play Again",
-          "scale": 0.3,
+          "text": "Play\nAgain",
+          "scale": 0.45,
           "color": {
             "r": 0,
             "g": 0,
@@ -52,13 +52,13 @@
         },
         {
           "type": "Button",
-          "width": 400,
-          "height": 200
+          "width": 500,
+          "height": 250
         },
         {
           "type": "Text",
-          "text": "Main Menu",
-          "scale": 0.3,
+          "text": "Main\nMenu",
+          "scale": 0.45,
           "color": {
             "r": 0,
             "g": 0,
@@ -78,13 +78,13 @@
         },
         {
           "type": "Button",
-          "width": 400,
-          "height": 200
+          "width": 500,
+          "height": 250
         },
         {
           "type": "Text",
           "text": "Quit",
-          "scale": 0.5,
+          "scale": 0.6,
           "color": {
             "r": 0,
             "g": 0,

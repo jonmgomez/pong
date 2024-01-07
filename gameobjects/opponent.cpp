@@ -57,25 +57,25 @@ void Opponent::SetDifficultySettings()
     switch (Difficulty::GetLevel())
     {
         case Difficulty::Level::Easy:
-            mDecisionTimeLowerBounmMs = 200;
+            mDecisionTimeLowerBoundMs = 200;
             mDecisionTimeUpperBoundMs = 500;
             mBaseMissChance = 0.f;
             break;
 
         case Difficulty::Level::Normal:
-            mDecisionTimeLowerBounmMs = 100;
+            mDecisionTimeLowerBoundMs = 100;
             mDecisionTimeUpperBoundMs = 350;
             mBaseMissChance = 0.2f;
             break;
 
         case Difficulty::Level::Hard:
-            mDecisionTimeLowerBounmMs = 50;
+            mDecisionTimeLowerBoundMs = 50;
             mDecisionTimeUpperBoundMs = 100;
             mBaseMissChance = 0.05f;
             break;
 
         case Difficulty::Level::Insane:
-            mDecisionTimeLowerBounmMs = 0;
+            mDecisionTimeLowerBoundMs = 0;
             mDecisionTimeUpperBoundMs = 0;
             mBaseMissChance = 0.0f;
             break;
@@ -159,7 +159,8 @@ void Opponent::OnBallVelocityChange(const glm::vec3& velocity)
 
     if (mChasingBall)
     {
-        SetTimeout(std::chrono::milliseconds(Random::ValueInRange(mDecisionTimeLowerBounmMs, mDecisionTimeUpperBoundMs)), [this] ()
+        const int decisionTimeMs = Random::ValueInRange(mDecisionTimeLowerBoundMs, mDecisionTimeUpperBoundMs);
+        SetTimeout(std::chrono::milliseconds(decisionTimeMs), [this] ()
         {
             this->PredictBallPostion();
         });

@@ -9,7 +9,7 @@ namespace pong
 void ScoreController::OnStart()
 {
     ASSERT(mPlayerScoreText != nullptr && mOpponentScoreText != nullptr);
-    mWinningScore = Config::GetValue("WinningScore", 1);
+    mWinningScore = Config::GetValue("score_goal", 5);
 }
 
 int ScoreController::GetPlayerScore() const
