@@ -1,5 +1,6 @@
 #include "ball.h"
 
+#include "audiomixer.h"
 #include "config.h"
 #include "logger.h"
 #include "opponent.h"
@@ -40,16 +41,16 @@ void Ball::OnCollisionStart(GameObject& other)
 {
     if (other.GetInstanceName().find("ScoreArea") != std::string::npos)
     {
-        PlaySound(mScoreSound, mTransform->mPosition);
+        audio::PlaySound(mScoreSound, mTransform->mPosition);
 
-        SetTimeout(BALL_RESET_WAIT_S, [this] ()
+        timer::SetTimeout(GetGameObjectId(), BALL_RESET_WAIT_S, [this] ()
         {
             this->ResetBall();
         });
     }
     else if (other.GetInstanceName() == "Player" || other.GetInstanceName() == "Opponent")
     {
-        PlaySound(mPaddleBounceSound, mTransform->mPosition);
+        audio::PlaySound(mPaddleBounceSound, mTransform->mPosition);
 
         mSpeed += BALL_SPEED_BOUNCE_INCREMENT;
 
@@ -79,7 +80,7 @@ void Ball::OnCollisionStart(GameObject& other)
     }
     else
     {
-        PlaySound(mWallBounceSound, mTransform->mPosition);
+        audio::PlaySound(mWallBounceSound, mTransform->mPosition);
 
         mSpeed += BALL_SPEED_BOUNCE_INCREMENT;
         mVelocity = glm::normalize(glm::vec3(mVelocity.x, -mVelocity.y, 0.0f)) * mSpeed;

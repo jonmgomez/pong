@@ -202,3 +202,40 @@ void AudioMixer::SetSpatialAudioEnabled(bool enabled)
 }
 
 } // namespace pong
+
+namespace pong::audio
+{
+
+AudioMixer* gAudioMixer { nullptr };
+
+void PlaySound(const Sound& sound)
+{
+    gAudioMixer->PlaySound(sound);
+}
+
+void PlaySound(const Sound& sound, const glm::vec3& position)
+{
+    gAudioMixer->PlaySound(sound, position);
+}
+
+float GetVolume()
+{
+    return gAudioMixer->GetVolume();
+}
+
+void SetVolume(float volume)
+{
+    gAudioMixer->SetVolume(volume);
+}
+
+bool GetSpatialAudioEnabled()
+{
+    return gAudioMixer->GetSpatialAudioEnabled();
+}
+
+void SetSpatialAudioEnabled(bool enabled)
+{
+    gAudioMixer->SetSpatialAudioEnabled(enabled);
+}
+
+}
