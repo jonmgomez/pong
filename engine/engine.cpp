@@ -14,11 +14,7 @@
 namespace pong
 {
 
-Engine& Engine::GetInstance()
-{
-    static Engine instance;
-    return instance;
-}
+Engine gEngine {};
 
 void Engine::Init(const std::string& configPath)
 {
@@ -111,14 +107,14 @@ void Engine::Cleanup()
 
 int Engine::GetTargetFPS()
 {
-    return GetInstance().mTargetFPS;
+    return mTargetFPS;
 }
 
 void Engine::SetTargetFPS(int fps)
 {
     ASSERT(fps > 0);
-    GetInstance().mTargetFPS = fps;
-    GetInstance().mTimePerFrame = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::seconds(1)) / GetInstance().mTargetFPS;
+    mTargetFPS = fps;
+    mTimePerFrame = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::seconds(1)) / mTargetFPS;
     Config::SetValue("target_fps", fps);
 }
 
@@ -128,3 +124,35 @@ void Engine::QuitApplication()
 }
 
 } // namespace pong
+
+namespace pong::engine
+{
+
+Engine* gEngine { nullptr };
+
+Engine* GetEngineInstance()
+{
+    return gEngine;
+}
+
+void SetEngineInstance(Engine* engine)
+{
+    gEngine = engine;
+}
+
+int GetTargetFPS()
+{
+    return gEngine->GetTargetFPS();
+}
+
+void SetTargetFPS(const int fps)
+{
+    gEngine->SetTargetFPS(fps);
+}
+
+void QuitApplication()
+{
+    gEngine->QuitApplication();
+}
+
+} // namespace pong::engine

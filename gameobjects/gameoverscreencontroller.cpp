@@ -39,7 +39,7 @@ void GameOverScreenController::OnStart()
 
     mQuitButton = Pong::FindGameObjectByName("QuitButton")->GetComponent<Button>();
     mQuitButton->AddListener(ButtonEvent::Pressed, []() {
-        Engine::QuitApplication();
+        engine::QuitApplication();
     });
     SetupButton(mQuitButton, mQuitButton->GetComponent<Text>());
 }

@@ -18,13 +18,13 @@ void SettingsScreenController::OnStart()
     });
     SetupButton(mBackButton, mBackButton->GetComponent<Text>());
 
-    const int targetFPS = Engine::GetTargetFPS();
+    const int targetFPS = engine::GetTargetFPS();
     mTargetFPSText = Pong::FindGameObjectByName("TargetFPSText")->GetComponent<Text>();
     mTargetFPSText->SetText("Target FPS: " + std::to_string(targetFPS));
     mTargetFPSSlider = Pong::FindGameObjectByName("TargetFPSSlider")->GetComponent<Slider>();
     mTargetFPSSlider->SetValue(static_cast<float>(targetFPS));
     mTargetFPSSlider->AddValueChangeListener([this] (float newValue) {
-        Engine::SetTargetFPS(static_cast<int>(newValue));
+        engine::SetTargetFPS(static_cast<int>(newValue));
         this->mTargetFPSText->SetText("Target FPS: " + std::to_string(static_cast<int>(newValue)));
     });
 
