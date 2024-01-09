@@ -29,9 +29,9 @@ void SettingsScreenController::OnStart()
     });
 
     mVSync = Pong::FindGameObjectByName("VSyncEnable")->GetComponent<CheckBox>();
-    mVSync->SetValue(ApplicationWindow::IsVSyncActive());
+    mVSync->SetValue(application::IsVSyncActive());
     mVSync->AddValueChangeListener([] (bool value) {
-        ApplicationWindow::SetVSync(value);
+        application::SetVSync(value);
     });
 
     mSpatialAudio = Pong::FindGameObjectByName("SpatialAudioEnable")->GetComponent<CheckBox>();

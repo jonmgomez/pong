@@ -20,9 +20,9 @@ void Engine::Init(const std::string& configPath)
 {
     ASSERT(Config::LoadConfig(configPath));
 
-    ApplicationWindow::Init();
-    ApplicationWindow::SetWindowTitle("Pong");
-    ApplicationWindow::SetWindowIcon(Config::GetValue<std::string>("window_icon"));
+    mApplicationWindow.Init();
+    mApplicationWindow.SetWindowTitle("Pong");
+    mApplicationWindow.SetWindowIcon(Config::GetValue<std::string>("window_icon"));
     Renderer::Init();
 
     input::SetInputInstance(&mInput);
@@ -44,7 +44,7 @@ void Engine::Init(const std::string& configPath)
     }
     else
     {
-        ApplicationWindow::SetVSync(true);
+        mApplicationWindow.SetVSync(true);
         LogInfo("Target FPS not specified or invalid. Using refresh rate.");
     }
 
@@ -56,7 +56,7 @@ void Engine::RunApplication()
     int frameCount = 0;
     const auto windowStartTime = std::chrono::high_resolution_clock::now();
 
-    while (!ApplicationWindow::ShouldClose())
+    while (!mApplicationWindow.ShouldClose())
     {
         if (IsNextFrameReady())
         {
@@ -64,7 +64,7 @@ void Engine::RunApplication()
 
             Renderer::Clear();
             Pong::GameLoop();
-            ApplicationWindow::SwapBuffers();
+            mApplicationWindow.SwapBuffers();
         }
     }
 
@@ -78,7 +78,7 @@ void Engine::RunApplication()
 
 bool Engine::IsNextFrameReady()
 {
-    if (ApplicationWindow::IsVSyncActive())
+    if (mApplicationWindow.IsVSyncActive())
     {
         mLastFrameTimeStamp = std::chrono::high_resolution_clock::now();
         return true;
@@ -105,7 +105,7 @@ void Engine::Cleanup()
 
     Pong::Cleanup();
     Renderer::Cleanup();
-    ApplicationWindow::Cleanup();
+    mApplicationWindow.Cleanup();
 }
 
 int Engine::GetTargetFPS()
@@ -123,7 +123,7 @@ void Engine::SetTargetFPS(int fps)
 
 void Engine::QuitApplication()
 {
-    ApplicationWindow::SetShouldCloseWindow();
+    mApplicationWindow.SetShouldCloseWindow();
 }
 
 } // namespace pong
