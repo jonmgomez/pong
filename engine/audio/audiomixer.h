@@ -50,6 +50,9 @@ namespace pong::audio
 
 extern AudioMixer* gAudioMixer;
 
+AudioMixer* GetAudioMixerInstance();
+void SetAudioMixerInstance(AudioMixer* audioMixer);
+
 void PlaySound(const Sound& sound);
 void PlaySound(const Sound& sound, const glm::vec3& position);
 

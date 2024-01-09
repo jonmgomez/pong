@@ -25,13 +25,13 @@ int main(int argc, char* argv[])
 
     Engine engine;
 
-    engine::gEngine = &engine;
+    engine::SetEngineInstance(&engine);
 
     engine.Init(argv[1]);
     engine.RunApplication();
     engine.Cleanup();
 
-    engine::gEngine = nullptr;
+    engine::SetEngineInstance(nullptr);
 
     return 0;
 }

@@ -60,9 +60,19 @@ namespace pong::timer
 
 Timer* gTimer { nullptr };
 
+Timer* GetTimerInstance()
+{
+    return gTimer;
+}
+
+void SetTimerInstance(Timer* timer)
+{
+    gTimer = timer;
+}
+
 void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback)
 {
-    gTimer->AddTimer(gameObjectId, timeout, callback);
+    GetTimerInstance()->AddTimer(gameObjectId, timeout, callback);
 }
 
 } // namespace pong::timer

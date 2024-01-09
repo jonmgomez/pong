@@ -142,17 +142,17 @@ void SetEngineInstance(Engine* engine)
 
 int GetTargetFPS()
 {
-    return gEngine->GetTargetFPS();
+    return GetEngineInstance()->GetTargetFPS();
 }
 
 void SetTargetFPS(const int fps)
 {
-    gEngine->SetTargetFPS(fps);
+    GetEngineInstance()->SetTargetFPS(fps);
 }
 
 void QuitApplication()
 {
-    gEngine->QuitApplication();
+    GetEngineInstance()->QuitApplication();
 }
 
 } // namespace pong::engine

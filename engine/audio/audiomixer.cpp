@@ -208,34 +208,44 @@ namespace pong::audio
 
 AudioMixer* gAudioMixer { nullptr };
 
+AudioMixer* GetAudioMixerInstance()
+{
+    return gAudioMixer;
+}
+
+void SetAudioMixerInstance(AudioMixer* audioMixer)
+{
+    gAudioMixer = audioMixer;
+}
+
 void PlaySound(const Sound& sound)
 {
-    gAudioMixer->PlaySound(sound);
+    GetAudioMixerInstance()->PlaySound(sound);
 }
 
 void PlaySound(const Sound& sound, const glm::vec3& position)
 {
-    gAudioMixer->PlaySound(sound, position);
+    GetAudioMixerInstance()->PlaySound(sound, position);
 }
 
 float GetVolume()
 {
-    return gAudioMixer->GetVolume();
+    return GetAudioMixerInstance()->GetVolume();
 }
 
 void SetVolume(float volume)
 {
-    gAudioMixer->SetVolume(volume);
+    GetAudioMixerInstance()->SetVolume(volume);
 }
 
 bool GetSpatialAudioEnabled()
 {
-    return gAudioMixer->GetSpatialAudioEnabled();
+    return GetAudioMixerInstance()->GetSpatialAudioEnabled();
 }
 
 void SetSpatialAudioEnabled(bool enabled)
 {
-    gAudioMixer->SetSpatialAudioEnabled(enabled);
+    GetAudioMixerInstance()->SetSpatialAudioEnabled(enabled);
 }
 
 }

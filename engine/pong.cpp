@@ -48,9 +48,8 @@ Timer& Pong::GetTimer()
 
 void Pong::Init()
 {
-    timer::gTimer = &GetInstance().mTimer;
-    audio::gAudioMixer = &GetInstance().mAudioMixer;
-
+    timer::SetTimerInstance(&GetInstance().mTimer);
+    audio::SetAudioMixerInstance(&GetInstance().mAudioMixer);
 
     GetInstance().GetAudioMixer().Init();
     GetInstance().mFontBank.LoadFonts();
