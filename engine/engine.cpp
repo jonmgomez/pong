@@ -14,18 +14,18 @@
 namespace pong
 {
 
-Engine gEngine {};
-
 void Engine::Init(const std::string& configPath)
 {
     ASSERT(Config::LoadConfig(configPath));
 
+    application::SetWindowInstance(&mApplicationWindow);
+    input::SetInputInstance(&mInput);
+
     mApplicationWindow.Init();
     mApplicationWindow.SetWindowTitle("Pong");
     mApplicationWindow.SetWindowIcon(Config::GetValue<std::string>("window_icon"));
-    Renderer::Init();
+    mRenderer.Init();
 
-    input::SetInputInstance(&mInput);
 
     mInput.Init();
 
@@ -48,6 +48,7 @@ void Engine::Init(const std::string& configPath)
         LogInfo("Target FPS not specified or invalid. Using refresh rate.");
     }
 
+    Pong::mRenderer = &mRenderer;
     Pong::Init();
 }
 
@@ -62,7 +63,7 @@ void Engine::RunApplication()
         {
             frameCount++;
 
-            Renderer::Clear();
+            mRenderer.Clear();
             Pong::GameLoop();
             mApplicationWindow.SwapBuffers();
         }
@@ -104,7 +105,7 @@ void Engine::Cleanup()
     }
 
     Pong::Cleanup();
-    Renderer::Cleanup();
+    mRenderer.Cleanup();
     mApplicationWindow.Cleanup();
 }
 

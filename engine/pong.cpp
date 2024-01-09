@@ -10,6 +10,8 @@
 namespace pong
 {
 
+Renderer* Pong::mRenderer { nullptr };
+
 Pong& Pong::GetInstance()
 {
     static Pong instance;
@@ -77,7 +79,7 @@ void Pong::GameLoop()
         behavior->OnUpdate();
     }
 
-    Renderer::DrawAll();
+    mRenderer->DrawAll();
 
     // Done last because input callbacks are done in glfwPollEvents after this loop.
     // So this effectively keeps the values from the new frame before updated from pressed -> held

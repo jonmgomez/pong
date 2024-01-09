@@ -27,8 +27,9 @@ public:
 private:
     bool IsNextFrameReady();
 
+    Renderer mRenderer {};
     ApplicationWindow mApplicationWindow {};
-    Input mInput { Renderer::GetInstance(), mApplicationWindow };
+    Input mInput { mRenderer, mApplicationWindow };
 
     int mTargetFPS { 60 };
     std::chrono::nanoseconds mTimePerFrame { 0 };

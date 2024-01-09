@@ -115,8 +115,8 @@ void Input::MousePositionCallback(GLFWwindow* /*window*/, double xPos, double yP
     const float mouseWindowY = (y <= halfWindowHeight) ?
         (halfWindowHeight - y) * 2.0f : (y - halfWindowHeight) * -2.0f;
 
-    mMousePosition.x = mouseWindowX / windowWidth * Renderer::GetXCoordMax();
-    mMousePosition.y = mouseWindowY / windowHeight * Renderer::GetYCoordMax();
+    mMousePosition.x = mouseWindowX / windowWidth * mRenderer.GetXCoordMax();
+    mMousePosition.y = mouseWindowY / windowHeight * mRenderer.GetYCoordMax();
 }
 
 // Mouse position converted to screen/world coordinates

@@ -6,6 +6,7 @@
 #include "componentmanager.h"
 #include "fontbank.h"
 #include "gameobject.h"
+#include "renderer.h"
 #include "sceneloader.h"
 #include "text.h"
 #include "timer.h"
@@ -68,6 +69,9 @@ public:
     }
 
     static GameObject* FindGameObjectByName(const std::string& name);
+
+    // Remove this
+    static Renderer* mRenderer;
 
     CollisionManager& GetCollisionManager();
     ComponentManager& GetComponentManager();
