@@ -1,6 +1,7 @@
 #pragma once
 
 #include "applicationwindow.h"
+#include "input.h"
 #include "renderer.h"
 
 #include <string>
@@ -25,6 +26,8 @@ public:
 
 private:
     bool IsNextFrameReady();
+
+    Input mInput { Renderer::GetInstance(), ApplicationWindow::GetInstance() };
 
     int mTargetFPS { 60 };
     std::chrono::nanoseconds mTimePerFrame { 0 };

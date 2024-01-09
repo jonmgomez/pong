@@ -24,7 +24,10 @@ void Engine::Init(const std::string& configPath)
     ApplicationWindow::SetWindowTitle("Pong");
     ApplicationWindow::SetWindowIcon(Config::GetValue<std::string>("window_icon"));
     Renderer::Init();
-    Input::Init();
+
+    input::SetInputInstance(&mInput);
+
+    mInput.Init();
 
     const auto targetFPSJson = Config::GetJsonValue("target_fps");
     if (targetFPSJson.has_value() && targetFPSJson.value().is_number_integer())
@@ -132,6 +135,7 @@ Engine* gEngine { nullptr };
 
 Engine* GetEngineInstance()
 {
+    ASSERT(gEngine != nullptr);
     return gEngine;
 }
 

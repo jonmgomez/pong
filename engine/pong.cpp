@@ -81,7 +81,7 @@ void Pong::GameLoop()
 
     // Done last because input callbacks are done in glfwPollEvents after this loop.
     // So this effectively keeps the values from the new frame before updated from pressed -> held
-    Input::Update();
+    input::Update();
 }
 
 void Pong::Reset()

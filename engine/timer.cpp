@@ -1,5 +1,7 @@
 #include "timer.h"
 
+#include "utils.h"
+
 #include <spdlog/spdlog.h>
 
 #include <algorithm>
@@ -62,6 +64,7 @@ Timer* gTimer { nullptr };
 
 Timer* GetTimerInstance()
 {
+    ASSERT(gTimer != nullptr);
     return gTimer;
 }
 
