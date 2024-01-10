@@ -121,11 +121,11 @@ void ComponentDeserializer::VisitComponent(Text* component)
     if (mCurrentJson.contains("font"))
     {
         const std::string fontName = mCurrentJson["font"];
-        font = game::GetPongInstance()->GetFontBank().GetFont(fontName);
+        font = globals::game::GetPongInstance()->GetFontBank().GetFont(fontName);
     }
     else
     {
-        font = game::GetPongInstance()->GetFontBank().GetDefaultFont();
+        font = globals::game::GetPongInstance()->GetFontBank().GetDefaultFont();
     }
     ASSERT(font != nullptr);
     component->mFont = font;

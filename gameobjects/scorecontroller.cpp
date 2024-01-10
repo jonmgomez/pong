@@ -40,7 +40,7 @@ void ScoreController::CheckForWin()
 {
     if (mPlayerScore >= mWinningScore || mOpponentScore >= mWinningScore)
     {
-        game::LoadSceneNext("GameOver");
+        globals::game::LoadSceneNext("GameOver");
     }
 }
 

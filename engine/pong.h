@@ -97,7 +97,7 @@ private:
 
 } // namespace pong
 
-namespace pong::game
+namespace pong::globals::game
 {
 
 extern Pong* gPong;
@@ -114,4 +114,4 @@ T* FindComponentOfType()
 GameObject* FindGameObjectByName(const std::string& name);
 void LoadSceneNext(const std::string& sceneName);
 
-} // namespace pong::game
+} // namespace pong::globals::game

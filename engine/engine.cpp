@@ -18,9 +18,9 @@ void Engine::Init(const std::string& configPath)
 {
     ASSERT(Config::LoadConfig(configPath));
 
-    application::SetWindowInstance(&mApplicationWindow);
-    input::SetInputInstance(&mInput);
-    game::SetPongInstance(&mPong);
+    globals::application::SetWindowInstance(&mApplicationWindow);
+    globals::input::SetInputInstance(&mInput);
+    globals::game::SetPongInstance(&mPong);
 
     mApplicationWindow.Init();
     mApplicationWindow.SetWindowTitle("Pong");
@@ -115,7 +115,7 @@ void Engine::Cleanup()
     mApplicationWindow.Cleanup();
 }
 
-int Engine::GetTargetFPS()
+int Engine::GetTargetFPS() const
 {
     return mTargetFPS;
 }
@@ -135,7 +135,7 @@ void Engine::QuitApplication()
 
 } // namespace pong
 
-namespace pong::engine
+namespace pong::globals::engine
 {
 
 Engine* gEngine { nullptr };
@@ -166,4 +166,4 @@ void QuitApplication()
     GetEngineInstance()->QuitApplication();
 }
 
-} // namespace pong::engine
+} // namespace pong::globals::engine

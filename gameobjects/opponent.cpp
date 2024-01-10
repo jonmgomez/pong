@@ -22,8 +22,8 @@ void Opponent::OnStart()
     mCollider = GetComponent<ColliderBox>();
     mTargetPosition = mTransform->mPosition;
 
-    GameObject* topWall = game::FindGameObjectByName("TopWall");
-    GameObject* bottomWall = game::FindGameObjectByName("BottomWall");
+    GameObject* topWall = globals::game::FindGameObjectByName("TopWall");
+    GameObject* bottomWall = globals::game::FindGameObjectByName("BottomWall");
 
     ASSERT(bottomWall != nullptr && topWall != nullptr);
 

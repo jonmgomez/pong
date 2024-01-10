@@ -42,7 +42,7 @@ private:
 
 } // namespace pong
 
-namespace pong::application
+namespace pong::globals::application
 {
 
 extern ApplicationWindow* gApplicationWindow;
@@ -59,4 +59,4 @@ void SetWindowIcon(const std::string& iconPath);
 bool IsVSyncActive();
 void SetVSync(bool active);
 
-}
+} // namespace pong::globals::application

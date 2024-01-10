@@ -42,7 +42,7 @@ Timer& Pong::GetTimer()
 void Pong::Init()
 {
     timer::SetTimerInstance(&mTimer);
-    audio::SetAudioMixerInstance(&mAudioMixer);
+    globals::audio::SetAudioMixerInstance(&mAudioMixer);
 
     GetAudioMixer().Init();
     mFontBank.LoadFonts();
@@ -140,7 +140,7 @@ GameObject* Pong::FindGameObjectByName(const std::string& name)
 
 } // namespace pong
 
-namespace pong::game
+namespace pong::globals::game
 {
 
 Pong* gPong { nullptr };
@@ -165,4 +165,4 @@ void LoadSceneNext(const std::string& sceneName)
     GetPongInstance()->LoadSceneNext(sceneName);
 }
 
-} // namespace pong::game
+} // namespace pong::globals::game

@@ -14,7 +14,7 @@ int UIComponent::GetOrderLayer() const
 void UIComponent::SetOrderLayer(int orderLayer)
 {
     mOrderLayer = orderLayer;
-    game::GetPongInstance()->GetComponentManager().UpdateUIComponentOrderLayers();
+    globals::game::GetPongInstance()->GetComponentManager().UpdateUIComponentOrderLayers();
 }
 
 } // namespace pong

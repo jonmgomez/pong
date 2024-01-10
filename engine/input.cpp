@@ -29,9 +29,9 @@ void Input::Init()
     }
 
     GLFWwindow* glfwWindow = mWindow.GetWindow();
-    glfwSetKeyCallback(glfwWindow, input::KeyCallback);
-    glfwSetCursorPosCallback(glfwWindow, input::MousePositionCallback);
-    glfwSetMouseButtonCallback(glfwWindow, input::MouseButtonCallback);
+    glfwSetKeyCallback(glfwWindow, globals::input::KeyCallback);
+    glfwSetCursorPosCallback(glfwWindow, globals::input::MousePositionCallback);
+    glfwSetMouseButtonCallback(glfwWindow, globals::input::MouseButtonCallback);
 }
 
 void Input::Update()
@@ -64,17 +64,17 @@ void Input::KeyCallback(GLFWwindow* /*window*/, int key, int /*scancode*/, int a
     mKeys[key] = (action == GLFW_PRESS || action == GLFW_REPEAT) ? InputState::Pressed : InputState::Released;
 }
 
-InputState Input::GetKeyState(unsigned int keycode)
+InputState Input::GetKeyState(unsigned int keycode) const
 {
     return mKeys[keycode];
 }
 
-bool Input::CheckKeyDown(unsigned int keycode)
+bool Input::CheckKeyDown(unsigned int keycode) const
 {
     return mKeys[keycode] == InputState::Pressed || mKeys[keycode] == InputState::Held;
 }
 
-bool Input::CheckKeyUp(unsigned int keycode)
+bool Input::CheckKeyUp(unsigned int keycode) const
 {
     return mKeys[keycode] == InputState::Released || mKeys[keycode] == InputState::NotPressed;
 }
@@ -84,17 +84,17 @@ void Input::MouseButtonCallback(GLFWwindow* /*window*/, int button, int action, 
     mMouseButtons[button] = (action == GLFW_PRESS) ? InputState::Pressed : InputState::Released;
 }
 
-InputState Input::GetMouseButtonState(unsigned int button)
+InputState Input::GetMouseButtonState(unsigned int button) const
 {
     return mMouseButtons[button];
 }
 
-bool Input::CheckMouseButtonDown(unsigned int button)
+bool Input::CheckMouseButtonDown(unsigned int button) const
 {
     return mMouseButtons[button] == InputState::Pressed || mMouseButtons[button] == InputState::Held;
 }
 
-bool Input::CheckMouseButtonUp(unsigned int button)
+bool Input::CheckMouseButtonUp(unsigned int button) const
 {
     return mMouseButtons[button] == InputState::Released || mMouseButtons[button] == InputState::NotPressed;
 }
@@ -120,14 +120,14 @@ void Input::MousePositionCallback(GLFWwindow* /*window*/, double xPos, double yP
 }
 
 // Mouse position converted to screen/world coordinates
-glm::vec3 Input::GetMousePosition()
+glm::vec3 Input::GetMousePosition() const
 {
     return mMousePosition;
 }
 
 } // namespace pong
 
-namespace pong::input
+namespace pong::globals::input
 {
 
 Input* gInput = nullptr;
@@ -193,4 +193,4 @@ glm::vec3 GetMousePosition()
     return GetInputInstance()->GetMousePosition();
 }
 
-} // namespace pong::input
+} // namespace pong::globals::input

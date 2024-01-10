@@ -16,7 +16,7 @@ ScoreArea::ScoreArea(bool playerSide) :
 
 void ScoreArea::OnStart()
 {
-    mScoreController = game::FindComponentOfType<ScoreController>();
+    mScoreController = globals::game::FindComponentOfType<ScoreController>();
     if (mScoreController == nullptr)
     {
         LogError("ScoreController instance not found!");

@@ -45,7 +45,7 @@ private:
 
 } // namespace pong
 
-namespace pong::audio
+namespace pong::globals::audio
 {
 
 extern AudioMixer* gAudioMixer;
@@ -61,4 +61,4 @@ void SetVolume(float volume);
 bool GetSpatialAudioEnabled();
 void SetSpatialAudioEnabled(bool enabled);
 
-}
+} // namespace pong::globals::audio

@@ -28,7 +28,7 @@ int AudioCallbackWrapper(const void* inputBuffer, void* outputBuffer,
                   PaStreamCallbackFlags statusFlags,
                   void* userData)
 {
-    return audio::GetAudioMixerInstance()->AudioCallback(inputBuffer, outputBuffer, framesPerBuffer, timeInfo, statusFlags, userData);
+    return globals::audio::GetAudioMixerInstance()->AudioCallback(inputBuffer, outputBuffer, framesPerBuffer, timeInfo, statusFlags, userData);
 }
 
 void AudioMixer::Init()
@@ -203,7 +203,7 @@ void AudioMixer::SetSpatialAudioEnabled(bool enabled)
 
 } // namespace pong
 
-namespace pong::audio
+namespace pong::globals::audio
 {
 
 AudioMixer* gAudioMixer { nullptr };
@@ -248,4 +248,4 @@ void SetSpatialAudioEnabled(bool enabled)
     GetAudioMixerInstance()->SetSpatialAudioEnabled(enabled);
 }
 
-}
+} // namespace pong::globals::audio

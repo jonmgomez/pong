@@ -30,17 +30,17 @@ public:
     void Update();
 
     void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-    InputState GetKeyState(unsigned int keycode);
-    bool CheckKeyDown(unsigned int keycode);
-    bool CheckKeyUp(unsigned int keycode);
+    InputState GetKeyState(unsigned int keycode) const;
+    bool CheckKeyDown(unsigned int keycode) const;
+    bool CheckKeyUp(unsigned int keycode) const;
 
     void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
-    InputState GetMouseButtonState(unsigned int button);
-    bool CheckMouseButtonDown(unsigned int button);
-    bool CheckMouseButtonUp(unsigned int button);
+    InputState GetMouseButtonState(unsigned int button) const;
+    bool CheckMouseButtonDown(unsigned int button) const;
+    bool CheckMouseButtonUp(unsigned int button) const;
 
     void MousePositionCallback(GLFWwindow* window, double xpos, double ypos);
-    glm::vec3 GetMousePosition();
+    glm::vec3 GetMousePosition() const;
 
 private:
     Renderer& mRenderer;
@@ -53,7 +53,7 @@ private:
 
 } // namespace pong
 
-namespace pong::input
+namespace pong::globals::input
 {
 
 extern Input* gInput;
@@ -75,4 +75,4 @@ bool CheckMouseButtonUp(unsigned int button);
 
 glm::vec3 GetMousePosition();
 
-} // namespace pong::input
+} // namespace pong::globals::input

@@ -37,7 +37,7 @@ void ApplicationWindow::Init()
         ASSERT(false);
     }
 
-    glfwSetFramebufferSizeCallback(mWindow, application::WindowResizeCallback);
+    glfwSetFramebufferSizeCallback(mWindow, globals::application::WindowResizeCallback);
     glfwMakeContextCurrent(mWindow);
     SetVSync(Config::GetValue("vsync", false));
 
@@ -115,7 +115,7 @@ GLFWwindow* ApplicationWindow::GetWindow() const
 
 } // namespace pong
 
-namespace pong::application
+namespace pong::globals::application
 {
 
 ApplicationWindow* gApplicationWindow { nullptr };
@@ -165,4 +165,4 @@ void SetVSync(bool active)
     GetWindowInstance()->SetVSync(active);
 }
 
-}
+} // namespace pong::globals::application

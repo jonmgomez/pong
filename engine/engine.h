@@ -20,7 +20,7 @@ public:
     void RunApplication();
     void Cleanup();
 
-    int GetTargetFPS();
+    int GetTargetFPS() const;
     void SetTargetFPS(int fps);
 
     void QuitApplication();
@@ -40,7 +40,7 @@ private:
 
 } // namespace pong
 
-namespace pong::engine
+namespace pong::globals::engine
 {
 
 extern Engine* gEngine;
@@ -52,4 +52,4 @@ int GetTargetFPS();
 void SetTargetFPS(const int fps);
 void QuitApplication();
 
-} // namespace pong::engine
+} // namespace pong::globals::engine
