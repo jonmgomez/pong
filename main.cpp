@@ -23,9 +23,15 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    Engine::GetInstance().Init(argv[1]);
-    Engine::GetInstance().RunApplication();
-    Engine::GetInstance().Cleanup();
+    Engine engine;
+
+    globals::engine::SetEngineInstance(&engine);
+
+    engine.Init(argv[1]);
+    engine.RunApplication();
+    engine.Cleanup();
+
+    globals::engine::SetEngineInstance(nullptr);
 
     return 0;
 }

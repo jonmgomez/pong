@@ -28,7 +28,7 @@ int AudioCallbackWrapper(const void* inputBuffer, void* outputBuffer,
                   PaStreamCallbackFlags statusFlags,
                   void* userData)
 {
-    return Pong::GetInstance().GetAudioMixer().AudioCallback(inputBuffer, outputBuffer, framesPerBuffer, timeInfo, statusFlags, userData);
+    return globals::audio::GetAudioMixerInstance()->AudioCallback(inputBuffer, outputBuffer, framesPerBuffer, timeInfo, statusFlags, userData);
 }
 
 void AudioMixer::Init()
@@ -202,3 +202,50 @@ void AudioMixer::SetSpatialAudioEnabled(bool enabled)
 }
 
 } // namespace pong
+
+namespace pong::globals::audio
+{
+
+AudioMixer* gAudioMixer { nullptr };
+
+AudioMixer* GetAudioMixerInstance()
+{
+    return gAudioMixer;
+}
+
+void SetAudioMixerInstance(AudioMixer* audioMixer)
+{
+    gAudioMixer = audioMixer;
+}
+
+void PlaySound(const Sound& sound)
+{
+    GetAudioMixerInstance()->PlaySound(sound);
+}
+
+void PlaySound(const Sound& sound, const glm::vec3& position)
+{
+    GetAudioMixerInstance()->PlaySound(sound, position);
+}
+
+float GetVolume()
+{
+    return GetAudioMixerInstance()->GetVolume();
+}
+
+void SetVolume(float volume)
+{
+    GetAudioMixerInstance()->SetVolume(volume);
+}
+
+bool GetSpatialAudioEnabled()
+{
+    return GetAudioMixerInstance()->GetSpatialAudioEnabled();
+}
+
+void SetSpatialAudioEnabled(bool enabled)
+{
+    GetAudioMixerInstance()->SetSpatialAudioEnabled(enabled);
+}
+
+} // namespace pong::globals::audio

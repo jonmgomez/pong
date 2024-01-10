@@ -1,5 +1,7 @@
 #include "timer.h"
 
+#include "utils.h"
+
 #include <spdlog/spdlog.h>
 
 #include <algorithm>
@@ -54,3 +56,26 @@ void Timer::Reset()
 }
 
 } // namespace pong
+
+namespace pong::timer
+{
+
+Timer* gTimer { nullptr };
+
+Timer* GetTimerInstance()
+{
+    ASSERT(gTimer != nullptr);
+    return gTimer;
+}
+
+void SetTimerInstance(Timer* timer)
+{
+    gTimer = timer;
+}
+
+void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback)
+{
+    GetTimerInstance()->AddTimer(gameObjectId, timeout, callback);
+}
+
+} // namespace pong::timer

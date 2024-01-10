@@ -15,12 +15,6 @@ using image::Image;
 static constexpr int SCREEN_WIDTH = 1280;
 static constexpr int SCREEN_HEIGHT = 960;
 
-ApplicationWindow& ApplicationWindow::GetInstance()
-{
-    static ApplicationWindow instance;
-    return instance;
-}
-
 void ApplicationWindow::Init()
 {
     if (!glfwInit())
@@ -35,16 +29,16 @@ void ApplicationWindow::Init()
 
     GLFWmonitor* kMonitor = nullptr;
     GLFWwindow* kShare = nullptr;
-    GetInstance().mWindow = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Pong", kMonitor, kShare);
-    if (GetInstance().mWindow == nullptr)
+    mWindow = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Pong", kMonitor, kShare);
+    if (mWindow == nullptr)
     {
         LogError("glfwCreateWindow() failure");
         glfwTerminate();
         ASSERT(false);
     }
 
-    glfwSetFramebufferSizeCallback(GetInstance().mWindow, ApplicationWindow::WindowResizeCallback);
-    glfwMakeContextCurrent(GetInstance().mWindow);
+    glfwSetFramebufferSizeCallback(mWindow, globals::application::WindowResizeCallback);
+    glfwMakeContextCurrent(mWindow);
     SetVSync(Config::GetValue("vsync", false));
 
     LogInfo("Window created: {}x{}", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -52,36 +46,36 @@ void ApplicationWindow::Init()
 
 void ApplicationWindow::SwapBuffers()
 {
-    glfwSwapBuffers(GetInstance().mWindow);
+    glfwSwapBuffers(mWindow);
     glfwPollEvents();
 }
 
 void ApplicationWindow::Cleanup()
 {
-    glfwDestroyWindow(GetInstance().mWindow);
+    glfwDestroyWindow(mWindow);
     glfwTerminate();
 }
 
-int ApplicationWindow::GetScreenWidth()
+int ApplicationWindow::GetScreenWidth() const
 {
-    return GetInstance().mScreenWidth;
+    return mScreenWidth;
 }
 
-int ApplicationWindow::GetScreenHeight()
+int ApplicationWindow::GetScreenHeight() const
 {
-    return GetInstance().mScreenHeight;
+    return mScreenHeight;
 }
 
 void ApplicationWindow::WindowResizeCallback(GLFWwindow* /*window*/, int width, int height)
 {
-    GetInstance().mScreenWidth = width;
-    GetInstance().mScreenHeight = height;
+    mScreenWidth = width;
+    mScreenHeight = height;
     glViewport(0, 0, width, height);
 }
 
 void ApplicationWindow::SetWindowTitle(const std::string& title)
 {
-    glfwSetWindowTitle(GetInstance().mWindow, title.c_str());
+    glfwSetWindowTitle(mWindow, title.c_str());
 }
 
 void ApplicationWindow::SetWindowIcon(const std::string& iconPath)
@@ -89,28 +83,28 @@ void ApplicationWindow::SetWindowIcon(const std::string& iconPath)
     Image icon = image::LoadImage(iconPath);
     GLFWimage image = { icon.mWidth, icon.mHeight, icon.mPixels.data() };
 
-    glfwSetWindowIcon(GetInstance().mWindow, 1, &image);
+    glfwSetWindowIcon(mWindow, 1, &image);
 }
 
-bool ApplicationWindow::ShouldClose()
+bool ApplicationWindow::ShouldClose() const
 {
-    return glfwWindowShouldClose(GetInstance().mWindow);
+    return glfwWindowShouldClose(mWindow);
 }
 
 void ApplicationWindow::SetShouldCloseWindow()
 {
-    glfwSetWindowShouldClose(GetInstance().mWindow, GLFW_TRUE);
+    glfwSetWindowShouldClose(mWindow, GLFW_TRUE);
 }
 
-bool ApplicationWindow::IsVSyncActive()
+bool ApplicationWindow::IsVSyncActive() const
 {
-    return GetInstance().mVSync;
+    return mVSync;
 }
 
 void ApplicationWindow::SetVSync(bool active)
 {
-    GetInstance().mVSync = active;
-    glfwSwapInterval(GetInstance().mVSync ? GLFW_TRUE : GLFW_FALSE);
+    mVSync = active;
+    glfwSwapInterval(mVSync ? GLFW_TRUE : GLFW_FALSE);
     Config::SetValue("vsync", active);
 }
 
@@ -120,3 +114,55 @@ GLFWwindow* ApplicationWindow::GetWindow() const
 }
 
 } // namespace pong
+
+namespace pong::globals::application
+{
+
+ApplicationWindow* gApplicationWindow { nullptr };
+
+ApplicationWindow* GetWindowInstance()
+{
+    return gApplicationWindow;
+}
+
+void SetWindowInstance(ApplicationWindow* window)
+{
+    gApplicationWindow = window;
+}
+
+void WindowResizeCallback(GLFWwindow* window, int width, int height)
+{
+    GetWindowInstance()->WindowResizeCallback(window, width, height);
+}
+
+int GetScreenWidth()
+{
+    return GetWindowInstance()->GetScreenWidth();
+}
+
+int GetScreenHeight()
+{
+    return GetWindowInstance()->GetScreenHeight();
+}
+
+void SetWindowTitle(const std::string& title)
+{
+    GetWindowInstance()->SetWindowTitle(title);
+}
+
+void SetWindowIcon(const std::string& iconPath)
+{
+    GetWindowInstance()->SetWindowIcon(iconPath);
+}
+
+bool IsVSyncActive()
+{
+    return GetWindowInstance()->IsVSyncActive();
+}
+
+void SetVSync(bool active)
+{
+    GetWindowInstance()->SetVSync(active);
+}
+
+} // namespace pong::globals::application

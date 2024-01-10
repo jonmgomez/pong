@@ -44,3 +44,21 @@ private:
 };
 
 } // namespace pong
+
+namespace pong::globals::audio
+{
+
+extern AudioMixer* gAudioMixer;
+
+AudioMixer* GetAudioMixerInstance();
+void SetAudioMixerInstance(AudioMixer* audioMixer);
+
+void PlaySound(const Sound& sound);
+void PlaySound(const Sound& sound, const glm::vec3& position);
+
+float GetVolume();
+void SetVolume(float volume);
+bool GetSpatialAudioEnabled();
+void SetSpatialAudioEnabled(bool enabled);
+
+} // namespace pong::globals::audio

@@ -6,6 +6,7 @@
 #include "componentmanager.h"
 #include "fontbank.h"
 #include "gameobject.h"
+#include "input.h"
 #include "sceneloader.h"
 #include "text.h"
 #include "timer.h"
@@ -25,18 +26,19 @@ namespace pong
 class Pong
 {
 public:
-    static Pong& GetInstance();
+    Pong() = default;
+    ~Pong() = default;
 
-    static void Init();
-    static void GameLoop();
-    static void Reset();
-    static void Cleanup();
+    void Init();
+    void GameLoop();
+    void Reset();
+    void Cleanup();
 
-    static void LoadSceneNext(const std::string& sceneName);
+    void LoadSceneNext(const std::string& sceneName);
 
     // Returns the first component of type T found in the scene
     template<typename T, typename = std::enable_if_t<std::is_base_of_v<BaseComponent, T> && !std::is_base_of_v<Behavior, T>>>
-    static T* FindComponentOfType()
+    T* FindComponentOfType()
     {
         const std::vector<std::unique_ptr<T>>& components = T::GetComponents();
 
@@ -50,7 +52,7 @@ public:
 
     // Returns the first component of type T found in the scene
     template<typename T, typename = std::enable_if_t<std::is_base_of_v<Behavior, T>>, typename = void>
-    static T* FindComponentOfType()
+    T* FindComponentOfType()
     {
         // Since behaviors are the only components meant to be overridden, they are stored in a Behavior vector
         // getting a specific behavior class from the vector is done by comparing the behavior Id
@@ -67,7 +69,7 @@ public:
         return nullptr;
     }
 
-    static GameObject* FindGameObjectByName(const std::string& name);
+    GameObject* FindGameObjectByName(const std::string& name);
 
     CollisionManager& GetCollisionManager();
     ComponentManager& GetComponentManager();
@@ -77,13 +79,6 @@ public:
     Timer& GetTimer();
 
 private:
-    Pong() = default;
-    Pong(const Pong&) = delete;
-    Pong& operator=(const Pong&) = delete;
-    Pong(Pong&&) = delete;
-    Pong& operator=(Pong&&) = delete;
-    ~Pong() = default;
-
     void LoadScene(const std::string& sceneName);
 
     std::vector<std::unique_ptr<GameObject>> mGameObjects {};
@@ -101,3 +96,22 @@ private:
 };
 
 } // namespace pong
+
+namespace pong::globals::game
+{
+
+extern Pong* gPong;
+
+Pong* GetPongInstance();
+void SetPongInstance(Pong* pong);
+
+template<typename T>
+T* FindComponentOfType()
+{
+    return GetPongInstance()->FindComponentOfType<T>();
+}
+
+GameObject* FindGameObjectByName(const std::string& name);
+void LoadSceneNext(const std::string& sceneName);
+
+} // namespace pong::globals::game

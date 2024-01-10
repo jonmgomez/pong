@@ -10,12 +10,12 @@ namespace pong
 
 void GameOverScreenController::OnStart()
 {
-    const ScoreController* score = Pong::FindComponentOfType<ScoreController>();
+    const ScoreController* score = globals::game::FindComponentOfType<ScoreController>();
     ASSERT(score != nullptr);
     score->GetGameObject()->SetDestroyOnLoad(true);
     mPlayerWon = score->GetPlayerScore() > score->GetOpponentScore();
 
-    mResultText = Pong::FindGameObjectByName("ResultText")->GetComponent<Text>();
+    mResultText = globals::game::FindGameObjectByName("ResultText")->GetComponent<Text>();
     if (mPlayerWon)
     {
         mResultText->SetText("You won!");
@@ -25,21 +25,21 @@ void GameOverScreenController::OnStart()
         mResultText->SetText("You lost!");
     }
 
-    mPlayAgainButton = Pong::FindGameObjectByName("PlayButton")->GetComponent<Button>();
+    mPlayAgainButton = globals::game::FindGameObjectByName("PlayButton")->GetComponent<Button>();
     mPlayAgainButton->AddListener(ButtonEvent::Pressed, []() {
-        Pong::LoadSceneNext("Game");
+        globals::game::LoadSceneNext("Game");
     });
     SetupButton(mPlayAgainButton, mPlayAgainButton->GetComponent<Text>());
 
-    mTitleScreenButton = Pong::FindGameObjectByName("TitleButton")->GetComponent<Button>();
+    mTitleScreenButton = globals::game::FindGameObjectByName("TitleButton")->GetComponent<Button>();
     mTitleScreenButton->AddListener(ButtonEvent::Pressed, []() {
-        Pong::LoadSceneNext("Title");
+        globals::game::LoadSceneNext("Title");
     });
     SetupButton(mTitleScreenButton, mTitleScreenButton->GetComponent<Text>());
 
-    mQuitButton = Pong::FindGameObjectByName("QuitButton")->GetComponent<Button>();
+    mQuitButton = globals::game::FindGameObjectByName("QuitButton")->GetComponent<Button>();
     mQuitButton->AddListener(ButtonEvent::Pressed, []() {
-        Engine::QuitApplication();
+        globals::engine::QuitApplication();
     });
     SetupButton(mQuitButton, mQuitButton->GetComponent<Text>());
 }

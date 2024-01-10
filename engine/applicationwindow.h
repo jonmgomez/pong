@@ -11,35 +11,29 @@ namespace pong
 class ApplicationWindow
 {
 public:
-    static ApplicationWindow& GetInstance();
+    ApplicationWindow() = default;
+    ~ApplicationWindow() = default;
 
-    static void Init();
-    static void SwapBuffers();
-    static void Cleanup();
+    void Init();
+    void SwapBuffers();
+    void Cleanup();
 
-    static int GetScreenWidth();
-    static int GetScreenHeight();
-    static void WindowResizeCallback(GLFWwindow* window, int width, int height);
+    int GetScreenWidth() const;
+    int GetScreenHeight() const;
+    void WindowResizeCallback(GLFWwindow* window, int width, int height);
 
-    static void SetWindowTitle(const std::string& title);
-    static void SetWindowIcon(const std::string& iconPath);
+    void SetWindowTitle(const std::string& title);
+    void SetWindowIcon(const std::string& iconPath);
 
-    static bool ShouldClose();
-    static void SetShouldCloseWindow();
+    bool ShouldClose() const;
+    void SetShouldCloseWindow();
 
-    static bool IsVSyncActive();
-    static void SetVSync(bool active);
+    bool IsVSyncActive() const;
+    void SetVSync(bool active);
 
     GLFWwindow* GetWindow() const;
 
 private:
-    ApplicationWindow() = default;
-    ~ApplicationWindow() = default;
-    ApplicationWindow(const ApplicationWindow&) = delete;
-    ApplicationWindow& operator=(const ApplicationWindow&) = delete;
-    ApplicationWindow(ApplicationWindow&&) = delete;
-    ApplicationWindow& operator=(ApplicationWindow&&) = delete;
-
     GLFWwindow* mWindow { nullptr };
     int mScreenWidth { 1280 };
     int mScreenHeight { 960 };
@@ -47,3 +41,22 @@ private:
 };
 
 } // namespace pong
+
+namespace pong::globals::application
+{
+
+extern ApplicationWindow* gApplicationWindow;
+
+ApplicationWindow* GetWindowInstance();
+void SetWindowInstance(ApplicationWindow* window);
+
+void WindowResizeCallback(GLFWwindow* window, int width, int height);
+
+int GetScreenWidth();
+int GetScreenHeight();
+void SetWindowTitle(const std::string& title);
+void SetWindowIcon(const std::string& iconPath);
+bool IsVSyncActive();
+void SetVSync(bool active);
+
+} // namespace pong::globals::application

@@ -21,11 +21,11 @@ void Player::OnUpdate()
 {
     mVelocity = glm::vec3(0.0f);
 
-    if (Input::CheckKeyDown(GLFW_KEY_W))
+    if (globals::input::CheckKeyDown(GLFW_KEY_W))
     {
         mVelocity = glm::vec3(0.0f, mSpeed, 0.0f);
     }
-    else if (Input::CheckKeyDown(GLFW_KEY_S))
+    else if (globals::input::CheckKeyDown(GLFW_KEY_S))
     {
         mVelocity = glm::vec3(0.0f, -mSpeed, 0.0f);
     }

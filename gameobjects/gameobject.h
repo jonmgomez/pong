@@ -53,7 +53,7 @@ public:
 
         const int componentId = GetComponentTypeId<T>();
         mComponents.insert(std::make_pair(componentId, componentPtr));
-        Pong::GetInstance().GetComponentManager().AddComponent<T>(std::move(component));
+        globals::game::GetPongInstance()->GetComponentManager().AddComponent<T>(std::move(component));
 
         return componentPtr;
     }

@@ -22,8 +22,8 @@ void Opponent::OnStart()
     mCollider = GetComponent<ColliderBox>();
     mTargetPosition = mTransform->mPosition;
 
-    GameObject* topWall = Pong::FindGameObjectByName("TopWall");
-    GameObject* bottomWall = Pong::FindGameObjectByName("BottomWall");
+    GameObject* topWall = globals::game::FindGameObjectByName("TopWall");
+    GameObject* bottomWall = globals::game::FindGameObjectByName("BottomWall");
 
     ASSERT(bottomWall != nullptr && topWall != nullptr);
 
@@ -160,7 +160,7 @@ void Opponent::OnBallVelocityChange(const glm::vec3& velocity)
     if (mChasingBall)
     {
         const int decisionTimeMs = Random::ValueInRange(mDecisionTimeLowerBoundMs, mDecisionTimeUpperBoundMs);
-        SetTimeout(std::chrono::milliseconds(decisionTimeMs), [this] ()
+        timer::SetTimeout(GetGameObjectId(), std::chrono::milliseconds(decisionTimeMs), [this] ()
         {
             this->PredictBallPostion();
         });

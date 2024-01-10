@@ -1,6 +1,8 @@
 #pragma once
 
 #include "applicationwindow.h"
+#include "input.h"
+#include "pong.h"
 #include "renderer.h"
 
 #include <string>
@@ -11,26 +13,25 @@ namespace pong
 class Engine
 {
 public:
-    static Engine& GetInstance();
+    Engine() = default;
+    ~Engine() = default;
 
     void Init(const std::string& configPath);
     void RunApplication();
     void Cleanup();
 
-    static int GetTargetFPS();
-    static void SetTargetFPS(int fps);
+    int GetTargetFPS() const;
+    void SetTargetFPS(int fps);
 
-    static void QuitApplication();
+    void QuitApplication();
 
 private:
-    Engine() = default;
-    ~Engine() = default;
-    Engine(const Engine&) = delete;
-    Engine(Engine&&) = delete;
-    Engine& operator=(const Engine&) = delete;
-    Engine& operator=(Engine&&) = delete;
-
     bool IsNextFrameReady();
+
+    Renderer mRenderer {};
+    ApplicationWindow mApplicationWindow {};
+    Input mInput { mRenderer, mApplicationWindow };
+    Pong mPong {};
 
     int mTargetFPS { 60 };
     std::chrono::nanoseconds mTimePerFrame { 0 };
@@ -38,3 +39,17 @@ private:
 };
 
 } // namespace pong
+
+namespace pong::globals::engine
+{
+
+extern Engine* gEngine;
+
+Engine* GetEngineInstance();
+void SetEngineInstance(Engine* engine);
+
+int GetTargetFPS();
+void SetTargetFPS(const int fps);
+void QuitApplication();
+
+} // namespace pong::globals::engine

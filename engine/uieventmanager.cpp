@@ -40,7 +40,7 @@ void UIEventManager::ProcessEvents()
 void UIEventManager::Process(Button& button) const
 {
     const bool inBounds = CheckMouseInComponentBounds(button, button.GetBounds());
-    const InputState mouseButtonState = Input::GetMouseButtonState(GLFW_MOUSE_BUTTON_LEFT);
+    const InputState mouseButtonState = globals::input::GetMouseButtonState(GLFW_MOUSE_BUTTON_LEFT);
 
     if (inBounds)
     {
@@ -67,7 +67,7 @@ void UIEventManager::Process(Button& button) const
 void UIEventManager::Process(CheckBox& checkBox) const
 {
     const bool inBounds = CheckMouseInComponentBounds(checkBox, checkBox.GetBounds());
-    const InputState mouseButtonState = Input::GetMouseButtonState(GLFW_MOUSE_BUTTON_LEFT);
+    const InputState mouseButtonState = globals::input::GetMouseButtonState(GLFW_MOUSE_BUTTON_LEFT);
 
     if (inBounds && mouseButtonState == InputState::Pressed)
     {
@@ -78,11 +78,11 @@ void UIEventManager::Process(CheckBox& checkBox) const
 void UIEventManager::Process(Slider& slider) const
 {
     const bool inBounds = CheckMouseInComponentBounds(slider, slider.GetBounds());
-    const bool mousePressed = Input::CheckMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT);
+    const bool mousePressed = globals::input::CheckMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT);
 
     if ((inBounds && mousePressed) || (mousePressed && slider.WasPressed()))
     {
-        slider.OnMouseDown(Input::GetMousePosition());
+        slider.OnMouseDown(globals::input::GetMousePosition());
     }
     else if (!mousePressed && slider.WasPressed())
     {
@@ -108,7 +108,7 @@ bool UIEventManager::CheckMouseInComponentBounds(BaseComponent& component, Recta
 
 bool UIEventManager::CheckMouseInBounds(const RectangleBounds& bounds) const
 {
-    const glm::vec3 mousePosition = Input::GetMousePosition();
+    const glm::vec3 mousePosition = globals::input::GetMousePosition();
     return bounds.CheckPointInBounds(mousePosition);
 }
 
