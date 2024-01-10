@@ -2,6 +2,7 @@
 
 #include "applicationwindow.h"
 #include "input.h"
+#include "pong.h"
 #include "renderer.h"
 
 #include <string>
@@ -30,6 +31,7 @@ private:
     Renderer mRenderer {};
     ApplicationWindow mApplicationWindow {};
     Input mInput { mRenderer, mApplicationWindow };
+    Pong mPong {};
 
     int mTargetFPS { 60 };
     std::chrono::nanoseconds mTimePerFrame { 0 };

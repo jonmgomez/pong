@@ -13,19 +13,19 @@ namespace pong
 
 void TitleScreenController::OnStart()
 {
-    mPlayButton = Pong::FindGameObjectByName("PlayButton")->GetComponent<Button>();
+    mPlayButton = game::FindGameObjectByName("PlayButton")->GetComponent<Button>();
     mPlayButton->AddListener(ButtonEvent::Pressed, []() {
-        Pong::LoadSceneNext("Game");
+        game::LoadSceneNext("Game");
     });
     SetupButton(mPlayButton, mPlayButton->GetComponent<Text>());
 
-    mSettingsButton = Pong::FindGameObjectByName("SettingsButton")->GetComponent<Button>();
+    mSettingsButton = game::FindGameObjectByName("SettingsButton")->GetComponent<Button>();
     mSettingsButton->AddListener(ButtonEvent::Pressed, []() {
-        Pong::LoadSceneNext("Settings");
+        game::LoadSceneNext("Settings");
     });
     SetupButton(mSettingsButton, mSettingsButton->GetComponent<Text>());
 
-    mQuitButton = Pong::FindGameObjectByName("QuitButton")->GetComponent<Button>();
+    mQuitButton = game::FindGameObjectByName("QuitButton")->GetComponent<Button>();
     mQuitButton->AddListener(ButtonEvent::Pressed, []() {
         engine::QuitApplication();
     });

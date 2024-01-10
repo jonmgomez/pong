@@ -20,12 +20,13 @@ void Engine::Init(const std::string& configPath)
 
     application::SetWindowInstance(&mApplicationWindow);
     input::SetInputInstance(&mInput);
+    game::SetPongInstance(&mPong);
 
     mApplicationWindow.Init();
     mApplicationWindow.SetWindowTitle("Pong");
     mApplicationWindow.SetWindowIcon(Config::GetValue<std::string>("window_icon"));
-    mRenderer.Init();
 
+    mRenderer.Init(&mPong.GetComponentManager());
 
     mInput.Init();
 
@@ -48,8 +49,7 @@ void Engine::Init(const std::string& configPath)
         LogInfo("Target FPS not specified or invalid. Using refresh rate.");
     }
 
-    Pong::mRenderer = &mRenderer;
-    Pong::Init();
+    mPong.Init();
 }
 
 void Engine::RunApplication()
@@ -64,7 +64,8 @@ void Engine::RunApplication()
             frameCount++;
 
             mRenderer.Clear();
-            Pong::GameLoop();
+            mPong.GameLoop();
+            mRenderer.DrawAll();
             mApplicationWindow.SwapBuffers();
         }
     }
@@ -104,7 +105,7 @@ void Engine::Cleanup()
         Config::SaveConfig();
     }
 
-    Pong::Cleanup();
+    mPong.Cleanup();
     mRenderer.Cleanup();
     mApplicationWindow.Cleanup();
 }

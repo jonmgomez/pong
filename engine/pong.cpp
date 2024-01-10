@@ -5,18 +5,9 @@
 #include "config.h"
 #include "input.h"
 #include "logger.h"
-#include "renderer.h"
 
 namespace pong
 {
-
-Renderer* Pong::mRenderer { nullptr };
-
-Pong& Pong::GetInstance()
-{
-    static Pong instance;
-    return instance;
-}
 
 CollisionManager& Pong::GetCollisionManager()
 {
@@ -50,36 +41,33 @@ Timer& Pong::GetTimer()
 
 void Pong::Init()
 {
-    timer::SetTimerInstance(&GetInstance().mTimer);
-    audio::SetAudioMixerInstance(&GetInstance().mAudioMixer);
+    timer::SetTimerInstance(&mTimer);
+    audio::SetAudioMixerInstance(&mAudioMixer);
 
-    GetInstance().GetAudioMixer().Init();
-    GetInstance().mFontBank.LoadFonts();
-    GetInstance().mSceneLoader.PreLoadScenes();
-    GetInstance().GetTimer().Init();
+    GetAudioMixer().Init();
+    mFontBank.LoadFonts();
+    mSceneLoader.PreLoadScenes();
+    GetTimer().Init();
 
-    GetInstance().LoadScene(Config::GetValue<std::string>("starting_scene", "Title"));
+    LoadScene(Config::GetValue<std::string>("starting_scene", "Title"));
 }
 
 void Pong::GameLoop()
 {
-    Pong& pong = GetInstance();
-    pong.GetTimer().HandleTimerCallbacks();
-    pong.GetCollisionManager().ProcessCollisions(ColliderBox::GetComponents());
-    pong.GetUIEventManager().ProcessEvents();
+    GetTimer().HandleTimerCallbacks();
+    GetCollisionManager().ProcessCollisions(ColliderBox::GetComponents());
+    GetUIEventManager().ProcessEvents();
 
-    if (pong.mChangeSceneRequested)
+    if (mChangeSceneRequested)
     {
-        pong.LoadScene(pong.mNextScene);
-        pong.mChangeSceneRequested = false;
+        LoadScene(mNextScene);
+        mChangeSceneRequested = false;
     }
 
     for (auto& behavior : Behavior::GetComponents())
     {
         behavior->OnUpdate();
     }
-
-    mRenderer->DrawAll();
 
     // Done last because input callbacks are done in glfwPollEvents after this loop.
     // So this effectively keeps the values from the new frame before updated from pressed -> held
@@ -88,9 +76,9 @@ void Pong::GameLoop()
 
 void Pong::Reset()
 {
-    GetInstance().mComponentManager.Reset();
+    mComponentManager.Reset();
 
-    for (auto& gameobject : GetInstance().mGameObjects)
+    for (auto& gameobject : mGameObjects)
     {
         if (gameobject->ShouldDestroyOnLoad())
         {
@@ -98,35 +86,35 @@ void Pong::Reset()
         }
     }
 
-    GetInstance().mGameObjects.erase(std::remove_if(GetInstance().mGameObjects.begin(), GetInstance().mGameObjects.end(), [] (const auto& gameObject)
+    mGameObjects.erase(std::remove_if(mGameObjects.begin(), mGameObjects.end(), [] (const auto& gameObject)
     {
         return gameObject->ShouldDestroyOnLoad();
-    }), GetInstance().mGameObjects.end());
+    }), mGameObjects.end());
 
-    GetInstance().mAudioMixer.Reset();
-    GetInstance().mTimer.Reset();
+    mAudioMixer.Reset();
+    mTimer.Reset();
 }
 
 void Pong::Cleanup()
 {
     Pong::Reset();
-    GetInstance().GetAudioMixer().Cleanup();
+    GetAudioMixer().Cleanup();
 }
 
 void Pong::LoadSceneNext(const std::string& sceneName)
 {
-    GetInstance().mNextScene = sceneName;
-    GetInstance().mChangeSceneRequested = true;
+    mNextScene = sceneName;
+    mChangeSceneRequested = true;
 }
 
 void Pong::LoadScene(const std::string& sceneName)
 {
     Pong::Reset();
 
-    GameObjectCollection gameObjects = GetInstance().mSceneLoader.LoadScene(sceneName);
+    GameObjectCollection gameObjects = mSceneLoader.LoadScene(sceneName);
     for (auto& gameObject : gameObjects)
     {
-        GetInstance().mGameObjects.push_back(std::move(gameObject));
+        mGameObjects.push_back(std::move(gameObject));
     }
 
     for (auto& behavior : Behavior::GetComponents())
@@ -141,12 +129,12 @@ void Pong::LoadScene(const std::string& sceneName)
 
 GameObject* Pong::FindGameObjectByName(const std::string& name)
 {
-    auto it = std::find_if(GetInstance().mGameObjects.begin(), GetInstance().mGameObjects.end(), [&name] (const auto& gameObject)
+    auto it = std::find_if(mGameObjects.begin(), mGameObjects.end(), [&name] (const auto& gameObject)
     {
         return gameObject->GetInstanceName() == name;
     });
 
-    if (it != GetInstance().mGameObjects.end())
+    if (it != mGameObjects.end())
     {
         return it->get();
     }
@@ -155,3 +143,30 @@ GameObject* Pong::FindGameObjectByName(const std::string& name)
 }
 
 } // namespace pong
+
+namespace pong::game
+{
+
+Pong* gPong { nullptr };
+
+Pong* GetPongInstance()
+{
+    return gPong;
+}
+
+void SetPongInstance(Pong* pong)
+{
+    gPong = pong;
+}
+
+GameObject* FindGameObjectByName(const std::string& name)
+{
+    return GetPongInstance()->FindGameObjectByName(name);
+}
+
+void LoadSceneNext(const std::string& sceneName)
+{
+    GetPongInstance()->LoadSceneNext(sceneName);
+}
+
+} // namespace pong::game

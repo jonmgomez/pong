@@ -1,5 +1,6 @@
 #pragma once
 
+#include "componentmanager.h"
 #include "graphic.h"
 #include "indexbuffer.h"
 #include "mesh.h"
@@ -19,7 +20,7 @@ public:
     Renderer() = default;
     ~Renderer() = default;
 
-    void Init();
+    void Init(ComponentManager* componentManager);
     void Cleanup();
     void DrawAll();
     void Draw(const std::vector<OffsetGraphic>& graphics, const glm::vec3& position);
@@ -36,7 +37,8 @@ public:
     float GetYCoordMax() const;
 
 private:
-    std::unique_ptr<Shader>mShader { nullptr };
+    ComponentManager* mComponentManager { nullptr };
+    std::unique_ptr<Shader> mShader { nullptr };
 };
 
 } // namespace pong

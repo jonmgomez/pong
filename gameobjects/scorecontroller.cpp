@@ -40,7 +40,7 @@ void ScoreController::CheckForWin()
 {
     if (mPlayerScore >= mWinningScore || mOpponentScore >= mWinningScore)
     {
-        Pong::LoadSceneNext("GameOver");
+        game::LoadSceneNext("GameOver");
     }
 }
 

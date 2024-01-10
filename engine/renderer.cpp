@@ -24,8 +24,11 @@ namespace pong
 static constexpr float SCREEN_X_COORDS = 1280;
 static constexpr float SCREEN_Y_COORDS = 960;
 
-void Renderer::Init()
+void Renderer::Init(ComponentManager* componentManager)
 {
+    ASSERT(componentManager != nullptr);
+    mComponentManager = componentManager;
+
     if (glewInit() != GLEW_OK)
     {
         LogError("glewInit() failure");
@@ -90,7 +93,7 @@ void Renderer::DrawAll()
         Renderer::Draw(renderData, position);
     }
 
-    const std::vector<UIComponent*>& uiComponents = Pong::GetInstance().GetComponentManager().GetUIComponents();
+    const std::vector<UIComponent*>& uiComponents = mComponentManager->GetUIComponents();
     for (const auto& uiComponent : uiComponents)
     {
         const Transform* transform = uiComponent->GetBaseComponent()->GetComponent<Transform>();

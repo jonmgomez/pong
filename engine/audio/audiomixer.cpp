@@ -28,7 +28,7 @@ int AudioCallbackWrapper(const void* inputBuffer, void* outputBuffer,
                   PaStreamCallbackFlags statusFlags,
                   void* userData)
 {
-    return Pong::GetInstance().GetAudioMixer().AudioCallback(inputBuffer, outputBuffer, framesPerBuffer, timeInfo, statusFlags, userData);
+    return audio::GetAudioMixerInstance()->AudioCallback(inputBuffer, outputBuffer, framesPerBuffer, timeInfo, statusFlags, userData);
 }
 
 void AudioMixer::Init()
