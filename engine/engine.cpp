@@ -64,7 +64,12 @@ void Engine::RunApplication()
             frameCount++;
 
             mRenderer.Clear();
+
             mPong.GameLoop();
+            // Done after game loop because input callbacks are done in glfwPollEvents after this loop.
+            // So this effectively keeps the values from the new frame before updated from pressed -> held
+            mInput.Update();
+
             mRenderer.DrawAll();
             mApplicationWindow.SwapBuffers();
         }

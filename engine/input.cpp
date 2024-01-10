@@ -143,12 +143,6 @@ void SetInputInstance(Input* input)
     gInput = input;
 }
 
-// Remove this ------------
-void Update()
-{
-    GetInputInstance()->Update();
-}
-
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     GetInputInstance()->KeyCallback(window, key, scancode, action, mods);

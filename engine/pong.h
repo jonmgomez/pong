@@ -6,6 +6,7 @@
 #include "componentmanager.h"
 #include "fontbank.h"
 #include "gameobject.h"
+#include "input.h"
 #include "sceneloader.h"
 #include "text.h"
 #include "timer.h"

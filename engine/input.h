@@ -61,7 +61,6 @@ extern Input* gInput;
 Input* GetInputInstance();
 void SetInputInstance(Input* input);
 
-void Update();
 void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 void MousePositionCallback(GLFWwindow* window, double xpos, double ypos);
