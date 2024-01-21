@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ball.h"
+#include "ballmovement.h"
 #include "behavior.h"
 #include "colliderbox.h"
 #include "gameobject.h"
@@ -9,7 +9,7 @@
 namespace pong
 {
 
-class Ball;
+class BallMovement;
 
 class Opponent : public Behavior
 {
@@ -36,7 +36,7 @@ private:
     glm::vec3 mVelocity { 0.0f };
     float mSpeed { OPPONENT_MAX_SPEED };
 
-    Ball* mBall { nullptr };
+    BallMovement* mBall { nullptr };
     bool mChasingBall { false };
 
     float mTopWallBound { 0.0f };

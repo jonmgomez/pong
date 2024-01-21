@@ -73,10 +73,16 @@
           "height": 20.0
         },
         {
-          "type": "Ball",
+          "type": "BallMovement",
           "speed": 1000.0,
           "component_identifier": 1,
           "opponent": 0
+        },
+        {
+          "type": "BallAudio"
+        },
+        {
+          "type": "BallCollisions"
         }
       ]
     },

@@ -1,6 +1,6 @@
 #include "componentdeserializer.h"
 
-#include "ball.h"
+#include "ballmovement.h"
 #include "behavior.h"
 #include "button.h"
 #include "checkbox.h"
@@ -155,7 +155,7 @@ void ComponentDeserializer::VisitComponent(Opponent* component)
     const float speed = mCurrentJson["speed"];
     component->mSpeed = speed;
 
-    component->mBall = FindComponent<Ball>(mCurrentJson["ball"]);
+    component->mBall = FindComponent<BallMovement>(mCurrentJson["ball"]);
 }
 
 void ComponentDeserializer::VisitComponent(Player* component)
@@ -164,7 +164,7 @@ void ComponentDeserializer::VisitComponent(Player* component)
     component->mSpeed = speed;
 }
 
-void ComponentDeserializer::VisitComponent(Ball* component)
+void ComponentDeserializer::VisitComponent(BallMovement* component)
 {
     const float speed = mCurrentJson["speed"];
     component->mStartSpeed = speed;

@@ -1,6 +1,8 @@
 #include "sceneloader.h"
 
-#include "ball.h"
+#include "ballaudio.h"
+#include "ballcollisions.h"
+#include "ballmovement.h"
 #include "button.h"
 #include "checkbox.h"
 #include "colliderbox.h"
@@ -48,7 +50,9 @@ SceneLoader::SceneLoader()
     // User defined components
     mComponentMappings["Player"] = &AddComponentToObject<Player>;
     mComponentMappings["Opponent"] = &AddComponentToObject<Opponent>;
-    mComponentMappings["Ball"] = &AddComponentToObject<Ball>;
+    mComponentMappings["BallAudio"] = &AddComponentToObject<BallAudio>;
+    mComponentMappings["BallCollisions"] = &AddComponentToObject<BallCollisions>;
+    mComponentMappings["BallMovement"] = &AddComponentToObject<BallMovement>;
     mComponentMappings["ScoreArea"] = &AddComponentToObject<ScoreArea>;
     mComponentMappings["ScoreController"] = &AddComponentToObject<ScoreController>;
     mComponentMappings["TitleScreenController"] = &AddComponentToObject<TitleScreenController>;

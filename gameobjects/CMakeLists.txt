@@ -1,5 +1,7 @@
 set(SOURCES
-    ball.cpp
+    ballaudio.cpp
+    ballcollisions.cpp
+    ballmovement.cpp
     gameobject.cpp
     gameoverscreencontroller.cpp
     opponent.cpp

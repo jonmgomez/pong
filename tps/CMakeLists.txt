@@ -33,6 +33,7 @@ FetchContent_Declare(fmt
     URL ${CMAKE_SOURCE_DIR}/tps/fmt-10.1.1.zip
 )
 FetchContent_MakeAvailable(fmt)
+target_compile_options(fmt INTERFACE /wd4996)
 
 FetchContent_Declare(concurrentqueue
     URL ${CMAKE_SOURCE_DIR}/tps/concurrentqueue-1.0.4.zip

@@ -40,7 +40,9 @@ void ScoreController::CheckForWin()
 {
     if (mPlayerScore >= mWinningScore || mOpponentScore >= mWinningScore)
     {
-        globals::game::LoadSceneNext("GameOver");
+        timer::SetTimeout(GetGameObjectId(), std::chrono::milliseconds(1000), []() {
+            globals::game::LoadSceneNext("GameOver");
+        });
     }
 }
 

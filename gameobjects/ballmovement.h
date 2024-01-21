@@ -12,14 +12,17 @@ namespace pong
 
 class Opponent;
 
-class Ball : public Behavior
+class BallMovement : public Behavior
 {
 public:
-    int GetBehaviorId() const override { return GetIdFromBehavior<Ball>(); }
+    int GetBehaviorId() const override { return GetIdFromBehavior<BallMovement>(); }
     void Accept(ComponentDeserializer& visitor) override { visitor.VisitComponent(this); }
     void OnStart() override;
     void OnUpdate() override;
-    void OnCollisionStart(GameObject& other) override;
+
+    void HitScoreArea();
+    void HitPaddle(GameObject& other);
+    void HitWall();
 
     glm::vec3 GetVelocity() const;
 
@@ -32,9 +35,6 @@ private:
     float mStartSpeed { BALL_START_SPEED };
     float mSpeed { mStartSpeed };
     Opponent* mOpponent { nullptr };
-    Sound mPaddleBounceSound {};
-    Sound mWallBounceSound {};
-    Sound mScoreSound {};
 
     void ResetBall();
 

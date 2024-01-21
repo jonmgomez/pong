@@ -9,7 +9,7 @@
 namespace pong
 {
 
-class Ball;
+class BallMovement;
 class BaseComponent;
 class Behavior;
 class Button;
@@ -46,7 +46,7 @@ public:
     // User defined components
     void VisitComponent(Opponent* component);
     void VisitComponent(Player* component);
-    void VisitComponent(Ball* component);
+    void VisitComponent(BallMovement* component);
     void VisitComponent(ScoreArea* component);
     void VisitComponent(ScoreController* component);
 
