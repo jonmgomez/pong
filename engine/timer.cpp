@@ -34,7 +34,7 @@ void Timer::HandleTimerCallbacks()
 
     for (auto& timerRequest : mActiveTimers)
     {
-        timerRequest.mTimeoutUs -= timeWaitedUs;
+        timerRequest.mTimeoutUs -= std::chrono::microseconds(static_cast<int>(timeWaitedUs.count() * mTimeScale));
         if (timerRequest.mTimeoutUs.count() <= 0)
         {
             timerRequest.mCallback();
@@ -62,7 +62,7 @@ void Timer::Reset()
 
 } // namespace pong
 
-namespace pong::timer
+namespace pong::globals::timer
 {
 
 Timer* gTimer { nullptr };
@@ -88,4 +88,4 @@ void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::fu
     GetTimerInstance()->AddTimer(gameObjectId, timeout, callback);
 }
 
-} // namespace pong::timer
+} // namespace pong::globals::timer

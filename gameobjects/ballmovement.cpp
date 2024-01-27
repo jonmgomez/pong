@@ -35,7 +35,7 @@ void BallMovement::OnUpdate()
 
 void BallMovement::HitScoreArea()
 {
-    timer::SetTimeout(GetGameObjectId(), BALL_RESET_WAIT_S, [this] ()
+    globals::timer::SetTimeout(GetGameObjectId(), BALL_RESET_WAIT_S, [this] ()
     {
         this->ResetBall();
     });

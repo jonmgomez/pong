@@ -79,7 +79,7 @@ void GameMenu::OnUpdate()
     {
         mPaused = !mPaused;
 
-        timer::SetTimeScale(mPaused ? 0.0f : 1.0f);
+        globals::timer::SetTimeScale(mPaused ? 0.0f : 1.0f);
         mSettingsBackground->SetEnabled(mPaused);
         mSettingsText->SetEnabled(mPaused);
         mTargetFPSText->SetEnabled(mPaused);

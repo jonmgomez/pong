@@ -44,7 +44,7 @@ private:
 
 } // namespace pong
 
-namespace pong::timer
+namespace pong::globals::timer
 {
 
 extern Timer* gTimer;
@@ -55,4 +55,4 @@ void SetTimerInstance(Timer* timer);
 void SetTimeScale(float timeScale);
 void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
 
-} // namespace pong::timer
+} // namespace pong::globals::timer

@@ -41,7 +41,7 @@ Timer& Pong::GetTimer()
 
 void Pong::Init()
 {
-    timer::SetTimerInstance(&mTimer);
+    globals::timer::SetTimerInstance(&mTimer);
     globals::audio::SetAudioMixerInstance(&mAudioMixer);
 
     GetAudioMixer().Init();
