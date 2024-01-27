@@ -1,3 +1,27 @@
 {
-    "shader": "assets/basic.shader"
+    "shader": "assets/basic.shader",
+    "fonts": [
+        {
+            "name": "Pixeloid",
+            "path": "assets/pixeloid.ttf"
+        }
+    ],
+    "default_font": "Pixeloid",
+    "scenes": [
+        "assets/title.scene",
+        "assets/settings.scene",
+        "assets/game.scene",
+        "assets/gameover.scene"
+    ],
+    "starting_scene": "Title",
+    "score_goal": 5,
+    "save_config_settings": false,
+    "spatial_audio": false,
+    "target_fps": 144,
+    "volume": 1.0,
+    "vsync": false,
+    "wall_hit_sound": "assets/wall_hit.wav",
+    "paddle_hit_sound": "assets/paddle_hit.wav",
+    "score_sound": "assets/score.wav",
+    "window_icon": "assets/icon.png"
 }
