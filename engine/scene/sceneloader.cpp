@@ -8,6 +8,7 @@
 #include "colliderbox.h"
 #include "componentdeserializer.h"
 #include "config.h"
+#include "gamemenu.h"
 #include "gameobject.h"
 #include "gameoverscreencontroller.h"
 #include "logger.h"
@@ -55,6 +56,7 @@ SceneLoader::SceneLoader()
     mComponentMappings["BallMovement"] = &AddComponentToObject<BallMovement>;
     mComponentMappings["ScoreArea"] = &AddComponentToObject<ScoreArea>;
     mComponentMappings["ScoreController"] = &AddComponentToObject<ScoreController>;
+    mComponentMappings["GameMenu"] = &AddComponentToObject<GameMenu>;
     mComponentMappings["TitleScreenController"] = &AddComponentToObject<TitleScreenController>;
     mComponentMappings["SettingsScreenController"] = &AddComponentToObject<SettingsScreenController>;
     mComponentMappings["GameOverScreenController"] = &AddComponentToObject<GameOverScreenController>;

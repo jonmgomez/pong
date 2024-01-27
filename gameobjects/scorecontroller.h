@@ -13,6 +13,7 @@ public:
     int GetBehaviorId() const override { return GetIdFromBehavior<ScoreController>(); }
     void Accept(ComponentDeserializer& visitor) override { visitor.VisitComponent(this); }
     void OnStart() override;
+    void OnUpdate() override;
 
     int GetPlayerScore() const;
     void PlayerScored();

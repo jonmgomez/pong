@@ -81,6 +81,9 @@ void Renderer::DrawAll()
     const std::vector<std::unique_ptr<Mesh>>& meshes = Mesh::GetComponents();
     for (const auto& mesh : meshes)
     {
+        if (!mesh->IsEnabled())
+            continue;
+
         glm::vec3 position(0.0f);
 
         const Transform* transform = mesh->GetGameObject()->GetComponent<Transform>();
@@ -96,6 +99,9 @@ void Renderer::DrawAll()
     const std::vector<UIComponent*>& uiComponents = mComponentManager->GetUIComponents();
     for (const auto& uiComponent : uiComponents)
     {
+        if (!uiComponent->IsEnabled())
+            continue;
+
         const Transform* transform = uiComponent->GetBaseComponent()->GetComponent<Transform>();
         const glm::vec3 position = transform != nullptr ? transform->mPosition : glm::vec3(0.0f);
         const std::vector<OffsetGraphic>& graphics = uiComponent->GetRenderables();

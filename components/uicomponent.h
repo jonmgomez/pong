@@ -3,6 +3,7 @@
 #include "colliderbox.h"
 #include "graphic.h"
 #include "rectangle.h"
+#include "renderable.h"
 
 #include <glm/glm.hpp>
 
@@ -11,7 +12,7 @@
 namespace pong
 {
 
-class UIComponent
+class UIComponent : public Renderable
 {
 public:
     virtual ~UIComponent() = default;

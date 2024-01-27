@@ -31,6 +31,7 @@ public:
     static float frameTime;
 
     void Init();
+    void SetTimeScale(float timeScale);
     void AddTimer(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
     void HandleTimerCallbacks();
     void Reset();
@@ -38,6 +39,7 @@ public:
 private:
     std::vector<TimerRequest> mActiveTimers {};
     std::chrono::system_clock::time_point mLastTime { std::chrono::system_clock::now() };
+    float mTimeScale { 1.0f };
 };
 
 } // namespace pong
@@ -50,6 +52,7 @@ extern Timer* gTimer;
 Timer* GetTimerInstance();
 void SetTimerInstance(Timer* timer);
 
+void SetTimeScale(float timeScale);
 void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback);
 
 } // namespace pong::timer

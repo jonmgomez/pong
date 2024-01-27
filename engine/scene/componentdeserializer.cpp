@@ -86,6 +86,13 @@ void ComponentDeserializer::VisitComponent(Mesh* component)
         graphic = std::make_unique<Circle>(radius, sides);
     }
     component->SetGraphic(std::move(graphic));
+
+    if (mCurrentJson.contains("color"))
+    {
+        ASSERT(mCurrentJson["color"].is_object());
+        const auto& color = mCurrentJson["color"];
+        component->mGraphic->SetColor({color["r"], color["g"], color["b"], color["a"]});
+    }
 }
 
 void ComponentDeserializer::VisitComponent(Slider* component)

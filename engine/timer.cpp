@@ -20,12 +20,17 @@ void Timer::Init()
     Timer::frameTime = (std::chrono::duration_cast<std::chrono::duration<float>>(currentTime - mLastTime)).count();
 }
 
+void Timer::SetTimeScale(float timeScale)
+{
+    mTimeScale = timeScale;
+}
+
 void Timer::HandleTimerCallbacks()
 {
     const auto timeWaitedUs = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - mLastTime);
     mLastTime = std::chrono::system_clock::now();
 
-    Timer::frameTime = std::chrono::duration_cast<std::chrono::duration<float>>(timeWaitedUs).count();
+    Timer::frameTime = std::chrono::duration_cast<std::chrono::duration<float>>(timeWaitedUs).count() * mTimeScale;
 
     for (auto& timerRequest : mActiveTimers)
     {
@@ -71,6 +76,11 @@ Timer* GetTimerInstance()
 void SetTimerInstance(Timer* timer)
 {
     gTimer = timer;
+}
+
+void SetTimeScale(float timeScale)
+{
+    GetTimerInstance()->SetTimeScale(timeScale);
 }
 
 void SetTimeout(int gameObjectId, std::chrono::duration<double> timeout, std::function<void()> callback)

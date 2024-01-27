@@ -12,6 +12,16 @@ void ScoreController::OnStart()
     mWinningScore = Config::GetValue("score_goal", 5);
 }
 
+void ScoreController::OnUpdate()
+{
+    if (globals::input::GetKeyState(GLFW_KEY_ESCAPE) == InputState::Pressed)
+    {
+        const bool alreadyEnabled = mPlayerScoreText->IsEnabled();
+        mPlayerScoreText->SetEnabled(!alreadyEnabled);
+        mOpponentScoreText->SetEnabled(!alreadyEnabled);
+    }
+}
+
 int ScoreController::GetPlayerScore() const
 {
     return mPlayerScore;

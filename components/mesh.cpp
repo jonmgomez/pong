@@ -26,14 +26,4 @@ RenderData Mesh::GetRenderData()
     return mGraphic->GetRenderData();
 }
 
-void Mesh::SetEnabled(bool enabled)
-{
-    mEnabled = enabled;
-}
-
-bool Mesh::IsEnabled() const
-{
-    return mEnabled;
-}
-
 } // namespace pong
