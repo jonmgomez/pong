@@ -1,9 +1,28 @@
 # pong
 
 A simple recreation of classic pong using a made-from-scratch 2D game engine.
-<img src='readme_assets/title_image.png' width='450'>
-<img src='readme_assets/gameplay_image.png' width='450'>
-<img src='readme_assets/settings_image.png' width='450'>
+\
+\
+&nbsp;
+
+<img src='readme_assets/title_image.png' width='450'><img align="right" src='readme_assets/gameplay_image.png' width='450'>
+\
+\
+&nbsp;
+
+## Noteworthy features:
+- **Real-time logger:** A custom made logger that adheres to real-time programming techniques to provide little overhead for the game loop thread.
+- **Font rendering:** Any custom user fonts can be loaded and displayed as text objects easily.
+- **Audio system:** The audio system also adheres to real-time programming constraints to eliminate drop-outs
+- **Collision detection:** Each frame, the collision boxes on any game objects in the scene are calculated and provide callbacks if a collision is detected.
+- **UI Elements:** Some choice UI elements such as buttons, text, sliders, and checkboxes can be used to display information and take in user input.
+- **Realtime settings:** Settings such as the framerate, vsync, audio volume, positional audio can be changed in real time from the settings menu.
+\
+\
+&nbsp;
+<img src='readme_assets/settings_image.png' width='450'>\
+&nbsp;
+
 
 ## Building
 Clone repo
