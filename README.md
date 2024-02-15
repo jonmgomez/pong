@@ -5,7 +5,7 @@ A simple recreation of classic pong using a made-from-scratch 2D game engine.
 \
 &nbsp;
 
-<img src='readme_assets/title_image.png' width='450'><img align="right" src='readme_assets/gameplay_image.png' width='450'>
+<img src='readme_assets/title_image.png' width='375'><img align="right" src='readme_assets/gameplay_image.png' width='375'>
 \
 \
 &nbsp;
