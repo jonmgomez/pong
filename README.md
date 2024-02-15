@@ -1,7 +1,9 @@
 # pong
 
 A simple recreation of classic pong using a made-from-scratch 2D game engine.
-![Pong](readme_assets/title_image.png)
+<img src='readme_assets/title_image.png' width='450'>
+<img src='readme_assets/gameplay_image.png' width='450'>
+<img src='readme_assets/settings_image.png' width='450'>
 
 ## Building
 Clone repo
