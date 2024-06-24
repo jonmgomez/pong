@@ -1,6 +1,6 @@
 # pong
 
-A simple recreation of classic pong using a made-from-scratch 2D game engine.
+A simple recreation of classic pong using a made-from-scratch 2D game engine for Windows.
 \
 \
 &nbsp;
